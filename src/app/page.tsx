@@ -247,7 +247,7 @@ const industries = [
 
 const transformations = [
   {
-    name: "High-End Transformation",
+    name: "Advanced",
     description: "Moving up the value chain with advanced technologies and premium positioning",
     icon: "📈",
   },
