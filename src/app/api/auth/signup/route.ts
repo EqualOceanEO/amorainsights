@@ -1,65 +1,75 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { createUser, getUserByEmail } from '@/lib/db';
+import { getUserByEmail, createUser } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, password } = body;
+    const { email, password, name } = body;
 
-    // Validation
-    if (!name || !email || !password) {
+    // 验证输入
+    if (!email || !password) {
       return NextResponse.json(
-        { error: 'Name, email, and password are required' },
+        { error: '邮箱和密码是必填项' },
         { status: 400 }
       );
     }
 
-    if (password.length < 8) {
+    // 验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters' },
+        { error: '请输入有效的邮箱地址' },
         { status: 400 }
       );
     }
 
-    // Check if user already exists
+    // 验证密码长度
+    if (password.length < 6) {
+      return NextResponse.json(
+        { error: '密码长度至少 6 位' },
+        { status: 400 }
+      );
+    }
+
+    // 检查用户是否已存在
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Email already registered' },
-        { status: 400 }
+        { error: '该邮箱已被注册' },
+        { status: 409 }
       );
     }
 
-    // Hash password
+    // 加密密码
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Create user
-    const user = await createUser(name, email, passwordHash);
+    // 创建用户
+    const user = await createUser(email, passwordHash, name);
 
+    if (!user) {
+      return NextResponse.json(
+        { error: '创建用户失败' },
+        { status: 500 }
+      );
+    }
+
+    // 返回成功（不包含密码）
     return NextResponse.json(
-      { 
-        message: 'Account created successfully',
+      {
+        message: '注册成功',
         user: {
           id: user.id,
+          email: user.email,
           name: user.name,
-          email: user.email
-        }
+        },
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Signup error:', error);
-    
-    if (error.message === 'Email already exists') {
-      return NextResponse.json(
-        { error: 'Email already registered' },
-        { status: 400 }
-      );
-    }
-
     return NextResponse.json(
-      { error: 'Failed to create account' },
+      { error: '服务器错误' },
       { status: 500 }
     );
   }
