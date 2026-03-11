@@ -1,9 +1,9 @@
-import NextAuth, { NextAuthConfig } from 'next-auth';
+import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { getUserByEmail } from './db';
 
-export const authConfig: NextAuthConfig = {
+const authConfig = {
   providers: [
     Credentials({
       name: 'Credentials',
@@ -11,7 +11,7 @@ export const authConfig: NextAuthConfig = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      async authorize(credentials: any) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
@@ -46,13 +46,13 @@ export const authConfig: NextAuthConfig = {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string;
       }
@@ -61,11 +61,9 @@ export const authConfig: NextAuthConfig = {
   },
 };
 
-const nextAuth = NextAuth(authConfig);
-
 export const {
   handlers: { GET, POST },
   auth,
   signIn,
   signOut,
-} = nextAuth;
+} = NextAuth(authConfig);
