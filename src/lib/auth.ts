@@ -3,7 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { getUserByEmail } from './db';
 
-const authConfig = {
+export const nextAuth = NextAuth({
   providers: [
     Credentials({
       name: 'Credentials',
@@ -59,11 +59,9 @@ const authConfig = {
       return session;
     },
   },
-};
+});
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth(authConfig);
+export const handlers = nextAuth.handlers;
+export const auth = nextAuth.auth;
+export const signIn = nextAuth.signIn;
+export const signOut = nextAuth.signOut;
