@@ -1,0 +1,33 @@
+{
+  "name": "amorainsights",
+  "leadAgentId": "30e324ed4e5e443d97c06d94bc75bd57",
+  "workspacePath": "c:/Users/51229/WorkBuddy/Claw",
+  "createdAt": "2026-03-13T05:16:40.016Z",
+  "options": {
+    "workspacePath": "c:/Users/51229/WorkBuddy/Claw",
+    "isAutoTeam": false
+  },
+  "members": [
+    {
+      "memberId": "team-lead@amorainsights",
+      "name": "team-lead",
+      "role": "Team Lead - coordinates the team and interacts with the user"
+    },
+    {
+      "memberId": "Franklyn@amorainsights",
+      "name": "Franklyn",
+      "role": "AmoraInsights CEO - 战略"
+    },
+    {
+      "memberId": "George@amorainsights",
+      "name": "George",
+      "role": "AmoraInsights CTO - 技术"
+    },
+    {
+      "memberId": "Celine@amorainsights",
+      "name": "Celine",
+      "role": "AmoraInsights CMO - 市场"
+    }
+  ],
+  "isAutoTeam": false
+}

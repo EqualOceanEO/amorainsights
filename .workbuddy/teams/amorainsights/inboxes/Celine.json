@@ -1,0 +1,20 @@
+[
+  {
+    "id": "msg-1773379056758-cm061a",
+    "from": "team-lead",
+    "to": "@team",
+    "type": "broadcast",
+    "content": "George 已就位。现在 AmoraInsights 团队所有成员都已准备好。下一步请大家保持待命状态，等待主团队分配具体的项目任务。如有任何技术相关讨论或需要协作，请及时通过消息沟通。",
+    "timestamp": "2026-03-13T05:17:36.758Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773386393935-kvpu9r",
+    "from": "team-lead",
+    "to": "@team",
+    "type": "broadcast",
+    "content": "重要发现！\n\n问题根源：Git 重新安装后，环境变量尚未生效，导致无法使用 git 命令。\n\n当前状态：\n- 代码目录不完整（只有配置文件，缺少 src/ 等源代码）\n- 无法执行 git 命令获取完整代码\n\n解决方案（需要用户操作）：\n1. 重启终端或 IDE，让环境变量生效\n2. 或者在当前终端执行：refreshenv（如果使用 PowerShell）\n3. 重启后执行：cd c:/Users/51229/WorkBuddy/Claw && git pull origin main\n\n或者，可以手动删除当前目录内容，重新执行：git clone https://github.com/EqualOceanEO/amorainsights.git\n\nVercel 账号目前不需要。GitHub 账号信息已记录，如需要可使用。\n\n请选择方案后告知，我们将继续推进。",
+    "timestamp": "2026-03-13T07:19:53.935Z",
+    "read": true
+  }
+]
