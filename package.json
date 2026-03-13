@@ -10,11 +10,11 @@
     "db:init": "tsx scripts/init-db.ts"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.0",
     "@supabase/supabase-js": "^2.99.1",
     "bcryptjs": "^2.4.3",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.25",
+    "pg": "^8.20.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
@@ -22,6 +22,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
+    "@types/pg": "^8.18.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.3.1",
