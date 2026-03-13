@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.0",
-    "@next/swc-win32-x64-msvc": "^16.1.6",
     "@supabase/supabase-js": "^2.99.1",
     "bcryptjs": "^2.4.3",
     "next": "16.1.6",
@@ -28,7 +27,6 @@
     "dotenv": "^17.3.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "pg": "^8.20.0",
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
     "typescript": "^5"
