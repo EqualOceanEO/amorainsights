@@ -1,35 +1,19 @@
-import { Pool, QueryResultRow } from 'pg';
+import { createClient } from '@supabase/supabase-js';
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error('POSTGRES_URL environment variable is not set');
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// Use service role key for server-side operations (bypasses RLS)
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables');
 }
 
-// Singleton pool — prevents exhausting connections in serverless
-let pool: Pool;
-
-function getPool(): Pool {
-  if (!pool) {
-    pool = new Pool({
-      connectionString: process.env.POSTGRES_URL,
-      ssl: { rejectUnauthorized: false },
-      max: 5,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 10000,
-    });
-  }
-  return pool;
-}
-
-export { getPool as pool };
-
-// Helper so callers can do: await query(sql, params)
-export async function query<T extends QueryResultRow = QueryResultRow>(
-  text: string,
-  params?: unknown[]
-) {
-  const client = getPool();
-  return client.query<T>(text, params);
-}
+// Server-side Supabase client (never expose to browser)
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: { persistSession: false },
+});
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -38,7 +22,7 @@ export interface User {
   email: string;
   password: string;
   name: string | null;
-  created_at: Date;
+  created_at: string;
 }
 
 // ─── User operations ─────────────────────────────────────────────────────────
@@ -46,29 +30,37 @@ export interface User {
 export async function createUser(
   email: string,
   hashedPassword: string,
-  name?: string
+  name?: string | null
 ): Promise<User> {
-  const { rows } = await query<User>(
-    `INSERT INTO users (email, password, name)
-     VALUES ($1, $2, $3)
-     RETURNING *`,
-    [email, hashedPassword, name ?? null]
-  );
-  return rows[0];
+  const { data, error } = await supabase
+    .from('users')
+    .insert({ email, password: hashedPassword, name: name ?? null })
+    .select()
+    .single();
+
+  if (error) throw new Error(`createUser failed: ${error.message}`);
+  if (!data) throw new Error('createUser: no data returned');
+  return data as User;
 }
 
 export async function getUserByEmail(email: string): Promise<User | null> {
-  const { rows } = await query<User>(
-    `SELECT * FROM users WHERE email = $1 LIMIT 1`,
-    [email]
-  );
-  return rows[0] ?? null;
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('email', email)
+    .maybeSingle();
+
+  if (error) throw new Error(`getUserByEmail failed: ${error.message}`);
+  return (data as User) ?? null;
 }
 
 export async function getUserById(id: number): Promise<User | null> {
-  const { rows } = await query<User>(
-    `SELECT * FROM users WHERE id = $1 LIMIT 1`,
-    [id]
-  );
-  return rows[0] ?? null;
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', id)
+    .maybeSingle();
+
+  if (error) throw new Error(`getUserById failed: ${error.message}`);
+  return (data as User) ?? null;
 }

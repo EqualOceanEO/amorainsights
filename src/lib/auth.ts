@@ -3,6 +3,8 @@ import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { getUserByEmail } from '@/lib/db';
 
+const PROTECTED_PATHS = ['/dashboard'];
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -39,6 +41,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token?.id) session.user.id = token.id as string;
       return session;
+    },
+    async authorized({ auth: session, request }) {
+      const pathname = request.nextUrl.pathname;
+      const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
+      // Block unauthenticated access to protected pages
+      if (isProtected && !session) return false;
+      return true;
     },
   },
 });
