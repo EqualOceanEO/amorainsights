@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Amora Insights - China Innovation Intelligence",
-  description: "Deep-dive research and analysis on China's innovation in Future Information, Health, Energy, Space, Materials, and Manufacturing.",
+  description:
+    "Deep-dive research and analysis on China's innovation in Future Information, Health, Energy, Space, Materials, and Manufacturing.",
 };
 
 export default function RootLayout({
@@ -12,9 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        {children}
-      </body>
+      <body className="bg-gray-950 text-white antialiased">{children}</body>
     </html>
   );
 }
