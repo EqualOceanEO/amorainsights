@@ -9,6 +9,13 @@ const DESCRIPTION = `${TAGLINE} ${VALUE_PROP}`;
 export const metadata: Metadata = {
   title: SITE_TITLE,
   description: DESCRIPTION,
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: SITE_TITLE,
     description: DESCRIPTION,
