@@ -2,6 +2,8 @@ import { auth } from '@/lib/auth';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getReportBySlug, getReports, INDUSTRY_META, type Report } from '@/lib/db';
+import SubscribeBox from '@/components/SubscribeBox';
+import ShareBar from '@/components/ShareBar';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -111,6 +113,14 @@ export default async function ReportDetailPage({
                 <span>{report.view_count.toLocaleString()} views</span>
               </>
             )}
+            <div className="ml-auto">
+              <ShareBar
+                title={report.title}
+                summary={report.summary ?? ''}
+                url={`https://amorainsights.com/reports/${report.slug}`}
+                variant="horizontal"
+              />
+            </div>
           </div>
 
           {/* ── Summary (always visible) ─────────────────────────────────── */}
@@ -170,6 +180,17 @@ export default async function ReportDetailPage({
             )
           )}
         </article>
+
+        {/* ── Share + Subscribe ────────────────────────────────────────────── */}
+        <div className="mt-12 space-y-4">
+          <ShareBar
+            title={report.title}
+            summary={report.summary ?? ''}
+            url={`https://amorainsights.com/reports/${report.slug}`}
+            variant="horizontal"
+          />
+          <SubscribeBox source="article_bottom" />
+        </div>
 
         {/* ── Related Reports ──────────────────────────────────────────────── */}
         {relatedReports.length > 0 && (
