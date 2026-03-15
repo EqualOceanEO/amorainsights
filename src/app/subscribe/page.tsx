@@ -3,17 +3,17 @@ import SubscribeBox from '@/components/SubscribeBox';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Subscribe — AMORA Weekly 深科技简报',
-  description: '每周精选 AI、生命科学、绿色科技、智能制造、商业航天、先进材料六大赛道深度洞察，无需注册，免费订阅。',
+  title: 'Subscribe — AMORA Weekly',
+  description: 'Weekly research briefings across six frontier tracks: AI, Life Sciences, Green Tech, Smart Manufacturing, Commercial Space, and Advanced Materials.',
 };
 
 const tracks = [
-  { icon: '🤖', name: 'AI & 大模型' },
-  { icon: '🧬', name: '生命科学' },
-  { icon: '⚡', name: '绿色科技' },
-  { icon: '🏭', name: '智能制造' },
-  { icon: '🚀', name: '商业航天' },
-  { icon: '🔬', name: '先进材料' },
+  { icon: '🤖', name: 'AI & LLMs' },
+  { icon: '🧬', name: 'Life Sciences' },
+  { icon: '⚡', name: 'Green Tech' },
+  { icon: '🏭', name: 'Smart Mfg.' },
+  { icon: '🚀', name: 'Space' },
+  { icon: '🔬', name: 'Materials' },
 ];
 
 export default function SubscribePage() {
@@ -33,7 +33,7 @@ export default function SubscribePage() {
             <span className="font-serif font-bold tracking-widest text-sm">AMORA</span>
           </Link>
           <Link href="/reports" className="text-xs text-slate-500 hover:text-slate-300 transition">
-            浏览报告 →
+            Browse Reports →
           </Link>
         </div>
       </nav>
@@ -41,15 +41,15 @@ export default function SubscribePage() {
       {/* Hero */}
       <div className="max-w-2xl mx-auto px-6 py-24 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-600/10 border border-blue-600/20 text-blue-400 text-xs tracking-widest uppercase mb-8">
-          每周五送达
+          Every Friday
         </div>
         <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight text-white mb-6 leading-tight">
           AMORA Weekly<br />
-          <span className="text-blue-400">深科技简报</span>
+          <span className="text-blue-400">Deep Tech Briefing</span>
         </h1>
         <p className="text-slate-400 text-lg leading-relaxed mb-12">
-          六大前沿赛道，每周精选研究结论与行业洞察。<br className="hidden sm:block" />
-          无需注册账号，填邮箱即可免费订阅。
+          Six frontier tracks, curated every week — research conclusions and industry intelligence.<br className="hidden sm:block" />
+          No account needed. Free to subscribe.
         </p>
 
         {/* Subscribe box */}
@@ -70,9 +70,9 @@ export default function SubscribePage() {
         {/* Social proof / features */}
         <div className="grid sm:grid-cols-3 gap-4 text-left">
           {[
-            { title: '每周一报', desc: '精炼不堆砌，10分钟读完核心结论' },
-            { title: '研究支撑', desc: '结论有数据、有来源，不是二手摘抄' },
-            { title: '随时退订', desc: '回复邮件即可退订，零骚扰承诺' },
+            { title: 'Weekly, not daily', desc: 'Distilled, not padded — read the key takeaways in 10 minutes.' },
+            { title: 'Research-backed', desc: 'Every conclusion has data and a source. No second-hand summaries.' },
+            { title: 'Unsubscribe anytime', desc: 'Reply to any email to opt out instantly. Zero spam commitment.' },
           ].map((f) => (
             <div key={f.title} className="p-4 rounded-lg border border-white/5 bg-white/2">
               <div className="flex items-center gap-2 mb-2">

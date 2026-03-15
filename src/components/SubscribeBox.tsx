@@ -51,8 +51,8 @@ export default function SubscribeBox({
           </svg>
         </div>
         <div>
-          <p className="text-sm font-medium text-white">订阅成功</p>
-          <p className="text-xs text-slate-500">确认邮件已发送，首期简报下周五送达。</p>
+          <p className="text-sm font-medium text-white">You're subscribed!</p>
+          <p className="text-xs text-slate-500">Confirmation sent. First issue arrives next Friday.</p>
         </div>
       </div>
     );
@@ -66,7 +66,7 @@ export default function SubscribeBox({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <p className="text-sm text-slate-400">此邮箱已订阅，下周五见。</p>
+        <p className="text-sm text-slate-400">Already subscribed — see you next Friday.</p>
       </div>
     );
   }
@@ -87,7 +87,7 @@ export default function SubscribeBox({
           disabled={status === 'loading'}
           className="px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-lg transition whitespace-nowrap"
         >
-          {status === 'loading' ? '...' : '订阅'}
+          {status === 'loading' ? '...' : 'Subscribe'}
         </button>
         {status === 'error' && (
           <p className="absolute top-full mt-1 text-xs text-red-400">{errorMsg}</p>
@@ -107,11 +107,11 @@ export default function SubscribeBox({
         </div>
         <div>
           <h3 className="text-sm font-semibold text-white tracking-wide">AMORA Weekly</h3>
-          <p className="text-xs text-slate-500 mt-0.5">六大前沿赛道 · 每周五送达</p>
+          <p className="text-xs text-slate-500 mt-0.5">Six frontier tracks · Every Friday</p>
         </div>
       </div>
       <p className="text-sm text-slate-400 mb-4 leading-relaxed">
-        AI、生命科学、绿色科技、智能制造、商业航天、先进材料——每周一报，无需注册。
+        AI, Life Sciences, Green Tech, Smart Manufacturing, Commercial Space, Advanced Materials — one briefing a week, no account required.
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
@@ -127,7 +127,7 @@ export default function SubscribeBox({
           disabled={status === 'loading'}
           className="w-full py-2.5 text-sm font-medium bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-lg transition"
         >
-          {status === 'loading' ? '提交中…' : '免费订阅'}
+          {status === 'loading' ? 'Subscribing…' : 'Subscribe for free'}
         </button>
         {status === 'error' && (
           <p className="text-xs text-red-400">{errorMsg}</p>

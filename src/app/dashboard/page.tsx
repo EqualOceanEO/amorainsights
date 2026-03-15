@@ -1,6 +1,7 @@
 import { auth, signOut } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import SubscribeBox from '@/components/SubscribeBox';
 import {
   getDashboardStats,
   getReportCountByIndustry,
@@ -63,6 +64,17 @@ export default async function DashboardPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-12">
+        {/* Newsletter compact banner */}
+        <div className="mb-8 rounded-xl border border-blue-900/30 bg-[#0a1628]/60 px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex-1">
+            <p className="text-sm font-medium text-white">Get AMORA Weekly in your inbox</p>
+            <p className="text-xs text-slate-500 mt-0.5">Six frontier tracks · Every Friday · Free</p>
+          </div>
+          <div className="w-full sm:w-72 shrink-0">
+            <SubscribeBox source="dashboard" compact />
+          </div>
+        </div>
+
         {/* Welcome */}
         <div className="mb-10">
           <h1 className="text-3xl font-bold">Welcome back, {userName}</h1>

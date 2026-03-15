@@ -33,7 +33,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Send confirmation email via Resend
-    if (RESEND_API_KEY) {
+    if (!RESEND_API_KEY) {
+      console.error('[subscribe] RESEND_API_KEY is not configured — confirmation email not sent.');
+    } else {
       await sendConfirmationEmail(email).catch((e) =>
         console.error('[subscribe] email send error:', e)
       );
@@ -60,10 +62,10 @@ async function sendConfirmationEmail(email: string) {
       </div>
       <h1 style="font-family:Georgia,serif;font-size:24px;font-weight:700;letter-spacing:2px;color:#fff;margin:0 0 8px;">AMORA <span style="color:#3b82f6;">INSIGHTS</span></h1>
       <p style="color:#475569;font-size:12px;letter-spacing:2px;margin:0 0 32px;">WEEKLY BRIEFING</p>
-      <p style="font-size:16px;color:#cbd5e1;line-height:1.7;margin:0 0 16px;">欢迎订阅 AMORA Weekly 深科技简报。</p>
-      <p style="font-size:14px;color:#64748b;line-height:1.8;">每周我们将为你精选前沿科技行业动态、产业研究结论与深度观察——AI、生命科学、绿色科技、智能制造、商业航天、先进材料，六大赛道，一周一报。</p>
+      <p style="font-size:16px;color:#cbd5e1;line-height:1.7;margin:0 0 16px;">You're now subscribed to AMORA Weekly — your edge in deep tech.</p>
+      <p style="font-size:14px;color:#64748b;line-height:1.8;">Every week we curate research conclusions and industry intelligence across six frontier tracks: AI, Life Sciences, Green Tech, Smart Manufacturing, Commercial Space, and Advanced Materials.</p>
       <div style="margin:36px 0;padding:20px 24px;background:#0a1628;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;">
-        <p style="font-size:13px;color:#94a3b8;margin:0;line-height:1.6;">首期简报将在下周五送达。<br>如需取消订阅，回复此邮件即可。</p>
+        <p style="font-size:13px;color:#94a3b8;margin:0;line-height:1.6;">Your first issue arrives next Friday.<br>To unsubscribe, simply reply to this email.</p>
       </div>
       <p style="font-size:12px;color:#1e3a5f;margin:0;">© 2026 AmoraInsights · <a href="https://amorainsights.com" style="color:#1e3a5f;">amorainsights.com</a></p>
     </div>
@@ -78,7 +80,7 @@ async function sendConfirmationEmail(email: string) {
     body: JSON.stringify({
       from: FROM_EMAIL,
       to: [email],
-      subject: '欢迎订阅 AMORA Weekly 深科技简报',
+      subject: 'Welcome to AMORA Weekly',
       html,
     }),
   });

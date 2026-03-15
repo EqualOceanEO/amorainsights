@@ -256,10 +256,10 @@ export default function Home() {
       {/* ── Newsletter Subscribe Section ── */}
       <section className="py-20 border-t border-gray-800 bg-gray-950">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <p className="text-xs tracking-widest text-blue-500 uppercase mb-4">每周五送达</p>
+          <p className="text-xs tracking-widest text-blue-500 uppercase mb-4">Every Friday</p>
           <h2 className="text-3xl font-bold text-white mb-4 font-serif">AMORA Weekly</h2>
           <p className="text-gray-500 mb-8 leading-relaxed">
-            六大前沿赛道深度简报，无需注册账号，免费订阅。
+            Six frontier tracks, one briefing a week. No account required.
           </p>
           <div className="max-w-sm mx-auto">
             <SubscribeBox source="homepage" />

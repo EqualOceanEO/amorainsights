@@ -1,6 +1,7 @@
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import SubscribeBox from '@/components/SubscribeBox';
 import {
   getReports,
   INDUSTRY_META,
@@ -226,6 +227,20 @@ export default async function ReportsPage({
           <EmptyState hasFilters={!!industryFilter || premiumFilter !== undefined} />
         )}
       </main>
+
+      {/* ── Newsletter ── */}
+      <section className="py-16 border-t border-gray-800 bg-gray-950">
+        <div className="max-w-xl mx-auto px-6 text-center">
+          <p className="text-xs tracking-widest text-blue-500 uppercase mb-4">Every Friday</p>
+          <h2 className="text-2xl font-bold text-white mb-3 font-serif">AMORA Weekly</h2>
+          <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+            Six frontier tracks, one briefing a week. No account required.
+          </p>
+          <div className="max-w-sm mx-auto">
+            <SubscribeBox source="reports_page" />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

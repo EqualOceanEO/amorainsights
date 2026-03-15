@@ -144,7 +144,7 @@ export default function ShareBar({ title, summary, url, variant = 'horizontal' }
   // Horizontal full bar (for article bottom)
   return (
     <div className="rounded-xl border border-blue-900/30 bg-[#0a1628]/60 p-5">
-      <p className="text-xs font-medium text-slate-500 tracking-widest uppercase mb-4">分享这篇报告</p>
+      <p className="text-xs font-medium text-slate-500 tracking-widest uppercase mb-4">Share this report</p>
       <div className="flex flex-wrap gap-2">
         {platforms.map((p) => (
           <button
@@ -165,7 +165,7 @@ export default function ShareBar({ title, summary, url, variant = 'horizontal' }
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
             </svg>
-            分享
+            Share
           </button>
         )}
         <button
@@ -173,9 +173,9 @@ export default function ShareBar({ title, summary, url, variant = 'horizontal' }
           className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/8 text-slate-400 hover:text-white transition text-sm ml-auto"
         >
           {copied ? (
-            <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4 text-green-400"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="text-green-400">已复制</span></>
+            <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4 text-green-400"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="text-green-400">Copied!</span></>
           ) : (
-            <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg><span>复制链接</span></>
+            <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg><span>Copy link</span></>
           )}
         </button>
       </div>
