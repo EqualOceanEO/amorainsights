@@ -3,5 +3,11 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "installCommand": "npm install",
-  "regions": ["sin1"]
+  "regions": ["sin1"],
+  "crons": [
+    {
+      "path": "/api/internal/compliance-scan",
+      "schedule": "59 23 * * 5"
+    }
+  ]
 }

@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const TAGLINE = "Mapping Industries. Measuring Applications. Benchmarking the World.";
+const VALUE_PROP = "Clarity on frontier tech, before the market catches up.";
+const SITE_TITLE = "AmoraInsights — Mapping Frontier Industries";
+const DESCRIPTION = `${TAGLINE} ${VALUE_PROP}`;
+
 export const metadata: Metadata = {
-  title: "Amora Insights - China Innovation Intelligence",
-  description:
-    "Deep-dive research and analysis on China's innovation in Future Information, Health, Energy, Space, Materials, and Manufacturing.",
+  title: SITE_TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: DESCRIPTION,
+    siteName: "AmoraInsights",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

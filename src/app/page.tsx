@@ -2,60 +2,70 @@ import Link from "next/link";
 
 const industries = [
   {
-    name: "Future Information",
+    slug: "ai",
+    name: "AI",
     description:
-      "AI, quantum computing, next-gen communications, and digital infrastructure",
-    icon: "🖥️",
-  },
-  {
-    name: "Future Health",
-    description:
-      "Biotech, precision medicine, medical devices, and health tech innovation",
-    icon: "🧬",
-  },
-  {
-    name: "Future Energy",
-    description:
-      "Renewables, energy storage, hydrogen, and smart grid technologies",
-    icon: "⚡",
-  },
-  {
-    name: "Future Space",
-    description:
-      "Aerospace, satellite tech, space exploration, and commercial spaceflight",
-    icon: "🚀",
-  },
-  {
-    name: "Future Materials",
-    description:
-      "Advanced materials, nanotechnology, and sustainable material science",
-    icon: "🔬",
-  },
-  {
-    name: "Future Manufacturing",
-    description: "Robotics, automation, smart factories, and industrial IoT",
-    icon: "🏭",
-  },
-];
-
-const transformations = [
-  {
-    name: "Advanced",
-    description:
-      "Moving up the value chain with advanced technologies and premium positioning",
-    icon: "📈",
-  },
-  {
-    name: "Intelligent",
-    description:
-      "AI-driven automation, data analytics, and smart decision-making",
+      "Foundation models, applied AI, autonomous systems, and the infrastructure powering the next wave of intelligence.",
     icon: "🤖",
   },
   {
-    name: "Green",
+    slug: "life-sciences",
+    name: "Life Sciences",
     description:
-      "Sustainable practices, carbon neutrality, and environmental responsibility",
-    icon: "🌱",
+      "Biotech, precision medicine, genomics, MedTech, and the convergence of biology with engineering.",
+    icon: "🧬",
+  },
+  {
+    slug: "green-tech",
+    name: "Green Tech",
+    description:
+      "Clean energy, energy storage, climate tech, next-gen EVs, and the infrastructure for a decarbonized economy.",
+    icon: "⚡",
+  },
+  {
+    slug: "intelligent-manufacturing",
+    name: "Intelligent Manufacturing",
+    description:
+      "Robotics, industrial automation, smart factories, and the digitization of physical production.",
+    icon: "🦾",
+  },
+  {
+    slug: "new-space",
+    name: "New Space",
+    description:
+      "Commercial spaceflight, satellite constellations, deep-space exploration, and space-derived data services.",
+    icon: "🚀",
+  },
+  {
+    slug: "advanced-materials",
+    name: "Advanced Materials",
+    description:
+      "Semiconductor materials, next-gen chips, nanomaterials, and the science enabling every other frontier industry.",
+    icon: "⚛️",
+  },
+];
+
+const pillars = [
+  {
+    label: "Quantitative",
+    heading: "Measure what matters",
+    description:
+      "Every analysis is grounded in data — financials, patents, capacity metrics, and application benchmarks. No narratives without numbers.",
+    icon: "📐",
+  },
+  {
+    label: "Comparative",
+    heading: "Cross-market perspective",
+    description:
+      "We put US, Chinese, and global players side by side. Understanding one market in isolation is no longer enough.",
+    icon: "⚖️",
+  },
+  {
+    label: "Applied",
+    heading: "From lab to deployment",
+    description:
+      "We focus on technologies that are reaching real-world scale — not concept papers. Depth over breadth, always.",
+    icon: "🎯",
   },
 ];
 
@@ -63,35 +73,26 @@ const features = [
   {
     name: "Research Reports",
     description:
-      "In-depth analysis reports on specific industries and companies",
+      "In-depth, data-driven reports benchmarking frontier tech companies and industry dynamics across markets.",
     icon: "📊",
   },
   {
-    name: "Enterprise Database",
+    name: "Company Profiles",
     description:
-      "Comprehensive database of Chinese tech companies with comparative analysis",
+      "Structured profiles on leading and emerging deep-tech companies — financials, products, and competitive position.",
     icon: "🗄️",
   },
   {
     name: "News & Insights",
-    description: "Daily curated news and expert commentary on innovation trends",
+    description:
+      "Curated daily coverage of frontier tech developments, filtered for signal over noise.",
     icon: "📰",
   },
   {
-    name: "Email Newsletter",
-    description: "Weekly digest of key developments delivered to your inbox",
-    icon: "📧",
-  },
-  {
     name: "Member Exclusives",
-    description: "Premium content, data exports, and early access to reports",
-    icon: "⭐",
-  },
-  {
-    name: "Expert Network",
     description:
-      "Connect with analysts and industry experts for deeper insights",
-    icon: "🌐",
+      "Premium content, data exports, and early access to reports for subscribers.",
+    icon: "⭐",
   },
 ];
 
@@ -131,18 +132,17 @@ export default function Home() {
 
       {/* ── Hero ── */}
       <section className="max-w-7xl mx-auto px-6 py-24 text-center">
-        <span className="inline-block text-xs font-semibold tracking-widest text-blue-400 uppercase mb-4">
-          China Innovation Intelligence
+        <span className="inline-block text-xs font-semibold tracking-widest text-blue-400 uppercase mb-6">
+          Frontier Tech Research
         </span>
-        <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-          Decoding China&apos;s
+        <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 tracking-tight">
+          Mapping Industries.{" "}
+          <span className="text-blue-400">Measuring Applications.</span>
           <br />
-          <span className="text-blue-400">Future Industries</span>
+          Benchmarking the World.
         </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
-          Deep-dive research and analysis on China&apos;s innovation in Future
-          Information, Health, Energy, Space, Materials, and Manufacturing.
-          Intelligence + Green transformation solutions for the next decade.
+        <p className="text-gray-300 text-xl max-w-2xl mx-auto mb-10">
+          Clarity on frontier tech, before the market catches up.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
@@ -160,19 +160,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Six Future Industries ── */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
+      {/* ── Six Industries ── */}
+      <section className="max-w-7xl mx-auto px-6 py-16 border-t border-gray-800">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">Six Future Industries</h2>
+          <h2 className="text-3xl font-bold mb-3">Six Frontier Industries</h2>
           <p className="text-gray-400 max-w-xl mx-auto">
-            Comprehensive coverage of China&apos;s strategic focus areas for
-            high-end, intelligent, and green transformation
+            Comprehensive coverage across the industries defining the next decade of innovation.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {industries.map((industry) => (
             <div
-              key={industry.name}
+              key={industry.slug}
               className="bg-gray-900 border border-gray-800 hover:border-blue-600 rounded-xl p-6 transition group cursor-pointer"
             >
               <div className="text-3xl mb-3">{industry.icon}</div>
@@ -185,28 +184,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Three Transformations ── */}
+      {/* ── Three Pillars ── */}
       <section className="max-w-7xl mx-auto px-6 py-16 border-t border-gray-800">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">
-            The &ldquo;Three Transformations&rdquo; Framework
-          </h2>
+          <h2 className="text-3xl font-bold mb-3">How We Think</h2>
           <p className="text-gray-400 max-w-xl mx-auto">
-            Our analytical lens for understanding China&apos;s industrial
-            evolution
+            Three principles behind every piece of research we publish.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {transformations.map((item) => (
+          {pillars.map((pillar) => (
             <div
-              key={item.name}
+              key={pillar.label}
               className="bg-gray-900 border border-gray-800 rounded-xl p-8 text-center"
             >
-              <div className="text-4xl mb-4">{item.icon}</div>
-              <h3 className="text-xl font-semibold mb-2">
-                {item.name} Transformation
-              </h3>
-              <p className="text-gray-500 text-sm">{item.description}</p>
+              <div className="text-4xl mb-4">{pillar.icon}</div>
+              <span className="text-xs font-semibold tracking-widest text-blue-400 uppercase">
+                {pillar.label}
+              </span>
+              <h3 className="text-xl font-semibold mt-2 mb-3">{pillar.heading}</h3>
+              <p className="text-gray-500 text-sm">{pillar.description}</p>
             </div>
           ))}
         </div>
@@ -217,7 +214,7 @@ export default function Home() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3">What You Get</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {features.map((feature) => (
             <div
               key={feature.name}
@@ -233,10 +230,11 @@ export default function Home() {
 
       {/* ── CTA ── */}
       <section className="max-w-7xl mx-auto px-6 py-20 text-center border-t border-gray-800">
-        <h2 className="text-3xl font-bold mb-4">Ready to Dive Deep?</h2>
+        <h2 className="text-3xl font-bold mb-4">
+          Get ahead of the market.
+        </h2>
         <p className="text-gray-400 max-w-xl mx-auto mb-8">
-          Get access to our research reports, enterprise database, and exclusive
-          insights on China&apos;s innovation landscape.
+          Access research reports, company profiles, and curated frontier tech insights — built for investors, strategists, and research teams.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
@@ -262,7 +260,7 @@ export default function Home() {
               Amora<span className="text-blue-400">Insights</span>
             </div>
             <div className="text-xs text-gray-500 mt-0.5">
-              China Innovation Intelligence
+              Mapping Industries. Measuring Applications. Benchmarking the World.
             </div>
           </div>
           <div className="flex gap-6 text-sm text-gray-500">
