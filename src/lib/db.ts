@@ -17,12 +17,19 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+// Subscription tier — Franklyn confirmed 2026-03-15
+// 'free' = default, 'pro' = paid subscriber, 'enterprise' = reserved
+export type SubscriptionTier = 'free' | 'pro' | 'enterprise';
+
 export interface User {
   id: number;
   email: string;
   password: string;
   name: string | null;
   created_at: string;
+  // Subscription billing (Franklyn schema, 2026-03-15)
+  subscription_tier:       SubscriptionTier;       // NOT NULL DEFAULT 'free'
+  subscription_expires_at: string | null;          // nullable TIMESTAMPTZ
   // Acquisition & conversion tracking (Cole/Celine — P1)
   acquisition_channel:   AcquisitionChannel | null;
   conversion_last_touch: AcquisitionChannel | null;

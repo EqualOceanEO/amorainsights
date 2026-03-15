@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { getReportBySlug, getReports, INDUSTRY_META, type Report } from '@/lib/db';
 import SubscribeBox from '@/components/SubscribeBox';
 import ShareBar from '@/components/ShareBar';
+import ChartBlock from '@/components/ChartBlock';
+import type { SubscriptionTier } from '@/components/ChartBlock';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -50,10 +52,12 @@ export default async function ReportDetailPage({
   const meta = INDUSTRY_META[report.industry_slug];
   const isPremium = report.is_premium;
 
-  // Determine content access: non-premium users see a paywall on premium content
-  // For now all logged-in users can access — premium lock can be added when
-  // subscription tiers are implemented
-  const hasAccess = true; // TODO: check session.user.tier === 'premium' when billing lands
+  // Resolve user subscription tier from session (JWT carries it, set in auth.ts)
+  const subscriptionTier: SubscriptionTier =
+    ((session.user as { subscriptionTier?: string }).subscriptionTier as SubscriptionTier) ?? 'free';
+
+  // Content access: non-free tiers see full content, free users see paywall on premium reports
+  const hasAccess = subscriptionTier !== 'free' || !isPremium;
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -144,6 +148,30 @@ export default async function ReportDetailPage({
               ))}
             </div>
           )}
+
+          {/* ── Interactive Chart (subscription-gated) ──────────────────────── */}
+          <ChartBlock
+            subscriptionTier={subscriptionTier}
+            title="Market Growth Trend"
+            caption="Source: AMORA Research · Q1 2026"
+            height={280}
+            option={{
+              xAxis: {
+                type: 'category',
+                data: ['Q1 24', 'Q2 24', 'Q3 24', 'Q4 24', 'Q1 25', 'Q2 25', 'Q3 25', 'Q4 25'],
+              },
+              yAxis: { type: 'value', name: 'Index' },
+              series: [
+                {
+                  type: 'line',
+                  data: [42, 55, 61, 68, 74, 82, 89, 97],
+                  name: 'Growth Index',
+                  areaStyle: { opacity: 0.15 },
+                },
+              ],
+              grid: { left: 48, right: 24, top: 32, bottom: 32 },
+            }}
+          />
 
           {/* ── Full Content ─────────────────────────────────────────────────── */}
           {report.content ? (

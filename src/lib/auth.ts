@@ -25,7 +25,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
         if (!valid) return null;
 
-        return { id: String(user.id), email: user.email, name: user.name };
+        return {
+          id: String(user.id),
+          email: user.email,
+          name: user.name,
+          // Pass subscription tier into JWT so all pages can read it without a DB call
+          subscriptionTier: user.subscription_tier ?? 'free',
+        };
       },
     }),
   ],
@@ -35,11 +41,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.id = user.id;
+      if (user) {
+        token.id = user.id;
+        // Persist subscription tier in JWT (Franklyn schema 2026-03-15)
+        token.subscriptionTier = (user as { subscriptionTier?: string }).subscriptionTier ?? 'free';
+      }
       return token;
     },
     async session({ session, token }) {
       if (token?.id) session.user.id = token.id as string;
+      if (token?.subscriptionTier) {
+        (session.user as { subscriptionTier?: string }).subscriptionTier = token.subscriptionTier as string;
+      }
       return session;
     },
     async authorized({ auth: session, request }) {
