@@ -61,5 +61,32 @@
     "content": "重要发现！\n\n问题根源：Git 重新安装后，环境变量尚未生效，导致无法使用 git 命令。\n\n当前状态：\n- 代码目录不完整（只有配置文件，缺少 src/ 等源代码）\n- 无法执行 git 命令获取完整代码\n\n解决方案（需要用户操作）：\n1. 重启终端或 IDE，让环境变量生效\n2. 或者在当前终端执行：refreshenv（如果使用 PowerShell）\n3. 重启后执行：cd c:/Users/51229/WorkBuddy/Claw && git pull origin main\n\n或者，可以手动删除当前目录内容，重新执行：git clone https://github.com/EqualOceanEO/amorainsights.git\n\nVercel 账号目前不需要。GitHub 账号信息已记录，如需要可使用。\n\n请选择方案后告知，我们将继续推进。",
     "timestamp": "2026-03-13T07:19:53.935Z",
     "read": true
+  },
+  {
+    "id": "msg-teamlead-devserver-franklyn-001",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，开发服务器验证完成，汇报如下：\n\n## ✅ 技术环境全面就绪\n\n**验证结果：**\n- ✅ src/ 目录存在（app/、lib/、types/ 完整）\n- ✅ .env 环境变量配置完整（数据库、Auth、Supabase）\n- ✅ npm run dev 启动成功\n- ✅ 应用运行于 http://localhost:3001（3000 已被占用，自动切换）\n- ✅ 页面可正常访问\n\n**已通知 George** 继续浏览代码结构，为下一步开发做准备。\n\nAmoraInsights 技术基础已完全打通，可以开始正式的功能开发了。请告知你的战略优先级，我们协调后续任务分配。",
+    "timestamp": "2026-03-14T08:05:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg-george-schema-draft-001",
+    "from": "George",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，DB Schema 草案已完成，请审批。\n\n## 设计说明\n\n数据库使用 Supabase（PostgreSQL），已有 `users` 表作为基础。以下是三张新表的 SQL Schema：\n\n---\n\n### 1. `reports` 表（研究报告）\n\n```sql\nCREATE TABLE reports (\n  id            BIGSERIAL PRIMARY KEY,\n  title         TEXT        NOT NULL,\n  slug          TEXT        NOT NULL UNIQUE,\n  summary       TEXT        NOT NULL,\n  content       TEXT,\n  industry      TEXT        NOT NULL\n                CHECK (industry IN (\n                  'Future Information',\n                  'Future Health',\n                  'Future Energy',\n                  'Future Space',\n                  'Future Materials',\n                  'Future Manufacturing'\n                )),\n  is_premium    BOOLEAN     NOT NULL DEFAULT false,\n  author        TEXT,\n  tags          TEXT[]      NOT NULL DEFAULT '{}',\n  cover_image   TEXT,\n  view_count    INTEGER     NOT NULL DEFAULT 0,\n  published_at  TIMESTAMPTZ,\n  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),\n  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\n\nCREATE INDEX idx_reports_industry    ON reports(industry);\nCREATE INDEX idx_reports_published   ON reports(published_at DESC);\nCREATE INDEX idx_reports_is_premium  ON reports(is_premium);\n```\n\n**说明：**\n- `slug` 用于 SEO 友好的 URL（如 `/reports/china-ev-battery-2026`）\n- `industry` 字段做了枚举约束，与首页六大产业完全对齐\n- `is_premium` 对应 Franklyn P2 阶段的 Paywall 功能，现在建好方便后续\n- `content` 为 Markdown 全文，前端用 MDX 渲染\n- `published_at` 为 NULL 时表示草稿状态\n\n---\n\n### 2. `news_items` 表（新闻快讯）\n\n```sql\nCREATE TABLE news_items (\n  id            BIGSERIAL PRIMARY KEY,\n  title         TEXT        NOT NULL,\n  summary       TEXT        NOT NULL,\n  industry      TEXT        NOT NULL\n                CHECK (industry IN (\n                  'Future Information',\n                  'Future Health',\n                  'Future Energy',\n                  'Future Space',\n                  'Future Materials',\n                  'Future Manufacturing'\n                )),\n  source_url    TEXT,\n  source_name   TEXT,\n  is_featured   BOOLEAN     NOT NULL DEFAULT false,\n  published_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),\n  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\n\nCREATE INDEX idx_news_industry    ON news_items(industry);\nCREATE INDEX idx_news_published   ON news_items(published_at DESC);\nCREATE INDEX idx_news_is_featured ON news_items(is_featured);\n```\n\n**说明：**\n- `is_featured` 控制 Dashboard「Recent Insights」展示哪些条目\n- `source_url` + `source_name` 保留原文链接，支持外链跳转\n- 设计简洁，方便后续运营人员手动录入或接入爬虫\n\n---\n\n### 3. `companies` 表（企业数据库）\n\n```sql\nCREATE TABLE companies (\n  id              BIGSERIAL PRIMARY KEY,\n  name            TEXT        NOT NULL,\n  name_cn         TEXT,\n  industry        TEXT        NOT NULL\n                  CHECK (industry IN (\n                    'Future Information',\n                    'Future Health',\n                    'Future Energy',\n                    'Future Space',\n                    'Future Materials',\n                    'Future Manufacturing'\n                  )),\n  sub_sector      TEXT,\n  description     TEXT,\n  description_cn  TEXT,\n  founded_year    INTEGER,\n  hq_location     TEXT,\n  hq_province     TEXT,\n  website         TEXT,\n  ticker          TEXT,\n  exchange        TEXT,\n  is_tracked      BOOLEAN     NOT NULL DEFAULT true,\n  is_public       BOOLEAN     NOT NULL DEFAULT false,\n  tags            TEXT[]      NOT NULL DEFAULT '{}',\n  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),\n  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\n\nCREATE INDEX idx_companies_industry   ON companies(industry);\nCREATE INDEX idx_companies_is_tracked ON companies(is_tracked);\nCREATE INDEX idx_companies_name       ON companies(name);\n```\n\n**说明：**\n- `name_cn` / `description_cn` 支持中文展示，面向中文用户\n- `ticker` + `exchange` 支持上市公司股票关联\n- `hq_province` 支持按省份筛选（未来地图功能用）\n- `is_tracked` 区分重点追踪 vs 数据库收录\n\n---\n\n## 实施计划（审批后）\n\n1. 在 Supabase SQL Editor 执行以上三段 SQL\n2. 在 `src/lib/db.ts` 添加对应查询函数：\n   - `getRecentNewsItems(limit)` → Dashboard Recent Insights\n   - `getReportsByIndustry(industry)` → Dashboard 行业卡片 report 数量\n   - `getStats()` → Dashboard stats 行（reports 总数、companies 总数、今日新闻数）\n3. 更新 `dashboard/page.tsx`，替换硬编码为真实查询\n4. 插入少量种子数据用于测试\n\n请审批 Schema，如有调整请直接标注，我随时可以修改后重新提交。\n\n— George, CTO",
+    "timestamp": "2026-03-14T08:30:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg-strategic-meeting-broadcast-franklyn",
+    "from": "team-lead",
+    "to": "@team",
+    "type": "broadcast",
+    "content": "【战略会决策纪要 — 2026年3月14日】\n\n创始人已就全部5项议题作出决策，即时生效：\n\n---\n\n**议题1 — 优先级调整（已更新）**\n- P0：数据库建模 + Dashboard 动态化（不变）\n- P1：Reports 页面 + 企业数据库（Newsletter 移除）\n- P2：SEO 优化（Paywall 暂不实施）\n\n**议题2 — DB Schema**\n- 已审批，战略会结束后立即由 George 执行建表\n\n**议题3 — 内容来源**\n- 决策：先用 AI 生成占位内容，后续替换为人工撰写\n- 影响：George 在 Dashboard 动态化时需插入 AI 生成的种子数据\n\n**议题4 — Paywall**\n- 决策：暂不实施 is_premium Paywall\n- is_premium 字段保留在 schema 中（备用），但前端不做任何 Paywall 逻辑\n\n**议题5 — Celine 资源**\n- 决策：产品完整前 Celine 待命，不分配主动执行任务\n\n---\n\n**各成员任务状态：**\n- Franklyn：战略方向已定，等待 George 完成 P0 后汇报，继续审批 P1 任务规划\n- George：战略会后立即恢复执行——建表 → db.ts → Dashboard 动态化 → AI 种子数据\n- Celine：待命，等产品完整后再发力\n\n战略会结束，执行阶段开始。",
+    "timestamp": "2026-03-14T09:00:00.000Z",
+    "read": false
   }
 ]

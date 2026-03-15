@@ -31,6 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: user.name,
           // Pass subscription tier into JWT so all pages can read it without a DB call
           subscriptionTier: user.subscription_tier ?? 'free',
+          isAdmin: user.is_admin ?? false,
         };
       },
     }),
@@ -45,6 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id;
         // Persist subscription tier in JWT (Franklyn schema 2026-03-15)
         token.subscriptionTier = (user as { subscriptionTier?: string }).subscriptionTier ?? 'free';
+        token.isAdmin = (user as { isAdmin?: boolean }).isAdmin ?? false;
       }
       return token;
     },
@@ -52,6 +54,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token?.id) session.user.id = token.id as string;
       if (token?.subscriptionTier) {
         (session.user as { subscriptionTier?: string }).subscriptionTier = token.subscriptionTier as string;
+      }
+      if (token?.isAdmin !== undefined) {
+        (session.user as { isAdmin?: boolean }).isAdmin = token.isAdmin as boolean;
       }
       return session;
     },

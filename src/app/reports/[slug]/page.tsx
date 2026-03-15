@@ -1,11 +1,12 @@
-import { auth } from '@/lib/auth';
-import { redirect, notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getReportBySlug, getReports, INDUSTRY_META, type Report } from '@/lib/db';
 import SubscribeBox from '@/components/SubscribeBox';
 import ShareBar from '@/components/ShareBar';
 import ChartBlock from '@/components/ChartBlock';
 import type { SubscriptionTier } from '@/components/ChartBlock';
+import { EventBeacon } from '@/components/EventBeacon';
+import H5ReportViewer from '@/components/H5ReportViewer';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -25,9 +26,6 @@ export default async function ReportDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const session = await auth();
-  if (!session?.user) redirect('/login');
-
   const { slug } = await params;
 
   let report: Report | null = null;
@@ -40,7 +38,6 @@ export default async function ReportDetailPage({
         industrySlug: report.industry_slug,
         pageSize: 3,
       });
-      // Exclude current report
       relatedReports = related.data.filter((r) => r.id !== report!.id).slice(0, 2);
     }
   } catch {
@@ -49,33 +46,54 @@ export default async function ReportDetailPage({
 
   if (!report) notFound();
 
-  const meta = INDUSTRY_META[report.industry_slug];
+  const meta = INDUSTRY_META[report.industry_slug] ?? { name: report.industry_slug, icon: '📊', name_cn: '' };
   const isPremium = report.is_premium;
 
-  // Resolve user subscription tier from session (JWT carries it, set in auth.ts)
-  const subscriptionTier: SubscriptionTier =
-    ((session.user as { subscriptionTier?: string }).subscriptionTier as SubscriptionTier) ?? 'free';
+  // Public visitor = free tier (no auth required to view summary/H5)
+  const subscriptionTier: SubscriptionTier = 'free';
+  const hasAccess = !isPremium; // free reports always accessible; premium requires upgrade
 
-  // Content access: non-free tiers see full content, free users see paywall on premium reports
-  const hasAccess = subscriptionTier !== 'free' || !isPremium;
+  const isH5Report = report.report_format === 'html' || report.report_format === 'h5_embed';
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
+      {/* Analytics: fire report_view event on mount */}
+      <EventBeacon
+        eventName="report_view"
+        category="content"
+        properties={{
+          slug: report.slug,
+          industry: report.industry_slug,
+          is_premium: report.is_premium,
+          has_access: hasAccess,
+        }}
+      />
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
-      <header className="border-b border-gray-800 bg-gray-900/60 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-lg font-bold tracking-tight">
+      <header className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
+          <Link href="/" className="text-lg font-bold tracking-tight shrink-0">
             Amora<span className="text-blue-400">Insights</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-gray-400">
-            <Link href="/dashboard" className="hover:text-white transition">Dashboard</Link>
+          <nav className="hidden md:flex items-center gap-5 text-sm text-gray-400">
             <Link href="/reports" className="hover:text-white transition">Reports</Link>
             <Link href="/companies" className="hover:text-white transition">Companies</Link>
           </nav>
-          <span className="text-sm text-gray-500">{session.user.email}</span>
+          <div className="flex items-center gap-2.5">
+            <Link href="/login" className="text-sm text-gray-400 hover:text-white transition px-3 py-1.5">Sign In</Link>
+            <Link href="/signup" className="text-sm bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-1.5 rounded-lg transition">Get Started</Link>
+          </div>
         </div>
       </header>
 
+      {/* ── H5 Report: full-screen immersive layout ─────────────────────── */}
+      {isH5Report ? (
+        <H5ReportViewer
+          report={report}
+          hasAccess={hasAccess}
+          subscriptionTier={subscriptionTier}
+          relatedReports={relatedReports}
+        />
+      ) : (
       <main className="max-w-4xl mx-auto px-6 py-10">
         {/* ── Breadcrumb ──────────────────────────────────────────────────── */}
         <nav className="flex items-center gap-2 text-sm text-gray-600 mb-8">
@@ -258,6 +276,7 @@ export default async function ReportDetailPage({
           </section>
         )}
       </main>
+      )}
     </div>
   );
 }

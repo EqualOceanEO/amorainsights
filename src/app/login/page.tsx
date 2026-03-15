@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { trackEvent } from '@/components/AnalyticsProvider';
 
 function LoginForm() {
   const router = useRouter();
@@ -33,6 +34,12 @@ function LoginForm() {
         setError('Invalid email or password');
         return;
       }
+
+      // Track login event for funnel analytics
+      await trackEvent('user_login', {
+        category: 'auth',
+        properties: { method: 'email' },
+      });
 
       const callbackUrl = params.get('callbackUrl') || '/dashboard';
       router.push(callbackUrl);

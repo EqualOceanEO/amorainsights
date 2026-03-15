@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Suspense } from "react";
+import { AnalyticsProvider } from "@/components/AnalyticsProvider";
 
 const TAGLINE = "Mapping Industries. Measuring Applications. Benchmarking the World.";
 const VALUE_PROP = "Clarity on frontier tech, before the market catches up.";
@@ -36,7 +38,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-950 text-white antialiased">{children}</body>
+      <body className="bg-gray-950 text-white antialiased">
+        {/* Suspense required because AnalyticsProvider uses useSearchParams */}
+        <Suspense fallback={null}>
+          <AnalyticsProvider>
+            {children}
+          </AnalyticsProvider>
+        </Suspense>
+      </body>
     </html>
   );
 }

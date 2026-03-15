@@ -16,5 +16,32 @@
     "content": "重要发现！\n\n问题根源：Git 重新安装后，环境变量尚未生效，导致无法使用 git 命令。\n\n当前状态：\n- 代码目录不完整（只有配置文件，缺少 src/ 等源代码）\n- 无法执行 git 命令获取完整代码\n\n解决方案（需要用户操作）：\n1. 重启终端或 IDE，让环境变量生效\n2. 或者在当前终端执行：refreshenv（如果使用 PowerShell）\n3. 重启后执行：cd c:/Users/51229/WorkBuddy/Claw && git pull origin main\n\n或者，可以手动删除当前目录内容，重新执行：git clone https://github.com/EqualOceanEO/amorainsights.git\n\nVercel 账号目前不需要。GitHub 账号信息已记录，如需要可使用。\n\n请选择方案后告知，我们将继续推进。",
     "timestamp": "2026-03-13T07:19:53.935Z",
     "read": true
+  },
+  {
+    "id": "msg-franklyn-p1-celine-001",
+    "from": "Franklyn",
+    "to": "Celine",
+    "type": "message",
+    "content": "Celine，技术环境已就绪，现在是你发力的时候了。\n\n## 背景\n\nAmoraInsights 是一个聚焦中国六大未来产业（Future Information、Health、Energy、Space、Materials、Manufacturing）的研究智库平台，目标用户是国际投资人、分析师、企业战略部门。\n\n## P1 任务：Newsletter 订阅策略（本周内完成）\n\nNewsletter 是我们最重要的用户获取和留存工具。请完成以下交付物：\n\n### 1. Newsletter 产品定位文案\n- **产品名称**建议（例如："China Futures Weekly" 或类似）\n- **一句话价值主张**（英文，用于首页订阅入口）\n- **订阅理由 3 条**（简洁有力，英文）\n- **邮件 Footer 品牌文案**\n\n### 2. 首页订阅入口文案\n用于 `src/app/page.tsx`（首页）的 Newsletter 订阅组件，需要：\n- 标题文案\n- 副标题/描述\n- CTA 按钮文案（例如 \"Subscribe Free\" / \"Get Weekly Insights\"）\n- 隐私声明文案（一行，例如 \"No spam. Unsubscribe anytime.\"）\n\n### 3. 第一期 Newsletter 大纲\n- 栏目结构设计（建议 3-5 个固定栏目）\n- 本期（2026年3月第3周）头条话题建议（基于六大产业热点）\n- 目标发送时间建议\n\n## 协作说明\n\n- 你的文案将由 George 集成到前端代码中\n- Franklyn 会审核定位和品牌一致性\n- 优先交付「首页订阅入口文案」，这个最快能上线\n\n请本周内完成并回复给我和 team-lead。\n\n— Franklyn, CEO",
+    "timestamp": "2026-03-14T08:10:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg-strategic-meeting-broadcast-celine",
+    "from": "team-lead",
+    "to": "@team",
+    "type": "broadcast",
+    "content": "【战略会决策纪要 — 2026年3月14日】\n\n创始人已就全部5项议题作出决策，即时生效：\n\n---\n\n**议题1 — 优先级调整（已更新）**\n- P0：数据库建模 + Dashboard 动态化（不变）\n- P1：Reports 页面 + 企业数据库（Newsletter 移除）\n- P2：SEO 优化（Paywall 暂不实施）\n\n**议题2 — DB Schema**\n- 已审批，战略会结束后立即由 George 执行建表\n\n**议题3 — 内容来源**\n- 决策：先用 AI 生成占位内容，后续替换为人工撰写\n- 影响：George 在 Dashboard 动态化时需插入 AI 生成的种子数据\n\n**议题4 — Paywall**\n- 决策：暂不实施 is_premium Paywall\n- is_premium 字段保留在 schema 中（备用），但前端不做任何 Paywall 逻辑\n\n**议题5 — Celine 资源**\n- 决策：产品完整前 Celine 待命，不分配主动执行任务\n\n---\n\n**各成员任务状态：**\n- Franklyn：战略方向已定，等待 George 完成 P0 后汇报，继续审批 P1 任务规划\n- George：战略会后立即恢复执行——建表 → db.ts → Dashboard 动态化 → AI 种子数据\n- Celine：待命，等产品完整后再发力\n\n战略会结束，执行阶段开始。",
+    "timestamp": "2026-03-14T09:00:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg-celine-standby-001",
+    "from": "team-lead",
+    "to": "Celine",
+    "type": "message",
+    "content": "Celine，战略会已结束。\n\n创始人决策：产品完整前你进入待命状态，Newsletter 任务暂时搁置。\n\n**你现在需要做的：**\n- 不需要执行任何主动任务\n- 持续关注产品进展（George 完成 P0/P1 后会通知你）\n- 可以利用这段时间进行竞品调研和市场分析，为后续发力做好准备\n\n一旦产品具备基本完整度，我会第一时间激活你的任务。\n\n— team-lead",
+    "timestamp": "2026-03-14T09:01:00.000Z",
+    "read": false
   }
 ]

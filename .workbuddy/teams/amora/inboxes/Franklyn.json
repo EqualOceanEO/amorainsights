@@ -1,0 +1,281 @@
+[
+  {
+    "id": "msg-1773503545112-myiya9",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，全团队已启动商业规划分工。请你从 CEO 战略视角提供以下内容：\n\n**任务：战略叙事 + 融资逻辑（5W1H框架）**\n\n1. **WHO** - 我们为谁服务？优先级排序（早期获客从哪个客群切入最快？）\n2. **WHAT** - 核心价值主张（一句话，和 PitchBook/CB Insights 的区别）\n3. **WHY** - 为什么是现在？深科技研究服务的时机判断\n4. **WHERE** - 地理市场优先级：先打哪个市场？中国 vs 东南亚 vs 欧美？\n5. **WHEN** - 关键里程碑时间表：\n   - 产品MVP上线时间\n   - 第一个付费客户时间\n   - 达到 $200K ARR 的时间节点\n   - 下一轮融资时间窗口\n6. **HOW** - 早期获客路径（冷启动策略，前50个客户怎么来？）\n\n请尽快输出，这是商业计划书的战略骨架。",
+    "timestamp": "2026-03-14T15:52:25.112Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503688499-dg0dpv",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，CFO 财务建模需要你确认一个关键输入：\n\n**融资节点规划（请给出具体时间和目标金额）**\n\n你在战略骨架中提到：\n- Pre-A 融资窗口：2027 Q3-Q4\n- 触发条件：ARR可见性 + NPS数据 + 团队扩张需求\n\nCFO 需要确认：\n1. **Pre-A 目标融资额**：$X 万美元？（用于财务顾问成功费计算，基数 × 2%）\n2. **Seed 轮是否已完成**？还是 Pre-A 就是第一轮？\n3. **融资用途分配**：技术扩张 vs 市场投入 vs 合规建设的大致比例？\n\n这三个数字会影响 CFO 对 2027 年 runway 和净利的测算。请尽快确认。",
+    "timestamp": "2026-03-14T15:54:48.499Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503825403-pxungo",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，有一项需要你决策的关键节点请求。\n\nCole 确认 Q3–Q4 变现期每月需要 20 篇专家背书报告，这要求我们在 Q1 就开始签约外部研究顾问网络（8–9 名深科技专家）。\n\n**需要你确认的两件事**：\n\n1. **融资节点规划**：CFO 在建财务模型时需要 Pre-A 和 A 轮的预计触发时间。修订后的成本结构显示，Q3 2026 起月度现金支出将跳升约 $43K（从 $9K 到 $52K），融资节点必须在 Q2 末完成才能支撑 Q3 满负荷运营。**你计划的融资时间窗口是什么？**\n\n2. **顾问招募授权**：Q1 启动 L2/L3 顾问签约需要预算授权（Q1 阶段顾问接触和试运行成本约 $6,000–$10,000）。**是否授权 Q1 启动？**\n\n这两个决策直接影响 Q3 能否按时变现，请优先确认。",
+    "timestamp": "2026-03-14T15:57:05.403Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503845095-hjhqyj",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，George P0任务已完成，需要你做一个操作解锁数据库（30秒）：\n\n1. 打开：https://supabase.com/dashboard/project/jqppcuccqkxhhrvndsil/sql/new\n2. 复制 `scripts/full-schema-seed.sql` 全部内容粘贴进去\n3. 点击 Run，最后一行SELECT应返回：industries=6, reports=12, news_items=8, companies=13\n\n执行后Dashboard立即显示真实数据。\n\n完成后请告知，George会立即继续P1（Reports页面）。",
+    "timestamp": "2026-03-14T15:57:25.095Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503882605-w8tbsu",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，需要你现在拍板一个影响全年财务结构的核心决策。Cole + CHO + CFO 都在等这个答案。\n\n---\n\n## 审校策略决策：两个选项的完整财务影响\n\n**背景**：Q3-Q4 内容审校成本出现重大偏差，原估算 $6-9K/月 → 实际需要 $35,250/月（+3.9x）\n\n---\n\n### 选项A：分级审校策略（Cole 推荐）\n\n| 报告类型 | 月产量 | 审校链路 | 单篇成本 | 月度成本 |\n|---------|-------|---------|---------|---------|\n| 旗舰深度报告 | 5-6篇 | L1+L2+L3 | $1,500 | ~$8,250 |\n| 标准深度报告 | 10-12篇 | L1+L2 | $1,100 | ~$12,100 |\n| 快报简报 | 8-10篇 | L1仅 | $120 | ~$1,080 |\n| **Q3-Q4月度合计** | **23-28篇** | | | **~$21,430** |\n\n- 2026全年内容成本：**$100-120K**\n- 2026全年总成本：**~$459-496K**\n- 天使轮$50万基本够用（缺口收窄至$0-50K）\n- **$200K净利目标：有望在2027年实现**\n\n---\n\n### 选项B：全量审校策略（内容质量最高）\n\n- Q3-Q4月度审校：$35,250/月\n- 2026全年内容成本：**$180-200K**\n- 2026全年总成本：**~$580-640K**\n- 天使轮$50万严重不足，**Q3资金缺口$130-190K**\n- **$200K净利目标：需将营收上调至$700K+才能覆盖**\n- 必须提前融资（Pre-A 提前至2026 Q2-Q3）\n\n---\n\n### CFO 的初步判断\n\n基于现有数据，在不提前融资的前提下：\n- 选项A是唯一能维持2027年底$200K净利目标的路径\n- 选项B可行，但需要同时修改两个假设：Pre-A提前 + 净利目标推迟至2028年\n\n---\n\n**你的判断？**\n\n我建议选A，理由：旗舰报告走全链路已足够建立品牌权威，标准报告L1+L2也有专家背书，只是不加合规审查层——对于非敏感技术内容完全够用。把有限资金集中在旗舰内容上，比全量铺开更符合早期创业逻辑。\n\n但最终你来定。",
+    "timestamp": "2026-03-14T15:58:02.605Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504555984-qwoaiz",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "CFO财务模型v2.0已出，需要你做两项决策，以及一个行动建议：\n\n---\n\n**决策1（最高优先）：2027年CHO成本结构**\n\n这是$200K净利目标可达性的最关键单一变量。\n\n两个选项：\n- **选项A（固定）**：维持$90K/月固定，全年$1.08M，$200K目标高度承压\n- **选项B（绩效联动）**：基础$55K/月 + $12.5K达标奖金，可节省约$270K/年，直接打通$200K目标通路\n\nCFO建议选项B。请Franklyn拍板。\n\n---\n\n**决策2：Pre-A签约Deadline**\n\nCFO预警：天使轮$450K可覆盖Q1-Q2，Q2末余额约$229K（正数），但必须Pre-A按期关闭。\n\nCFO建议：将Pre-A签约deadline从6月30日提前至**5月31日**（留1个月缓冲），防止Q3月支出$52.75K侵蚀剩余天使资金。\n\n是否采纳？\n\n---\n\n**行动建议（无需决策，供知悉）：**\n- Custom Research定价上调至$5K-15K区间（Cole已建议，模型采用$10K均值）已纳入收入侧，方向正确\n- Celine需补充年度流失率假设（目前模型为0%，有高估风险），CFO已标注\n\n请优先回复决策1和决策2。",
+    "timestamp": "2026-03-14T16:09:15.984Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504654514-q7wclr",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，KPI 草案 v1.0 已完成，请审阅。\n\n---\n\n## 绩效联动制 KPI 草案 v1.0（CHO 提案）\n\n**薪酬结构确认**：基础 $55K/月 + 达标奖金 $12.5K/月，三项 KPI 同时达标触发。\n\n---\n\n### KPI 一：顾问网络交付率\n- **定义**：当月审校任务按时交付比例\n- **公式**：按时交付篇数 ÷ 总分配篇数\n- **达标线**：≥ 95%\n- **生效**：Q2 2026（4月）\n\n### KPI 二：旗舰报告审校按时完成率\n- **定义**：L3 旗舰报告全链路（≤10个工作日）按时完成比例\n- **公式**：按时完成旗舰报告数 ÷ 当月旗舰总数\n- **达标线**：≥ 90%\n- **生效**：Q3 2026（7月，L3满负荷后）\n\n### KPI 三：客户满意度 NPS\n- **定义**：付费客户净推荐值（季度调查，月度奖金参考最近一期）\n- **达标线**：≥ 40\n- **生效**：Q3 2026（付费客户基数就位后）\n\n---\n\n### 触发逻辑\n- 三项同时达标 → $12.5K 奖金当月发放\n- 任意一项未达 → 当月奖金归零，无追溯补发\n\n### Q1 保障\nQ1 全季（1–3月）三项 KPI 均不计入考核，$55K 全额保障顾问网络建设。\n\n### 待你确认的一个额外条款\n**Q2 过渡期奖金**：Q2 仅 KPI 一生效，单项达标是否触发 $6,000 阶段奖金（而非全额 $12.5K）？这样可以在三项机制全面生效前给顾问网络一个中间激励节点。请确认是否纳入。\n\n---\n\n**书面锁定时间节点**：请于 Q1 末（3月底）前完成审批，以便 Q2 首月（4月1日）KPI 一准时生效。\n\n如有修订意见，随时告知。",
+    "timestamp": "2026-03-14T16:10:54.514Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504688212-ivoqea",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "CHO的KPI草案v1.0已收到，设计合理，有一项需要你拍板：\n\n**KPI草案摘要（已确认部分）：**\n- KPI一：顾问网络交付率≥95%（Q2生效）\n- KPI二：旗舰报告按时完成率≥90%，全链路≤10个工作日（Q3生效）\n- KPI三：客户满意度NPS≥40（Q3生效，CMO执行调查）\n- 触发机制：三项同时达标→$12.5K/月；任意一项未达→当月归零无补发\n- Q1全额$55K保障，不考核\n\n**待你决策：Q2过渡期奖金机制**\nCHO提案：Q2仅KPI一生效，单项达标触发$6,000阶段奖金（而非全额$12.5K）\n\n建议采纳——Q2是顾问网络正式启用的过渡期，L3顾问尚未全面运转，三项全考核不公平，单项阶段奖金是合理的过渡设计。\n\n请确认是否批准Q2阶段奖金$6,000设计，以便CHO完成书面锁定（3月底deadline）。",
+    "timestamp": "2026-03-14T16:11:28.212Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504726140-74o99g",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，KPI 协议书面稿 v2.0 已按你的三项修订整合完毕，请审阅并签批。\n\n三项修订均已准确纳入：\n1. ✅ KPI 二容错机制：旗舰报告 ≤ 2 篇时暂不考核，Q3 满负荷后自动取消豁免\n2. ✅ KPI 三启动条件：付费客户 < 5 家时暂不考核\n3. ✅ Q2 过渡期阶段奖金 $6,000 已正式写入，与 Q3+ 机制独立\n\n另补充了一条豁免通过逻辑：当某项 KPI 处于暂不考核状态时，自动视为\"豁免通过\"，不影响其他项触发奖金——这样 Q3 初期若旗舰报告量偶尔 ≤ 2 篇，不会因为 KPI 二豁免而导致全额奖金无法触发。请确认此逻辑是否符合你的意图。\n\n请在 3 月 31 日前完成签批，4 月 1 日准时生效。",
+    "timestamp": "2026-03-14T16:12:06.140Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504757994-q0gl8j",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "收到，正式签批已确认。KPI 协议 v2.0 即日起存档生效。\n\n执行节点清单（存档备查）：\n- **4月1日**：KPI 一（顾问交付率 ≥95%）正式生效，Q2 单项达标触发 $6,000\n- **7月1日**：三项 KPI 全面生效，同时达标触发 $12,500 全额奖金\n- **容错条款**：KPI 二旗舰 ≤2 篇豁免 / KPI 三付费客户 <5 家豁免 / 豁免项自动视为通过\n\nCFO 薪酬成本模型已同步更新（期望值 ~$445,500 / 最大值 ~$481,000 / 三档敏感性）。\n\nQ1 顾问招募按计划推进，Q1 末提交顾问网络名单与试运行评估报告，同步作为 Pre-A 路演材料输出。",
+    "timestamp": "2026-03-14T16:12:37.994Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504797163-nshhyr",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "明白，Q1 末的顾问网络名单和试运行评估报告会确保质量——这份材料既是 Pre-A 路演的团队能力背书，也是 Q2 正式审校启动的内部验收基准，两个维度都不能含糊。\n\n一切按计划推进，3 月 25 日见。",
+    "timestamp": "2026-03-14T16:13:17.163Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505099588-x2edzx",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "George已完成`/api/internal/compliance-scan`端点，需要你完成三项操作才能上线：\n\n**操作1：Supabase SQL Editor执行**\n文件：`scripts/compliance-scan-rpc.sql`（三个DB函数）\n登录Supabase Dashboard → SQL Editor → 执行此文件\n同时还有之前待执行的`scripts/full-schema-seed.sql`，如果还没执行请一并完成。\n\n**操作2：Vercel环境变量**\n设置 `INTERNAL_API_SECRET`（合规扫描端点鉴权用）\n\n**操作3：确认通知渠道**\n`notifyComplianceTeam()` 目前是stub，需要你决定：邮件还是Slack？确认后George可以实现。\n\n这三项都需要创始人权限，请尽快操作，George的后续开发依赖真实数据环境。",
+    "timestamp": "2026-03-14T16:18:19.588Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505124471-tbvjy0",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "CRO已完成技术确认，三项操作执行分工如下，请你处理属于创始人权限的部分：\n\n**你需要操作（创始人权限）：**\n1. **`INTERNAL_API_SECRET`环境变量** — 在Vercel Dashboard生成并配置，不要通过团队消息传递明文\n2. **确认通知渠道** — CRO建议MVP期用邮件（CLO+CRO双收），是否采纳？\n\n**George可直接操作（无需你）：**\n- `compliance-scan-rpc.sql` 在Supabase SQL Editor执行（George有DB权限）\n- Vercel Cron配置（每周五23:59，加入`vercel.json`）\n\n**另：`full-schema-seed.sql`** 是否已执行？这个需要你的Supabase账户，George无法代操作。\n\n请确认邮件通知方案，以及`INTERNAL_API_SECRET`配置完成时间节点。",
+    "timestamp": "2026-03-14T16:18:44.471Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505292432-munzjn",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "CFO财务模型v2.1已完成，核心结论和三项待你决策：\n\n**$200K净利可达性：**\n- 基准-乐观场景：78%概率可达 ✅\n- 基准-悲观场景：31% ❌\n- 延迟-乐观场景：52% ✅\n- 延迟-悲观场景：12% ❌\n\n**关键依赖：CHO全额绩效奖金触发是$200K目标的核心变量。**\n\n---\n\n**决策1：CHO奖金触发机制**\n\nCFO预警：三项KPI同时全达才触发存在cliff效应（全或零），建议改为**2/3 KPI部分触发**（如达标2项触发$8K，3项全达触发$12.5K）。\n\n是否采纳CFO建议？\n\n---\n\n**决策2：Pre-A内部Deadline**\n\nCFO建议将内部target从5月31日再提前至**5月15日**，预留两周签约缓冲，同时设$150K最低现金红线。\n\n是否采纳？\n\n---\n\n**决策3：MRR增长KPI门槛确认**\n\nCFO模型中CHO奖金触发条件之一涉及$20K净新增MRR/月的门槛，需要确认是否与你对Celine市场增长的预期对齐。\n\n请同步Celine确认此门槛是否现实。\n\n---\n\n三项决策均会影响模型最终口径，请优先回复。",
+    "timestamp": "2026-03-14T16:21:32.432Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505326213-p32y0h",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Celine已确认：$20K/月净新增MRR门槛与市场假设严重不对齐，建议下调，需要你决策。\n\n**问题核实：**\nCeline的市场假设下，Q4最乐观情景月净新增MRR约$4,050——$20K门槛差距约5倍，相当于Year 2-3成熟期速度，2026年几乎不可达，会让CHO奖金实际上变成空头支票，对团队激励产生负面影响。\n\n**Celine建议的分阶段门槛：**\n\n| 阶段 | 建议月净新增MRR门槛 |\n|------|-----------------|\n| Q3 2026（首次触发） | $1,500–$2,000 |\n| Q4 2026 | $3,000–$4,000 |\n| 2027全年平均 | $8,000–$12,000 |\n| $20K里程碑 | 2027 Q3–Q4 |\n\n**你需要决策：**\n\n**选项A**：采纳Celine建议，2026年CHO KPI三（MRR门槛）改为$3,000–$4,000/月，2027年再上调至$8,000–$12,000\n\n**选项B**：删除MRR增长作为CHO奖金KPI，替换为其他可控指标（如内容交付率、顾问网络覆盖率）\n\n选项A更合理——CHO奖金应绑定可达目标，MRR增长保留为KPI但门槛要现实。\n\n同时，CFO关于**CHO奖金cliff效应**的修订建议（2/3 KPI部分触发，达标2项$8K，3项全达$12.5K）是否一并采纳？\n\n请回复两项决策，CHO书面协议3月底锁定，时间紧迫。",
+    "timestamp": "2026-03-14T16:22:06.213Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505385300-9loau2",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "George已完成所有技术实现，现在需要你配置5个Vercel环境变量才能上线：\n\n```\nINTERNAL_API_SECRET      → 用 openssl rand -hex 32 生成（CEO/CTO掌管，勿共享）\nRESEND_API_KEY           → Resend平台API key\nCOMPLIANCE_NOTIFY_CLO    → CLO邮箱地址\nCOMPLIANCE_NOTIFY_CRO    → CRO邮箱地址\nCOMPLIANCE_ADMIN_URL     → 合规后台URL（如 https://amora.com/admin）\n```\n\n**同时需要你（或George）在Supabase SQL Editor执行：**\n`scripts/compliance-scan-rpc.sql`（幂等，可重复执行，放心执行）\n\n这5个环境变量配置完成后，合规扫描系统即可全面上线：\n- 每周五23:59自动Cron检测（死人开关）\n- 手动POST上传CSV触发扫描\n- 命中后自动邮件通知CLO+CRO\n- 每次扫描记录CSV SHA-256 hash（OFAC审计合规）\n\n请尽快操作，这是当前唯一卡在你这里的技术阻塞项。",
+    "timestamp": "2026-03-14T16:23:05.300Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505749353-g4tk4c",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "George已完成7年通知留存实现，需要你做两件事：\n\n**1. 重新执行Supabase SQL（更新版）**\n`scripts/compliance-scan-rpc.sql`（幂等，自动ADD COLUMN IF NOT EXISTS，放心重复执行）\n新增`entity_list_scans.notification_archive JSONB`列，用于7年留存通知记录。\n\n**2. 之前待操作项仍需完成：**\n\n| 操作 | 状态 |\n|------|------|\n| Vercel配置`INTERNAL_API_SECRET` | ⏳ 待操作 |\n| Vercel配置`RESEND_API_KEY` / `COMPLIANCE_NOTIFY_CLO` / `COMPLIANCE_NOTIFY_CRO` / `COMPLIANCE_ADMIN_URL` | ⏳ 待操作 |\n| Resend发件域名`no-reply@amora.com`验证 | ⏳ 待操作 |\n| Supabase SQL执行（更新版） | ⏳ 待操作 |\n\n以上4项都需要你的账户权限，是当前唯一阻塞合规系统上线的因素。请本周内完成。\n\n**另：CHO KPI两项决策（MRR门槛下调 + cliff效应修订）3月底书面锁定，也需要你尽快拍板。**",
+    "timestamp": "2026-03-14T16:29:09.353Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505771221-eule1u",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "CLO邮箱已确认，补充到你的环境变量配置清单：\n\n`COMPLIANCE_NOTIFY_CLO` = `clo@amora.com`\n\nCRO邮箱待CRO确认后补充。其余4项待操作项不变，请尽快完成。",
+    "timestamp": "2026-03-14T16:29:31.221Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505815446-jvbwbb",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "技术配置今日可完成，协调如下：\n\n**COMPLIANCE_ADMIN_URL**：`https://amora.vercel.app/admin` 暂定可以，等正式域名确定后再更新环境变量即可，不影响当前功能。\n\n**Resend API Key**：前往 https://resend.com 注册（用CEO邮箱），Dashboard → API Keys生成，复制后填入Vercel。同时需要验证发件域名`no-reply@amora.com`——Resend Dashboard → Domains → Add Domain，按指引添加DNS记录。\n\n**SQL执行分工（请确认）**：\n- `full-schema-seed.sql`：你执行（需Supabase账户权限）\n- `compliance-scan-rpc.sql`：George说他可以执行，但如果他尚未操作，你今日一并执行两个文件效率更高\n\n**CLO/CRO邮箱**：已通知他们直接联系你提供，不通过团队消息。CLO邮箱`clo@amora.com`已知悉可直接使用。\n\n今日完成顺序建议：① Supabase SQL执行 → ② Resend注册+域名验证 → ③ Vercel环境变量配置（5个） → ④ 合规扫描系统上线",
+    "timestamp": "2026-03-14T16:30:15.446Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505827679-jnem7y",
+    "from": "CRO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，两项确认：\n\n1. **CRO 邮箱**：请通过私信或安全渠道告知你的联系方式，我直接发给你，不在团队消息中传递。\n\n2. **compliance-scan-rpc.sql**：CRO 侧未执行过此 SQL（CRO 无 DB 管理员权限，也不应有）。请你今日在 Supabase SQL Editor 中依次执行：\n   - `scripts/run-schema.mjs` 或 `full-schema-seed.sql`（主 schema）\n   - `scripts/compliance-scan-rpc.sql`（合规扫描 RPC 函数）\n   \n   执行顺序：先主 schema，再 RPC，确保依赖表已存在。George 可以确认具体执行顺序。",
+    "timestamp": "2026-03-14T16:30:27.679Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505837533-e5iel0",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，KPI 协议 v3.0 已完成，两项修订全部纳入，请审阅签批。\n\n**修订一：梯度触发机制**\n- 3项全达 → $12,500 ✅\n- 任意2项达标 → $8,000 ✅\n- ≤1项达标 → $0 ✅\n- 豁免通过条款延续：豁免项自动计为达标，不影响梯度计算\n\n**修订二：KPI 三改为月净新增 MRR 分阶段门槛**\n- Q3 2026：≥ $2,000/月 ✅\n- Q4 2026：≥ $4,000/月 ✅\n- 2027 全年：≥ $10,000/月（均值）✅\n\nNPS 调查已移出绩效考核，保留为 CMO 独立执行的产品参考数据。\n\n一个需要你确认的细节：MRR 门槛的数据来源我设定为 CFO 财务系统月度确认，这是最客观的数据源。请确认 CFO 是否能提供标准化月度 MRR 报告作为绩效数据依据？\n\n请在 3 月 31 日前完成签批，4 月 1 日准时生效。",
+    "timestamp": "2026-03-14T16:30:37.533Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505852480-3iqymm",
+    "from": "CRO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，已知悉。CRO 邮箱将通过 franklyn@amora.com 私信发送，不在此处传递。\n\nSQL 执行顺序确认正确，两个文件执行完成后请通知 George 验证 RPC 函数部署状态，再上线端点。",
+    "timestamp": "2026-03-14T16:30:52.480Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505856512-wx47sh",
+    "from": "George",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，CLO 请我确认今日 Supabase 执行计划，以下是技术层面的明确说明：\n\n**两个脚本的关系**\n\n`full-schema-seed.sql` 和 `compliance-scan-rpc.sql` 是**独立的、互补的**脚本，没有冲突——它们操作不同的对象：\n\n- `full-schema-seed.sql`：创建 `industries`、`reports`、`news_items`、`companies` 表，导入种子数据，创建 effective_tier 触发器和基础索引。**reports 表不包含** `flagged_at` 和 `flagged_by_list_update` 列（这两列由 compliance 脚本负责）。\n\n- `compliance-scan-rpc.sql`：创建 `entity_list_scans` 表，向 `reports` 表幂等添加 `flagged_at` + `flagged_by_list_update` 列，创建三个 RPC 函数，加 GIN 索引，授予 service_role 权限。所有 ALTER TABLE 都有 `IF NOT EXISTS` 保护，幂等安全。\n\n**执行顺序（必须）**\n\n1. **先执行 `full-schema-seed.sql`** — 建表 + 种子数据（`reports` 表必须先存在，compliance 脚本才能 ALTER TABLE 加列）\n2. **后执行 `compliance-scan-rpc.sql`** — 加合规列 + 创建 RPC 函数 + GIN 索引\n\n**无需合并**，两个脚本按上述顺序顺序运行即可。如果表已存在（非首次部署），`compliance-scan-rpc.sql` 单独运行也完全安全。\n\n执行后验证：\n```sql\n-- 验证 reports 表有合规列\nSELECT column_name FROM information_schema.columns \nWHERE table_name = 'reports' AND column_name IN ('flagged_at','flagged_by_list_update');\n\n-- 验证 entity_list_scans 有新字段\nSELECT column_name FROM information_schema.columns \nWHERE table_name = 'entity_list_scans' AND column_name IN ('csv_sha256','notification_archive');\n\n-- 验证函数存在\nSELECT routine_name FROM information_schema.routines \nWHERE routine_name IN ('find_reports_matching_entities','batch_flag_sensitivity_tags','run_compliance_scan_tx');\n```\n\n如果你今日在 Supabase Dashboard 执行，两个脚本都在 `scripts/` 目录下。有任何问题随时找我。\n",
+    "timestamp": "2026-03-14T16:30:56.512Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505876955-82alv4",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "CHO KPI协议v3.0已提交你签批，有一个细节需要你确认：\n\n**$20K/月净新增MRR里程碑的定性：**\n\n- **选项A：写入KPI考核**——作为2027 Q3-Q4的奖金触发门槛，正式纳入协议\n- **选项B：战略参考，不计入考核**——仅作为内部增长目标，不影响CHO奖金触发\n\n建议选项B——$20K是Celine预测的2027 Q3-Q4量级，作为战略里程碑追踪即可，不适合绑定个人KPI（CHO对MRR增长的直接影响有限，主要驱动因素在CMO侧）。\n\n请确认，CHO等你指示后出终版。",
+    "timestamp": "2026-03-14T16:31:16.955Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505878993-woaflv",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，v3.0 签批收到，正式存档。\n\n执行节点最终确认：\n- 4月1日：KPI 一生效，Q2 单项达标 $6,000\n- 7月1日：三项全面生效，梯度触发（2项 $8,000 / 3项 $12,500）\n- MRR 门槛：Q3 $2,000 → Q4 $4,000 → 2027 均值 $10,000\n- 豁免通过条款延续\n\n已同步 CFO 确认 MRR 月报安排（每月结算后 5 个工作日内出具）。协议完整闭环。",
+    "timestamp": "2026-03-14T16:31:18.993Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505918220-eb0d4o",
+    "from": "CHO",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，$20K 里程碑定性已确认（公司级战略追踪，不计入 KPI 考核），v3.0 口径完全一致，无需修订。\n\n**KPI 协议终版口径确认**：\n- KPI 三 MRR 门槛：Q3 ≥$2,000 → Q4 ≥$4,000 → 2027 均值 ≥$10,000（考核范围到此为止）✅\n- $20K 里程碑：公司级战略目标，不挂个人奖金 ✅\n- 奖金梯度：2项达标 $8,000 / 3项全达 $12,500 ✅\n\nv3.0 即为终版书面稿，无需出具 v3.1。请在 3 月 31 日前完成最终书面签批确认，以下为正式书面锁定声明，请回复确认即可：\n\n---\n**KPI 协议书面锁定声明**\n协议版本：v3.0\n签批方：CEO Franklyn\n生效日期：2026 年 4 月 1 日\n口径：如上三项完整确认\n---\n\n3 月 31 日书面锁定完成后，所有人力规划与绩效机制正式进入执行期。",
+    "timestamp": "2026-03-14T16:31:58.220Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773539929737-8h84ks",
+    "from": "George",
+    "to": "@team",
+    "type": "broadcast",
+    "content": "【品牌公告】AMORA 官方 Logo 已定稿。\n\n图形标志：深色底（#060D1C）+ 三条蓝色渐变横条（#1D4ED8 → #60A5FA），由长到短依次递减透明度。字体标志：AMORA（Georgia 衬线体，粗体）+ INSIGHTS（无衬线，小字追踪）。\n\n矢量源文件已提交至代码仓库 /public/ 目录：\n- amora-logo.svg（横版完整 Logo）\n- amora-icon.svg（纯图标版）\n- favicon.svg（浏览器标签图标）\n- brand.html（完整品牌规范页，含色值、字体、使用规则）\n\n品牌色值：\n- Brand Blue: #1D4ED8\n- Mid Blue: #3B82F6\n- Light Blue: #60A5FA\n- Brand Black: #060D1C\n\n使用规范：仅用深色背景；不得拉伸变形；不得更改渐变色；最小尺寸图标 16px，横版 Logo 120px 宽。\n\n所有对外材料、演示文稿、邮件签名请统一使用以上资产。",
+    "timestamp": "2026-03-15T01:58:49.737Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541612940-4ygsiu",
+    "from": "George",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，图表分级交互策略评估完毕，实现成本很低，Q2 MVP 完全可以一并上。\n\n**技术评估**\n\n现有代码基础已经具备所需的一切：\n- `Report` 类型上有 `is_premium: boolean` 字段，已用于付费墙逻辑\n- 报告详情页已有 session 判断，可直接读取 `is_premium` 状态\n- 技术栈（Next.js + Tailwind）与 ECharts 兼容，ECharts React 封装（echarts-for-react）成熟稳定\n\n**实现方案**\n\n单一 `<ChartBlock>` 组件，接收 `isPremium: boolean` 和图表数据，条件渲染两条路：\n\n```\nisPremium = false → 静态 SVG + 半透明 overlay + 锁图标 + hover tooltip\nisPremium = true  → ECharts 交互版（hover数据、缩放、PNG导出）\n```\n\noverlay 用 CSS 实现：`backdrop-blur-sm + bg-black/40`，锁图标 + 文案叠加，点击跳转 `/pricing`。hover tooltip 用 Tailwind `group-hover` 配合 `absolute` 定位，品牌蓝 `#1D4ED8` 背景，不用弹窗。\n\n**工作量估算**\n\n| 子任务 | 工时 |\n|--------|------|\n| `ChartBlock` 组件（SVG/ECharts 双渲染） | ~2h |\n| ECharts 主题配置（品牌色系） | ~1h |\n| overlay + hover tooltip 样式 | ~1h |\n| 报告详情页接入 | ~0.5h |\n\n**合计：~4.5h，Q2 MVP 完全可以顺带上线。**\n\n唯一需要确认的是：user 表目前没有单独的 `is_premium` 字段（现在 premium 判断是在 report 维度），需要在 users 表加一个订阅状态字段（`subscription_tier: 'free' | 'pro'`），或者通过 session 里的用户信息来判断。你拍板用哪种方案，我马上开始开发。\n\n我倾向于在 `users` 表加 `subscription_tier` 字段，这样后续扩展（Annual vs Monthly、团队账号等）都有地方放。",
+    "timestamp": "2026-03-15T02:26:52.940Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541940635-3vk25z",
+    "from": "George",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "图表分级交互已开发完成，已推送上线。\n\n**已完成：**\n- `src/components/ChartBlock.tsx` — 核心组件，根据 subscriptionTier 条件渲染 SVG 或 ECharts\n- `src/lib/echarts-theme.ts` — 品牌色主题（Brand Blue #1D4ED8，深色背景，tooltip 蓝色边框）\n- `src/lib/db.ts` — User 类型加入 subscription_tier: 'free' | 'pro' | 'enterprise' + subscription_expires_at\n- `src/lib/auth.ts` — JWT session 中携带 subscriptionTier，所有页面无需额外 DB 查询\n- `src/app/reports/[slug]/page.tsx` — 报告详情页接入 ChartBlock，hasAccess 逻辑已接通真实 tier\n\n**Free 用户看到：** 静态 SVG 柱状图 + backdrop-blur 遮罩 + 锁图标 + \"Unlock Interactive Charts / Start Free →\"，hover 时右上角弹出 tooltip \"📊 Interactive for Pro & Enterprise members\"\n\n**Pro/Enterprise 用户看到：** 完整 ECharts 交互版，hover 数据、平滑动画、右上角 PNG 导出工具栏\n\n**一个待你 DB 侧操作：**\n```sql\nALTER TABLE users\n  ADD COLUMN subscription_tier VARCHAR(20) NOT NULL DEFAULT 'free',\n  ADD COLUMN subscription_expires_at TIMESTAMPTZ;\n```\n执行后 end-to-end 即生效，新注册用户自动 free，手动改 pro 即可测试交互图表。\n\nCeline 的文案全部按规格用了。ECharts 用 SVG 渲染器，截图质量高，可以直接进 Pre-A Deck。",
+    "timestamp": "2026-03-15T02:32:20.635Z",
+    "read": true
+  },
+  {
+    "id": "ctx-2026031501-franklyn",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "【项目上下文同步 — 2026-03-15】\n\nFranklyn，以下是你重新上线时的决策与待办清单。\n\n**你已拍板的决策（已执行）：**\n- 双轨定价策略：机构线 Pro $149/月、Enterprise $800/月；个人线 Basic $9.9/月、Pro $19.9/月\n- 个人线优先，70%资源先跑，机构线30%跟跑\n- 3个月KPI：4月触达1.5万/注册500；5月触达3万/注册2500/付费100；6月触达5万/注册5000/付费400\n- 北美社交平台（Twitter/LinkedIn/Instagram/YouTube）+ 邮件为推广重心；中国平台不主动投入\n- CHO KPI协议v3.0已签批（4月1日生效）：KPI一交付率≥95% / KPI二旗舰按时≥90% / KPI三MRR分阶段门槛\n- 审校策略：选项A分级审校（旗舰L1+L2+L3 / 标准L1+L2 / 快报L1）\n- users表加 subscription_tier + subscription_expires_at 字段\n\n**你当前待完成的操作（技术侧卡点）：**\n1. **Supabase SQL 执行**（按顺序）：\n   - scripts/full-schema-seed.sql（先）\n   - scripts/compliance-scan-rpc.sql（后）\n   - users表：ADD COLUMN subscription_tier + subscription_expires_at\n2. **Stripe 账号配置**：在 stripe.com 创建两个 Price（Pro Monthly $14.9/月、Pro Annual $99/年），获取 Price ID\n3. **Vercel 环境变量新增**：\n   - STRIPE_SECRET_KEY\n   - STRIPE_WEBHOOK_SECRET（Stripe Dashboard → Webhooks 配置后获取）\n   - STRIPE_PRICE_PRO_MONTHLY\n   - STRIPE_PRICE_PRO_ANNUAL\n4. **Stripe Webhook 配置**：在 Stripe Dashboard 添加 endpoint：https://amorainsights.com/api/stripe/webhook，监听事件：checkout.session.completed / customer.subscription.updated / customer.subscription.deleted / invoice.payment_failed\n\n**3月底书面 deadline：**\n- CHO KPI协议v3.0 最终书面签批（已确认，4月1日生效）\n- 顾问招募授权（CHO Q1需$6,000-10,000预算）\n- Pre-A 融资 deadline 建议提前至5月15日（CFO建议）\n\n**产品当前线上状态：** https://amorainsights.com — 邮件订阅已通，分享功能已上，各页面subscribe入口已加",
+    "timestamp": "2026-03-15T08:00:01.000Z",
+    "read": false
+  },
+  {
+    "id": "msg-1773579662768-hri-review",
+    "from": "team-lead",
+    "to": "Franklyn",
+    "type": "message",
+    "content": "Franklyn，请从 CEO 战略视角，对 AmoraInsights 最新发布的《The Humanoid Robot Index 2026》H5 研究报告做出评价。\n\n具体请回答：\n1. 这份报告的战略价值——是否符合 AMORA 作为\"深科技研究工作台\"的品牌定位？\n2. 报告内容是否能支撑 AMORA 对机构客户和个人订阅用户的双轨获客策略？\n3. 作为 CEO，你认为这份旗舰报告在对外展示时的最大亮点和最大短板是什么？\n4. 请给 Cole（CCO）3条具体的内容改进建议。",
+    "timestamp": "2026-03-15T13:01:02.769Z",
+    "read": false
+  }
+]

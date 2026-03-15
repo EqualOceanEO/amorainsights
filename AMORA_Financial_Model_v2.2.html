@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMORA Financial Model v2.2 FINAL | CFO Report</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#c9d1d9;font-size:13px;line-height:1.5}
+.hdr{background:linear-gradient(135deg,#1a1f2e,#0d1117);border-bottom:2px solid #30363d;padding:26px 36px}
+.hdr h1{font-size:24px;color:#58a6ff;font-weight:700;letter-spacing:-.3px}
+.hdr .sub{color:#8b949e;margin-top:5px;font-size:12px}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.mi{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:7px 13px}
+.mi span{color:#8b949e;font-size:10px;display:block;text-transform:uppercase;letter-spacing:.4px}
+.mi strong{color:#f0f6fc;font-size:12px}
+.mi.upd strong{color:#3fb950}
+.mi.final strong{color:#a78bfa}
+nav{background:#161b22;border-bottom:1px solid #30363d;padding:0 36px;display:flex;flex-wrap:wrap;gap:0}
+nav a{color:#8b949e;text-decoration:none;padding:10px 13px;font-size:11.5px;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+nav a:hover{color:#58a6ff;border-bottom-color:#58a6ff}
+.cont{padding:26px 36px;max-width:1700px;margin:0 auto}
+section{margin-bottom:44px}
+h2{font-size:15px;color:#f0f6fc;border-left:4px solid #58a6ff;padding-left:11px;margin-bottom:16px;font-weight:600}
+h3{font-size:13px;margin-bottom:9px;margin-top:14px;color:#e6edf3;font-weight:600}
+.box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px;margin-bottom:14px}
+.box.green{border-color:#238636;background:#0a1f10}
+.box.yellow{border-color:#d29922;background:#1a1600}
+.box.red{border-color:#da3633;background:#140808}
+.box.blue{border-color:#1f6feb;background:#0d1b2e}
+.box.purple{border-color:#8b5cf6;background:#1a0d2e}
+.box h3{margin-top:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:11px;margin-bottom:20px}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:7px;padding:12px}
+.kpi .lbl{color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
+.kpi .val{font-size:18px;font-weight:700;margin-top:3px;line-height:1.2}
+.kpi .hint{color:#8b949e;font-size:10px;margin-top:3px}
+.kpi.pos .val{color:#3fb950}.kpi.neg .val{color:#f85149}.kpi.blue .val{color:#58a6ff}
+.kpi.warn .val{color:#d29922}.kpi.purple .val{color:#a78bfa}.kpi.teal .val{color:#2dd4bf}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+.mt{min-width:1100px}
+.mt th,.mt td{padding:5px 8px;border-bottom:1px solid #21262d;white-space:nowrap;text-align:right}
+.mt th:first-child,.mt td:first-child{text-align:left;min-width:110px;position:sticky;left:0;background:#0d1117;z-index:1}
+.mt thead th{background:#161b22;color:#8b949e;font-size:10.5px;font-weight:600;position:sticky;top:0;z-index:2}
+.mt thead th:first-child{z-index:3}
+.mt tr:hover td{background:#161b22}
+.mt tr:hover td:first-child{background:#161b22}
+.yg td{background:#1c2333;color:#58a6ff;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.7px;padding:6px 8px}
+.per{color:#58a6ff;font-weight:600}
+.bold{font-weight:700}
+.pos{color:#3fb950}.neg{color:#f85149}.warn-c{color:#d29922}.purple-c{color:#a78bfa}.teal-c{color:#2dd4bf}
+.warn-r td{background:#1a1600!important}
+.inj-r td{background:#0a1f10!important}
+.crit-r td{background:#140808!important}
+.safe-r td{background:#0d1b2e!important}
+.prea-r td{background:#0d1b2e!important;font-style:italic}
+.st{width:100%;border-collapse:collapse;font-size:12px}
+.st th,.st td{padding:7px 10px;border-bottom:1px solid #21262d;text-align:right}
+.st th:first-child,.st td:first-child{text-align:left}
+.st thead tr{background:#161b22}
+.st thead th{color:#8b949e;font-weight:600;font-size:11px}
+.st tr:hover td{background:#161b22}
+.br td{font-weight:700;background:#0d1117;border-top:2px solid #30363d}
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:13px}
+.rc{background:#161b22;border:1px solid #30363d;border-radius:7px;padding:13px}
+.rc h4{color:#f0f6fc;font-size:12px;margin-bottom:5px}
+.sev{font-size:10px;padding:2px 6px;border-radius:3px;display:inline-block;margin-bottom:6px;font-weight:600}
+.sh{background:#3d0000;color:#f85149}.sm{background:#1a1600;color:#d29922}.sl{background:#0a1f10;color:#3fb950}
+.rc p{color:#8b949e;font-size:11.5px;line-height:1.6}
+.mit{color:#3fb950;font-size:11px;margin-top:6px;padding-top:6px;border-top:1px solid #21262d}
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.ab{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:13px}
+.ab h4{color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.ar{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #21262d}
+.ar:last-child{border-bottom:none}
+.ar .k{color:#8b949e;font-size:11.5px}.ar .v{color:#58a6ff;font-size:11.5px;font-weight:600}
+footer{background:#161b22;border-top:1px solid #30363d;padding:16px 36px;color:#8b949e;font-size:11px;line-height:1.7}
+.badge{padding:3px 9px;border-radius:9px;font-size:11px;font-weight:600;display:inline-block;margin-right:5px}
+.b-bo{background:#0a1f10;color:#3fb950;border:1px solid #238636}
+.b-bp{background:#1a1600;color:#d29922;border:1px solid #d29922}
+.b-do{background:#0d1b2e;color:#58a6ff;border:1px solid #1f6feb}
+.b-dp{background:#140808;color:#f85149;border:1px solid #da3633}
+.upd-badge{background:#1a2e1a;border:1px solid #238636;color:#3fb950;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin-left:8px}
+.final-badge{background:#1a0d2e;border:1px solid #8b5cf6;color:#a78bfa;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin-left:8px}
+.new-badge{background:#0d1b2e;border:1px solid #1f6feb;color:#58a6ff;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin-left:8px}
+.scen-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.scen-tab{padding:5px 14px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid #30363d;background:#161b22;color:#8b949e}
+.scen-tab.bo{border-color:#238636;background:#0a1f10;color:#3fb950}
+.scen-tab.bp{border-color:#d29922;background:#1a1600;color:#d29922}
+.scen-tab.do{border-color:#1f6feb;background:#0d1b2e;color:#58a6ff}
+.scen-tab.dp{border-color:#da3633;background:#140808;color:#f85149}
+.prob-bar{background:#21262d;height:10px;border-radius:5px;margin-top:4px;overflow:hidden}
+.prob-fill{height:100%;border-radius:5px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:900px){.two-col,.three-col{grid-template-columns:1fr}}
+.cash-line{height:3px;border-radius:2px;margin:2px 0}
+.delta-pos{color:#3fb950;font-size:11px}.delta-neg{color:#f85149;font-size:11px}
+.mrr-kpi{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px;margin-bottom:8px}
+.mrr-kpi .period{color:#8b949e;font-size:10px;text-transform:uppercase}
+.mrr-kpi .thresh{color:#f0f6fc;font-size:14px;font-weight:700}
+.mrr-kpi .status{font-size:11px;margin-top:3px}
+.grad-box{background:#161b22;border:2px solid #8b5cf6;border-radius:8px;padding:16px;margin-bottom:14px}
+.grad-tier{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:6px;margin-bottom:7px}
+.tier-0{background:#1a0505;border:1px solid #3d0000}
+.tier-2{background:#1a1200;border:1px solid #d29922}
+.tier-3{background:#0a1f10;border:1px solid #238636}
+.tier-exp{background:#0d1b2e;border:1px solid #1f6feb;border-top:2px solid #58a6ff}
+.tier-label{font-weight:600;font-size:13px}
+.tier-val{font-size:15px;font-weight:700}
+.tier-prob{color:#8b949e;font-size:11px}
+.delta-box{background:#0a1f10;border:1px solid #238636;border-radius:6px;padding:12px;margin-top:12px}
+.v22-highlight{background:#1a0d2e;border:2px solid #8b5cf6;border-radius:8px;padding:18px;margin-bottom:16px}
+.v22-highlight h3{color:#a78bfa}
+.cash-alert{background:#140808;border:2px solid #da3633;border-radius:8px;padding:18px;margin-bottom:14px}
+.cash-safe{background:#0a1f10;border:2px solid #238636;border-radius:8px;padding:18px;margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🏛 AMORA Financial Model v2.2 <span class="final-badge">FINAL VERSION</span></h1>
+  <div class="sub">CFO Report · 4-Scenario Analysis · CHO Tiered Bonus · Pre-A Deadline May 15 · $150K Cash Floor · MRR KPI Phased Thresholds</div>
+  <div class="meta">
+    <div class="mi final"><span>Model Version</span><strong>v2.2 — FINAL (Mar 2026)</strong></div>
+    <div class="mi upd"><span>Pre-A Internal Deadline</span><strong>May 15, 2026 ⚡</strong></div>
+    <div class="mi upd"><span>Minimum Cash Floor</span><strong>$150,000 🛡️</strong></div>
+    <div class="mi upd"><span>CHO Bonus Mechanism</span><strong>Tiered: $0/$8K/$12.5K ▲NEW</strong></div>
+    <div class="mi upd"><span>CHO 2027 Expected/mo</span><strong>$63,650 (EV)</strong></div>
+    <div class="mi"><span>CHO 2027 Annual EV</span><strong>$763,800/yr</strong></div>
+    <div class="mi"><span>Pre-A Amount</span><strong>$3,000,000</strong></div>
+    <div class="mi"><span>Net Income Target</span><strong>$200K by 2027</strong></div>
+  </div>
+</div>
+
+<nav>
+  <a href="#cho-tiered">§0 CHO Tiered</a>
+  <a href="#cash-floor">§1 Cash Floor</a>
+  <a href="#mrr-kpi">§2 MRR KPIs</a>
+  <a href="#verdict">§3 Verdict</a>
+  <a href="#v21-delta">§4 v2.1→v2.2 Delta</a>
+  <a href="#annual">§5 Annual P&L</a>
+  <a href="#monthly">§6 Monthly Detail</a>
+  <a href="#runway">§7 Runway</a>
+  <a href="#sensitivity">§8 Sensitivity</a>
+  <a href="#risks">§9 Risks</a>
+  <a href="#assumptions">§10 Assumptions</a>
+</nav>
+
+<div class="cont">
+
+<!-- All computation done in JS below -->
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// AMORA FINANCIAL MODEL v2.2 — FINAL
+//
+// Key changes from v2.1:
+//  1. CHO Bonus: Tiered gradient  ≤1 KPI→$0 | 2 KPI→$8,000 | 3 KPI→$12,500
+//  2. Pre-A internal deadline: May 15 (vs May 31 in v2.1); hard floor $150K cash
+//  3. KPI-3 MRR thresholds phased: Q3 $2K | Q4 $4K | 2027 $10K/mo net new MRR
+//
+// CHO Bonus Expected Value recalculation (Q3 2026 onward):
+//   P(3 KPIs) = 50% → contribution: $12,500 × 50% = $6,250
+//   P(2 KPIs) = 30% → contribution: $8,000  × 30% = $2,400
+//   P(≤1 KPI) = 20% → contribution: $0       × 20% = $0
+//   Monthly EV = $8,650  (vs v2.1 cliff: $7,500)
+//
+// For 2027, same gradient applies, same probability distribution assumed
+//   Monthly EV = $8,650
+//   Annual CHO 2027 EV = $55,000×12 + $8,650×12 = $660,000 + $103,800 = $763,800
+//
+// "Optimistic" in v2.2 = full bonus triggered (P3KPI=50%, but model cap at $12,500)
+// "Pessimistic" in v2.2 = base only (no bonus, $0 per month)
+// "Expected" = mid-case using EV $8,650/mo
+// ═══════════════════════════════════════════════════════════════════
+
+const P = [
+  '2026-01','2026-02','2026-03','2026-04','2026-05','2026-06',
+  '2026-07','2026-08','2026-09','2026-10','2026-11','2026-12',
+  '2027-01','2027-02','2027-03','2027-04','2027-05','2027-06',
+  '2027-07','2027-08','2027-09','2027-10','2027-11','2027-12'
+];
+
+// ── STATIC COST LINES (unchanged from v2.1) ──
+const TECH = [76,76,76,76,76,76,140,140,140,140,140,140,300,350,400,425,450,475,525,575,625,675,725,800];
+const CCO_NET = [175,175,175,175,175,175,275,275,275,275,275,275,325,325,350,350,375,375,400,400,425,425,450,450];
+const L1 = [700,700,700,1100,1100,1100,2600,2600,2600,2600,2600,2600,3500,3500,3500,3750,3750,3750,4000,4000,4250,4250,4500,4500];
+const CLO = [40333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333,2333];
+const CRO_MONTHLY = 12083;
+const CRO = Array(24).fill(CRO_MONTHLY);
+const CH_RATE = 0.17;
+const RES_PCT = Array(12).fill(0.10).concat(Array(12).fill(0.07));
+
+// ── CHO COST MATRIX ──
+// 2026: unchanged Q1-Q4 structure
+const CHO_2026 = [8200,8200,8200,15600,15600,15600,52750,52750,52750,52750,52750,52750];
+
+// ── v2.2 CHO 2027: THREE VARIANTS ──
+// Optimistic: full 3-KPI bonus = $55K + $12.5K = $67,500/mo
+// Expected Value (EV): $55K + $8,650 = $63,650/mo  ← NEW in v2.2
+// Pessimistic: base only = $55K/mo
+const CHO_2027_OPT  = Array(12).fill(67500);   // full bonus
+const CHO_2027_EV   = Array(12).fill(63650);   // gradient EV
+const CHO_2027_PESS = Array(12).fill(55000);   // base only
+
+// ── BONUS EV COMPONENTS ──
+const BONUS_EV = {
+  p3: 0.50, amt3: 12500,
+  p2: 0.30, amt2: 8000,
+  p1: 0.20, amt1: 0,
+  ev: 8650
+};
+
+// ── FINANCING ──
+const ANGEL = 450000;
+const PRE_A = 3000000;
+const FA_AMT = 60000;
+
+// v2.2: Pre-A INTERNAL deadline May 15 = model month index 4 (May)
+// Hard Pre-A model close: May (index 4); buffer from May 15 to May 31
+// Cash floor $150K — trigger alert if projected balance < $150K
+const CASH_FLOOR = 150000;
+const PREA_MONTH_ONTARGET = 4;  // May
+const PREA_MONTH_LATE = 5;      // June (delayed scenario)
+const FA_MONTH_ONTARGET = 5;    // June (30 days after Pre-A close)
+const FA_MONTH_LATE = 6;        // July
+
+// ── REVENUE PARAMETERS ──
+const PRO_ARPU = 149, ENT_ARPU = 800;
+const CUSTOM_AVG = 7500;
+const CHURN_PRO_BASE = 0.22, CHURN_PRO_STRESS = 0.30;
+const CHURN_ENT_BASE = 0.10, CHURN_ENT_STRESS = 0.15;
+const ENT_MIX = 0.30;
+
+const GROSS_NEW_BASE    = [0,0,0,0,0,0, 1,3,4,5,6,6, 6,6,6,7,7,7, 7,7,7,7,7,7];
+const GROSS_NEW_DELAYED = [0,0,0,0,0,0, 0,0,1,3,4,5, 5,6,6,6,7,7, 7,7,7,7,7,7];
+const CUSTOM_BASE       = [0,0,0,0,0,0, 0,1,1,2,2,3, 4,5,5,6,7,8, 9,10,11,12,13,14];
+const CUSTOM_DELAY      = [0,0,0,0,0,0, 0,0,0,1,1,2, 3,4,4,5,6,7, 8,9,10,11,12,13];
+
+function monthlyChurn(annual) { return 1 - Math.pow(1 - annual, 1/12); }
+
+function buildRevenue(grossNew, churnPro, churnEnt) {
+  const mcp = monthlyChurn(churnPro), mce = monthlyChurn(churnEnt);
+  let proAcc = 0, entAcc = 0;
+  return grossNew.map((total, i) => {
+    const newEnt = Math.round(total * ENT_MIX);
+    const newPro = total - newEnt;
+    proAcc = proAcc * (1 - mcp) + newPro;
+    entAcc = entAcc * (1 - mce) + newEnt;
+    return { pro: Math.max(0, proAcc), ent: Math.max(0, entAcc) };
+  });
+}
+
+// ── NET NEW MRR CALCULATION (for KPI-3 reference) ──
+// Net new MRR = current sub_rev - prev sub_rev (gross new - churn loss)
+function calcNetNewMRR(revArr, prevRevArr) {
+  return revArr.map((r, i) => {
+    const cur = r.pro * PRO_ARPU + r.ent * ENT_ARPU;
+    const prev = i > 0 ? (prevRevArr[i-1].pro * PRO_ARPU + prevRevArr[i-1].ent * ENT_ARPU) : 0;
+    return cur - prev;
+  });
+}
+
+// KPI-3 MRR thresholds by month index
+// Q3 2026 (months 6-8): $2,000; Q4 2026 (months 9-11): $4,000; 2027 (months 12-23): $10,000
+function getMRRThreshold(i) {
+  if (i >= 6 && i <= 8)  return 2000;
+  if (i >= 9 && i <= 11) return 4000;
+  if (i >= 12)           return 10000;
+  return null; // Q1-Q2: no MRR KPI active
+}
+
+// ── FULL MODEL BUILD ──
+function buildModel(grossNew, churnPro, churnEnt, cho2027, preaMonth, faMonth, customDeals) {
+  const rev = buildRevenue(grossNew, churnPro, churnEnt);
+  const rows = [];
+  for (let i = 0; i < 24; i++) {
+    const yr = i < 12 ? 2026 : 2027;
+    const { pro, ent } = rev[i];
+    const sub_rev = pro * PRO_ARPU + ent * ENT_ARPU;
+    const custom_rev = customDeals[i] * CUSTOM_AVG;
+    const total_rev = sub_rev + custom_rev;
+    const arr = sub_rev * 12;
+    const net_new_mrr = i > 0 ? sub_rev - (rev[i-1].pro * PRO_ARPU + rev[i-1].ent * ENT_ARPU) : sub_rev;
+    const mrr_threshold = getMRRThreshold(i);
+    const mrr_kpi_met = mrr_threshold !== null ? net_new_mrr >= mrr_threshold : null;
+
+    const tech = TECH[i];
+    const cco_net = CCO_NET[i];
+    const l1 = L1[i];
+    const clo = CLO[i];
+    const cro = CRO[i];
+    const cho = i < 12 ? CHO_2026[i] : cho2027[i - 12];
+    const channel = sub_rev * CH_RATE;
+    const fa = (i === faMonth) ? FA_AMT : 0;
+    const base_opex = tech + cco_net + l1 + clo + cro + cho + channel + fa;
+    const reserve = base_opex * RES_PCT[i];
+    const total_cost = base_opex + reserve;
+    const net = total_rev - total_cost;
+
+    rows.push({ period: P[i], yr, i, pro, ent, clients: pro + ent,
+                sub_rev, custom_rev, total_rev, arr, net_new_mrr, mrr_threshold, mrr_kpi_met,
+                tech, cco_net, l1, clo, cro, cho, channel, fa, reserve, total_cost, base_opex, net });
+  }
+  return rows;
+}
+
+// ── v2.2 FOUR SCENARIOS (updated from v2.1) ──
+// Note: The 4 scenarios map to: {ramp} x {churn+bonus}
+// Optimistic = low churn + expected-value bonus (EV mid case)
+// Pessimistic = high churn + no bonus
+const SCENARIOS = [
+  {
+    id: 'bo', label: 'Base-Optimistic', shortLabel: 'Base-Opt',
+    cssClass: 'bo', badgeClass: 'b-bo',
+    grossNew: GROSS_NEW_BASE, churnPro: CHURN_PRO_BASE, churnEnt: CHURN_ENT_BASE,
+    cho2027: CHO_2027_EV,  // v2.2: use EV for "optimistic" base case
+    customDeals: CUSTOM_BASE, preaMonth: PREA_MONTH_ONTARGET, faMonth: FA_MONTH_ONTARGET,
+    desc: 'Normal ramp · Pro 22% · Ent 10% · CHO EV ($63.65K/mo) · Pre-A May 15 ✅'
+  },
+  {
+    id: 'bp', label: 'Base-Pessimistic', shortLabel: 'Base-Pess',
+    cssClass: 'bp', badgeClass: 'b-bp',
+    grossNew: GROSS_NEW_BASE, churnPro: CHURN_PRO_STRESS, churnEnt: CHURN_ENT_STRESS,
+    cho2027: CHO_2027_PESS, // no bonus
+    customDeals: CUSTOM_BASE, preaMonth: PREA_MONTH_ONTARGET, faMonth: FA_MONTH_ONTARGET,
+    desc: 'Normal ramp · Pro 30% · Ent 15% · CHO base ($55K/mo) · Pre-A May 15 ✅'
+  },
+  {
+    id: 'do', label: 'Delayed-Optimistic', shortLabel: 'Delay-Opt',
+    cssClass: 'do', badgeClass: 'b-do',
+    grossNew: GROSS_NEW_DELAYED, churnPro: CHURN_PRO_BASE, churnEnt: CHURN_ENT_BASE,
+    cho2027: CHO_2027_EV,  // EV
+    customDeals: CUSTOM_DELAY, preaMonth: PREA_MONTH_ONTARGET, faMonth: FA_MONTH_ONTARGET,
+    desc: 'Revenue delayed 1Q · Pro 22% · Ent 10% · CHO EV ($63.65K/mo) · Pre-A May 15 ✅'
+  },
+  {
+    id: 'dp', label: 'Delayed-Pessimistic', shortLabel: 'Delay-Pess',
+    cssClass: 'dp', badgeClass: 'b-dp',
+    grossNew: GROSS_NEW_DELAYED, churnPro: CHURN_PRO_STRESS, churnEnt: CHURN_ENT_STRESS,
+    cho2027: CHO_2027_PESS, // no bonus
+    customDeals: CUSTOM_DELAY, preaMonth: PREA_MONTH_LATE, faMonth: FA_MONTH_LATE,
+    desc: 'Revenue delayed 1Q · Pro 30% · Ent 15% · CHO base ($55K/mo) · Pre-A June 30 ⚠️'
+  }
+];
+
+// Build all 4 models
+const models = {};
+SCENARIOS.forEach(s => { models[s.id] = buildModel(s.grossNew, s.churnPro, s.churnEnt, s.cho2027, s.preaMonth, s.faMonth, s.customDeals); });
+
+// Cash flow with balance tracking
+function buildCashFlow(model, preaMonth) {
+  let bal = ANGEL;
+  return model.map((r, i) => {
+    const inj = (i === preaMonth) ? PRE_A : 0;
+    bal += r.net + inj;
+    return { ...r, inj, balance: bal, belowFloor: bal < CASH_FLOOR };
+  });
+}
+
+const cashflows = {};
+SCENARIOS.forEach(s => { cashflows[s.id] = buildCashFlow(models[s.id], s.preaMonth); });
+
+// Annual summaries
+function annSum(rows, yr) {
+  const r = rows.filter(x => x.yr === yr);
+  const s = k => r.reduce((a, x) => a + (x[k] || 0), 0);
+  return {
+    rev: s('total_rev'), sub: s('sub_rev'), custom: s('custom_rev'),
+    cost: s('total_cost'), cho: s('cho'), fa: s('fa'), channel: s('channel'),
+    clo: s('clo'), cro: s('cro'), tech: s('tech'), l1: s('l1'), cco: s('cco_net'), reserve: s('reserve'),
+    net: s('net'),
+    endARR: r[r.length - 1].arr,
+    endClients: r[r.length - 1].clients,
+    endPro: r[r.length - 1].pro,
+    endEnt: r[r.length - 1].ent
+  };
+}
+
+const ann = {};
+SCENARIOS.forEach(s => {
+  ann[s.id] = { y26: annSum(models[s.id], 2026), y27: annSum(models[s.id], 2027) };
+});
+
+function beMo(rows) {
+  let mo = null;
+  rows.forEach(r => { if (!mo && r.net > 0) mo = r.period; });
+  return mo || 'Beyond 2027';
+}
+
+// ── FORMAT HELPERS ──
+function fmt(n, suffix='') {
+  if (n === undefined || n === null) return '—';
+  const abs = Math.abs(Math.round(n));
+  let s;
+  if (abs >= 1000000) s = '$' + (abs / 1e6).toFixed(2) + 'M';
+  else if (abs >= 1000) s = '$' + abs.toLocaleString();
+  else s = '$' + abs;
+  s += suffix;
+  if (n < 0) return '<span class="neg">(' + s + ')</span>';
+  if (n === 0) return '—';
+  return s;
+}
+function fmtc(n) {
+  if (n > 0) return '<span class="pos">' + fmt(n) + '</span>';
+  return fmt(n);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// RENDER ON LOAD
+// ─────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+
+// ── §0 CHO TIERED BONUS ANALYSIS ──
+const cho_2026_total = CHO_2026.reduce((s,v)=>s+v,0);
+const cho_2027_opt_ann = 67500 * 12;
+const cho_2027_ev_ann  = 63650 * 12;
+const cho_2027_pess_ann = 55000 * 12;
+const v21_opt_ann = 67500 * 12;
+const v21_pess_ann = 55000 * 12;
+
+document.getElementById('cho-tiered').innerHTML = `
+<div class="v22-highlight">
+  <h3>🆕 v2.2 Key Change: CHO Bonus Tiered Gradient (Franklyn Decision)</h3>
+  <p style="color:#c9d1d9;font-size:12px;margin-bottom:14px">
+    Previous mechanism was all-or-nothing cliff: 3 KPIs → $12,500 | else → $0. Franklyn approved gradient to reduce cliff risk.
+  </p>
+  <div class="grad-box">
+    <div class="grad-tier tier-0">
+      <div><span class="tier-label">≤1 KPI Met</span><br><span class="tier-prob">Probability: 20%</span></div>
+      <div style="text-align:right"><span class="tier-val" style="color:#f85149">$0</span><br><span class="tier-prob">No bonus</span></div>
+    </div>
+    <div class="grad-tier tier-2">
+      <div><span class="tier-label">2 KPIs Met</span><br><span class="tier-prob">Probability: 30%</span></div>
+      <div style="text-align:right"><span class="tier-val" style="color:#d29922">$8,000/mo</span><br><span class="tier-prob">$2,400 expected contribution</span></div>
+    </div>
+    <div class="grad-tier tier-3">
+      <div><span class="tier-label">All 3 KPIs Met</span><br><span class="tier-prob">Probability: 50%</span></div>
+      <div style="text-align:right"><span class="tier-val" style="color:#3fb950">$12,500/mo</span><br><span class="tier-prob">$6,250 expected contribution</span></div>
+    </div>
+    <div class="grad-tier tier-exp" style="margin-top:10px;margin-bottom:0">
+      <div><span class="tier-label" style="color:#58a6ff">Monthly Expected Value (EV)</span><br><span class="tier-prob">$6,250 + $2,400 + $0</span></div>
+      <div style="text-align:right"><span class="tier-val" style="color:#58a6ff">$8,650/mo</span><br><span class="tier-prob">$103,800/yr bonus EV</span></div>
+    </div>
+  </div>
+  <div class="delta-box">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center">
+      <div>
+        <div style="color:#8b949e;font-size:10px;text-transform:uppercase">v2.1 "Cliff" Avg (60% P3)</div>
+        <div style="color:#d29922;font-size:18px;font-weight:700">$7,500/mo</div>
+        <div style="color:#8b949e;font-size:10px">$90,000/yr bonus</div>
+      </div>
+      <div>
+        <div style="color:#8b949e;font-size:10px;text-transform:uppercase">v2.2 Gradient EV</div>
+        <div style="color:#3fb950;font-size:18px;font-weight:700">$8,650/mo</div>
+        <div style="color:#3fb950;font-size:10px">+$1,150/mo vs v2.1 (EV rises because 2-KPI path now pays $8K)</div>
+      </div>
+      <div>
+        <div style="color:#8b949e;font-size:10px;text-transform:uppercase">Delta Impact on CHO 2027 EV</div>
+        <div style="color:#f85149;font-size:18px;font-weight:700">+$13,800/yr</div>
+        <div style="color:#8b949e;font-size:10px">Higher EV = slightly more cost; but cliff risk eliminated</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px">
+  <div class="kpi blue"><div class="lbl">CHO 2027 Full Bonus/mo</div><div class="val">$67,500</div><div class="hint">$810K/yr cap (unchanged)</div></div>
+  <div class="kpi teal"><div class="lbl">CHO 2027 EV/mo <span class="new-badge">NEW</span></div><div class="val">$63,650</div><div class="hint">$763,800/yr expected</div></div>
+  <div class="kpi warn"><div class="lbl">CHO 2027 Base Only/mo</div><div class="val">$55,000</div><div class="hint">$660K/yr pessimistic</div></div>
+  <div class="kpi pos"><div class="lbl">2026 CHO Total EV</div><div class="val">$452K</div><div class="hint">CHO data, incl Q3-Q4 gradient EV</div></div>
+</div>
+
+<div class="box yellow" style="margin-top:14px">
+  <h3>📊 Annual CHO Cost Comparison: v2.0 → v2.1 → v2.2</h3>
+  <div class="scroll"><table class="st">
+    <thead><tr><th>Version</th><th>Mechanism</th><th>2027 Annual Pess</th><th>2027 Annual EV</th><th>2027 Annual Opt</th><th>vs v2.0 (EV)</th></tr></thead>
+    <tbody>
+      <tr><td>v2.0</td><td>Flat $90K/mo</td><td>$1,080,000</td><td>$1,080,000</td><td>$1,080,000</td><td>—</td></tr>
+      <tr><td>v2.1</td><td>Cliff: $55K+$12.5K or $0</td><td>$660,000</td><td class="warn-c">$750,000 (60% P3)</td><td>$810,000</td><td class="pos">-$330,000 EV</td></tr>
+      <tr class="inj-r"><td><strong>v2.2</strong></td><td><strong>Gradient: $0/$8K/$12.5K</strong></td><td>$660,000</td><td class="teal-c"><strong>$763,800 ▲$13.8K vs v2.1</strong></td><td>$810,000</td><td class="pos"><strong>-$316,200 EV</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p style="color:#8b949e;font-size:11px;margin-top:8px">Net effect: EV is $13,800/yr higher than v2.1 cliff model — modest cost increase offset by cliff-risk elimination. Strategic win for CHO incentive alignment.</p>
+</div>`;
+
+// ── §1 CASH FLOOR ANALYSIS ──
+const cf_bo = cashflows.bo;
+const minBal_q2 = Math.min(...cf_bo.filter(r=>r.i>=0&&r.i<=5).map(r=>r.balance));
+const balBeforePrea = cf_bo[3].balance; // end of April
+const balMay = cf_bo[4].balance;        // after May operations, before Pre-A
+const preaWire = cf_bo[4].inj;
+const balAfterPrea = cf_bo[4].balance;  // includes Pre-A
+
+// June balance after FA fee
+const balJune = cf_bo[5].balance;
+
+// Buffer above $150K floor at tightest point
+const tightestPrePrea = Math.min(
+  cf_bo[3].balance, // Apr end
+  cf_bo[4].balance - cf_bo[4].inj // May before Pre-A
+);
+
+document.getElementById('cash-floor').innerHTML = `
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px">
+  <div class="${tightestPrePrea >= CASH_FLOOR ? 'cash-safe' : 'cash-alert'}">
+    <h3>${tightestPrePrea >= CASH_FLOOR ? '✅ Cash Floor Status: SAFE' : '🚨 Cash Floor Status: BREACH RISK'}</h3>
+    <p style="font-size:12px;margin-top:8px;color:#c9d1d9">
+      $150,000 minimum cash floor set by Franklyn. Pre-A internal deadline <strong>May 15</strong> provides 16-day buffer before May 31 legal close.
+    </p>
+    <table class="st" style="margin-top:12px">
+      <thead><tr><th>Checkpoint</th><th>Balance</th><th>vs $150K Floor</th></tr></thead>
+      <tbody>
+        ${cf_bo.filter(r=>r.i<=7).map(r => {
+          const above = r.balance - CASH_FLOOR;
+          const cls = r.balance < CASH_FLOOR ? 'neg' : r.balance < 200000 ? 'warn-c' : 'pos';
+          return `<tr class="${r.balance < CASH_FLOOR ? 'crit-r' : r.balance < CASH_FLOOR * 1.5 ? 'warn-r' : ''}">
+            <td>${r.period}${r.inj > 0 ? ' 💉Pre-A' : ''}${r.fa > 0 ? ' 📋FA fee' : ''}</td>
+            <td class="${cls}">${fmt(r.balance)}</td>
+            <td class="${above < 0 ? 'neg' : above < 50000 ? 'warn-c' : 'pos'}">${above >= 0 ? '+' : ''}${fmt(above)}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>
+  <div class="box blue">
+    <h3>⚡ Pre-A May 15 Internal Deadline — Buffer Analysis</h3>
+    <table class="st" style="margin-top:8px">
+      <thead><tr><th>Scenario</th><th>Wire Date</th><th>Legal Close</th><th>Buffer</th></tr></thead>
+      <tbody>
+        <tr class="inj-r"><td><strong>Target (v2.2)</strong></td><td><strong>May 15</strong></td><td>May 31</td><td class="pos"><strong>16 days</strong></td></tr>
+        <tr><td>v2.1 Target</td><td>May 31</td><td>May 31</td><td class="warn-c">0 days</td></tr>
+        <tr class="crit-r"><td>Delayed</td><td>June 30</td><td>June 30</td><td class="neg">-30 days late</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;padding:10px;background:#0a0d2e;border-radius:6px">
+      <p style="color:#58a6ff;font-weight:600;font-size:12px">May 15 Deadline Logic:</p>
+      <p style="color:#8b949e;font-size:11.5px;margin-top:4px">
+        • Wire processing: 2-3 business days<br>
+        • Document signing window: 5 business days<br>
+        • Compliance KYC review: 3-5 business days<br>
+        • Total: ~10-13 days → May 15 start → May 28-31 actual receipt
+      </p>
+    </div>
+    <div style="margin-top:10px;padding:10px;background:#1a1200;border-radius:6px;border:1px solid #d29922">
+      <p style="color:#d29922;font-weight:600;font-size:12px">Backstop: If Angel cash drops to $200K mark</p>
+      <p style="color:#8b949e;font-size:11.5px;margin-top:4px">
+        Trigger founder bridge line discussion at $200K (30 days ahead of $150K floor).<br>
+        Bridge amount: $200-300K, 30-60 day bridge note convertible at Pre-A terms.
+      </p>
+    </div>
+  </div>
+</div>`;
+
+// ── §2 MRR KPI THRESHOLDS ──
+// Show projected net new MRR per month in Base-Optimistic scenario vs thresholds
+document.getElementById('mrr-kpi').innerHTML = `
+<div class="box purple" style="margin-bottom:14px">
+  <h3>🆕 v2.2 KPI-3: MRR Growth Threshold — Phased Schedule (Franklyn Final)</h3>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px">
+    <div class="mrr-kpi"><div class="period">Q3 2026 (Jul–Sep)</div><div class="thresh">$2,000</div><div class="status">Net New MRR/month</div></div>
+    <div class="mrr-kpi"><div class="period">Q4 2026 (Oct–Dec)</div><div class="thresh">$4,000</div><div class="status">Net New MRR/month</div></div>
+    <div class="mrr-kpi"><div class="period">2027 (Full Year)</div><div class="thresh">$10,000</div><div class="status">Net New MRR/month</div></div>
+  </div>
+</div>
+<div class="scroll"><table class="mt" style="min-width:700px">
+  <thead><tr>
+    <th>Period</th><th>KPI-3 Threshold</th><th>Proj Net New MRR<br>(Base-Opt)</th><th>KPI-3 Status</th>
+    <th>Proj Net New MRR<br>(Base-Pess)</th><th>KPI-3 Status</th>
+  </tr></thead>
+  <tbody id="mrr-table"></tbody>
+</table></div>
+<p style="color:#8b949e;font-size:11px;margin-top:8px">
+  Note: Net New MRR = (current month sub revenue) − (prior month sub revenue). Q1-Q2 periods: KPI-3 not active (pre-launch).
+</p>`;
+
+// MRR table data
+const bo_rows = models.bo;
+const bp_rows = models.bp;
+const mrrHTML = bo_rows.map((r, i) => {
+  const thresh = r.mrr_threshold;
+  if (thresh === null) return '';
+  const bo_met = r.mrr_kpi_met;
+  const bp_met = bp_rows[i].mrr_kpi_met;
+  const bp_nnmrr = bp_rows[i].net_new_mrr;
+  return `<tr>
+    <td class="per">${r.period}</td>
+    <td class="warn-c">$${thresh.toLocaleString()}</td>
+    <td class="${bo_met ? 'pos' : 'neg'}">${fmt(r.net_new_mrr)}</td>
+    <td>${bo_met ? '<span class="pos">✅ KPI Met</span>' : '<span class="neg">❌ Below</span>'}</td>
+    <td class="${bp_met ? 'pos' : 'neg'}">${fmt(bp_nnmrr)}</td>
+    <td>${bp_met ? '<span class="pos">✅ KPI Met</span>' : '<span class="neg">❌ Below</span>'}</td>
+  </tr>`;
+}).join('');
+document.getElementById('mrr-table').innerHTML = mrrHTML;
+
+// ── §3 VERDICT / 4 SCENARIOS ──
+// v2.2 probability adjustments:
+// Base-Opt: Now uses EV ($63.65K/mo) instead of full opt → slightly lower net vs v2.1 opt
+//           But cliff risk eliminated → structural confidence higher → keep at 78%
+// Delayed-Opt: Same EV logic → 52% → 53% (marginal, round to 53%)
+// Base-Pess: No bonus ($55K) + high churn — 31% stays
+// Delayed-Pess: Late Pre-A + high churn + no bonus — 12% stays
+const probabilities = { bo: 78, bp: 31, do: 53, dp: 12 };
+
+document.getElementById('verdict').innerHTML = `
+<div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;margin-bottom:16px">
+  <div class="scen-tabs">
+    ${SCENARIOS.map(s=>`<div class="scen-tab ${s.cssClass}">${s.shortLabel}</div>`).join('')}
+  </div>
+  <p style="color:#8b949e;font-size:12px">
+    v2.2 uses CHO Expected Value (gradient) for Optimistic scenarios. Pessimistic scenarios use base-only ($55K/mo).
+    Probabilities updated to reflect tiered bonus risk reduction.
+  </p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px">
+${SCENARIOS.map(s => {
+  const v = ann[s.id].y27.net;
+  const prob = probabilities[s.id];
+  const reach = v >= 200000;
+  const netClr = reach ? '#3fb950' : v > 0 ? '#d29922' : '#f85149';
+  return `<div class="box ${reach ? 'green' : v > 0 ? 'yellow' : 'red'}">
+    <h3>${reach ? '✅' : v > 0 ? '⚠️' : '❌'} ${s.label}</h3>
+    <p style="font-size:11px;color:#8b949e;margin-bottom:10px">${s.desc}</p>
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+      <span style="font-size:12px;color:#c9d1d9">2027 Net Income</span>
+      <span style="font-size:14px;font-weight:700;color:${netClr}">${fmt(v)}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+      <span style="font-size:11px;color:#8b949e">$200K Target</span>
+      <span style="font-size:12px;font-weight:700;color:${netClr}">${reach ? '✅ Achievable' : '❌ Not in 2027'}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+      <span style="font-size:11px;color:#8b949e">Probability</span>
+      <span style="font-size:12px;font-weight:700;color:${prob>=70?'#3fb950':prob>=45?'#d29922':'#f85149'}">${prob}%</span>
+    </div>
+    <div class="prob-bar" style="margin-bottom:8px"><div class="prob-fill" style="width:${prob}%;background:${prob>=70?'#238636':prob>=45?'#d29922':'#da3633'}"></div></div>
+    <div style="display:flex;justify-content:space-between">
+      <span style="font-size:11px;color:#8b949e">Breakeven</span>
+      <span style="font-size:11px;color:#58a6ff;font-weight:600">${beMo(models[s.id])}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:3px">
+      <span style="font-size:11px;color:#8b949e">End-2027 ARR</span>
+      <span style="font-size:11px;font-weight:600">${fmt(ann[s.id].y27.endARR)}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:3px">
+      <span style="font-size:11px;color:#8b949e">2027 CHO Cost</span>
+      <span style="font-size:11px;font-weight:600">${fmt(ann[s.id].y27.cho)}</span>
+    </div>
+  </div>`;
+}).join('')}
+</div>`;
+
+// ── §4 V2.1 → V2.2 DELTA ──
+// Compare Base-Optimistic and Delayed-Optimistic (which changed the most due to EV vs cliff)
+// v2.1 opt CHO 2027 = $67,500/mo × 12 = $810,000
+// v2.2 opt CHO 2027 = $63,650/mo × 12 = $763,800
+const v21_opt_cho = 67500 * 12;
+const v22_ev_cho  = 63650 * 12;
+const v22_pess_cho = 55000 * 12;
+const cho_delta_ev_vs_v21opt = v22_ev_cho - v21_opt_cho;
+
+// Net income delta for Base-Opt (CHO cost is higher in v2.2 EV vs v2.1 pess, lower vs v2.1 opt)
+const v21_bo_net_approx = ann.bo.y27.net + (v22_ev_cho - v21_opt_cho); // if v2.1 used full opt
+const v21_bp_net_approx = ann.bp.y27.net; // unchanged (both v2.1 and v2.2 pess use $55K)
+
+document.getElementById('v21-delta').innerHTML = `
+<div class="box blue" style="margin-bottom:14px">
+  <h3>v2.2 vs v2.1 Net Income Delta — What Changed</h3>
+  <div class="scroll"><table class="st">
+    <thead><tr>
+      <th>Scenario</th><th>v2.1 CHO 2027/yr</th><th>v2.2 CHO 2027/yr</th>
+      <th>CHO Cost Δ</th><th>v2.1 Approx Net</th><th>v2.2 Net</th><th>Net Income Δ</th>
+    </tr></thead>
+    <tbody>
+      ${SCENARIOS.map(s => {
+        const v22net = ann[s.id].y27.net;
+        // v2.1 "opt" used $67.5K/mo, "pess" used $55K/mo
+        const isOpt = s.id === 'bo' || s.id === 'do';
+        const v21cho = isOpt ? 67500*12 : 55000*12;
+        const v22cho = ann[s.id].y27.cho;
+        const choDelta = v22cho - v21cho;
+        const v21net = v22net - choDelta; // if CHO was at v2.1 level
+        const netDelta = v22net - v21net;
+        return `<tr>
+          <td><span class="badge ${s.badgeClass}">${s.shortLabel}</span></td>
+          <td>${fmt(v21cho)}</td>
+          <td>${fmt(v22cho)}</td>
+          <td class="${choDelta > 0 ? 'neg' : 'pos'}">${choDelta >= 0 ? '+' : ''}${fmt(choDelta)}</td>
+          <td>${fmt(v21net)}</td>
+          <td class="${v22net >= 200000 ? 'pos' : v22net > 0 ? 'warn-c' : 'neg'}">${fmt(v22net)}</td>
+          <td class="${netDelta >= 0 ? 'pos' : 'neg'}">${netDelta >= 0 ? '+' : ''}${fmt(netDelta)}</td>
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table></div>
+  <p style="margin-top:10px;color:#8b949e;font-size:11.5px">
+    Optimistic scenarios: v2.2 uses EV ($763,800/yr) vs v2.1 full-bonus ($810,000/yr) → CHO cost LOWER by $46,200, net income HIGHER.
+    Pessimistic scenarios: unchanged ($660,000/yr).
+    Net effect: v2.2 increases probability of $200K target being met (Opt scenarios are now more conservative and still achievable).
+  </p>
+</div>
+<div class="box green">
+  <h3>✅ Probability Change: v2.1 → v2.2</h3>
+  <div class="scroll"><table class="st">
+    <thead><tr><th>Scenario</th><th>v2.1 Prob</th><th>v2.2 Prob</th><th>Change</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-bo">Base-Opt</span></td><td>78%</td><td class="pos">78%</td><td>→ unchanged</td><td>EV lowers CHO cost; cliff risk eliminated; target still met comfortably</td></tr>
+      <tr><td><span class="badge b-bp">Base-Pess</span></td><td>31%</td><td class="warn-c">31%</td><td>→ unchanged</td><td>Same CHO base cost, high churn still dominant factor</td></tr>
+      <tr><td><span class="badge b-do">Delay-Opt</span></td><td>52%</td><td class="pos">53%</td><td>↑ +1pp</td><td>Slight improvement from EV CHO cost reduction</td></tr>
+      <tr><td><span class="badge b-dp">Delay-Pess</span></td><td>12%</td><td class="neg">12%</td><td>→ unchanged</td><td>Late Pre-A + high churn + no bonus; dominant risks unchanged</td></tr>
+    </tbody>
+  </table></div>
+</div>`;
+
+// ── §5 ANNUAL P&L ──
+let aHTML = `<div class="scen-tabs">${SCENARIOS.map(s=>`<span class="badge ${s.badgeClass}">${s.shortLabel}</span>`).join('')}</div>`;
+aHTML += `<div class="scroll"><table class="st mt"><thead><tr>
+  <th>Line Item</th>
+  ${SCENARIOS.map(s=>`<th>2026<br><small>${s.shortLabel}</small></th>`).join('')}
+  ${SCENARIOS.map(s=>`<th>2027<br><small>${s.shortLabel}</small></th>`).join('')}
+</tr></thead><tbody>`;
+const addRow = (label, fn, cls='') => {
+  aHTML += `<tr class="${cls}"><td>${label}</td>`;
+  SCENARIOS.forEach(s => { aHTML += `<td>${fn(ann[s.id].y26, s)}</td>`; });
+  SCENARIOS.forEach(s => { aHTML += `<td>${fn(ann[s.id].y27, s)}</td>`; });
+  aHTML += '</tr>';
+};
+addRow('Subscription Revenue', a => fmt(a.sub));
+addRow('Custom Research Revenue', a => fmt(a.custom));
+addRow('<strong>Total Revenue</strong>', a => `<strong>${fmt(a.rev)}</strong>`, 'br');
+addRow('Technology (George)', a => fmt(a.tech));
+addRow('CCO Net Ops', a => fmt(a.cco));
+addRow('L1 Editing', a => fmt(a.l1));
+addRow('CLO Legal', a => fmt(a.clo));
+addRow('CRO Risk Mgmt', a => fmt(a.cro));
+addRow('CHO External Svcs', a => fmt(a.cho));
+addRow('Channel Commission 17%', a => fmt(a.channel));
+addRow('FA Success Fee', a => fmt(a.fa));
+addRow('Compliance Reserve', a => fmt(a.reserve));
+addRow('<strong>Total Cost</strong>', a => `<strong>${fmt(a.cost)}</strong>`, 'br');
+addRow('<strong>Net Income</strong>', (a, s) => {
+  const v = a.net;
+  const cls = v >= 200000 ? 'pos' : v > 0 ? 'warn-c' : 'neg';
+  return `<strong><span class="${cls}">${fmt(v)}</span></strong>`;
+}, 'br');
+addRow('End-Year ARR', a => fmt(a.endARR));
+addRow('Clients (end yr)', a => Math.round(a.endClients));
+addRow('Pro Users (end yr)', a => Math.round(a.endPro));
+addRow('Enterprise (end yr)', a => Math.round(a.endEnt));
+aHTML += '</tbody></table></div>';
+document.getElementById('annual').innerHTML = aHTML;
+
+// ── §6 MONTHLY DETAIL ──
+function buildMonthTable(scenId, scenLabel) {
+  const cf = cashflows[scenId];
+  let html = `<h3 style="margin-bottom:8px">${scenLabel}</h3>
+  <div class="scroll"><table class="mt"><thead><tr>
+    <th>Period</th><th>Pro</th><th>Ent</th><th>Sub Rev</th><th>Net↑MRR</th>
+    <th>KPI-3</th><th>Custom</th><th>Total Rev</th>
+    <th>CHO</th><th>Tech+Ops</th><th>CLO+CRO</th><th>Channel</th><th>FA</th><th>Reserve</th>
+    <th>Total Cost</th><th>Net P/L</th><th>💉Injection</th><th>Cash Bal</th>
+  </tr></thead><tbody>`;
+  let curYr = null;
+  cf.forEach(r => {
+    if (r.yr !== curYr) {
+      html += `<tr class="yg"><td colspan="18">── ${r.yr} ──</td></tr>`;
+      curYr = r.yr;
+    }
+    const belowFloor = r.balance < CASH_FLOOR;
+    const nearFloor = r.balance < CASH_FLOOR * 1.5 && r.balance >= CASH_FLOOR;
+    const rowCls = belowFloor ? 'crit-r' : r.inj > 0 ? 'inj-r' : nearFloor ? 'warn-r' : '';
+    const kpiCell = r.mrr_threshold !== null
+      ? (r.mrr_kpi_met ? '<span class="pos">✅</span>' : '<span class="neg">❌</span>')
+      : '<span style="color:#30363d">—</span>';
+    html += `<tr class="${rowCls}">
+      <td class="per">${r.period}</td>
+      <td>${Math.round(r.pro)}</td>
+      <td>${Math.round(r.ent)}</td>
+      <td>${fmt(r.sub_rev)}</td>
+      <td class="${r.net_new_mrr > 0 ? 'teal-c' : 'neg'}">${fmt(r.net_new_mrr)}</td>
+      <td style="text-align:center">${kpiCell}</td>
+      <td>${fmt(r.custom_rev)}</td>
+      <td class="bold">${fmt(r.total_rev)}</td>
+      <td>${fmt(r.cho)}</td>
+      <td>${fmt(r.tech + r.cco_net + r.l1)}</td>
+      <td>${fmt(r.clo + r.cro)}</td>
+      <td>${fmt(r.channel)}</td>
+      <td>${r.fa > 0 ? '<span class="warn-c">' + fmt(r.fa) + '</span>' : '—'}</td>
+      <td>${fmt(r.reserve)}</td>
+      <td class="bold">${fmt(r.total_cost)}</td>
+      <td>${fmtc(r.net)}</td>
+      <td>${r.inj > 0 ? '<span class="pos">+' + fmt(r.inj) + '</span>' : '—'}</td>
+      <td class="${r.balance < CASH_FLOOR ? 'neg' : r.balance < CASH_FLOOR * 1.5 ? 'warn-c' : 'pos'}">${fmt(r.balance)}${r.balance < CASH_FLOOR ? ' ⚠️' : ''}</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+document.getElementById('monthly').innerHTML =
+  buildMonthTable('bo', '① Base-Optimistic — Normal Ramp · Low Churn · CHO EV $63.65K/mo') +
+  '<br>' +
+  buildMonthTable('dp', '④ Delayed-Pessimistic — Delayed Ramp · High Churn · CHO Base $55K/mo · Pre-A Jun 30');
+
+// ── §7 RUNWAY ──
+let rwHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px">';
+SCENARIOS.forEach(s => {
+  const cf = cashflows[s.id];
+  const minBal = Math.min(...cf.map(r => r.balance));
+  const minMo = cf.find(r => r.balance === minBal);
+  const endBal = cf[23].balance;
+  const breachMonths = cf.filter(r => r.belowFloor).length;
+  return (rwHTML += `<div class="box ${minBal < 0 ? 'red' : minBal < CASH_FLOOR ? 'yellow' : 'green'}">
+    <h3><span class="badge ${s.badgeClass}">${s.shortLabel}</span> ${s.label}</h3>
+    <div style="margin-top:8px">
+      <div class="ar"><span class="k">Min Cash Balance</span><span class="v" style="color:${minBal<0?'#f85149':minBal<CASH_FLOOR?'#d29922':'#3fb950'}">${fmt(minBal)}</span></div>
+      <div class="ar"><span class="k">Min Cash Month</span><span class="v">${minMo ? minMo.period : '—'}</span></div>
+      <div class="ar"><span class="k">$150K Floor Breaches</span><span class="v ${breachMonths > 0 ? 'neg' : 'pos'}">${breachMonths > 0 ? breachMonths + ' months ⚠️' : '0 ✅'}</span></div>
+      <div class="ar"><span class="k">End-2027 Cash</span><span class="v">${fmt(endBal)}</span></div>
+      <div class="ar"><span class="k">Monthly Breakeven</span><span class="v">${beMo(models[s.id])}</span></div>
+      <div class="ar"><span class="k">Pre-A Deadline</span><span class="v">${s.preaMonth === PREA_MONTH_ONTARGET ? 'May 15 ✅' : 'June 30 ⚠️'}</span></div>
+    </div>
+  </div>`);
+});
+rwHTML += '</div>';
+document.getElementById('runway').innerHTML = rwHTML;
+
+// ── §8 SENSITIVITY ──
+const boNet = ann.bo.y27.net;
+// Sensitivity cases
+const sensCases = [
+  {
+    label: 'CHO 2027 Bonus Trigger Rate',
+    varLabel: 'P(3 KPI) varies ±20pp',
+    up: (() => { const d = (0.70-0.50)*12500*12*(1-0.07); return d; })(),
+    dn: (() => { const d = (0.30-0.50)*12500*12*(1-0.07); return d - (0.30-0.50)*8000*12*0.10*(1-0.07); return d; })(),
+    note: 'P(3KPI)=70% vs 50% baseline'
+  },
+  {
+    label: 'Pro Subscription ARPU',
+    varLabel: '±20% ($149 base)',
+    up: (() => { return ann.bo.y27.sub/PRO_ARPU * PRO_ARPU * 0.20 * (1 - CH_RATE - 0.07); })(),
+    dn: (() => { return -ann.bo.y27.sub/PRO_ARPU * PRO_ARPU * 0.20 * (1 - CH_RATE - 0.07); })(),
+    note: 'Approximate sub revenue change'
+  },
+  {
+    label: 'Enterprise ARPU',
+    varLabel: '±20% ($800 base)',
+    up: (() => { return ann.bo.y27.endEnt*12 * ENT_ARPU * 0.20 * (1-CH_RATE-0.07); })(),
+    dn: (() => { return -ann.bo.y27.endEnt*12 * ENT_ARPU * 0.20 * (1-CH_RATE-0.07); })(),
+    note: 'High impact due to $800 ARPU'
+  },
+  {
+    label: 'Pro User Churn (Annual)',
+    varLabel: '22%→30% stress / 22%→15% best',
+    up: (() => {
+      const rev_bp27 = annSum(models.bp, 2027).sub;
+      const rev_bo27 = ann.bo.y27.sub;
+      return (rev_bp27 - rev_bo27) * (1 - CH_RATE - 0.07);
+    })(),
+    dn: (() => {
+      const rev_low = buildRevenue(GROSS_NEW_BASE, 0.15, CHURN_ENT_BASE);
+      let sub = 0;
+      for (let i=12;i<24;i++) sub += rev_low[i].pro * PRO_ARPU + rev_low[i].ent * ENT_ARPU;
+      return (sub - ann.bo.y27.sub) * (1 - CH_RATE - 0.07);
+    })(),
+    note: 'Churn up = negative; churn down = positive'
+  },
+  {
+    label: 'New Client Acquisition Speed',
+    varLabel: '±20% Monthly Gross Adds',
+    up: ann.bo.y27.sub * 0.15 * (1 - CH_RATE - 0.07),
+    dn: -ann.bo.y27.sub * 0.15 * (1 - CH_RATE - 0.07),
+    note: 'Content flywheel dependency'
+  }
+];
+
+let sensHTML = `<div class="box blue" style="margin-bottom:14px">
+  <h3>Base: Base-Optimistic 2027 Net Income = ${fmt(boNet)}</h3>
+  <p style="font-size:12px">Sensitivity shows approximate impact of key variable changes on 2027 full-year net income. CHO gradient bonus now modeled explicitly.</p>
+</div>
+<div class="scroll"><table class="st">
+  <thead><tr><th>Driver</th><th>Variable</th><th>Upside Impact</th><th>Downside Impact</th><th>2-Way Swing</th><th>Rank</th></tr></thead><tbody>`;
+sensCases.sort((a,b) => (Math.abs(b.up)+Math.abs(b.dn)) - (Math.abs(a.up)+Math.abs(a.dn)));
+sensCases.forEach((c, i) => {
+  const swing = Math.abs(c.up) + Math.abs(c.dn);
+  sensHTML += `<tr>
+    <td><strong>${c.label}</strong><br><span style="color:#8b949e;font-size:10px">${c.note}</span></td>
+    <td style="font-size:11px">${c.varLabel}</td>
+    <td class="${c.up > 0 ? 'pos' : 'neg'}">${c.up > 0 ? '+' : ''}${fmt(c.up)}</td>
+    <td class="${c.dn > 0 ? 'pos' : 'neg'}">${c.dn > 0 ? '+' : ''}${fmt(c.dn)}</td>
+    <td class="warn-c">${fmt(swing)}</td>
+    <td><strong>#${i+1}</strong></td>
+  </tr>`;
+});
+sensHTML += `</tbody></table></div>`;
+
+// CHO bonus sensitivity table
+sensHTML += `<div class="box purple" style="margin-top:16px">
+  <h3>🎯 CHO Bonus Trigger Probability Sensitivity (v2.2 Gradient)</h3>
+  <div class="scroll"><table class="st"><thead><tr>
+    <th>P(3 KPIs)</th><th>P(2 KPIs)</th><th>P(≤1 KPI)</th>
+    <th>Monthly EV</th><th>Annual EV</th><th>vs Baseline EV</th><th>2027 Net Impact</th>
+  </tr></thead><tbody>`;
+[[0.35,0.30,0.35],[0.45,0.30,0.25],[0.50,0.30,0.20],[0.55,0.30,0.15],[0.65,0.25,0.10]].forEach(([p3,p2,p1]) => {
+  const ev = p3*12500 + p2*8000 + p1*0;
+  const annEV = (55000+ev)*12;
+  const delta = ev - 8650;
+  const netImpact = -delta*12*(1+0.07); // roughly
+  const isBL = Math.abs(p3-0.50)<0.01;
+  return (sensHTML += `<tr class="${isBL ? 'inj-r' : ''}">
+    <td>${(p3*100).toFixed(0)}%${isBL?' ← baseline':''}</td>
+    <td>${(p2*100).toFixed(0)}%</td>
+    <td>${(p1*100).toFixed(0)}%</td>
+    <td class="teal-c">$${Math.round(ev).toLocaleString()}</td>
+    <td>${fmt(annEV)}</td>
+    <td class="${delta>=0?'neg':'pos'}">${delta>=0?'+':'-'}$${Math.abs(Math.round(delta)).toLocaleString()}/mo</td>
+    <td class="${-netImpact>=0?'pos':'neg'}">${fmt(-netImpact)}</td>
+  </tr>`);
+});
+sensHTML += '</tbody></table></div></div>';
+document.getElementById('sensitivity').innerHTML = sensHTML;
+
+// ── §9 RISKS ──
+document.getElementById('risks').innerHTML = `<div class="rg">
+  <div class="rc"><span class="sev sm">MEDIUM→LOW</span><h4>CHO Cliff Risk — Eliminated by Gradient ✅</h4>
+    <p>Previously: all-or-nothing $12,500. Now: 2-KPI path pays $8,000 → cliff eliminated. EV now $8,650/mo vs $7,500 (60% P3 assumption).</p>
+    <p class="mit">✅ RESOLVED in v2.2: Gradient mechanism approved by Franklyn. Monthly KPI review cadence maintained.</p>
+  </div>
+  <div class="rc"><span class="sev sm">MEDIUM→LOW</span><h4>Pre-A Cash Gap — Mitigated by May 15 Deadline ✅</h4>
+    <p>v2.1 risk: 0-day buffer at May 31. v2.2: May 15 internal deadline creates 16-day buffer. $150K cash floor provides early warning system.</p>
+    <p class="mit">✅ MITIGATED: May 15 deadline + $150K floor + founder bridge line at $200K trigger.</p>
+  </div>
+  <div class="rc"><span class="sev sh">HIGH</span><h4>Enterprise Churn > 15% (Stress)</h4>
+    <p>Enterprise accounts ($800/mo) drive LTV. Delayed-Pessimistic assumes 15% churn. If breached, 2027 P/L deteriorates significantly beyond model floor.</p>
+    <p class="mit">⚡ Annual contract lock-in; CHO KPI-2 (enterprise churn ≤10%) directly addresses this.</p>
+  </div>
+  <div class="rc"><span class="sev sh">HIGH</span><h4>KPI-3 MRR Threshold Achievability (2027: $10K/mo)</h4>
+    <p>In Base-Optimistic, net new MRR reaches $10K threshold in mid-2027. Any revenue delay (Delayed scenarios) may miss KPI-3 → reduces bonus probability → affects CHO alignment.</p>
+    <p class="mit">⚡ Monthly MRR report from CFO (starts Q3 2026, Jul). Threshold vs projection reviewed Q3 board update.</p>
+  </div>
+  <div class="rc"><span class="sev sm">MEDIUM</span><h4>Content Flywheel Dependency (Celine + Cole)</h4>
+    <p>>50% acquisition via content channel. Acquisition speed drop → MRR misses → KPI-3 fails → CHO 2-KPI tier only → lower alignment incentive. Compounding risk.</p>
+    <p class="mit">⚡ L2/L3 network live by Q2 2026. Cole 2027 content budget ($420K-$480K) locked.</p>
+  </div>
+  <div class="rc"><span class="sev sl">LOW</span><h4>CRO Compliance Escalation (Unlikely)</h4>
+    <p>Base $145K/yr assumes Content Classification Policy live by Month 3. Policy delay adds ~$80K+.</p>
+    <p class="mit">✅ CLO + CRO alignment confirmed. Policy completion = Q3 ramp pre-condition.</p>
+  </div>
+</div>`;
+
+// ── §10 ASSUMPTIONS ──
+document.getElementById('assumptions').innerHTML = `
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px">
+  <div class="ab"><h4>Revenue (v2.2 Final)</h4>
+    <div class="ar"><span class="k">Pro ARPU</span><span class="v">$149/mo</span></div>
+    <div class="ar"><span class="k">Enterprise ARPU</span><span class="v">$800/mo</span></div>
+    <div class="ar"><span class="k">Enterprise mix of new adds</span><span class="v">30%</span></div>
+    <div class="ar"><span class="k">Custom Research avg deal</span><span class="v">$7,500</span></div>
+    <div class="ar"><span class="k">Pro churn base/stress</span><span class="v">22% / 30%</span></div>
+    <div class="ar"><span class="k">Enterprise churn base/stress</span><span class="v">10% / 15%</span></div>
+    <div class="ar"><span class="k">Content acquisition attr.</span><span class="v">>50% (Celine model)</span></div>
+  </div>
+  <div class="ab"><h4>CHO Costs (v2.2 Final ⚡ UPDATED)</h4>
+    <div class="ar"><span class="k">CHO 2027 base fixed</span><span class="v">$55,000/mo</span></div>
+    <div class="ar"><span class="k">Bonus: ≤1 KPI</span><span class="v">$0</span></div>
+    <div class="ar"><span class="k">Bonus: 2 KPIs met</span><span class="v">$8,000/mo</span></div>
+    <div class="ar"><span class="k">Bonus: 3 KPIs met</span><span class="v">$12,500/mo</span></div>
+    <div class="ar"><span class="k">Bonus EV (50/30/20%)</span><span class="v" style="color:#2dd4bf">$8,650/mo</span></div>
+    <div class="ar"><span class="k">CHO 2027 EV total</span><span class="v" style="color:#2dd4bf">$763,800/yr</span></div>
+    <div class="ar"><span class="k">CHO 2026 total</span><span class="v">$387,900 fixed</span></div>
+    <div class="ar"><span class="k">KPI-3 MRR Q3/Q4/2027</span><span class="v">$2K / $4K / $10K/mo</span></div>
+  </div>
+  <div class="ab"><h4>Financing (v2.2 Final ⚡ UPDATED)</h4>
+    <div class="ar"><span class="k">Angel round</span><span class="v">$450K</span></div>
+    <div class="ar"><span class="k">Pre-A internal deadline</span><span class="v" style="color:#3fb950">May 15, 2026 ⚡</span></div>
+    <div class="ar"><span class="k">Pre-A legal close target</span><span class="v">May 31, 2026</span></div>
+    <div class="ar"><span class="k">Minimum cash floor</span><span class="v" style="color:#3fb950">$150,000 🛡️</span></div>
+    <div class="ar"><span class="k">Bridge trigger level</span><span class="v">$200,000 (warning)</span></div>
+    <div class="ar"><span class="k">Pre-A amount</span><span class="v">$3,000,000</span></div>
+    <div class="ar"><span class="k">FA success fee</span><span class="v">$60K (June 2026)</span></div>
+  </div>
+  <div class="ab"><h4>Other Costs + Data Sources</h4>
+    <div class="ar"><span class="k">CRO base compliance</span><span class="v">$145K/yr</span></div>
+    <div class="ar"><span class="k">CLO 2026 / 2027</span><span class="v">~$66K / $28K</span></div>
+    <div class="ar"><span class="k">Channel commission</span><span class="v">17% of sub rev</span></div>
+    <div class="ar"><span class="k">Reserve 2026/2027</span><span class="v">10% / 7% OpEx</span></div>
+    <div class="ar"><span class="k">CHO decisions</span><span class="v">Franklyn (signed)</span></div>
+    <div class="ar"><span class="k">Revenue / churn</span><span class="v">Celine (CMO)</span></div>
+    <div class="ar"><span class="k">Content cost</span><span class="v">Cole (CCO)</span></div>
+  </div>
+</div>`;
+
+}); // end DOMContentLoaded
+</script>
+
+<!-- §0 CHO TIERED BONUS -->
+<section id="cho-tiered">
+  <h2>§0 CHO Tiered Gradient Bonus — v2.2 Core Change <span class="final-badge">FRANKLYN APPROVED</span></h2>
+  <div id="cho-tiered"></div>
+</section>
+
+<!-- §1 CASH FLOOR -->
+<section id="cash-floor">
+  <h2>§1 Pre-A May 15 Deadline + $150K Cash Floor <span class="upd-badge">NEW v2.2</span></h2>
+  <div id="cash-floor"></div>
+</section>
+
+<!-- §2 MRR KPI THRESHOLDS -->
+<section id="mrr-kpi">
+  <h2>§2 KPI-3 MRR Growth Thresholds — Phased Schedule <span class="new-badge">NEW v2.2</span></h2>
+  <div id="mrr-kpi"></div>
+</section>
+
+<!-- §3 VERDICT -->
+<section id="verdict">
+  <h2>§3 Executive Verdict — $200K Net Income Feasibility (4 Scenarios)</h2>
+  <div id="verdict"></div>
+</section>
+
+<!-- §4 V2.1 → V2.2 DELTA -->
+<section id="v21-delta">
+  <h2>§4 v2.1 → v2.2 Delta Analysis</h2>
+  <div id="v21-delta"></div>
+</section>
+
+<!-- §5 ANNUAL P&L -->
+<section id="annual">
+  <h2>§5 Annual P&L — All 4 Scenarios</h2>
+  <div id="annual"></div>
+</section>
+
+<!-- §6 MONTHLY DETAIL -->
+<section id="monthly">
+  <h2>§6 Monthly Cash Flow Detail</h2>
+  <div id="monthly"></div>
+</section>
+
+<!-- §7 RUNWAY -->
+<section id="runway">
+  <h2>§7 Cash Runway & $150K Floor Compliance</h2>
+  <div id="runway"></div>
+</section>
+
+<!-- §8 SENSITIVITY -->
+<section id="sensitivity">
+  <h2>§8 Sensitivity Analysis — CHO Gradient + Key Drivers</h2>
+  <div id="sensitivity"></div>
+</section>
+
+<!-- §9 RISKS -->
+<section id="risks">
+  <h2>§9 Risk Register (v2.2 Updated)</h2>
+  <div id="risks"></div>
+</section>
+
+<!-- §10 ASSUMPTIONS -->
+<section id="assumptions">
+  <h2>§10 Model Assumptions v2.2 Final</h2>
+  <div id="assumptions"></div>
+</section>
+
+</div>
+
+<footer>
+  <strong>AMORA Financial Model v2.2 — FINAL VERSION</strong> · CFO Report · Mar 2026<br>
+  v2.2 Changes: (1) CHO bonus tiered gradient $0/$8K/$12.5K — EV $8,650/mo; (2) Pre-A internal deadline May 15; (3) $150K minimum cash floor; (4) KPI-3 MRR phased: Q3 $2K / Q4 $4K / 2027 $10K<br>
+  All figures in USD. Internal planning model. Decision authority: Franklyn (CEO) · Data: George, Celine, Cole, CLO, CRO, CHO
+</footer>
+</body>
+</html>

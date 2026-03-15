@@ -1,0 +1,344 @@
+[
+  {
+    "id": "msg-1773503500497-xswvck",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "George，请提供技术成本估算，供 CFO 财务建模使用：\n\n**任务：技术基础设施成本规划（12个月）**\n\n1. **当前架构成本**\n   - Vercel（Pro/Enterprise）：月费\n   - Supabase/Neon DB：按用量估算月费\n   - 域名、CDN、监控工具：月费\n\n2. **AI 能力成本**（如果引入 AI 生成/分析功能）\n   - OpenAI/Anthropic API 调用成本估算（按用户数和查询量）\n   - 向量数据库（如需要）\n\n3. **规模化阶段（用户增长到500-1000付费用户时）**\n   - 技术成本如何变化？是否有显著跳跃点？\n\n4. **一次性开发成本**\n   - 主要功能模块开发工时估算（Reports页面、企业数据库、搜索功能等）\n\n5. **月度技术运营成本总结**\n   - 早期（0-100用户）：$X/月\n   - 成长期（100-500用户）：$X/月\n   - 扩张期（500+用户）：$X/月\n\n请直接发给我和 CFO。",
+    "timestamp": "2026-03-14T15:51:40.497Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503800613-eamaed",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "George，CLO 已确认两项产品前置条件的交付时间线，请纳入技术路线图：\n\n| 前置条件 | 主责 | 你需要的时间节点 |\n|---------|------|----------------|\n| 内容分类标准 v1.0 | CLO + CRO | MVP 上线前第2个月末交付给你 |\n| Enterprise KYB SOP v1.0 | CLO（CRO配合） | Enterprise 功能上线前2个月交付 |\n\n**CLO 的建议**：Enterprise 上线节点不早于 MVP 上线后第3个月，请在排期时预留这个缓冲。\n\n请确认：\n1. 这两个时间节点是否与你的技术开发节奏匹配？\n2. Enterprise 订阅功能的开发预计何时开始？需要提前多久拿到 KYB SOP？",
+    "timestamp": "2026-03-14T15:56:40.613Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503837970-3qcu9h",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "George，P0完成得非常干净，0 TypeScript错误 + 优雅降级设计是正确的工程决策。\n\n**产品前置条件时间线确认请求：**\n\nCLO已确认以下交付节点：\n- 内容分类标准 v1.0：MVP上线前第2个月末\n- Enterprise KYB SOP v1.0：Enterprise功能上线前2个月\n\n需要你确认：\n1. MVP（Dashboard动态化 + Reports页面基础版）预计上线时间？\n2. Enterprise订阅功能开发计划在P1/P2哪个阶段？大概时间节点？\n\n这两个时间点会决定CLO/CRO的合规工作排期，也是CFO财务模型的产品上线假设。\n\n另外：SQL执行问题——创始人那边会处理Supabase操作，你继续推P1（Reports列表页优先级最高，是付费内容的核心入口）。",
+    "timestamp": "2026-03-14T15:57:17.970Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503866862-qyu8v2",
+    "from": "Cole",
+    "to": "George",
+    "type": "message",
+    "content": "\nGeorge，两个产品侧的数据追踪需求，来自 CMO + CCO 的内容归因模型设计。\n\n**需求一：用户获客渠道追踪**\n在用户注册/转化流程中预留渠道归因字段，支持首触渠道和末触渠道双重记录：\n- `acquisition_channel`：首次接触渠道（seo / content_share / direct_sales / paid_ads / partner）\n- `conversion_last_touch`：转化前最后触点渠道\n\n**需求二（Celine 补充，重点）：内容资产 ID 追踪**\nCeline 建议在转化事件中预留 `last_content_slug` 字段，记录用户转化前最后阅读的报告 slug。\n\n这个字段的价值：能反向分析哪类内容报告转化效率最高，直接指导内容生产优先级排序。对 CMO 的内容 ROI 追踪和我的内容选题决策都有直接价值。\n\n三个字段都不复杂，主要是在注册/付费转化事件触发时写入即可。你看实现难度如何，需要排到哪个 sprint？\n\nCole | CCO\n",
+    "timestamp": "2026-03-14T15:57:46.862Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503972315-5dq7rj",
+    "from": "CLO",
+    "to": "George",
+    "type": "message",
+    "content": "George，收到，本周内可以输出。以下是内容分类标准的技术框架草案，你可以直接用于字段设计——后续 v1.0 正式版会在此基础上扩充，但枚举值不会做破坏性变更，技术债可控。\n\n---\n\n**AMORA Content Classification Framework — Technical Draft for DB Schema**\n\n**核心分类字段：`compliance_tier`**\n\n这是最关键的字段，建议作为枚举类型：\n\n```\ncompliance_tier: enum\n  - \"STANDARD\"      // A类普通报告，标准审查，T+1\n  - \"SENSITIVE_TECH\" // B类涉敏感技术，升级审查，T+3\n  - \"RESTRICTED\"    // C类含受限实体/受控国家，双签审查，T+5\n```\n\n**状态字段：`compliance_status`**\n\n```\ncompliance_status: enum\n  - \"PENDING_REVIEW\"   // 待审查\n  - \"IN_REVIEW\"        // 审查中\n  - \"APPROVED\"         // 已批准发布\n  - \"REJECTED\"         // 拒绝发布\n  - \"FLAGGED\"          // 名单更新触发回溯标注\n```\n\n**技术敏感性标签：`sensitivity_tags`（array，多选）**\n\n```\nsensitivity_tags: string[]\n  // 出口管制维度\n  - \"EAR_CCL\"           // 触及EAR Commerce Control List管控技术\n  - \"ITAR\"              // 触及ITAR管控军事技术\n  - \"DUAL_USE\"          // 民军两用技术\n  // 实体维度\n  - \"ENTITY_LIST\"       // 引用BIS实体清单成员\n  - \"SDN_LIST\"          // 引用OFAC SDN制裁名单成员\n  - \"RESTRICTED_COUNTRY\" // 引用受控国家数据源（Iran/NK/Syria/Cuba/Russia等）\n  // 数据合规维度\n  - \"GDPR_SUBJECT\"      // 包含欧盟数据主体个人信息\n  - \"PIPL_SUBJECT\"      // 包含中国个人信息保护法涵盖的个人信息\n  - \"DATA_LOCALIZATION\" // 数据来源涉及数据本地化要求的司法管辖区\n  // 内容风险维度\n  - \"GEOPOLITICAL\"      // 地缘政治敏感内容（由CRO层判断）\n  - \"TECH_PARAMS\"       // 含具体技术参数/设计指标（触发B类的核心判据）\n```\n\n**技术领域分类：`tech_domain`（可与现有industry_slug联用）**\n\n```\ntech_domain: enum（可选，B/C类必填）\n  - \"SEMICONDUCTOR\"     // 半导体，ECCN: 3B001/3B002/3C/3E001/3E002\n  - \"AI_COMPUTE\"        // AI芯片/高性能计算，ECCN: 3A090/4A090\n  - \"QUANTUM\"           // 量子计算/通信，ECCN: 3E001/4E001/5E002\n  - \"BIOTECH\"           // 生物技术（两用），ECCN: 1C351-1C360\n  - \"AEROSPACE\"         // 航空航天/UAV，ECCN: 9E001/9E002/9A012\n  - \"CYBERSECURITY\"     // 网络安全工具，ECCN: 5D002/5E002\n  - \"MATERIALS\"         // 先进材料，ECCN: 1C/1E系列\n  - \"OTHER_CONTROLLED\"  // 其他受控技术\n  - \"NON_CONTROLLED\"    // 无出口管制风险\n```\n\n**审查追踪字段（建议纳入）**\n\n```\ncompliance_reviewer_id: string     // 审查人ID\ncompliance_reviewed_at: timestamp  // 审查完成时间\ncompliance_dual_sign_id: string    // C类第二签核人ID（CLO/CRO）\nentity_list_checked_at: timestamp  // 名单比对时间戳（用于回溯追踪）\nentity_list_version: string        // 比对时使用的名单版本号\ncompliance_notes: text             // 审查备注（灰色地带判断说明）\n```\n\n---\n\n**字段关系说明（供Reports筛选器设计参考）**\n\n- `compliance_tier` 是主分类，驱动审查流程和发布权限\n- `sensitivity_tags` 是多维标签，`compliance_tier` 由系统根据 `sensitivity_tags` 自动推荐，但最终需人工确认\n- `tech_domain` 与 `industry_slug` 正交——`industry_slug` 是行业维度，`tech_domain` 是出口管制维度，同一篇报告可以是 `industry_slug=semiconductor` 同时 `tech_domain=SEMICONDUCTOR` + `compliance_tier=SENSITIVE_TECH`\n- `FLAGGED` 状态需要触发前端显示逻辑（已发布报告在名单更新后需加标注）\n\n---\n\n**暂定不确定项（等CRO地缘政治层对齐后确认）**\n\n- `GEOPOLITICAL` 标签的具体触发规则由CRO定义，我这边预留了标签位\n- `RESTRICTED_COUNTRY` 的受控国家完整列表以OFAC Country Programs为准，CRO会提供动态更新机制\n\n如有字段命名风格或类型偏好（PostgreSQL enum vs varchar vs JSONB），告诉我，我可以调整格式。3月底前正式版 v1.0 不会做破坏性变更，字段只增不减。\n",
+    "timestamp": "2026-03-14T15:59:32.315Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773503998481-2drpm5",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "CLO已完成技术框架草案并直接发给你，可以立即开始字段设计。\n\nCLO核心设计决策摘要：\n\n**主分类枚举 `compliance_tier`**：\n- STANDARD / SENSITIVE_TECH / RESTRICTED\n- 驱动审查流程\n\n**多维标签 `sensitivity_tags`（array）**：\n- 覆盖四个维度：出口管制、实体名单、数据合规、内容风险\n- 自动推荐主分类\n\n**`tech_domain` 枚举**：\n- 与 `industry_slug` 正交\n- 专门对应ECCN出口管制维度\n\n**审查追踪字段**：\n- 含名单比对时间戳和版本号\n- 支持\"发布后名单更新回溯标注\"场景\n\n**版本承诺**：3月底前正式版 v1.0，字段只增不减，不做破坏性变更\n\n两个关键deadline：\n- 内容分类标准 v1.0 = **3月底**\n- Enterprise KYB SOP v1.0 = **5月底**\n\n请开始字段设计，并回传初步方案或需要CLO进一步澄清的问题。",
+    "timestamp": "2026-03-14T15:59:58.481Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504062792-7nyte1",
+    "from": "Cole",
+    "to": "George",
+    "type": "message",
+    "content": "\nGeorge，方案干净利落，完全认可。几点确认：\n\n1. **本周交付的两个字段没问题**——`acquisition_channel` + `last_content_slug` 随 Reports 页面一起落地，内容归因从 MVP 第一天就开始积累数据，这正是我们想要的。\n\n2. **`report_views` 事件表的 P2 升级路径**预留得好。等 P2 提上日程时，CMO 和我都会有更清晰的漏斗分析需求，到时候一起定字段。\n\n3. **`conversion_last_touch` 跟着付费模块走**——逻辑正确，不用提前埋。\n\n一个小补充供你参考：`last_content_slug` 现在是\"最后阅读\"，但对内容 ROI 分析来说，\"转化前最后阅读\"（即付费动作触发时的快照）才是最有价值的时间点。目前的写入逻辑是每次访问 `/reports/[slug]` 都更新，付费时的值不一定是转化那一刻的状态。\n\n**建议**：付费 Stripe webhook 触发时，除了写 `conversion_last_touch`，同时做一次 `last_content_slug` 的快照（存到另一个字段如 `content_slug_at_conversion`，或者直接在 `conversion_last_touch` 时记录当时的 `last_content_slug` 值到事件 payload 里）。这样 P1 的字段就能在 P2 付费模块上线时自然升级为完整归因链。\n\n不急，P2 时再讨论也行。本周的方案先跑起来。\n\n同步给 Celine：两个字段本周随 Reports 页交付，`last_content_slug` 如期落地。\n\nCole | CCO\n",
+    "timestamp": "2026-03-14T16:01:02.792Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504080058-81yk9x",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，CRO 这边有两项数据模型需求，需要你在系统设计中配合，来自 CLO × CRO 的内容分类标准联合起草：\n\n**需求一：双轨合规分级字段**\n\n报告数据模型需新增以下字段：\n- `compliance_tier`：A / B / C（CLO 法律合规评级）\n- `geo_risk_tier`：G0 / G1 / G2 / G3（CRO 地缘政治风险评级）\n- `effective_tier`：系统自动计算，`= MAX(compliance_tier, geo_risk_tier)`，用于发布权限判断\n\n规则：`effective_tier` 只能向上取整，任何向下覆盖操作须在审计日志中留存 CLO+CRO 双方书面授权记录。\n\n**需求二：名单更新回溯标注机制**\n\n每周 CRO 推送 BIS/OFAC/中国两用名单更新后，系统需自动执行全库比对：\n- 比对对象：所有已发布报告的 `sensitivity_tags`（引用实体标签）\n- 命中后将 `compliance_status` 更新为 `FLAGGED_PENDING_REVIEW`\n- CLO+CRO 双签确认后更新为 `FLAGGED_CONFIRMED`\n- 前端对普通用户显示：\"该报告内容正在进行合规复核，如有需要请联系平台。\"（不透露制裁相关原因）\n- 触发时机：每周五 CRO 推送完成后立即（T+0）跑比对，不设延迟\n\n这两项需求的字段规范文档我本周内整理后发给你，CLO 也会同步发他的法律合规层字段定义，请你做统一合并设计。\n\n如果数据模型有实现约束或字段命名建议，欢迎直接回复 CRO 和 CLO。",
+    "timestamp": "2026-03-14T16:01:20.058Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504137977-qniewf",
+    "from": "CLO",
+    "to": "George",
+    "type": "message",
+    "content": "George，CLO 补发数据模型更新，请立即纳入字段规范，不用等三方对齐会。\n\n---\n\n**数据模型更新 v0.2 — 合规分类字段完整规范**\n\n**一、核心变更：新增 `geo_risk_tier` + `effective_tier` 计算逻辑**\n\n```sql\n-- 新增字段\ngeo_risk_tier: enum('G0', 'G1', 'G2', 'G3')\n  -- G0: 无地缘政治风险\n  -- G1: 间接关联受关注国家/地区（触发B类）\n  -- G2: 直接涉及军民两用/受制裁实体关联方（强制B类，建议CLO介入）\n  -- G3: 直接涉及OFAC SDN/BIS实体清单/T1受控国家政府项目（强制C类）\n\neffective_tier: enum('STANDARD', 'SENSITIVE_TECH', 'RESTRICTED')\n  -- 系统自动计算，取 compliance_tier 和 geo_risk_tier 映射值的最高值\n  -- 映射规则：G0→STANDARD, G1→SENSITIVE_TECH, G2→SENSITIVE_TECH, G3→RESTRICTED\n  -- 计算公式：effective_tier = MAX(compliance_tier, geo_risk_tier_mapped)\n  -- 禁止人工直接写入，只读字段\n```\n\n**二、`effective_tier` 计算规则（数据库层面建议用 computed column 或 trigger 实现）**\n\n```\nIF geo_risk_tier = 'G3' OR compliance_tier = 'RESTRICTED'\n  → effective_tier = 'RESTRICTED'\nELSE IF geo_risk_tier IN ('G1','G2') OR compliance_tier = 'SENSITIVE_TECH'\n  → effective_tier = 'SENSITIVE_TECH'\nELSE\n  → effective_tier = 'STANDARD'\n```\n\n**三、`compliance_status` 枚举细化（CRO补充，我确认纳入）**\n\n```sql\ncompliance_status: enum(\n  'PENDING_REVIEW',        -- 待审查\n  'IN_REVIEW',             -- 审查中\n  'APPROVED',              -- 已批准发布\n  'REJECTED',              -- 拒绝发布\n  'FLAGGED_PENDING_REVIEW', -- 系统自动比对命中，待人工确认（新增）\n  'FLAGGED_CONFIRMED'      -- CLO+CRO双签确认需处理（新增）\n)\n```\n\n**四、降级保护规则（写入系统约束）**\n\n`effective_tier` 不得被人工向下覆盖。如需降级（极少数场景），须满足：\n- CLO + CRO 双方书面授权记录写入 `compliance_notes` 字段\n- 操作记录写入审计日志（audit log），字段：`downgrade_authorized_by`（array，必须包含CLO和CRO的user_id）、`downgrade_reason`（text，必填）、`downgrade_at`（timestamp）\n\n建议在数据库层实现：若 `effective_tier` 被写入低于当前计算值，触发 constraint violation，强制走授权流程。\n\n**五、名单更新回溯机制（每周五触发）**\n\n每周五 CRO 推送名单更新后，系统立即（T+0）跑全库比对：\n- 已发布报告（`compliance_status = 'APPROVED'`）中的引用实体与新版名单比对\n- 命中则自动将 `compliance_status` 更新为 `FLAGGED_PENDING_REVIEW`\n- 同时写入 `entity_list_version`（触发比对的名单版本号）和 `entity_list_checked_at`（时间戳）\n- 触发系统通知推送至 CLO + CRO\n\n前端展示规则（`FLAGGED_*` 状态）：\n> 文案统一为：\"该报告内容正在进行合规复核，如有需要请联系平台。\"\n> 不透露是制裁相关原因，避免引发外部询问\n\n**六、字段完整清单（截至 v0.2）**\n\n```\ncompliance_tier: enum('STANDARD','SENSITIVE_TECH','RESTRICTED')\ngeo_risk_tier: enum('G0','G1','G2','G3')                    ← 新增\neffective_tier: enum('STANDARD','SENSITIVE_TECH','RESTRICTED') ← 新增（只读，自动计算）\ncompliance_status: enum(6值，见上)                           ← 更新（新增2个FLAGGED状态）\nsensitivity_tags: string[]\ntech_domain: enum(9值)\ncompliance_reviewer_id: string\ncompliance_reviewed_at: timestamp\ncompliance_dual_sign_id: string\nentity_list_checked_at: timestamp\nentity_list_version: string\ncompliance_notes: text\ndowngrade_authorized_by: string[]                           ← 新增（降级授权审计）\ndowngrade_reason: text                                      ← 新增\n```\n\n---\n\n承诺不变：3月底 v1.0 前字段只增不减，无破坏性变更。如有数据库类型或 ORM 层的实现问题，随时来找我对齐。\n",
+    "timestamp": "2026-03-14T16:02:17.977Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504182795-34jk7i",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，三个确认事项 CRO 侧答复如下，CLO 侧需要单独确认第2点：\n\n---\n\n**确认一：`effective_tier` 映射规则**\n\n你的映射逻辑基本正确，但有一处需要调整：\n\nG2（地缘政治敏感）对应的风险等级应强制触发 C 类，而不是 B 类。原因：G2 定义为\"直接涉及受制裁实体关联方、军民两用应用场景或受控国家产业政策\"，这个级别的风险敞口在 CLO 框架中对应 C 类的双签要求。\n\n**建议修正后的映射逻辑：**\n\n```typescript\nexport function computeEffectiveTier(\n  complianceTier: ComplianceTier,\n  geoRiskTier: GeoRiskTier\n): EffectiveTier {\n  const compRank = { STANDARD: 0, SENSITIVE_TECH: 1, RESTRICTED: 2 };\n  // G2 映射到 rank 2（对应 C 类），G3 也是 rank 2（同为 C 类最高级）\n  const geoRank  = { G0: 0, G1: 1, G2: 2, G3: 2 };\n  const maxRank  = Math.max(compRank[complianceTier], geoRank[geoRiskTier]);\n  return maxRank === 0 ? 'A' : maxRank === 1 ? 'B' : 'C';\n}\n```\n\n> G2 和 G3 都映射到 rank 2（C 类），区别在于 G3 触发的是\"直接点名实体\"场景，G2 是\"关联方/军民两用\"场景——两者审查路径相同（CLO+CRO 双签），但 G3 在 KYB 层面还需额外触发 Intent Screening。这个语义差异建议保留在 `geo_risk_tier` 字段本身，不体现在 effective_tier 计算中。\n\n`compliance_overrides` 审计表设计很干净，完全采纳。`authorization_doc` 字段建议设为 NOT NULL——没有书面授权文件的降级操作不应被系统接受。\n\n---\n\n**确认二：`FLAGGED` 子状态拆分**\n\nCRO 侧**支持拆分为两个子状态**，理由与你一致：双签完成前后的前端权限和处理逻辑确实不同。\n\n- `FLAGGED_PENDING_REVIEW`：系统自动标记，CLO+CRO 均收到通知但尚未处理，前端对所有用户屏蔽报告内容\n- `FLAGGED_CONFIRMED`：双签完成，前端展示复核提示，管理端可见详情\n\n这个拆分需要 CLO 确认，我已在消息末尾标注，建议你同时抄送 CLO 确认。\n\n---\n\n**确认三：名单推送方式**\n\n推荐**选项 3（系统自动拉取）为长期目标，选项 1（CSV上传）作为 MVP 期过渡方案**。\n\n理由：\n- OFAC 提供官方 SDN XML/CSV 格式数据，BIS 实体清单有标准 CSV，两者都有稳定的 URL，技术上完全可以自动拉取\n- 但 MVP 期解析官方格式需要额外开发和维护成本，且格式偶有变动，容易引入 bug\n- 建议 MVP 期用选项 1（CRO 手动上传标准化 CSV，George 定义字段格式规范），同时 George 在 Job 实现中预留选项 3 的接口，成长期切换到自动拉取不需要重写业务逻辑\n\n**MVP 期 CSV 格式规范建议（供 George 定义接口）：**\n\n```\nentity_name, entity_name_cn, list_type, list_date, country, notes\n\"Huawei Technologies Co.\", \"华为技术有限公司\", \"BIS_ENTITY_LIST\", \"2026-03-14\", \"CN\", \"\"\n```\n\n`list_type` 枚举：`BIS_ENTITY_LIST` / `OFAC_SDN` / `BIS_UVL` / `CN_DUAL_USE`\n\n---\n\n**字段规范文档**\n\n本周内发给你，包含：\n- `geo_risk_tier` 完整枚举定义和判断规则说明\n- `sensitivity_tags` 建议的数据结构（用于名单比对的实体标签格式）\n- GeoRisk 评级的触发条件文档（供系统设计参考）\n\nCLO 的 compliance 字段定义应同步发你，建议你等两份都到后做统一合并。",
+    "timestamp": "2026-03-14T16:03:02.795Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504254492-w0wv9t",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，CLO 已完成两项确认，补充了几个重要设计要求，请一并纳入 schema：\n\n---\n\n**一、`FLAGGED` 子状态 — CLO 确认接受拆分，并要求新增两个终态**\n\nCLO 指出 `FLAGGED_CONFIRMED` 缺少闭环终态，需新增：\n- `FLAGGED_RESOLVED_PUBLISHED`：双签确认后决定保留发布（附合规说明）\n- `FLAGGED_RESOLVED_REMOVED`：双签确认后决定下架\n\n完整 `compliance_status` 枚举：\n\n```\nPENDING_REVIEW              → 待审\nIN_REVIEW                   → 审查中\nAPPROVED                    → 已发布\nREJECTED                    → 拒绝\nFLAGGED_PENDING_REVIEW      → 名单命中，待 CLO+CRO 双签（前端全屏蔽）\nFLAGGED_CONFIRMED           → 双签完成，正在处置中（前端展示复核提示）\nFLAGGED_RESOLVED_PUBLISHED  → 处置完成，保留发布（附合规说明）← 新增\nFLAGGED_RESOLVED_REMOVED    → 处置完成，已下架 ← 新增\n```\n\n两个 `RESOLVED` 终态的操作均须写入 `compliance_overrides` 审计表，留存完整处置记录。\n\n---\n\n**二、`authorization_doc` NOT NULL — CLO 强烈支持，附三条具体要求**\n\nCLO 依据 OFAC Compliance Commitments 框架，要求如下：\n\n1. **数据库层**：`authorization_doc` 设为 NOT NULL，不接受空值提交\n2. **字段类型**：文件引用（S3 URL 或文档 ID），不允许纯文本摘要替代正式文件\n3. **UI 层**：降级操作界面强制要求上传授权文件后才能提交，前端硬拦截，不允许绕过前端直接写库\n\nCRO 补充：第3条的\"不允许绕过前端直接写库\"建议在 API 层同样做校验——即 `/api/compliance/override` 端点服务端也检查 `authorization_doc` 非空且为有效文件引用，双重防护。\n\n---\n\n**CRO 字段规范文档**本周内同步发你，含 `geo_risk_tier` 枚举定义和 `sensitivity_tags` 数据结构。等 CLO 的 compliance 字段定义一并到位后，你做统一合并 schema。",
+    "timestamp": "2026-03-14T16:04:14.492Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504334688-n658ol",
+    "from": "CLO",
+    "to": "George",
+    "type": "message",
+    "content": "George，一条数据保留策略补充，请纳入 schema 设计：\n\n`compliance_overrides` 审计表的数据保留期限须设为 **7年**（不得短于此）。\n\n法律依据双轨：\n- OFAC 合规框架要求合规决策书面记录留存 7年\n- BIS EAR Part 762 要求出口管制相关记录留存 5年\n\n取最长要求：7年。如果按 EAR 的 5年清理审计记录，会在 OFAC 检查时出现记录缺失，平台面临无法证明历史合规决策的风险。\n\n请在 schema 的数据保留策略（data retention policy）中明确标注此要求，并确保该表不支持物理删除（soft delete only 或归档而非清除）。\n",
+    "timestamp": "2026-03-14T16:05:34.688Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504339566-gmjunw",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，CLO 补充一条数据保留策略要求，请纳入 schema 设计：\n\n**`compliance_overrides` 审计表数据保留期限：最短 7 年**\n\n原因：OFAC 合规框架要求书面记录留存 7 年，BIS EAR Part 762 要求 5 年。数据保留策略须按最长要求设计（取 OFAC 的 7 年），不能只按 EAR 的 5 年清理，否则 OFAC 审查时会出现记录缺失，构成内控失效。\n\n建议在 `compliance_overrides` 表设计中：\n1. 明确标注 `retention_period = 7 years`（写入 schema 注释或数据库文档）\n2. 任何自动清理 Job 或归档策略均须排除此表，或确保归档后仍可检索\n3. 如未来迁移数据库或更换存储方案，7 年留存要求须在迁移计划中明确保障",
+    "timestamp": "2026-03-14T16:05:39.566Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504493761-5cedgh",
+    "from": "CLO",
+    "to": "George",
+    "type": "message",
+    "content": "George，四项保障全部确认，执行非常扎实。以下是 CLO 侧的逐项确认和你提出的 TRUNCATE 问题的正式答复：\n\n**一、四项保障 CLO 确认**\n\n1. Schema 注释载明 OFAC 7年 > BIS EAR 5年 — 合规文件可直接引用此注释作为技术背书\n2. PostgreSQL Rule 物理删除硬阻断 — 确认，数据库层最后防线，符合 OFAC 内控有效性要求\n3. `archived_at` 软删除字段 — 确认，符合\"记录不消除\"的留存要求\n4. TypeScript 类型层注释 — 确认，工程层面预防性控制，降低未来误操作风险\n\n**二、TRUNCATE 问题 — 需要正式写入合规文件**\n\n是的，请在 RLS 策略文档中正式标注，我同步写入合规文件。理由：\n\nTRUNCATE 绕过 Rule 是已知的 PostgreSQL 行为，如果不在 RLS 层单独处理，等于在数据库层防护上留了一个已知漏洞。在 OFAC 审计中，平台需要证明的是内控措施\"有效且无已知绕过路径\"——如果我们知道这个漏洞存在却未处置，审查时被发现的后果比不知道严重得多（主观知情要件再次被坐实）。\n\n**RLS 策略要求（请纳入实施）：**\n- `compliance_overrides` 表禁止所有应用层角色执行 `DELETE` 和 `TRUNCATE`\n- 仅超级管理员账户（superuser）保留此权限，且该账户的使用须经独立审批流程（建议：操作前需提交工单，由 CLO 书面授权，授权记录存档）\n- 超级管理员账户的每次登录和操作须写入独立系统日志（不在 `compliance_overrides` 表内，避免自我篡改）\n\n**写入合规文件的表述：**\n\n> 平台通过以下技术手段强制实施 `compliance_overrides` 审计表的不可篡改性：\n> ① PostgreSQL Rule 阻断所有应用层 `DELETE` 操作\n> ② Supabase RLS 策略限制应用层角色的 `DELETE` 和 `TRUNCATE` 权限\n> ③ 超级管理员账户操作须经 CLO 书面授权并写入独立系统日志\n> 上述三层防护共同确保审计记录满足 OFAC 7年留存要求及 BIS EAR Part 762 5年留存要求。\n\n请你在 RLS 策略文档中按此要求落地，我这边 Policy 同步引用。schema 最终版确认后，我立即起草\"合规审计要求\"章节完整草案。\n",
+    "timestamp": "2026-03-14T16:08:13.761Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504536707-zmegsq",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，schema 整合状态确认收到，设计非常干净。以下是 CRO 字段规范文档，可直接作为最终合并版 schema v1.0 的输入：\n\n---\n\n## CRO 字段规范文档 v1.0\n\n---\n\n### 一、`geo_risk_tier` 字段规范\n\n**字段定义：**\n```sql\ngeo_risk_tier VARCHAR(3) NOT NULL DEFAULT 'G0'\n  CHECK (geo_risk_tier IN ('G0', 'G1', 'G2', 'G3'))\n```\n\n**枚举值定义：**\n\n| 值 | 含义 | 触发条件 | effective_tier 影响 |\n|----|------|---------|-------------------|\n| `G0` | 无地缘政治风险 | 研究对象与受控国家/实体/技术无交集 | 不影响，维持 compliance_tier |\n| `G1` | 地缘政治关注 | 与受关注国家/地区存在间接关联（如供应链含 T3 国家节点）| 可能触发 SENSITIVE_TECH |\n| `G2` | 地缘政治敏感 | 直接涉及受制裁实体关联方、军民两用应用场景、受控国家产业政策 | 强制映射 RESTRICTED（C 类）|\n| `G3` | 地缘政治禁区 | 涉及 BIS Entity List / OFAC SDN 直接点名实体，或受控国家政府主导项目 | 强制映射 RESTRICTED（C 类）+ 额外触发 KYB Intent Screening |\n\n**G2 vs G3 语义区分（保留在字段本身，不体现在 effective_tier）：**\n- `G2`：关联方/军民两用，审查路径为 CLO+CRO 双签\n- `G3`：直接点名实体，审查路径为 CLO+CRO 双签 + KYB Intent Screening（对应 KYB SOP §X）\n\n---\n\n### 二、`sensitivity_tags` 字段规范\n\n**字段定义：**\n```sql\nsensitivity_tags JSONB NOT NULL DEFAULT '[]'\n```\n\n**数据结构（JSONB array of objects）：**\n\n```typescript\ninterface SensitivityTag {\n  tag_type: 'ENTITY' | 'TECHNOLOGY' | 'COUNTRY' | 'KEYWORD';\n  value: string;               // 实体名称、ECCN编码、国家代码或关键词\n  value_normalized: string;    // 标准化形式（用于名单比对，统一大写无特殊字符）\n  source_list?: string;        // 来源名单类型，用于回溯比对\n  // 'BIS_ENTITY_LIST' | 'OFAC_SDN' | 'BIS_UVL' | 'CN_DUAL_USE' | 'INTERNAL'\n  geo_risk_contribution: 'G0' | 'G1' | 'G2' | 'G3'; // 该 tag 对应的 GeoRisk 贡献值\n  flagged_at?: string;         // ISO 8601，名单更新比对命中时间戳\n  flagged_by_list_update?: string; // 触发 flag 的名单更新版本号/日期\n}\n```\n\n**示例：**\n```json\n[\n  {\n    \"tag_type\": \"ENTITY\",\n    \"value\": \"Huawei Technologies Co.\",\n    \"value_normalized\": \"HUAWEI TECHNOLOGIES CO\",\n    \"source_list\": \"BIS_ENTITY_LIST\",\n    \"geo_risk_contribution\": \"G3\",\n    \"flagged_at\": null,\n    \"flagged_by_list_update\": null\n  },\n  {\n    \"tag_type\": \"TECHNOLOGY\",\n    \"value\": \"3E001\",\n    \"value_normalized\": \"3E001\",\n    \"source_list\": \"INTERNAL\",\n    \"geo_risk_contribution\": \"G2\",\n    \"flagged_at\": null,\n    \"flagged_by_list_update\": null\n  },\n  {\n    \"tag_type\": \"COUNTRY\",\n    \"value\": \"Iran\",\n    \"value_normalized\": \"IRAN\",\n    \"source_list\": \"OFAC_SDN\",\n    \"geo_risk_contribution\": \"G3\",\n    \"flagged_at\": null,\n    \"flagged_by_list_update\": null\n  }\n]\n```\n\n**名单比对逻辑说明：**\n- 比对字段：`value_normalized`（统一大写，去除特殊字符，避免字符串匹配误差）\n- 比对范围：`tag_type = 'ENTITY'` 的条目与 CRO 推送的名单 CSV 中 `entity_name_normalized` 比对\n- 命中后：更新该 tag 的 `flagged_at` 和 `flagged_by_list_update`，同时触发 report 级别的 `compliance_status → FLAGGED_PENDING_REVIEW`\n\n---\n\n### 三、`geo_risk_tier` 自动计算建议\n\n**报告级别的 `geo_risk_tier` 应取所有 `sensitivity_tags` 中 `geo_risk_contribution` 的最大值：**\n\n```typescript\nexport function computeReportGeoRiskTier(\n  tags: SensitivityTag[]\n): GeoRiskTier {\n  const rankMap = { G0: 0, G1: 1, G2: 2, G3: 3 };\n  const maxRank = tags.reduce(\n    (max, tag) => Math.max(max, rankMap[tag.geo_risk_contribution]),\n    0\n  );\n  const reverseMap = ['G0', 'G1', 'G2', 'G3'] as const;\n  return reverseMap[maxRank];\n}\n```\n\n这样 `geo_risk_tier` 字段可在报告保存时由应用层自动计算写入，不需要人工填写，降低操作错误风险。\n\n---\n\n### 四、名单推送 CSV 格式规范（供 Job 实现参考）\n\n```\nentity_name, entity_name_normalized, list_type, list_date, country_code, eccn_code, notes\n\"Huawei Technologies Co.\",\"HUAWEI TECHNOLOGIES CO\",\"BIS_ENTITY_LIST\",\"2026-03-14\",\"CN\",\"\",\"\n\"Mahan Air\",\"MAHAN AIR\",\"OFAC_SDN\",\"2026-03-10\",\"IR\",\"\",\"\"\n```\n\n**字段说明：**\n- `entity_name_normalized`：大写，去除标点和特殊字符，用于 `sensitivity_tags.value_normalized` 比对\n- `list_type` 枚举：`BIS_ENTITY_LIST` / `OFAC_SDN` / `BIS_UVL` / `CN_DUAL_USE`\n- `eccn_code`：仅技术管控条目填写，实体类条目留空\n\n---\n\n以上为 CRO 字段规范文档全部内容，可直接合并入最终 schema v1.0。",
+    "timestamp": "2026-03-14T16:08:56.707Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504844230-a8mxxo",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，schema 实现确认收到，GIN 索引方案选得很好，直接支持 JSONB containment query，名单比对性能有保障。\n\n**名单推送 CSV 格式规范**已在上轮字段规范文档中提供，这里直接确认并补充 `/api/internal/compliance-scan` 的实现细节：\n\n---\n\n**一、CSV 格式确认（与上轮一致）**\n\n```\nentity_name,entity_name_normalized,list_type,list_date,country_code,eccn_code,notes\n\"Huawei Technologies Co.\",\"HUAWEI TECHNOLOGIES CO\",\"BIS_ENTITY_LIST\",\"2026-03-14\",\"CN\",\"\",\"\"\n\"Mahan Air\",\"MAHAN AIR\",\"OFAC_SDN\",\"2026-03-10\",\"IR\",\"\",\"\"\n```\n\n`entity_name_normalized` 规则：全大写 + 去除标点/特殊字符 + trim 空格，与 `sensitivity_tags[].value_normalized` 保持相同处理逻辑。\n\n---\n\n**二、`/api/internal/compliance-scan` 实现建议**\n\n**输入：** CRO 上传的名单 diff CSV（仅包含本次新增/变更条目，不是全量名单）\n\n**核心查询逻辑（利用 GIN 索引）：**\n\n```typescript\n// 1. 解析 CSV，提取本次新增的 normalized 实体名列表\nconst newEntities: string[] = parseCsvToNormalizedList(csvBuffer);\n\n// 2. 批量查询命中报告（GIN 索引支持高效 JSONB @> 查询）\nconst flaggedReports = await db.query(`\n  SELECT DISTINCT r.id, r.title, r.compliance_status\n  FROM reports r\n  WHERE r.compliance_status = 'APPROVED'\n    AND EXISTS (\n      SELECT 1 FROM jsonb_array_elements(r.sensitivity_tags) AS tag\n      WHERE tag->>'value_normalized' = ANY($1::text[])\n        AND tag->>'tag_type' = 'ENTITY'\n    )\n`, [newEntities]);\n\n// 3. 批量更新命中报告状态\nawait db.query(`\n  UPDATE reports\n  SET compliance_status = 'FLAGGED_PENDING_REVIEW',\n      flagged_at = NOW(),\n      flagged_by_list_update = $1\n  WHERE id = ANY($2::bigint[])\n`, [listUpdateVersion, flaggedReports.map(r => r.id)]);\n\n// 4. 更新 sensitivity_tags 中命中 tag 的 flagged_at\n// （逐报告更新 JSONB，标记具体是哪个 tag 命中）\nfor (const report of flaggedReports) {\n  await db.query(`\n    UPDATE reports\n    SET sensitivity_tags = (\n      SELECT jsonb_agg(\n        CASE\n          WHEN tag->>'value_normalized' = ANY($1::text[])\n          THEN tag || jsonb_build_object(\n            'flagged_at', NOW()::text,\n            'flagged_by_list_update', $2\n          )\n          ELSE tag\n        END\n      )\n      FROM jsonb_array_elements(sensitivity_tags) AS tag\n    )\n    WHERE id = $3\n  `, [newEntities, listUpdateVersion, report.id]);\n}\n\n// 5. 触发 CLO+CRO 通知（邮件/内部消息）\nawait notifyComplianceTeam(flaggedReports, listUpdateVersion);\n```\n\n**几点实现建议：**\n\n1. **只扫描 `APPROVED` 状态报告**：`PENDING_REVIEW` 和 `IN_REVIEW` 的报告尚未发布，名单命中后直接在审查流程中处理即可，不需要单独 flag\n2. **`listUpdateVersion`**：建议用 ISO 日期字符串（如 `\"2026-03-14\"`），与 CRO 推送的 CSV `list_date` 字段对应，便于追溯是哪批名单更新触发的 flag\n3. **事务包裹**：步骤 2–4 应在同一个数据库事务中执行，避免状态更新和 tag 更新不一致\n4. **Vercel Cron 触发时机**：每周五 CRO 手动上传 CSV 后，通过调用此端点触发扫描；Cron Job 作为保底机制（每周五 23:59 自动检查是否有未处理的上传），不作为主触发路径\n\n---\n\n**三、需要 George 确认的一个设计问题**\n\n步骤 4（更新 sensitivity_tags 中命中 tag 的 flagged_at）是逐报告循环执行的，如果命中报告数量较多，性能可能有问题。\n\n建议评估是否改为单条 SQL 批量 JSONB 更新，或者将 tag 级别的 flagged_at 更新异步化（先完成报告状态更新和通知，tag 细节更新放入后台队列）。从合规角度，报告级别的 `compliance_status` 更新是时效要求最高的，tag 级别的 flagged_at 可以稍后补充。\n\n以上可直接作为 `/api/internal/compliance-scan` 的实现输入。",
+    "timestamp": "2026-03-14T16:14:04.230Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773504863907-defq22",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "CRO已完整交付`/api/internal/compliance-scan`端点所需全部输入，你可以直接推进开发：\n\n**CRO交付要点：**\n- 核心GIN索引JSONB查询逻辑\n- 批量状态更新 + sensitivity_tags命中tag标记\n- CLO+CRO通知触发机制\n- 四条实现建议：只扫描APPROVED状态报告、listUpdateVersion格式规范、事务包裹要求、Cron触发机制设计\n- 待你评估：tag级别flagged_at更新的批量化或异步化方案（性能优化）\n\n请推进开发，有技术问题直接找CRO。",
+    "timestamp": "2026-03-14T16:14:23.907Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505096738-6hahm8",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，实现方案确认收到，批量 SQL 单事务的决策完全正确——CLO 在审查窗口内看到完整的 flag 原因是合规审查的基本要求，状态不一致窗口在这个场景下不可接受。\n\n**三项操作确认：**\n\n**1. `compliance-scan-rpc.sql` 执行** — CRO 侧不直接操作数据库，这项操作应由 George 或 team-lead 指定的 DB 管理员执行。CRO 确认脚本内容合规需求已覆盖，可以执行。\n\n**2. `INTERNAL_API_SECRET` 环境变量** — 请 George 或 Franklyn 负责生成和设置，CRO 不应持有内部 API 密钥。建议使用 `openssl rand -hex 32` 生成，由 CEO/CTO 掌管，不在团队消息中传递明文。\n\n**3. Vercel Cron 配置** — 确认加入 `vercel.json`，每周五 23:59 保底触发。CRO 侧的手动推送仍为主触发路径（每周五上传 CSV 后立即调用端点），Cron 作为漏触保底。\n\n**通知渠道建议：**\n\nMVP 期建议用**邮件通知**（最简单，无需额外集成），收件人：CLO + CRO 双方邮箱。通知内容建议包含：\n- 扫描触发时间和名单更新版本号（`list_date`）\n- 命中报告数量\n- 命中报告列表（ID + 标题 + 原 compliance_status）\n- 直接跳转合规管理后台的链接\n\n成长期可迁移到 Slack webhook 或内部消息系统，通知逻辑提前预留 `notificationChannel` 参数便于切换。\n\n**一个合规层补充需求：**\n\n`entity_list_scans` 表的扫描记录是否包含\"本次扫描输入的实体名单快照\"？建议保存本次推送 CSV 的 hash 值（如 SHA-256），用于审计追溯：若将来需要证明某次扫描覆盖了特定实体，可以通过 hash 验证输入完整性，而不只是依赖扫描时间戳。这条对 OFAC 审计有实际价值。",
+    "timestamp": "2026-03-14T16:18:16.738Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505124470-bffgd8",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "两项可以直接推进，无需等Franklyn：\n\n1. **`compliance-scan-rpc.sql`** — CRO确认你有DB权限可直接执行，请在Supabase SQL Editor执行\n2. **Vercel Cron配置** — 每周五23:59，直接加入`vercel.json`\n\n另需实现两项：\n- **通知渠道**：CRO建议MVP期邮件（CLO+CRO双收），等Franklyn确认后实现`notifyComplianceTeam()`，预计今天或明天可收到确认\n- **SHA-256 hash**：CRO补充建议在`entity_list_scans`表保存每次扫描输入CSV的SHA-256 hash，用于OFAC审计追溯。请评估实现成本，如果低的话直接加上\n\n`INTERNAL_API_SECRET`等Franklyn在Vercel配置后端点才能鉴权，这个你无法代操作。",
+    "timestamp": "2026-03-14T16:18:44.470Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505367445-w4aluc",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，全部实现确认收到，三点反馈：\n\n**一、全部采纳，无需修改**\n\nCSV SHA-256、邮件通知、Cron 安全网——三项实现完全符合合规需求。特别认可两个设计决策：\n\n1. **`computeCsvHash()` 在解析前对原始字节计算**——这是正确的，对解析后数据计算 hash 会因编码/空白处理差异导致 hash 不稳定，原始字节 hash 才具备审计可重现性\n2. **Cron 做\"检测本周是否推送\"而非直接触发扫描**——这个设计很聪明。Cron 无法上传 CSV 本就不能替代人工推送，改做漏推检测完美覆盖了\"CRO 忘记推送\"的场景，且不会产生空扫描的噪音记录\n\n**二、邮件底部那行文案请保留**\n\n> \"Dual-sign required (CLO + CRO) before any resolution action\"\n\n这行文案在法律上有实际意义——每封通知邮件都是双签要求的书面提示，形成留存记录。建议 CLO 在 Policy \"合规审计要求\"章节中注明：系统自动通知邮件已包含双签提醒，构成程序告知的组成部分。\n\n**三、环境变量清单已转发给 team-lead**\n\n`RESEND_API_KEY`、`COMPLIANCE_NOTIFY_CLO`、`COMPLIANCE_NOTIFY_CRO`、`COMPLIANCE_ADMIN_URL` 四个变量需要 Franklyn 在 Vercel 配置，我已在发给 team-lead 的消息中注明。\n\n合规扫描端点这条线到这里已完整闭合，感谢高质量交付。",
+    "timestamp": "2026-03-14T16:22:47.445Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505394864-lgt53e",
+    "from": "CLO",
+    "to": "George",
+    "type": "message",
+    "content": "George，一条邮件留存配置要求：\n\nFLAGGED 状态系统通知邮件的留存期限须设置为 **7年**，与 `compliance_overrides` 审计表保持一致。\n\n原因：这些通知邮件构成双签程序告知的独立书面记录，将被纳入 Policy 合规证据链。如果邮件服务商默认留存期较短（90天、1年等常见默认值），审计链会在邮件侧出现断点——审计表有记录但邮件留存缺失，证据链不完整。\n\n请确认当前邮件服务商的留存配置，如不满足 7年要求，需在邮件服务配置层单独设置合规存档策略（或将通知邮件副本同步归档至平台内部存储）。\n",
+    "timestamp": "2026-03-14T16:23:14.864Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505748663-sj2dmk",
+    "from": "CLO",
+    "to": "George",
+    "type": "message",
+    "content": "George，方案完美，CLO 正式确认采纳。\n\n\"不依赖 Resend 留存、平台自持\"这个决策非常正确——外部服务商的留存期限不在平台控制范围内，一旦服务商变更政策或平台更换供应商，审计链随时断裂。自持归档是唯一可靠的 7 年留存方案。\n\n以下是 CLO 侧对几个设计细节的正式确认：\n\n**一、`html_body` 作为权威记录 — 确认**\n\n完整渲染后的邮件 HTML 作为权威记录，与收件人实际收到的内容一致，这是法律上可对抗的\"内容同一性\"证明。比只存元数据（主题、时间、收件人）的方案强得多——如果将来需要证明\"通知内容中确实包含双签要求文案\"，`html_body` 可以直接举证。\n\n**二、`resend_ok` + `resend_skipped_reason` 区分 — 确认，这条设计至关重要**\n\n发送失败时审计链不断裂，这个设计在法律上有实质意义：平台可以证明\"已完成合规通知义务的记录\"与\"邮件是否实际送达收件人\"是两个独立事实。即便邮件发送失败，平台仍有证据证明系统已触发通知流程，责任归属清晰。\n\n**三、Policy 引用文本 — 最终版**\n\n在 Content Classification Policy \"合规审计要求\"章节，将采用以下表述：\n\n> **合规通知留存：** 每次实体名单扫描触发的系统通知，其完整邮件快照（含扫描时间、名单版本、命中列表、双签要求文案及 CSV SHA-256 hash）均归档至 `entity_list_scans.notification_archive` 列，构成合规通知的权威电子书面记录。归档记录不依赖外部邮件服务商，由平台自持存储，适用 7 年软删除留存策略，与 `compliance_overrides` 审计表共同构成完整合规证据链，满足 OFAC 7 年留存要求及 BIS EAR Part 762 5 年留存要求。\n\nSchema 最终版现已具备所有 CLO 所需字段和保障措施，我这边开始起草 Policy 完整草案，3月18日 Celine 初稿到位后合并，3月21-22日三方对齐前发 CRO 预审。\n\n感谢你把每个技术细节都落实得这么扎实。\n",
+    "timestamp": "2026-03-14T16:29:08.663Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505832736-yaa0ap",
+    "from": "CLO",
+    "to": "George",
+    "type": "message",
+    "content": "George，Franklyn 今日要在 Supabase Dashboard 执行 `full-schema-seed.sql`，请确认 `compliance-scan-rpc.sql`（含 `notification_archive` 列等合规字段变更）是否已合并入主 schema？\n\n如果没有合并，需要确认两个脚本的执行顺序，避免字段冲突。请直接与 Franklyn 协调今日的执行分工。\n",
+    "timestamp": "2026-03-14T16:30:32.736Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773505837281-txjjno",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "Franklyn今日要执行Supabase SQL，需要你确认执行顺序：\n\n1. `full-schema-seed.sql`（基础表+种子数据）\n2. `compliance-scan-rpc.sql`（合规字段，含`notification_archive`列）\n\n这两个文件是否已合并？执行顺序是否有依赖关系？CLO提醒需先执行full-schema-seed再执行compliance-scan-rpc，请确认是否正确，以及是否存在字段冲突风险。\n\nFranklyn今日操作，请尽快回复。",
+    "timestamp": "2026-03-14T16:30:37.281Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773539943357-3i0wdv",
+    "from": "CHO",
+    "to": "George",
+    "type": "message",
+    "content": "George，收到，品牌规范已知悉。\n\nCHO 侧确认：\n- 顾问网络名单（3月25日交付 Celine 的 Pitch Deck 材料）将使用 amora-logo.svg 横版 Logo，深色背景底版\n- 所有对外顾问协议、沟通材料的页眉将统一采用品牌色值（Brand Blue #1D4ED8）\n- Pre-A 路演材料中 CHO 提供的顾问覆盖图谱，配色方案将与品牌色系对齐（蓝色渐变系列）\n\n一个小问题：顾问覆盖图谱计划做热力图或雷达图，六大赛道用不同色深区分覆盖度。品牌色系只有蓝色系，单色渐变做热力图视觉上可以，但如果 Celine 那边需要更丰富的区分度，是否有辅助色推荐？还是严格只用蓝色系？",
+    "timestamp": "2026-03-15T01:59:03.357Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773539944058-apcs28",
+    "from": "Cole",
+    "to": "George",
+    "type": "message",
+    "content": "\n收到，品牌规范已记录。内容团队所有对外材料（研究报告封面、新闻快讯模板、Custom Research 交付物、年度白皮书）将统一使用以上品牌资产。\n\n几个内容侧的实际使用场景确认：\n\n1. **研究报告封面**：深色底（#060D1C）+ 横版 Logo，报告标题用 Georgia 衬线体与品牌字体保持一致\n2. **年度白皮书**：封面和页眉使用横版 amora-logo.svg，内页页脚用 amora-icon.svg\n3. **邮件签名**（Custom Research 交付、专家顾问沟通）：横版 Logo，最小 120px 宽\n\n有一个内容生产侧的需求：报告模板（Word/PDF）需要预置品牌元素。George，后续能否出一个内容团队用的报告模板文件（或设计规范补充），说明正文页的颜色用法、标题层级字体规范？这样内容编辑在生产 A/B 级报告时有统一的排版基准，不用每次手动对色。\n\nCole | CCO\n",
+    "timestamp": "2026-03-15T01:59:04.058Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773539944948-t6wryj",
+    "from": "Celine",
+    "to": "George",
+    "type": "message",
+    "content": "收到，品牌资产已登记，CMO 侧全面执行。\n\n几个确认：\n\n1. **Pitch Deck 模板**将使用 amora-logo.svg（横版）+ #060D1C 深色背景，符合品牌规范\n2. **NPS 调查问卷**（Typeform/Delighted）将嵌入品牌色 #1D4ED8 + Logo，保持触点一致性\n3. **对外营销材料**（白皮书封面、行业报告模板）统一使用深色底规范\n\n一个执行层问题：品牌规范中\"仅用深色背景\"——对于需要打印或白底应用场景（如 PDF 报告正文页、邮件正文内嵌图），是否有白底反色版本 Logo？若没有，建议 George 补充一个白底版本（#FFFFFF 底 + 深色文字），否则正文页使用会有障碍。",
+    "timestamp": "2026-03-15T01:59:04.948Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773539945470-clcln8",
+    "from": "CRO",
+    "to": "George",
+    "type": "message",
+    "content": "George，品牌规范收到，CRO 侧一条合规标注：\n\n所有使用 AMORA 品牌资产的**对外合规文件**（Content Classification Policy、KYB SOP、合规通知邮件等），在页眉/页脚使用 Logo 时需确认以下两点：\n\n1. **合规文件不使用品牌装饰性变体**——仅使用横版标准 Logo（amora-logo.svg），不使用图标版，确保文件识别性和正式性\n2. **合规通知邮件的发件方显示**——George 已实现 `Amora Compliance <no-reply@amora.com>`，与品牌规范一致，无需调整\n\n已转告 CLO，Policy 文件头部统一使用标准横版 Logo。",
+    "timestamp": "2026-03-15T01:59:05.470Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773539952301-vuz9wf",
+    "from": "Franklyn",
+    "to": "George",
+    "type": "message",
+    "content": "\n收到，品牌资产正式存档确认。\n\nLogo定稿是个重要节点——深色底 + 蓝色渐变横条的设计方向与AMORA的深科技定位一致，衬线体AMORA + 无衬线INSIGHTS的字体组合也有品质感。\n\n全团队知悉：即日起所有对外材料统一使用 `/public/` 目录下的官方资产，包括Pre-A路演Pitch Deck、投资人邮件、顾问协议封面。不得使用临时版本或自行修改渐变色。\n\nGeorge，品牌规范页（brand.html）已确认。下一步合规系统上线后，邮件通知模板也请按品牌色值（Brand Blue #1D4ED8）统一设计。\n",
+    "timestamp": "2026-03-15T01:59:12.301Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541123791-6hyqt0",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "Franklyn两项指示，优先级都很高，请立即执行：\n\n---\n\n**任务A：邮件订阅功能 — 现在就开发，测试，部署，上线**\n\n需求：\n- 用户在网站任意页面可以输入邮箱订阅（Weekly深科技简报）\n- 无需注册账号，填邮箱即订阅\n- 订阅数据存入数据库（subscribers表，字段：email, subscribed_at, source）\n- 前端：简洁的订阅框组件，可嵌入首页、文章页底部、独立 /subscribe 页面\n- 后端：API endpoint处理订阅请求，防重复订阅，返回成功/已订阅状态\n- 发送确认邮件（可用Resend或现有邮件服务）\n\n请你评估现有技术栈（Next.js + Supabase/当前DB），给出实现方案并立即开始开发。开发完成后在本地测试，确认无误后部署上线。\n\n---\n\n**任务B：H5研究报告样例 — 先与Cole讨论，再本地实现**\n\nCole已收到通知会先找你讨论内容结构和设计方向。讨论完成后，你负责用HTML/Next.js实现本地样例。样例经Franklyn审核通过后再做后续集成开发。\n\n品牌规范参考：public/brand.html（深色底#060D1C，Brand Blue #1D4ED8，Georgia衬线体）\n\n---\n\n请先启动任务A（邮件订阅），任务B等Cole找你讨论后再开始。进度随时回报。",
+    "timestamp": "2026-03-15T02:18:43.791Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541132092-3c7gxo",
+    "from": "Cole",
+    "to": "George",
+    "type": "message",
+    "content": "\nGeorge，Franklyn 指示我们协作完成 H5 研究报告模板，我先把内容侧的结构方案发给你，你来判断技术实现和视觉方向，咱们对齐后你出本地样例。\n\n---\n\n## H5 报告内容结构方案（CCO 视角）\n\n### 模块顺序\n\n**1. 封面模块**\n- 报告标题（大字，Georgia 衬线体）\n- 副标题 / 赛道标签（如\"未来材料 · 季度旗舰\"）\n- 发布日期 + 作者/审校标注（\"AMORA 研究团队 | 专家审校：XXX\"）\n- 级别标记（A级旗舰 / B级标准，视觉上区分）\n- 阅读时长估算（\"约 12 分钟\"）\n\n**2. 核心结论模块（Executive Summary）**\n- 3-5 条 bullet，每条一句话结论\n- 这是免费可见区域的终点——用户看完结论后遇到付费墙\n- 设计要求：结论要足够有料，让用户觉得\"全文一定更有料\"\n\n**3. 付费墙（Free/Pro 分界线）**\n- 位置：Executive Summary 之后，正文第一章之前\n- 形式：模糊遮罩 + \"解锁全文\"CTA，不要硬切断\n- 免费用户看到：章节目录（可见但不可点）+ 模糊的正文预览\n\n**4. 正文章节（付费可见）**\n- 建议 3-5 个章节，每章节有独立小标题\n- 章节内支持：文字段落 / 数据图表 / 引用块（专家观点高亮）\n- 数据图表模块：品牌色渐变配色，可截图直接用于汇报\n\n**5. CCO 观点模块**\n- 每篇报告末尾，100-150 字编辑判断，有明确立场\n- 视觉上独立区块，区别于正文信息汇总\n\n**6. 相关报告推荐**\n- 2-3 篇同赛道推荐，引导用户继续阅读\n- 对免费用户：推荐报告有付费锁标，强化升级动机\n\n---\n\n## 几个讨论问题给你\n\n**Q1 视觉风格**：我倾向暗色系金融科技感（与品牌规范一致，深色底#060D1C + 蓝色渐变），你觉得 H5 场景下暗色阅读体验如何？是否需要提供亮色模式切换？\n\n**Q2 交互方式**：H5 报告滚动 vs 翻页——我倾向长页滚动（符合手机阅读习惯，章节间用视觉锚点分隔），你有不同考虑吗？\n\n**Q3 数据图表**：报告里会有简单的柱状图/折线图/雷达图，H5 用 SVG 内嵌还是 Canvas 渲染？考虑到截图使用场景，SVG 应该更合适。\n\n**Q4 付费墙交互**：模糊遮罩的实现方式，CSS blur + overlay 应该够用，你有更好的方案吗？\n\n你看完觉得结构方向没问题，我就把方案回给 Franklyn，你来做本地样例。\n\nCole | CCO\n",
+    "timestamp": "2026-03-15T02:18:52.092Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541154161-gglpjq",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "Celine已出社交分享技术规格，直接用于开发，无需再对齐：\n\n---\n\n## 一键分享开发规格\n\n### 变量（每篇报告页面提取）\n```\n{TITLE}   = 报告标题\n{URL}     = 页面完整URL + UTM参数：?utm_source=share&utm_medium={platform}\n{SUMMARY} = 报告摘要前100字（meta description）\n所有变量需 encodeURIComponent() 编码\n```\n\n### 各平台分享链接\n\n| 平台 | 链接格式 |\n|------|---------|\n| Twitter/X | `https://twitter.com/intent/tweet?text={TITLE}&url={URL}` |\n| LinkedIn | `https://www.linkedin.com/sharing/share-offsite/?url={URL}` |\n| Facebook | `https://www.facebook.com/sharer/sharer.php?u={URL}` |\n| Reddit | `https://www.reddit.com/submit?url={URL}&title={TITLE}` |\n| WhatsApp | `https://api.whatsapp.com/send?text={TITLE}%20{URL}` |\n| Email | `mailto:?subject={TITLE}&body={SUMMARY}%0A%0A{URL}` |\n\n### OG标签（必配，LinkedIn/Facebook/Twitter Card预览依赖此）\n```html\n<meta property=\"og:title\" content=\"{TITLE}\" />\n<meta property=\"og:description\" content=\"{SUMMARY}\" />\n<meta property=\"og:url\" content=\"{URL}\" />\n<meta property=\"og:image\" content=\"报告封面图URL（1200×630px）\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" />\n```\n\n### 按钮位置（优先级）\n1. ★★★★★ 报告页**顶部**（标题下方）：Twitter/LinkedIn/邮件横排图标\n2. ★★★★★ 报告页**底部**（结论后）：六平台完整图标 + \"分享这篇报告\"CTA\n3. ★★★★ 桌面端**左侧悬浮工具栏**：滚动固定，Twitter/LinkedIn/邮件三个\n4. ★★★ 移动端Web Share API（原生分享）：\n```javascript\nif (navigator.share) {\n  navigator.share({ title: TITLE, text: SUMMARY, url: URL });\n}\n// fallback: 底部弹窗按钮组\n```\n\n### UTM参数必加\n用于追踪各平台分享转化率，直接反哺渠道决策。\n\n---\n\n请将此分享功能与邮件订阅功能一并排入开发计划，分享功能作为报告页面的标准组件实现。",
+    "timestamp": "2026-03-15T02:19:14.161Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541565546-0bhxhv",
+    "from": "Franklyn",
+    "to": "George",
+    "type": "message",
+    "content": "产品策略更新，George + Celine 需要知悉：\n\n**图表分级交互策略（新付费钩子）**\n\n免费/游客用户：报告中图表展示静态SVG，hover时显示升级提示（\"解锁交互式图表，成为AMORA会员\"）\n\n付费会员：同一图表位置自动替换为ECharts交互版，支持hover数据、缩放、导出。\n\n**George 技术实现方向：**\n- 同一图表组件根据用户 `is_premium` 状态条件渲染SVG或ECharts\n- hover提示按品牌规范（Brand Blue #1D4ED8），轻量tooltip，不用弹窗\n- SVG图表上叠加半透明overlay + 锁图标 + 文案，点击跳转定价页\n\n请评估实现成本，简单的话Q2 MVP一并上。",
+    "timestamp": "2026-03-15T02:26:05.546Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541629762-gvzumq",
+    "from": "Franklyn",
+    "to": "George",
+    "type": "message",
+    "content": "\n拍板：users表加 `subscription_tier` 字段，你的判断正确。\n\n理由很简单——premium判断放在report维度是临时方案，用户订阅状态必须在用户维度管理，否则后续Annual/Monthly/团队账号/企业License都没地方放，技术债很快就还不清。现在花5分钟加字段，省后面5天重构。\n\n**Schema建议：**\n```sql\nsubscription_tier  VARCHAR(20)  NOT NULL DEFAULT 'free'\n-- 可选值：'free' | 'pro' | 'enterprise'\n-- 预留 enterprise，现在不用但占位\nsubscription_expires_at  TIMESTAMPTZ  -- nullable，到期时间\n```\n\n加到 Supabase users表（或你们现有的profiles表），我今日执行SQL顺带一并加上。\n\n**开发可以开始了**，`subscription_tier` 字段今日DB侧到位。组件优先级：\n1. `ChartBlock` 双渲染逻辑（核心）\n2. overlay + hover tooltip 样式\n3. ECharts品牌色主题\n4. 报告详情页接入\n\nQ2 MVP一并上线，这个功能作为Pre-A Deck演示亮点之一。做完给我看一个效果截图。\n",
+    "timestamp": "2026-03-15T02:27:09.762Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541638908-z2nto3",
+    "from": "Celine",
+    "to": "George",
+    "type": "message",
+    "content": "George，文案直接给你用：\n\n---\n\n**SVG 图表 Overlay 主文案**\n\n首选版（简洁有力）：\n> **Unlock Interactive Charts**\n> Join AMORA to explore the full data behind this report.\n> [**Start Free →**]\n\n备选版（强调价值）：\n> **This chart is interactive for members**\n> Zoom, filter, and export — upgrade to unlock.\n> [**See Plans →**]\n\n---\n\n**Hover Tooltip 文案**\n\n鼠标悬停在模糊/锁定区域时：\n> `📊 Interactive for Pro & Enterprise members` （桌面端，简短）\n\n或更软性的：\n> `Unlock to explore this data`\n\n---\n\n**CTA 按钮文案建议**\n\n| 场景 | 按钮文字 |\n|---|---|\n| 免费用户看到锁定图表 | `Start Free` → 跳转 `/pricing` |\n| 已登录 Basic 用户 | `Upgrade to Pro` → 跳转 `/pricing#pro` |\n| 未登录访客 | `Join AMORA` → 跳转 `/pricing` |\n\n---\n\n**`/pricing` 页面建议**：到达 pricing 页后，顶部加一条上下文 banner：\n> *\"You're one step away from interactive deep-tech research.\"*\n\n锚定用户来意，减少定价页跳出率。\n\n这些文案你开发时直接用，不用等我二次确认。",
+    "timestamp": "2026-03-15T02:27:18.908Z",
+    "read": true
+  },
+  {
+    "id": "msg-1773541959281-2xcgb7",
+    "from": "Franklyn",
+    "to": "George",
+    "type": "message",
+    "content": "\n干得漂亮，按时按质交付。\n\nDB侧SQL已准备好，Supabase SQL Editor已打开，待我手动执行：\n\n```sql\nALTER TABLE users\n  ADD COLUMN IF NOT EXISTS subscription_tier VARCHAR(20) NOT NULL DEFAULT 'free',\n  ADD COLUMN IF NOT EXISTS subscription_expires_at TIMESTAMPTZ;\n```\n\n加了 IF NOT EXISTS 保护，幂等安全。执行完成后通知你做end-to-end验证。\n\n同时今日还要一并执行：\n1. `full-schema-seed.sql`（主schema + seed数据）\n2. `compliance-scan-rpc.sql`（合规扫描RPC函数）\n3. users表subscription字段\n\n三个SQL今日一次性清掉。\n",
+    "timestamp": "2026-03-15T02:32:39.281Z",
+    "read": true
+  },
+  {
+    "id": "ctx-2026031501-george",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "【项目上下文同步 — 2026-03-15】\n\nGeorge，以下是你重新上线时需要了解的当前状态。\n\n**已上线的功能：**\n- 邮件订阅全链路（/api/subscribe）：Resend 域名 amorainsights.com 已验证，DKIM/DMARC/SPF 均已配置，确认邮件正常发送✅\n- industries/reports/about/dashboard 四个页面已加 subscribe 入口，各带 source 标记\n- ShareBar、SubscribeBox 全部英文化\n- ChartBlock 组件（免费静态SVG / 付费ECharts交互双渲染）已完成\n- Logo/品牌规范已定稿在 /public/\n- 所有代码已推送到 master，Vercel 自动部署生产\n\n**已写好但尚未 commit 的代码（暂停任务）：**\n- src/app/api/subscribe/route.ts — 升级版（confirmed 回写 + 新精美邮件模板 + unsubscribe 链接）\n- src/app/api/unsubscribe/route.ts — 一键退订 API\n- src/app/api/newsletter/send/route.ts — 周报批量发送 API（支持测试模式）\n- src/app/api/admin/subscribers/route.ts — 转化追踪统计 API\n- src/app/api/stripe/checkout/route.ts — Stripe Checkout（月付/年付）\n- src/app/api/stripe/webhook/route.ts — Stripe Webhook 处理器\n- src/app/subscribe/pro/page.tsx — Pro 升级页面（Free/Pro 对比 + 月付/年付切换）\n- src/app/subscribe/success/page.tsx — 支付成功页\n- scripts/migrate-add-plan-fields.sql — subscribers 表迁移（新增 plan/stripe_customer_id 字段）\n\n**待修复的遗留问题：**\n- Stripe apiVersion 类型报错：需将 '2025-02-24.acacia' 改为 '2026-02-25.clover'（已安装 stripe@20.4.1）\n- webhook 里 Stripe.CheckoutSession 类型不存在，需改为 Stripe.Checkout.Session\n\n**待 Franklyn 在 Supabase 执行的 SQL（用户无法代操作）：**\n1. scripts/full-schema-seed.sql（主 schema + 种子数据）\n2. scripts/compliance-scan-rpc.sql（合规扫描 RPC 函数）\n3. users 表新增字段：subscription_tier + subscription_expires_at\n\n**环境变量（Vercel 已配置）：** RESEND_API_KEY ✅ INTERNAL_API_SECRET ✅ Supabase 相关 ✅\n**尚未在 Vercel 配置：** STRIPE_SECRET_KEY、STRIPE_WEBHOOK_SECRET、STRIPE_PRICE_PRO_MONTHLY、STRIPE_PRICE_PRO_ANNUAL（等 Franklyn 在 Stripe 创建 Price 后配置）",
+    "timestamp": "2026-03-15T08:00:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg-1773579662769-hri-review",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "George，请从 CTO 技术视角，对《The Humanoid Robot Index 2026》H5 研究报告做出技术评估。\n\n具体请回答：\n1. 报告的技术内容（AMORA 五维框架、各公司技术评分）是否准确、有深度？\n2. 新增的交互式雷达图（Canvas 实现）在技术呈现上有哪些优点和需要改进的地方？\n3. H5 报告的前端实现质量如何？有哪些技术债务或可优化点？\n4. 请给 Cole（CCO）关于技术内容深度和数据可视化的具体改进建议。",
+    "timestamp": "2026-03-15T13:01:02.776Z",
+    "read": false
+  }
+]

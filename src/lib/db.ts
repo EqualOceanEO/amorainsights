@@ -27,6 +27,7 @@ export interface User {
   password: string;
   name: string | null;
   created_at: string;
+  is_admin: boolean;
   // Subscription billing (Franklyn schema, 2026-03-15)
   subscription_tier:       SubscriptionTier;       // NOT NULL DEFAULT 'free'
   subscription_expires_at: string | null;          // nullable TIMESTAMPTZ
@@ -321,6 +322,14 @@ export const ALL_INDUSTRY_SLUGS: IndustrySlug[] = [
   'advanced-materials',
 ];
 
+/**
+ * Report format type.
+ *  markdown   — default, content stored in `content` column
+ *  html       — full HTML stored in `html_content` column, rendered via sandboxed iframe
+ *  h5_embed   — alias for html (legacy, same rendering path)
+ */
+export type ReportFormat = 'markdown' | 'html' | 'h5_embed';
+
 export interface Report {
   id: number;
   title: string;
@@ -336,6 +345,12 @@ export interface Report {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+
+  // ── H5 / HTML Report Format (George, 2026-03-15) ─────────────────────────
+  // report_format = 'html' | 'h5_embed' → render html_content in sandboxed iframe
+  // report_format = 'markdown'           → render content as markdown (default)
+  report_format:  ReportFormat;    // NOT NULL DEFAULT 'markdown'
+  html_content:   string | null;   // full HTML string for h5/html format reports
 
   // ── CLO Compliance Classification (v0.2, 2026-03-14) ────────────────────
   compliance_tier:        ComplianceTier;       // CLO legal compliance rating

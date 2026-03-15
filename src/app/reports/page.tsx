@@ -1,5 +1,3 @@
-import { auth } from '@/lib/auth';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import SubscribeBox from '@/components/SubscribeBox';
 import {
@@ -47,9 +45,6 @@ export default async function ReportsPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  const session = await auth();
-  if (!session?.user) redirect('/login');
-
   const params = await searchParams;
   const industryFilter = ALL_INDUSTRY_SLUGS.includes(params.industry as IndustrySlug)
     ? (params.industry as IndustrySlug)
@@ -94,17 +89,20 @@ export default async function ReportsPage({
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
-      <header className="border-b border-gray-800 bg-gray-900/60 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-lg font-bold tracking-tight">
+      <header className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
+          <Link href="/" className="text-lg font-bold tracking-tight shrink-0">
             Amora<span className="text-blue-400">Insights</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-gray-400">
+          <nav className="hidden md:flex items-center gap-5 text-sm text-gray-400">
             <Link href="/dashboard" className="hover:text-white transition">Dashboard</Link>
             <Link href="/reports" className="text-white font-medium">Reports</Link>
             <Link href="/companies" className="hover:text-white transition">Companies</Link>
           </nav>
-          <span className="text-sm text-gray-500">{session.user.email}</span>
+          <div className="flex items-center gap-2.5">
+            <Link href="/login" className="text-sm text-gray-400 hover:text-white transition px-3 py-1.5">Sign In</Link>
+            <Link href="/signup" className="text-sm bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-1.5 rounded-lg transition">Get Started</Link>
+          </div>
         </div>
       </header>
 
@@ -248,7 +246,7 @@ export default async function ReportsPage({
 // ─── Report Card Component ────────────────────────────────────────────────────
 
 function ReportCard({ report }: { report: Report }) {
-  const meta = INDUSTRY_META[report.industry_slug];
+  const meta = INDUSTRY_META[report.industry_slug] ?? { name: report.industry_slug, icon: '📊' };
 
   return (
     <Link

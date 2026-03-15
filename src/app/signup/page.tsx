@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { trackEvent } from '@/components/AnalyticsProvider';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -35,6 +36,11 @@ export default function SignupPage() {
         setError(data.error || 'Registration failed');
         return;
       }
+      // Track registration event for funnel analytics
+      await trackEvent('user_registered', {
+        category: 'auth',
+        properties: { method: 'email' },
+      });
       router.push('/login?registered=1');
     } catch {
       setError('Network error. Please try again.');

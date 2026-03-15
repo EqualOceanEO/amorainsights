@@ -3,6 +3,7 @@ import { supabase } from '@/lib/db';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'AMORA Insights <noreply@amorainsights.com>';
+const SITE_URL = process.env.NEXTAUTH_URL ?? 'https://amorainsights.com';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,16 +11,15 @@ export async function POST(req: NextRequest) {
     const email = (body.email ?? '').trim().toLowerCase();
     const source = (body.source ?? 'website').trim().slice(0, 64);
 
-    // Basic email validation
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
     }
 
-    // Upsert — on conflict do nothing, return existing row status
+    // Upsert — on conflict do nothing, return existing row
     const { data, error } = await supabase
       .from('subscribers')
       .upsert({ email, source }, { onConflict: 'email', ignoreDuplicates: true })
-      .select('email, subscribed_at')
+      .select('id, email, subscribed_at')
       .maybeSingle();
 
     if (error) {
@@ -27,12 +27,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Subscription failed. Please try again.' }, { status: 500 });
     }
 
-    // Check if already existed (upsert returned nothing on duplicate)
+    // Already subscribed — duplicate
     if (!data) {
       return NextResponse.json({ status: 'already_subscribed' });
     }
 
-    // Send confirmation email via Resend
+    // Mark confirmed = true
+    await supabase
+      .from('subscribers')
+      .update({ confirmed: true, confirmed_at: new Date().toISOString() })
+      .eq('id', data.id);
+
+    // Send confirmation email
     if (!RESEND_API_KEY) {
       console.error('[subscribe] RESEND_API_KEY is not configured — confirmation email not sent.');
     } else {
@@ -49,29 +55,138 @@ export async function POST(req: NextRequest) {
 }
 
 async function sendConfirmationEmail(email: string) {
-  const html = `
-    <div style="background:#060d1c;padding:48px 40px;font-family:-apple-system,Arial,sans-serif;color:#fff;max-width:560px;margin:0 auto;border-radius:12px;">
-      <div style="margin-bottom:32px;">
-        <svg width="40" height="40" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs>
-          <rect width="32" height="32" rx="7" fill="#060d1c"/>
+  const unsubUrl = `${SITE_URL}/api/unsubscribe?email=${encodeURIComponent(email)}`;
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#060d1c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#060d1c;padding:48px 24px;">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+
+  <!-- Logo + Wordmark -->
+  <tr><td style="padding-bottom:36px;">
+    <table cellpadding="0" cellspacing="0"><tr>
+      <td style="padding-right:12px;vertical-align:middle;">
+        <svg width="36" height="36" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1d4ed8"/>
+            <stop offset="100%" stop-color="#60a5fa"/>
+          </linearGradient></defs>
+          <rect width="32" height="32" rx="7" fill="#0a1628"/>
           <rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#g)"/>
           <rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#g)" opacity="0.7"/>
           <rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#g)" opacity="0.4"/>
         </svg>
-      </div>
-      <h1 style="font-family:Georgia,serif;font-size:24px;font-weight:700;letter-spacing:2px;color:#fff;margin:0 0 8px;">AMORA <span style="color:#3b82f6;">INSIGHTS</span></h1>
-      <p style="color:#475569;font-size:12px;letter-spacing:2px;margin:0 0 32px;">WEEKLY BRIEFING</p>
-      <p style="font-size:16px;color:#cbd5e1;line-height:1.7;margin:0 0 16px;">You're now subscribed to AMORA Weekly — your edge in deep tech.</p>
-      <p style="font-size:14px;color:#64748b;line-height:1.8;">Every week we curate research conclusions and industry intelligence across six frontier tracks: AI, Life Sciences, Green Tech, Smart Manufacturing, Commercial Space, and Advanced Materials.</p>
-      <div style="margin:36px 0;padding:20px 24px;background:#0a1628;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;">
-        <p style="font-size:13px;color:#94a3b8;margin:0;line-height:1.6;">Your first issue arrives next Friday.<br>To unsubscribe, simply reply to this email.</p>
-      </div>
-      <p style="font-size:12px;color:#1e3a5f;margin:0;">© 2026 AmoraInsights · <a href="https://amorainsights.com" style="color:#1e3a5f;">amorainsights.com</a></p>
-    </div>
-  `;
+      </td>
+      <td style="vertical-align:middle;">
+        <span style="font-family:Georgia,serif;font-size:18px;font-weight:700;letter-spacing:3px;color:#ffffff;">AMORA</span>
+        <span style="font-family:Georgia,serif;font-size:18px;font-weight:700;letter-spacing:3px;color:#3b82f6;"> INSIGHTS</span>
+      </td>
+    </tr></table>
+  </td></tr>
 
-  await fetch('https://api.resend.com/emails', {
+  <!-- Hero text -->
+  <tr><td style="padding-bottom:12px;">
+    <p style="margin:0;font-size:28px;font-weight:700;color:#ffffff;line-height:1.3;font-family:Georgia,serif;">
+      You're in. Welcome to<br>AMORA Weekly.
+    </p>
+  </td></tr>
+  <tr><td style="padding-bottom:32px;">
+    <p style="margin:0;font-size:15px;color:#94a3b8;line-height:1.7;">
+      Every Friday, we distill the week's most important signals across six frontier tracks into a 10-minute briefing built for investors, researchers, and operators who can't afford to miss what's next.
+    </p>
+  </td></tr>
+
+  <!-- Divider -->
+  <tr><td style="padding-bottom:32px;">
+    <div style="height:1px;background:linear-gradient(to right,#1d4ed830,#3b82f660,#1d4ed830);"></div>
+  </td></tr>
+
+  <!-- Six tracks -->
+  <tr><td style="padding-bottom:8px;">
+    <p style="margin:0 0 16px;font-size:11px;letter-spacing:2px;color:#475569;text-transform:uppercase;">Six Frontier Tracks</p>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="33%" style="padding:0 6px 12px 0;">
+          <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:14px 16px;">
+            <div style="font-size:18px;margin-bottom:6px;">🤖</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;">AI &amp; LLMs</div>
+          </div>
+        </td>
+        <td width="33%" style="padding:0 6px 12px;">
+          <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:14px 16px;">
+            <div style="font-size:18px;margin-bottom:6px;">🧬</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;">Life Sciences</div>
+          </div>
+        </td>
+        <td width="33%" style="padding:0 0 12px 6px;">
+          <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:14px 16px;">
+            <div style="font-size:18px;margin-bottom:6px;">⚡</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;">Green Tech</div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td width="33%" style="padding:0 6px 0 0;">
+          <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:14px 16px;">
+            <div style="font-size:18px;margin-bottom:6px;">🏭</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;">Smart Mfg.</div>
+          </div>
+        </td>
+        <td width="33%" style="padding:0 6px;">
+          <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:14px 16px;">
+            <div style="font-size:18px;margin-bottom:6px;">🚀</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;">Space</div>
+          </div>
+        </td>
+        <td width="33%" style="padding:0 0 0 6px;">
+          <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:14px 16px;">
+            <div style="font-size:18px;margin-bottom:6px;">🔬</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;">Materials</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- CTA -->
+  <tr><td style="padding:32px 0;">
+    <div style="background:linear-gradient(135deg,#0f2040,#0a1628);border:1px solid #1e3a5f;border-radius:12px;padding:28px 32px;">
+      <p style="margin:0 0 6px;font-size:13px;color:#3b82f6;font-weight:600;letter-spacing:1px;text-transform:uppercase;">First issue</p>
+      <p style="margin:0 0 20px;font-size:20px;font-weight:700;color:#ffffff;font-family:Georgia,serif;">Arrives this Friday</p>
+      <p style="margin:0;font-size:13px;color:#64748b;line-height:1.6;">
+        In the meantime, browse our latest reports at<br>
+        <a href="${SITE_URL}/reports" style="color:#3b82f6;text-decoration:none;">${SITE_URL}/reports</a>
+      </p>
+    </div>
+  </td></tr>
+
+  <!-- Divider -->
+  <tr><td style="padding-bottom:28px;">
+    <div style="height:1px;background:linear-gradient(to right,#1d4ed820,#3b82f640,#1d4ed820);"></div>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td>
+    <p style="margin:0 0 8px;font-size:11px;color:#334155;line-height:1.6;">
+      You subscribed to AMORA Weekly at <a href="${SITE_URL}" style="color:#334155;">${SITE_URL}</a>.
+    </p>
+    <p style="margin:0;font-size:11px;color:#1e3a5f;">
+      <a href="${unsubUrl}" style="color:#334155;text-decoration:underline;">Unsubscribe</a>
+      &nbsp;·&nbsp;
+      © 2026 AmoraInsights
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+
+  const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${RESEND_API_KEY}`,
@@ -80,8 +195,13 @@ async function sendConfirmationEmail(email: string) {
     body: JSON.stringify({
       from: FROM_EMAIL,
       to: [email],
-      subject: 'Welcome to AMORA Weekly',
+      subject: '👋 Welcome to AMORA Weekly — your first issue is Friday',
       html,
     }),
   });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(JSON.stringify(err));
+  }
 }

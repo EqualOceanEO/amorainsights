@@ -1,0 +1,58 @@
+{
+  "name": "amora",
+  "leadAgentId": "a677ac4f6f2a4447abb8521b02063683",
+  "workspacePath": "c:/Users/51229/WorkBuddy/Claw",
+  "createdAt": "2026-03-14T15:45:26.075Z",
+  "options": {
+    "workspacePath": "c:/Users/51229/WorkBuddy/Claw",
+    "isAutoTeam": false
+  },
+  "members": [
+    {
+      "memberId": "team-lead@amora",
+      "name": "team-lead",
+      "role": "Team Lead - coordinates the team and interacts with the user"
+    },
+    {
+      "memberId": "Franklyn@amora",
+      "name": "Franklyn",
+      "role": "激活 Franklyn CEO"
+    },
+    {
+      "memberId": "George@amora",
+      "name": "George",
+      "role": "激活 George CTO"
+    },
+    {
+      "memberId": "Celine@amora",
+      "name": "Celine",
+      "role": "激活 Celine CMO"
+    },
+    {
+      "memberId": "Cole@amora",
+      "name": "Cole",
+      "role": "激活 Cole CCO"
+    },
+    {
+      "memberId": "CLO@amora",
+      "name": "CLO",
+      "role": "激活 CLO 法务官"
+    },
+    {
+      "memberId": "CRO@amora",
+      "name": "CRO",
+      "role": "激活 CRO 风险官"
+    },
+    {
+      "memberId": "CFO@amora",
+      "name": "CFO",
+      "role": "激活 CFO 财务官"
+    },
+    {
+      "memberId": "CHO@amora",
+      "name": "CHO",
+      "role": "激活 CHO 人力官"
+    }
+  ],
+  "isAutoTeam": false
+}

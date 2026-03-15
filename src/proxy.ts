@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const PROTECTED = ['/dashboard'];
+const PROTECTED = ['/dashboard', '/admin'];
 
 export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;

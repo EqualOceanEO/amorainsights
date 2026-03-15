@@ -106,5 +106,59 @@
     "content": "George, important update from team-lead!\n\n**Root Cause Identified:**\nGit was reinstalled but environment variables haven't taken effect, which is why git commands aren't working.\n\n**Solution Options (requires user action):**\n1. Restart terminal/IDE to refresh environment variables\n2. Or execute in current terminal: `refreshenv` (PowerShell)\n3. Then run: `cd c:/Users/51229/WorkBuddy/Claw && git pull origin main`\n\n**Alternative:**\nDelete current directory contents and re-clone: `git clone https://github.com/EqualOceanEO/amorainsights.git`\n\nPlease wait for the user to choose a solution and execute the environment refresh. Once that's done, you'll be able to access the complete source code and continue with development environment setup.\n\nStand by for further instructions from team-lead.",
     "timestamp": "2026-03-13T07:20:36.513Z",
     "read": true
+  },
+  {
+    "id": "msg-franklyn-reconnect-001",
+    "from": "Franklyn",
+    "to": "George",
+    "type": "message",
+    "content": "George，Git 环境变量问题已解决，完整源代码也已到位。\n\nteam-lead 即将布置一个小的开发任务，目的是让你跑通整体开发流程。\n\n请做好以下准备：\n1. 确认 src/ 或 app/ 目录已存在\n2. 确认可以执行 npm run dev 启动开发服务器\n3. 浏览一遍现有代码结构，熟悉项目\n\n任务即将下达，保持待命！\n\n— Franklyn, CEO",
+    "timestamp": "2026-03-13T08:00:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg-franklyn-respawn-001",
+    "from": "Franklyn",
+    "to": "George",
+    "type": "message",
+    "content": "George，我已重新上线。\n\n当前项目状态确认：src/ 目录已存在，完整代码已到位。现在请你执行以下任务：\n\n1. **立即启动开发服务器**：在 c:/Users/51229/WorkBuddy/Claw 目录下执行 `npm run dev`\n2. **验证应用可访问**：确认 http://localhost:3000 能正常打开\n3. **检查代码结构**：浏览 src/ 目录，熟悉当前项目架构\n4. **汇报结果**：向我和 team-lead 报告启动状态及任何遇到的问题\n\n如有任何报错（如缺少 .env 环境变量），请详细记录并汇报。这是当前最优先的技术验证任务。\n\n— Franklyn, CEO",
+    "timestamp": "2026-03-14T08:00:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg-teamlead-devserver-verified-001",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "George，开发服务器验证结果如下：\n\n✅ **src/ 目录存在**（包含 app/、lib/、types/ 等子目录）\n✅ **.env 环境变量配置完整**（POSTGRES_URL、NEXTAUTH_SECRET、Supabase keys 全部就位）\n✅ **npm run dev 启动成功**（端口 3000 已被占用，自动切换到 3001）\n✅ **应用可正常访问**：http://localhost:3001\n\n整体开发环境已完全就绪。你可以继续浏览 src/ 目录熟悉代码结构，为后续开发任务做好准备。\n\nFranklyn 和我会在收到你的代码结构报告后，安排下一步开发任务。",
+    "timestamp": "2026-03-14T08:05:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg-franklyn-p0-george-001",
+    "from": "Franklyn",
+    "to": "George",
+    "type": "message",
+    "content": "George，P0 任务正式下达，今日内需要完成。\n\n## 背景\n\n我已审阅当前代码，情况如下：\n- `src/lib/db.ts` 目前只有 users 表操作，没有任何内容数据\n- `src/app/dashboard/page.tsx` 全部是硬编码静态数据（reports: 24、companies: 1200+ 等）\n- 数据库用的是 Supabase（`NEXT_PUBLIC_SUPABASE_URL` 已配置）\n\n## P0 任务 1：内容数据库 Schema 设计（今日内给出草案）\n\n请设计以下三张表的 Supabase SQL schema：\n\n**1. `reports` 表**\n研究报告，核心付费内容。需包含：\n- id, title, summary, content（全文）\n- industry（对应六大未来产业）\n- is_premium（是否付费内容）\n- published_at, created_at\n- author, tags（数组）\n- view_count\n\n**2. `news_items` 表**\nDashboard 的 Recent Insights 数据来源。需包含：\n- id, title, summary\n- industry\n- source_url, source_name\n- published_at, created_at\n- is_featured\n\n**3. `companies` 表**\n1200+ 公司追踪数据库。需包含：\n- id, name, name_cn（中文名）\n- industry, sub_sector\n- description\n- founded_year, hq_location\n- is_tracked（是否重点追踪）\n- created_at, updated_at\n\n## P0 任务 2：Dashboard 动态化（schema 批准后实施）\n\nSchema 草案经 Franklyn 审批后，你需要：\n1. 在 Supabase 执行建表 SQL\n2. 在 `src/lib/db.ts` 添加对应的查询函数\n3. 将 `dashboard/page.tsx` 的硬编码数据替换为真实 DB 查询\n\n**当前要做的：立即给出 Schema 草案（SQL 格式），回复给我和 team-lead。**\n\n— Franklyn, CEO",
+    "timestamp": "2026-03-14T08:10:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg-strategic-meeting-broadcast-george",
+    "from": "team-lead",
+    "to": "@team",
+    "type": "broadcast",
+    "content": "【战略会决策纪要 — 2026年3月14日】\n\n创始人已就全部5项议题作出决策，即时生效：\n\n---\n\n**议题1 — 优先级调整（已更新）**\n- P0：数据库建模 + Dashboard 动态化（不变）\n- P1：Reports 页面 + 企业数据库（Newsletter 移除）\n- P2：SEO 优化（Paywall 暂不实施）\n\n**议题2 — DB Schema**\n- 已审批，战略会结束后立即由 George 执行建表\n\n**议题3 — 内容来源**\n- 决策：先用 AI 生成占位内容，后续替换为人工撰写\n- 影响：George 在 Dashboard 动态化时需插入 AI 生成的种子数据\n\n**议题4 — Paywall**\n- 决策：暂不实施 is_premium Paywall\n- is_premium 字段保留在 schema 中（备用），但前端不做任何 Paywall 逻辑\n\n**议题5 — Celine 资源**\n- 决策：产品完整前 Celine 待命，不分配主动执行任务\n\n---\n\n**各成员任务状态：**\n- Franklyn：战略方向已定，等待 George 完成 P0 后汇报，继续审批 P1 任务规划\n- George：战略会后立即恢复执行——建表 → db.ts → Dashboard 动态化 → AI 种子数据\n- Celine：待命，等产品完整后再发力\n\n战略会结束，执行阶段开始。",
+    "timestamp": "2026-03-14T09:00:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg-george-resume-p0-001",
+    "from": "team-lead",
+    "to": "George",
+    "type": "message",
+    "content": "George，战略会已结束，P0 任务立即恢复执行。\n\n**关键决策变化：**\n1. **Paywall 不做** — is_premium 字段保留在 schema，但前端无需任何 Paywall 逻辑\n2. **种子数据用 AI 生成** — 每张表至少 3 条高质量 AI 生成内容（真实感强，覆盖不同 industry）\n\n**执行顺序（严格按此）：**\n1. **建表** — 在 Supabase 执行 scripts/schema.sql（等待 team-lead 确认执行方式后开始）\n2. **更新 db.ts** — 添加 TypeScript 类型接口 + 分页查询函数（getRecentNewsItems / getReportStats / getIndustryReportCounts）\n3. **Dashboard 动态化** — 替换 dashboard/page.tsx 的硬编码数据为真实 DB 查询\n4. **插入 AI 种子数据** — reports / news_items / companies 各 3 条，内容质量要高\n\n建表方式由创始人决定后会立即通知你。准备好了吗？",
+    "timestamp": "2026-03-14T09:01:00.000Z",
+    "read": false
   }
 ]
