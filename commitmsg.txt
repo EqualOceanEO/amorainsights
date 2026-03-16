@@ -1,1 +1,1 @@
-fix: revert to iframe, add sticky breadcrumb and SEO
+fix: remove H5 internal nav from iframe (duplicates SiteNav)

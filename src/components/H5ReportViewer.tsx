@@ -42,6 +42,8 @@ export default function H5ReportViewer({
     ? report.html_content
         .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
         .replace(/<div[^>]*id=["']progress-bar["'][^>]*>.*?<\/div>/gi, '')
+        // Fix disclaimer text color
+        .replace(/class=["']disclaimer-text["']/gi, 'class="disclaimer-text" style="color: #9ca3af;"')
     : '';
 
   // Blurred preview: first 40% of HTML for paywall
