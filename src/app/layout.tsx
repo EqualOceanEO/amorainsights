@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { AnalyticsProvider } from "@/components/AnalyticsProvider";
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 const TAGLINE = "Mapping Industries. Measuring Applications. Benchmarking the World.";
 const VALUE_PROP = "Clarity on frontier tech, before the market catches up.";
@@ -37,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-gray-950 text-white antialiased">
+    <html lang="en" className={inter.variable}>
+      <body className="bg-gray-950 text-white antialiased font-sans">
         {/* Suspense required because AnalyticsProvider uses useSearchParams */}
         <Suspense fallback={null}>
           <AnalyticsProvider>

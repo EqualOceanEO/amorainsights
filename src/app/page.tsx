@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { getReports, getReportCountByIndustry, INDUSTRY_META, ALL_INDUSTRY_SLUGS, type Report } from '@/lib/db';
 import SubscribeBox from '@/components/SubscribeBox';
+import SiteNav from '@/components/SiteNav';
+import SiteFooter from '@/components/SiteFooter';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -41,31 +43,9 @@ export default async function Home() {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      {/* ── Navigation ─────────────────────────────────────────────────────── */}
-      <header className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
-          <Link href="/" className="text-xl font-bold tracking-tight shrink-0">
-            Amora<span className="text-blue-400">Insights</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-5 text-sm text-gray-400">
-            <Link href="/reports" className="hover:text-white transition">Reports</Link>
-            <Link href="/companies" className="hover:text-white transition">Companies</Link>
-            <Link href="/about" className="hover:text-white transition">About</Link>
-          </nav>
-          <div className="flex items-center gap-2.5">
-            <Link href="/login" className="text-sm text-gray-400 hover:text-white transition px-3 py-1.5">
-              Sign In
-            </Link>
-            <Link
-              href="/signup"
-              className="text-sm bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-1.5 rounded-lg transition"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+      {/* ── Shared Nav ──────────────────────────────────────────────────────── */}
+      <SiteNav activePath="/" />
 
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-gray-800/60">
@@ -253,26 +233,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── Footer ──────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-gray-800/60 bg-gray-950">
-        <div className="max-w-7xl mx-auto px-5 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <div className="font-bold">
-              Amora<span className="text-blue-400">Insights</span>
-            </div>
-            <div className="text-xs text-gray-600 mt-0.5">
-              Mapping Industries. Measuring Applications. Benchmarking the World.
-            </div>
-          </div>
-          <div className="flex gap-5 text-sm text-gray-600">
-            <Link href="/reports" className="hover:text-gray-300 transition">Reports</Link>
-            <Link href="/about" className="hover:text-gray-300 transition">About</Link>
-            <Link href="/privacy" className="hover:text-gray-300 transition">Privacy</Link>
-            <Link href="/terms" className="hover:text-gray-300 transition">Terms</Link>
-          </div>
-          <div className="text-xs text-gray-700">© 2026 Amora Insights</div>
-        </div>
-      </footer>
+      {/* ── Shared Footer ────────────────────────────────────────────────────── */}
+      <SiteFooter />
     </div>
   );
 }

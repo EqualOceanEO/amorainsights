@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import SubscribeBox from '@/components/SubscribeBox';
+import SiteNav from '@/components/SiteNav';
+import SiteFooter from '@/components/SiteFooter';
 import {
   getReports,
   INDUSTRY_META,
@@ -87,24 +89,9 @@ export default async function ReportsPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      {/* ── Nav ─────────────────────────────────────────────────────────── */}
-      <header className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
-          <Link href="/" className="text-lg font-bold tracking-tight shrink-0">
-            Amora<span className="text-blue-400">Insights</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-5 text-sm text-gray-400">
-            <Link href="/dashboard" className="hover:text-white transition">Dashboard</Link>
-            <Link href="/reports" className="text-white font-medium">Reports</Link>
-            <Link href="/companies" className="hover:text-white transition">Companies</Link>
-          </nav>
-          <div className="flex items-center gap-2.5">
-            <Link href="/login" className="text-sm text-gray-400 hover:text-white transition px-3 py-1.5">Sign In</Link>
-            <Link href="/signup" className="text-sm bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-1.5 rounded-lg transition">Get Started</Link>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+      {/* ── Shared Nav ─────────────────────────────────────────────────────── */}
+      <SiteNav activePath="/reports" />
 
       <main className="max-w-7xl mx-auto px-6 py-10">
         {/* ── Header ──────────────────────────────────────────────────────── */}
@@ -230,7 +217,7 @@ export default async function ReportsPage({
       <section className="py-16 border-t border-gray-800 bg-gray-950">
         <div className="max-w-xl mx-auto px-6 text-center">
           <p className="text-xs tracking-widest text-blue-500 uppercase mb-4">Every Friday</p>
-          <h2 className="text-2xl font-bold text-white mb-3 font-serif">AMORA Weekly</h2>
+          <h2 className="text-2xl font-bold text-white mb-3">AMORA Weekly</h2>
           <p className="text-gray-500 text-sm mb-8 leading-relaxed">
             Six frontier tracks, one briefing a week. No account required.
           </p>
@@ -239,6 +226,9 @@ export default async function ReportsPage({
           </div>
         </div>
       </section>
+
+      {/* ── Shared Footer ──────────────────────────────────────────────────── */}
+      <SiteFooter />
     </div>
   );
 }
