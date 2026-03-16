@@ -37,8 +37,15 @@ export default function H5ReportViewer({
 
   const isPremium = report.is_premium;
 
+  // Clean HTML: remove H5 internal nav/header that duplicates SiteNav
+  const cleanHtml = report.html_content
+    ? report.html_content
+        .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
+        .replace(/<div[^>]*id=["']progress-bar["'][^>]*>.*?<\/div>/gi, '')
+    : '';
+
   // Blurred preview: first 40% of HTML for paywall
-  const previewHtml = report.html_content ? buildPreviewHtml(report.html_content) : '';
+  const previewHtml = cleanHtml ? buildPreviewHtml(cleanHtml) : '';
 
   return (
     <div className="flex flex-col flex-1">
@@ -85,10 +92,10 @@ export default function H5ReportViewer({
         )}
 
         {hasAccess ? (
-          report.html_content ? (
+          cleanHtml ? (
             <iframe
               ref={iframeRef}
-              srcDoc={report.html_content}
+              srcDoc={cleanHtml}
               sandbox="allow-scripts allow-same-origin allow-popups"
               title={report.title}
               className="w-full border-0 block"
