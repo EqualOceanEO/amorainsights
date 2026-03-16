@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getReportBySlug, getReports, INDUSTRY_META, type Report } from '@/lib/db';
 import SiteNav from '@/components/SiteNav';
@@ -391,6 +392,67 @@ function PremiumGate({ slug, title }: { slug: string; title: string }) {
       </div>
     </div>
   );
+}
+
+// ─── SEO Metadata ─────────────────────────────────────────────────────────────
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const report = await getReportBySlug(slug);
+
+  if (!report) {
+    return {
+      title: 'Report Not Found',
+      description: 'The requested report could not be found.',
+    };
+  }
+
+  const meta = INDUSTRY_META[report.industry_slug] ?? {
+    name: report.industry_slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+    icon: '📊',
+    name_cn: '',
+  };
+
+  const canonicalUrl = `https://amorainsights.com/reports/${report.slug}`;
+
+  return {
+    title: `${report.title} | AMORA Insights`,
+    description: report.summary || `In-depth analysis and AMORA scoring for ${meta.name}.`,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      type: 'article',
+      url: canonicalUrl,
+      title: report.title,
+      description: report.summary || `Comprehensive ${meta.name} report with AMORA framework scoring.`,
+      siteName: 'AMORA Insights',
+      images: report.cover_image_url
+        ? [{ url: report.cover_image_url, width: 1200, height: 630, alt: report.title }]
+        : [{ url: '/og-default.png', width: 1200, height: 630, alt: 'AMORA Insights' }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: report.title,
+      description: report.summary || `AMORA-scored analysis for ${meta.name}.`,
+      images: report.cover_image_url
+        ? [report.cover_image_url]
+        : ['/og-default.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    keywords: [
+      meta.name,
+      'AMORA',
+      'AMORA score',
+      report.industry_slug,
+      ...(report.tags || []),
+    ].filter(Boolean).join(', '),
+  };
 }
 
 // ─── Coming Soon ─────────────────────────────────────────────────────────────

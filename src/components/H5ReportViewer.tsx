@@ -45,8 +45,8 @@ export default function H5ReportViewer({
       {/* H5 reports scroll via iframe, but we still track page-level scroll for the progress bar */}
       <ReadingProgress />
 
-      {/* ── Breadcrumb bar ──────────────────────────────────────────────── */}
-      <div className="border-b border-gray-800/40 bg-gray-950/60 px-5 py-2 flex items-center justify-between gap-4">
+      {/* ── Sticky Breadcrumb bar ──────────────────────────────────────────── */}
+      <div className="sticky top-0 z-30 border-b border-gray-800/40 bg-gray-950/90 backdrop-blur-sm px-5 py-2 flex items-center justify-between gap-4">
         <nav className="flex items-center gap-1.5 text-xs text-gray-600 min-w-0">
           <Link href="/reports" className="hover:text-gray-400 transition shrink-0">Reports</Link>
           <span>/</span>
