@@ -16,7 +16,6 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from('news_items')
     .select('*', { count: 'exact' })
-    .eq('is_published', true)
     .order('published_at', { ascending: false })
     .range(offset, offset + pageSize - 1);
 
