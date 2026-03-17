@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
-
 /** GET /api/admin/news/[id] */
 export async function GET(
   _req: NextRequest,
@@ -10,7 +8,7 @@ export async function GET(
 ) {
   const { id } = await params;
   const { data, error } = await supabase
-    .from('news')
+    .from('news_items')
     .select('*')
     .eq('id', id)
     .maybeSingle();
@@ -27,20 +25,10 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const body = await req.json();
-
-  // Auto-set published_at when publishing
-  if (body.is_published === true && !body.published_at) {
-    body.published_at = new Date().toISOString();
-  }
-  if (body.is_published === false) {
-    body.published_at = null;
-  }
-
-  // updated_at
   body.updated_at = new Date().toISOString();
 
   const { data, error } = await supabase
-    .from('news')
+    .from('news_items')
     .update(body)
     .eq('id', id)
     .select()
@@ -57,7 +45,7 @@ export async function DELETE(
 ) {
   const { id } = await params;
   const { error } = await supabase
-    .from('news')
+    .from('news_items')
     .delete()
     .eq('id', id);
 

@@ -1,37 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
-
-/**
- * GET /api/news/[slug]
- * Returns full news article by slug (published only)
- */
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const { data, error } = await supabase
-    .from('news')
-    .select('*')
-    .eq('slug', slug)
+
+  // slug can be a numeric id or a text slug
+  const isNumeric = /^\d+$/.test(slug);
+
+  let query = supabase.from('news_items').select('*');
+  if (isNumeric) {
+    query = query.eq('id', parseInt(slug, 10));
+  } else {
+    query = query.eq('slug', slug);
+  }
+
+  const { data, error } = await query
     .eq('is_published', true)
     .maybeSingle();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  if (!data)  return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-  // Fetch related company info if company_id exists
-  let company = null;
-  if (data.company_id) {
-    const { data: co } = await supabase
-      .from('companies')
-      .select('id,name,name_cn,industry_slug,ticker,country,hq_city')
-      .eq('id', data.company_id)
-      .maybeSingle();
-    company = co;
-  }
+  // Related articles: same industry, exclude current
+  const { data: related } = await supabase
+    .from('news_items')
+    .select('id, title, summary, industry_slug, source_name, published_at, cover_image_url, slug')
+    .eq('is_published', true)
+    .eq('industry_slug', data.industry_slug)
+    .neq('id', data.id)
+    .order('published_at', { ascending: false })
+    .limit(3);
 
-  return NextResponse.json({ ...data, company });
+  return NextResponse.json({ ...data, related: related ?? [] });
 }

@@ -28,9 +28,9 @@ export default function SiteNav({ activePath }: SiteNavProps) {
         {/* Nav links */}
         <nav className="hidden md:flex items-center gap-1">
           {[
+            { href: '/news', label: 'News' },
             { href: '/reports', label: 'Reports' },
             { href: '/companies', label: 'Companies' },
-            { href: '/news', label: 'News' },
             { href: '/about', label: 'About' },
           ].map(({ href, label }) => (
             <Link
