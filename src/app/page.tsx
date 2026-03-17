@@ -174,49 +174,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ── Three Pillars ───────────────────────────────────────────────── */}
-        <section className="pt-8 border-t border-gray-800/60 mb-14">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold mb-2">The AMORA Difference</h2>
-            <p className="text-gray-500 text-sm max-w-lg mx-auto">
-              Research built for people who need to act on it — not just read it.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              {
-                icon: '📐',
-                label: 'Quantitative',
-                heading: 'Data over narrative',
-                desc: 'Every analysis is grounded in numbers — patents, financials, capacity metrics, and benchmarks. No narratives without evidence.',
-              },
-              {
-                icon: '⚖️',
-                label: 'Comparative',
-                heading: 'Global perspective',
-                desc: 'We put US, Chinese, and global players side by side. Understanding one market in isolation no longer works.',
-              },
-              {
-                icon: '🎯',
-                label: 'Applied',
-                heading: 'Lab to deployment',
-                desc: 'We focus on technologies reaching real-world scale. Depth over breadth — always. No concept papers, no hype.',
-              },
-            ].map((p) => (
-              <div
-                key={p.label}
-                className="bg-gray-900/60 border border-gray-800 rounded-xl p-6"
-              >
-                <div className="text-3xl mb-3">{p.icon}</div>
-                <div className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-1">
-                  {p.label}
-                </div>
-                <h3 className="font-semibold text-white mb-2">{p.heading}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+
       </main>
 
       {/* ── Newsletter ──────────────────────────────────────────────────────── */}

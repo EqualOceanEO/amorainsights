@@ -1,17 +1,5 @@
 'use client';
 
-/**
- * H5ReportViewer — renders an HTML/H5 format report in a sandboxed iframe.
- *
- * Simplified layout (2026-03-16 refactor):
- *  - Nav & Footer are rendered by the parent page (SiteNav / SiteFooter)
- *  - No duplicate Top Bar here — breadcrumb lives in the page, copyright in SiteFooter
- *  - Full-width iframe fills remaining viewport height
- *  - Premium gate: blurred preview + upgrade overlay
- *  - Related reports strip below iframe
- */
-
-import { useState, useRef } from 'react';
 import Link from 'next/link';
 import type { Report } from '@/lib/db';
 import type { SubscriptionTier } from '@/components/ChartBlock';
@@ -24,7 +12,6 @@ interface Props {
   relatedReports: Report[];
 }
 
-// NAV height = 56px (h-14). We subtract that so the iframe fills the rest.
 const NAV_H = 56;
 
 export default function H5ReportViewer({
@@ -32,29 +19,24 @@ export default function H5ReportViewer({
   hasAccess,
   relatedReports,
 }: Props) {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-
   const isPremium = report.is_premium;
 
   // Clean HTML: remove H5 internal nav/header that duplicates SiteNav
-  const cleanHtml = report.html_content
-    ? report.html_content
-        .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
-        .replace(/<div[^>]*id=["']progress-bar["'][^>]*>.*?<\/div>/gi, '')
-        // Fix disclaimer text color
-        .replace(/class=["']disclaimer-text["']/gi, 'class="disclaimer-text" style="color: #9ca3af;"')
-    : '';
+  let cleanHtml = report.html_content || '';
+  
+  // Remove internal nav and fix disclaimer color
+  cleanHtml = cleanHtml
+    .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
+    .replace(/class=["']disclaimer-text["']/gi, 'class="disclaimer-text" style="color: #9ca3af;"');
 
-  // Blurred preview: first 40% of HTML for paywall
-  const previewHtml = cleanHtml ? buildPreviewHtml(cleanHtml) : '';
+  // For premium reports without access: transform charts to static SVGs
+  const displayHtml = isPremium && !hasAccess ? transformChartsToGated(cleanHtml) : cleanHtml;
 
   return (
     <div className="flex flex-col flex-1">
-      {/* H5 reports scroll via iframe, but we still track page-level scroll for the progress bar */}
       <ReadingProgress />
 
-      {/* ── Sticky Breadcrumb bar ──────────────────────────────────────────── */}
+      {/* Breadcrumb */}
       <div className="sticky top-0 z-30 border-b border-gray-800/40 bg-gray-950/90 backdrop-blur-sm px-5 py-2 flex items-center justify-between gap-4">
         <nav className="flex items-center gap-1.5 text-xs text-gray-600 min-w-0">
           <Link href="/reports" className="hover:text-gray-400 transition shrink-0">Reports</Link>
@@ -69,116 +51,28 @@ export default function H5ReportViewer({
               <span className="text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded-full">⭐ Premium</span>
             )
           )}
-          {hasAccess && report.html_content && (
-            <button
-              onClick={() => iframeRef.current?.requestFullscreen?.()}
-              className="text-xs text-gray-500 hover:text-white transition px-2 py-1 rounded hover:bg-gray-800"
-              title="Fullscreen"
-            >
-              ⛶
-            </button>
-          )}
         </div>
       </div>
 
-      {/* ── Iframe / Paywall ─────────────────────────────────────────────── */}
-      <div className="relative flex-1" style={{ minHeight: `calc(100vh - ${NAV_H + 37}px)` }}>
-        {/* Loading skeleton */}
-        {!iframeLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-950 z-10">
-            <div className="text-center">
-              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-              <p className="text-sm text-gray-500">Loading report…</p>
-            </div>
-          </div>
-        )}
-
-        {hasAccess ? (
-          cleanHtml ? (
-            <iframe
-              ref={iframeRef}
-              srcDoc={cleanHtml}
-              sandbox="allow-scripts allow-same-origin allow-popups"
-              title={report.title}
-              className="w-full border-0 block"
-              style={{ height: `calc(100vh - ${NAV_H + 37}px)` }}
-              onLoad={() => setIframeLoaded(true)}
-            />
-          ) : (
-            <div className="flex items-center justify-center h-64 text-gray-500 text-sm">
-              No H5 content uploaded yet.
-            </div>
-          )
+      {/* Content - using dangerouslySetInnerHTML instead of iframe */}
+      <div className="relative flex-1 bg-gray-950" style={{ minHeight: `calc(100vh - ${NAV_H + 37}px)` }}>
+        {displayHtml ? (
+          <div 
+            className="h5-report-content"
+            style={{ 
+              height: `calc(100vh - ${NAV_H + 37}px)`,
+              overflow: 'auto'
+            }}
+            dangerouslySetInnerHTML={{ __html: displayHtml }}
+          />
         ) : (
-          /* ── Paywall ─────────────────────────────────────────────── */
-          <div className="relative" style={{ height: `calc(100vh - ${NAV_H + 37}px)` }}>
-            {/* Blurred partial preview */}
-            {previewHtml && (
-              <iframe
-                srcDoc={previewHtml}
-                sandbox="allow-scripts allow-same-origin"
-                title="Preview"
-                className="w-full border-0 block"
-                style={{ height: '100%', filter: 'blur(5px)', opacity: 0.25 }}
-                onLoad={() => setIframeLoaded(true)}
-              />
-            )}
-
-            {/* Paywall overlay */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 z-20">
-              <div className="w-full max-w-md text-center">
-                <div className="inline-flex items-center gap-2 bg-blue-600/15 border border-blue-500/30 text-blue-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-5 tracking-wide">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-                  Premium Interactive Report
-                </div>
-
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-snug">
-                  Unlock the full H5 experience
-                </h2>
-                <p className="text-gray-400 text-sm mb-2 leading-relaxed font-medium">
-                  {report.title}
-                </p>
-                <p className="text-gray-500 text-sm mb-7 leading-relaxed">
-                  Interactive AMORA radar charts, competitive benchmarks, and dynamic
-                  visualizations — available to Premium subscribers.
-                </p>
-
-                <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-gray-400 mb-8">
-                  {['✓ Interactive charts', '✓ Full analysis', '✓ AMORA scores', '✓ Quarterly updates'].map(t => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <Link
-                    href="/signup?intent=premium"
-                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-xl transition text-sm"
-                  >
-                    Start Free Trial →
-                  </Link>
-                  <Link href="/pricing" className="text-sm text-gray-400 hover:text-white transition px-4 py-3">
-                    View plans
-                  </Link>
-                </div>
-
-                <p className="text-xs text-gray-600 mt-4">
-                  Already subscribed?{' '}
-                  <Link href="/login" className="text-blue-400 hover:underline">Sign in</Link>
-                </p>
-
-                {/* Social proof */}
-                <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 mt-5 text-xs text-gray-600">
-                  <span>🔒 Cancel anytime</span>
-                  <span>📦 Instant access</span>
-                  <span>🌍 500+ analysts trust AMORA</span>
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center justify-center h-64 text-gray-500 text-sm">
+            No H5 content uploaded yet.
           </div>
         )}
       </div>
 
-      {/* ── Related Reports ──────────────────────────────────────────────── */}
+      {/* Related Reports */}
       {relatedReports.length > 0 && (
         <div className="border-t border-gray-800/60 bg-gray-900/30 px-5 py-8">
           <div className="max-w-4xl mx-auto">
@@ -198,9 +92,6 @@ export default function H5ReportViewer({
                     ) : (
                       <span className="text-xs text-green-400">Free</span>
                     )}
-                    {(r.report_format === 'html' || r.report_format === 'h5_embed') && (
-                      <span className="text-xs text-purple-400">H5</span>
-                    )}
                   </div>
                   <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition line-clamp-2">
                     {r.title}
@@ -217,11 +108,129 @@ export default function H5ReportViewer({
 }
 
 /**
- * Build a "preview" version of the HTML that only renders ~40% of content.
+ * Transform interactive charts to static SVGs + paywall hints for non-premium users.
  */
-function buildPreviewHtml(fullHtml: string): string {
-  const cutoff = Math.floor(fullHtml.length * 0.4);
-  const slicePoint = fullHtml.lastIndexOf('</div>', cutoff) || cutoff;
-  const partial = fullHtml.slice(0, slicePoint);
-  return partial + '\n</div></div></body></html>';
+function transformChartsToGated(html: string): string {
+  // Replace chart-container divs with gated charts
+  const chartPattern = /<div class="chart-container">[\s\S]*?<div id="[^"]+" class="echarts"><\/div>[\s\S]*?<\/div>/gi;
+
+  return html.replace(chartPattern, () => {
+    return `
+<div class="gated-chart-wrapper">
+  <svg class="gated-chart-svg" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grid)" />
+
+    <g transform="translate(200, 100)" opacity="0.4">
+      <polygon points="0,-70 60,-35 60,35 0,70 -60,35 -60,-35" fill="none" stroke="#3b82f6" stroke-width="1"/>
+      <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25" fill="none" stroke="#3b82f6" stroke-width="1"/>
+      <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="#3b82f6" stroke-width="1"/>
+      <polygon points="0,-55 50,-28 35,28 0,60 -45,20 -50,-20" fill="#3b82f6" fill-opacity="0.15" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="0" y1="-70" x2="0" y2="70" stroke="#6b7280" stroke-width="0.5"/>
+      <line x1="-60" y1="-35" x2="60" y2="35" stroke="#6b7280" stroke-width="0.5"/>
+      <line x1="-60" y1="35" x2="60" y2="-35" stroke="#6b7280" stroke-width="0.5"/>
+    </g>
+
+    <circle cx="200" cy="100" r="20" fill="#1f2937" opacity="0.9"/>
+    <path d="M200,90 c-4,0 -7,3 -7,7 v2 h14 v-2 c0,-4 -3,-7 -7,-7 M196,99 v8 h8 v-8" fill="#9ca3af"/>
+
+    <text x="200" y="140" text-anchor="middle" fill="#9ca3af" font-size="11" font-family="system-ui, sans-serif">
+      Interactive AMORA Radar Chart
+    </text>
+    <text x="200" y="156" text-anchor="middle" fill="#6b7280" font-size="9" font-family="system-ui, sans-serif">
+      5-axis · 25 indicators
+    </text>
+  </svg>
+
+  <div class="gated-chart-overlay">
+    <div class="gated-chart-cta">
+      <div class="gated-chart-lock-icon">🔒</div>
+      <h3 class="gated-chart-title">Interactive Chart</h3>
+      <p class="gated-chart-desc">Hover for details · Zoom to explore · Export data</p>
+      <a href="/pricing" class="gated-chart-button">Upgrade to Pro</a>
+    </div>
+  </div>
+
+  <style>
+    .gated-chart-wrapper {
+      position: relative;
+      margin: 24px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #374151;
+      background: #111827;
+    }
+
+    .gated-chart-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 200px;
+    }
+
+    .gated-chart-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gated-chart-wrapper:hover .gated-chart-overlay {
+      opacity: 1;
+    }
+
+    .gated-chart-cta {
+      text-align: center;
+      padding: 32px;
+      max-width: 280px;
+    }
+
+    .gated-chart-lock-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .gated-chart-title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .gated-chart-desc {
+      color: #9ca3af;
+      font-size: 13px;
+      margin: 0 0 20px;
+      line-height: 1.5;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .gated-chart-button {
+      display: inline-block;
+      background: #3b82f6;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .gated-chart-button:hover {
+      background: #2563eb;
+    }
+  </style>
+</div>`;
+  });
 }
