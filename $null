@@ -1,2 +1,1 @@
-'cat' 不是内部或外部命令，也不是可运行的程序
-或批处理文件。
+处理 -File“"c:/Users/51229/WorkBuddy/Claw/scripts/verify-final.ps1"”失败: 路径中具有非法字符。 请为 -File 参数指定一个有效路径。

@@ -8,6 +8,7 @@ const NAV = [
     section: 'Content',
     items: [
       { href: '/admin/reports',    label: 'Reports',    icon: '📄' },
+      { href: '/admin/news',       label: 'News',       icon: '📰' },
       { href: '/admin/scores',     label: 'Scores',     icon: '📊' },
       { href: '/admin/companies',  label: 'Companies',  icon: '🏢' },
       { href: '/admin/industries', label: 'Industries', icon: '🗂️' },

@@ -1,0 +1,33 @@
+$supabaseUrl = "https://jqppcuccqkxhhrvndsil.supabase.co"
+$anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxcHBjdWNjcWt4aGhydm5kc2lsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDcxMDQsImV4cCI6MjA4ODcyMzEwNH0.twYdLldCw10hQADe5RximjkLTtrYE1zyvr1xMYVS3V8"
+$postHeaders = @{ "apikey" = $anonKey; "Authorization" = "Bearer $anonKey"; "Content-Type" = "application/json"; "Prefer" = "return=minimal" }
+
+function Insert($jsonArr) {
+    $bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($jsonArr)
+    try {
+        $r = Invoke-WebRequest -Uri "$supabaseUrl/rest/v1/companies" -Method POST -Headers $postHeaders -Body $bodyBytes -UseBasicParsing
+        return "OK " + $r.StatusCode
+    } catch {
+        $stream = $_.Exception.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($stream)
+        return "ERR: " + $reader.ReadToEnd()
+    }
+}
+
+# Batch 2: AI Agents (ids 11-20)
+Write-Host "=== Batch 2: AI Agents ==="
+$b2 = @'
+[
+{"id":11,"name":"Salesforce Agentforce","name_cn":"Salesforce","industry_slug":"ai","sub_sector":"AI Agents","description":"Salesforce's enterprise AI agent platform launched in 2024. Autonomous agents for sales, service, marketing, and operations. Over 1,000 customers in first 3 months. NYSE: CRM.","country":"US","hq_city":"San Francisco","hq_province":"California","website":"https://salesforce.com/agentforce","ticker":"CRM","exchange":"NYSE","employee_count":70000,"is_tracked":true,"is_public":true,"tags":["agentforce","crm","enterprise","sales-ai"],"founded_year":1999},
+{"id":12,"name":"ServiceNow","name_cn":"ServiceNow","industry_slug":"ai","sub_sector":"AI Agents","description":"Enterprise workflow automation platform integrating AI agents for IT, HR, and customer service. Now Platform AI processes 10B+ workflows daily. NYSE listed with $200B+ market cap.","country":"US","hq_city":"Santa Clara","hq_province":"California","website":"https://servicenow.com","ticker":"NOW","exchange":"NYSE","employee_count":20000,"is_tracked":true,"is_public":true,"tags":["workflow","enterprise","itom","ai-agents"],"founded_year":2004},
+{"id":13,"name":"Microsoft Copilot","name_cn":"微软","industry_slug":"ai","sub_sector":"AI Agents","description":"Microsoft's AI-powered productivity suite built on OpenAI GPT-4. Deployed across Office 365, GitHub, Azure, and Bing. 1M+ enterprise seats sold. Driving $13B+ annualized AI revenue.","country":"US","hq_city":"Redmond","hq_province":"Washington","website":"https://copilot.microsoft.com","ticker":"MSFT","exchange":"NASDAQ","employee_count":220000,"is_tracked":true,"is_public":true,"tags":["copilot","office365","github-copilot","azure-ai"],"founded_year":1975},
+{"id":14,"name":"Adept AI","name_cn":"Adept AI","industry_slug":"ai","sub_sector":"AI Agents","description":"AI agent company building Action Transformer (ACT) for browser and app automation. Raised $350M Series B. Focuses on enterprise workflow automation. Team acquired by Amazon in 2024.","country":"US","hq_city":"San Francisco","hq_province":"California","website":"https://adept.ai","ticker":null,"exchange":null,"employee_count":200,"is_tracked":true,"is_public":false,"tags":["action-ai","browser-agent","enterprise-automation"],"founded_year":2022},
+{"id":15,"name":"Coze","name_cn":"扣子（字节跳动）","industry_slug":"ai","sub_sector":"AI Agents","description":"ByteDance's AI agent development platform. Enables no-code/low-code agent creation with plugins and workflows. 3M+ published bots globally. Available in China and international markets.","country":"CN","hq_city":"Beijing","hq_province":"Beijing","website":"https://coze.com","ticker":null,"exchange":null,"employee_count":2000,"is_tracked":true,"is_public":false,"tags":["no-code","bot-builder","bytedance","agent-platform"],"founded_year":2023},
+{"id":16,"name":"Manus AI","name_cn":"Manus AI","industry_slug":"ai","sub_sector":"AI Agents","description":"Chinese AI startup building general-purpose autonomous agents capable of completing complex multi-step tasks end-to-end. Viral demo in March 2025 showcasing coding, research, and data tasks.","country":"CN","hq_city":"Beijing","hq_province":"Beijing","website":"https://manus.im","ticker":null,"exchange":null,"employee_count":100,"is_tracked":true,"is_public":false,"tags":["autonomous-agent","general-agent","agentic-ai"],"founded_year":2024},
+{"id":17,"name":"LangChain","name_cn":"LangChain","industry_slug":"ai","sub_sector":"AI Agents","description":"Open-source framework for building LLM-powered applications and AI agents. LangSmith tracing platform and LangGraph orchestration. Used by 100K+ developers. Raised $25M Series A.","country":"US","hq_city":"San Francisco","hq_province":"California","website":"https://langchain.com","ticker":null,"exchange":null,"employee_count":100,"is_tracked":true,"is_public":false,"tags":["open-source","llm-framework","langsmith","langgraph"],"founded_year":2022},
+{"id":18,"name":"AutoGen","name_cn":"AutoGen","industry_slug":"ai","sub_sector":"AI Agents","description":"Microsoft Research's open-source multi-agent framework for LLM applications. Enables multiple AI agents to collaborate on complex tasks. 30K+ GitHub stars. Powers enterprise agentic workflows.","country":"US","hq_city":"Redmond","hq_province":"Washington","website":"https://microsoft.github.io/autogen","ticker":"MSFT","exchange":"NASDAQ","employee_count":220000,"is_tracked":true,"is_public":true,"tags":["multi-agent","open-source","microsoft-research","autogen"],"founded_year":2023},
+{"id":19,"name":"Dify","name_cn":"Dify","industry_slug":"ai","sub_sector":"AI Agents","description":"Open-source LLM app development platform with visual workflow editor. 50K+ GitHub stars. Self-hostable with enterprise cloud offering. Used by 100K+ teams for building AI applications.","country":"CN","hq_city":"San Francisco","hq_province":"California","website":"https://dify.ai","ticker":null,"exchange":null,"employee_count":150,"is_tracked":true,"is_public":false,"tags":["open-source","low-code","workflow","llmops"],"founded_year":2023},
+{"id":20,"name":"StepFun","name_cn":"阶跃星辰","industry_slug":"ai","sub_sector":"AI Agents","description":"Chinese AI startup developing Step-1 and Step-2 foundation models with focus on reasoning and agentic capabilities. Founded by ex-Microsoft AI executives. Raised $400M+ Series B.","country":"CN","hq_city":"Shanghai","hq_province":"Shanghai","website":"https://stepfun.com","ticker":null,"exchange":null,"employee_count":500,"is_tracked":true,"is_public":false,"tags":["foundation-model","reasoning","step-1","agentic"],"founded_year":2023}
+]
+'@
+Write-Host (Insert $b2)

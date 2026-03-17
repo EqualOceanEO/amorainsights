@@ -6,14 +6,14 @@ import SiteFooter from '@/components/SiteFooter';
 import type { Report } from '@/lib/db';
 
 // Mock report data for testing non-premium view
-const mockReport: Report = {
+const mockReport = {
   id: 999,
   slug: 'test-premium-report',
   title: 'Test Premium Report - AMORA Framework Demo',
   summary: 'This is a test report to demonstrate the premium gate and chart gating functionality. Interactive AMORA radar charts and competitive benchmarks are available to Premium subscribers.',
   author: 'AMORA Research Team',
   published_at: '2026-03-16',
-  industry_slug: 'artificial-intelligence',
+  industry_slug: 'ai',
   tags: ['AMORA', 'Premium Test', 'Interactive Charts'],
   cover_image_url: null,
   view_count: 0,
@@ -176,7 +176,7 @@ export default function TestReportClient() {
       <SiteNav activePath="/reports" />
 
       <H5ReportViewer
-        report={mockReport}
+        report={mockReport as Report}
         hasAccess={hasAccess}
         subscriptionTier={subscriptionTier}
         relatedReports={relatedReports}

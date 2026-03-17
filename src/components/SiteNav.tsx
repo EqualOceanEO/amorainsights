@@ -30,6 +30,7 @@ export default function SiteNav({ activePath }: SiteNavProps) {
           {[
             { href: '/reports', label: 'Reports' },
             { href: '/companies', label: 'Companies' },
+            { href: '/news', label: 'News' },
             { href: '/about', label: 'About' },
           ].map(({ href, label }) => (
             <Link
