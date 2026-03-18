@@ -118,14 +118,9 @@ export default function NewsDetailPage() {
   const industryColor = INDUSTRY_COLORS[item.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
   const industryDotColor = INDUSTRY_DOT_COLORS[item.industry_slug] ?? 'bg-gray-400';
 
-  // Build industry display with level 1 + level 2
-  const industryLabel = (() => {
-    const base = item.industry_slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-    if (item.industry_level2) {
-      return `${base} · ${item.industry_level2}`;
-    }
-    return base;
-  })();
+  // Build industry label (level 1 only for display)
+  const industryLabel1 = item.industry_slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  const industryLabel2 = item.industry_level2;
 
   // Split summary into sentences for intro + body
   const summary = item.summary ?? '';
@@ -157,7 +152,12 @@ export default function NewsDetailPage() {
 
             {/* Tags */}
             <div className="flex items-center flex-wrap gap-2 mb-4">
-              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${industryColor}`}>{industryLabel}</span>
+              {/* Level 1 */}
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${industryColor}`}>{industryLabel1}</span>
+              {/* Level 2 */}
+              {industryLabel2 && (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-800 text-gray-400 border border-gray-700">{industryLabel2}</span>
+              )}
               {item.is_premium && (
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Premium</span>
               )}
@@ -318,7 +318,12 @@ export default function NewsDetailPage() {
                   </svg>
                   <div>
                     <div className="text-gray-600 text-xs mb-0.5">Sector</div>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${industryColor}`}>{industryLabel}</span>
+                    <div className="flex items-center gap-1">
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${industryColor}`}>{industryLabel1}</span>
+                      {industryLabel2 && (
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-800 text-gray-400 border border-gray-700">{industryLabel2}</span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -333,7 +338,7 @@ export default function NewsDetailPage() {
                 <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">AMORA Note</span>
               </div>
               <p className="text-xs text-amber-200/70 leading-relaxed">
-                This development is being tracked across our {industryLabel} coverage universe. Access full AMORA scoring and competitive analysis in our research reports.
+                This development is being tracked across our {industryLabel1}{industryLabel2 ? ` · ${industryLabel2}` : ''} coverage universe. Access full AMORA scoring and competitive analysis in our research reports.
               </p>
               <Link href="/reports" className="mt-3 inline-flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors">
                 View Reports →
