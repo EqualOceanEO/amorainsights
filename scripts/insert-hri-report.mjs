@@ -57,7 +57,7 @@ if (existing.length > 0) {
       'AMORA''s inaugural Humanoid Robotics Intelligence (HRI) report benchmarks 9 leading humanoid robot companies — Unitree, UBTECH, Agibot, Fourier Intelligence, Zhiyuan Robotics, Boston Dynamics, Tesla Optimus, Figure AI, and 1X Technologies — across the five-dimensional AMORA framework: Technology Advancement, Team Mastery, Operations, Global Reach, and Affinity. China holds a commanding lead in cost efficiency and manufacturing scale; the US leads on algorithm depth and brand power.',
       'html',
       $html$${htmlContent}$html$,
-      'intelligent-manufacturing',
+      'manufacturing',
       false,
       'AMORA Research',
       ARRAY['humanoid-robotics', 'amora-score', 'unitree', 'boston-dynamics', 'tesla-optimus'],

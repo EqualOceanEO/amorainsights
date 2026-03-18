@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import SiteNav from '@/components/SiteNav';
+import { INDUSTRY_HIERARCHY } from '@/lib/industries';
 
 interface NewsItem {
   id: number;
@@ -26,23 +27,6 @@ interface Company {
   id: number;
   name: string;
 }
-
-const INDUSTRY_OPTIONS = [
-  { id: 'ai', label: 'AI', level2: ['Large Language Models', 'Computer Vision', 'NLP', 'Robotics'] },
-  { id: 'ai-semiconductors', label: 'AI Semiconductors', level2: ['GPU', 'TPU', 'AI Chip Design', 'Memory'] },
-  { id: 'semiconductors-materials', label: 'Semiconductors', level2: ['Foundry', 'Design', 'Materials', 'Equipment'] },
-  { id: 'autonomous-vehicles', label: 'Autonomous Vehicles', level2: ['Passenger', 'Logistics', 'Sensors', 'Software'] },
-  { id: 'green-tech', label: 'Green Tech', level2: ['Solar', 'Wind', 'Battery', 'Carbon Capture'] },
-  { id: 'life-sciences', label: 'Life Sciences', level2: ['Biotech', 'Pharma', 'Medical Devices', 'Diagnostics'] },
-  { id: 'new-space', label: 'New Space', level2: ['Launch Services', 'Satellites', 'Ground Infra', 'Space Tourism'] },
-  { id: 'advanced-materials', label: 'Advanced Materials', level2: ['Composites', 'Graphene', 'Ceramics', 'Polymers'] },
-  { id: 'humanoid-robots', label: 'Humanoid Robots', level2: ['Hardware', 'Software', 'AI', 'Manufacturing'] },
-  { id: 'ai-agents', label: 'AI Agents', level2: ['Autonomous Agents', 'Multi-Agent Systems', 'Agent Frameworks'] },
-  { id: 'launch-vehicles', label: 'Launch Vehicles', level2: ['Reusable', 'Small Lift', 'Heavy Lift'] },
-  { id: 'gene-editing', label: 'Gene Editing', level2: ['CRISPR', 'Base Editing', 'Prime Editing'] },
-  { id: 'ev-batteries', label: 'EV Batteries', level2: ['Lithium', 'Solid-State', 'Alternative Chemistry'] },
-  { id: 'energy-storage', label: 'Energy Storage', level2: ['Battery', 'Thermal', 'Mechanical'] },
-];
 
 export default function NewsEditPage() {
   const router = useRouter();
@@ -204,7 +188,7 @@ export default function NewsEditPage() {
     }
   };
 
-  const selectedIndustry = INDUSTRY_OPTIONS.find(ind => ind.id === formData.industry_slug);
+  const selectedIndustry = INDUSTRY_HIERARCHY.find(h => h.level1.id === formData.industry_slug);
   const level2Options = selectedIndustry?.level2 || [];
 
   if (loading) {
@@ -333,8 +317,9 @@ export default function NewsEditPage() {
                 }}
                 className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-blue-500"
               >
-                {INDUSTRY_OPTIONS.map(ind => (
-                  <option key={ind.id} value={ind.id}>{ind.label}</option>
+                <option value="">Select industry</option>
+                {INDUSTRY_HIERARCHY.map(h => (
+                  <option key={h.level1.id} value={h.level1.id}>{h.level1.label}</option>
                 ))}
               </select>
             </div>

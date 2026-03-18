@@ -22,7 +22,7 @@ INSERT INTO industries (slug, name, name_cn, icon, sort_order) VALUES
   ('ai',                       'AI',                      '人工智能', '🤖', 1),
   ('life-sciences',            'Life Sciences',           '生命科学', '🧬', 2),
   ('green-tech',               'Green Tech',              '绿色科技', '⚡', 3),
-  ('intelligent-manufacturing','Intelligent Manufacturing','智能制造', '🦾', 4),
+  ('manufacturing','Manufacturing','未来制造', '🦾', 4),
   ('new-space',                'New Space',               '新太空',   '🚀', 5),
   ('advanced-materials',       'Advanced Materials',      '先进材料', '⚛️', 6)
 ON CONFLICT (slug) DO NOTHING;
@@ -203,14 +203,14 @@ INSERT INTO reports (title, slug, summary, industry_slug, is_premium, author, ta
 ('Humanoid Robots: China''s Manufacturing Bet',
  'humanoid-robots-china-manufacturing-2026',
  'From Unitree to UBTECH to BYD''s internal robotics division — analyzing China''s humanoid robot ecosystem and the roadmap to factory floor deployment.',
- 'intelligent-manufacturing', false, 'AMORA Research', ARRAY['humanoid-robots','unitree','factory-automation','robotics'], NOW() - INTERVAL '4 days',
+ 'manufacturing', false, 'AMORA Research', ARRAY['humanoid-robots','unitree','factory-automation','robotics'], NOW() - INTERVAL '4 days',
  'STANDARD', 'APPROVED', 'G0', '[]'::JSONB),
 
 -- Intelligent Mfg — IIoT: SENSITIVE_TECH (Huawei referenced — G1 indirect)
 ('Industrial IoT Platform Wars: Siemens vs Chinese Champions',
  'industrial-iot-platform-wars-2026',
  'Comparing Siemens MindSphere against Huawei FusionPlant, SANY ROOTCLOUD, and Haier COSMOPlat for China''s smart factory market. Who is winning and why.',
- 'intelligent-manufacturing', true, 'AMORA Research', ARRAY['iiot','smart-factory','siemens','huawei','digital-twin'], NOW() - INTERVAL '12 days',
+ 'manufacturing', true, 'AMORA Research', ARRAY['iiot','smart-factory','siemens','huawei','digital-twin'], NOW() - INTERVAL '12 days',
  'SENSITIVE_TECH', 'APPROVED', 'G1',
  '[{"tag_type":"ENTITY","value":"Huawei Technologies Co.","value_normalized":"HUAWEI TECHNOLOGIES CO","source_list":"BIS_ENTITY_LIST","geo_risk_contribution":"G1","flagged_at":null,"flagged_by_list_update":null}]'::JSONB),
 
@@ -262,7 +262,7 @@ INSERT INTO news_items (title, summary, industry_slug, source_name, is_featured,
 
 ('Unitree G1 humanoid robot enters automotive factory trials at SAIC',
  'SAIC Motor has deployed 50 Unitree G1 units for assembly line testing in its Shanghai facility, marking China''s first large-scale humanoid robot industrial deployment.',
- 'intelligent-manufacturing', 'South China Morning Post', false, NOW() - INTERVAL '12 hours'),
+ 'manufacturing', 'South China Morning Post', false, NOW() - INTERVAL '12 hours'),
 
 ('China''s Guowang constellation launches first 100 satellites',
  'The first batch of Guowang LEO satellites successfully deployed, with full global coverage targeted for 2028. Initial enterprise beta service begins Q3 2026.',
@@ -315,11 +315,11 @@ INSERT INTO companies (name, name_cn, industry_slug, sub_sector, description, co
  'CN', 'Hefei', 'Anhui', 1997, true, true, ARRAY['inverter','energy-storage','green-hydrogen','electrolyzer']),
 
 -- Intelligent Manufacturing
-('Unitree Robotics', '宇树科技', 'intelligent-manufacturing', 'Humanoid Robots',
+('Unitree Robotics', '宇树科技', 'manufacturing', 'Humanoid Robots',
  'China''s leading quadruped and humanoid robot company. H1 and G1 models deployed in industrial settings globally.',
  'CN', 'Hangzhou', 'Zhejiang', 2016, false, true, ARRAY['humanoid-robot','quadruped','factory-automation']),
 
-('UBTECH Robotics', '优必选', 'intelligent-manufacturing', 'Humanoid Robots',
+('UBTECH Robotics', '优必选', 'manufacturing', 'Humanoid Robots',
  'Pioneer in humanoid robotics, listed on HKEX. Walker S series deployed in BYD and NIO factories for quality inspection tasks.',
  'CN', 'Shenzhen', 'Guangdong', 2012, true, true, ARRAY['humanoid-robot','hkex-listed','automotive']),
 

@@ -84,7 +84,6 @@ const INDUSTRY_META: Record<string, { name: string; icon: string }> = {
   'life-sciences':             { name: 'Life Sciences',            icon: '🧬' },
   'green-tech':                { name: 'Green Tech',               icon: '⚡' },
   'manufacturing':             { name: 'Manufacturing',            icon: '🦾' },
-  'intelligent-manufacturing': { name: 'Intelligent Manufacturing',icon: '🦾' },
   'new-space':                 { name: 'New Space',                icon: '🚀' },
   'advanced-materials':        { name: 'Advanced Materials',       icon: '⚛️' },
 };

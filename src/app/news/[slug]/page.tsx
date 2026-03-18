@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
+import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
 
 interface NewsItem {
   id: number;
@@ -11,6 +12,7 @@ interface NewsItem {
   summary: string | null;
   content: string | null;
   industry_slug: string;
+  industry_level2?: string | null;
   source_name: string | null;
   source_url: string | null;
   author: string | null;
@@ -34,41 +36,6 @@ interface RelatedItem {
   slug: string | null;
 }
 
-const INDUSTRY_LABELS: Record<string, string> = {
-  'ai': 'AI',
-  'ai-semiconductors': 'AI Chips',
-  'semiconductors-materials': 'Semiconductors',
-  'autonomous-vehicles': 'Autonomous Vehicles',
-  'green-tech': 'Green Tech',
-  'life-sciences': 'Life Sciences',
-  'new-space': 'New Space',
-  'advanced-materials': 'Advanced Materials',
-  'humanoid-robots': 'Humanoid Robots',
-  'ai-agents': 'AI Agents',
-  'launch-vehicles': 'Launch Vehicles',
-  'gene-editing': 'Gene Editing',
-  'ev-batteries': 'EV Batteries',
-  'energy-storage': 'Energy Storage',
-};
-
-const INDUSTRY_COLORS: Record<string, string> = {
-  'ai': 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-  'ai-semiconductors': 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
-  'semiconductors-materials': 'bg-violet-500/10 text-violet-400 border border-violet-500/20',
-  'autonomous-vehicles': 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20',
-  'green-tech': 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  'life-sciences': 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
-  'new-space': 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20',
-  'advanced-materials': 'bg-orange-500/10 text-orange-400 border border-orange-500/20',
-  'humanoid-robots': 'bg-teal-500/10 text-teal-400 border border-teal-500/20',
-  'ai-agents': 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-  'launch-vehicles': 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20',
-  'gene-editing': 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
-  'ev-batteries': 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  'energy-storage': 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
-};
-
-// No longer needed - removed Key Figures section
 
 
 function formatDate(iso: string) {
@@ -148,9 +115,18 @@ export default function NewsDetailPage() {
     );
   }
 
-  const industryLabel = INDUSTRY_LABELS[item.industry_slug] ?? item.industry_slug;
   const industryColor = INDUSTRY_COLORS[item.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
-  
+  const industryDotColor = INDUSTRY_DOT_COLORS[item.industry_slug] ?? 'bg-gray-400';
+
+  // Build industry display with level 1 + level 2
+  const industryLabel = (() => {
+    const base = item.industry_slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    if (item.industry_level2) {
+      return `${base} · ${item.industry_level2}`;
+    }
+    return base;
+  })();
+
   // Split summary into sentences for intro + body
   const summary = item.summary ?? '';
   const sentences = summary.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 10);
@@ -394,7 +370,7 @@ export default function NewsDetailPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
               {item.related.map(rel => {
                 const relColor = INDUSTRY_COLORS[rel.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
-                const relLabel = INDUSTRY_LABELS[rel.industry_slug] ?? rel.industry_slug;
+                const relLabel = rel.industry_slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
                 return (
                   <Link
                     key={rel.id}

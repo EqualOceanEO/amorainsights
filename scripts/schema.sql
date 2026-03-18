@@ -23,7 +23,7 @@ INSERT INTO industries (slug, name, name_cn, icon, sort_order) VALUES
   ('ai',                       'AI',                      '人工智能',     '🤖', 1),
   ('life-sciences',            'Life Sciences',           '生命科学',     '🧬', 2),
   ('green-tech',               'Green Tech',              '绿色科技',     '⚡', 3),
-  ('intelligent-manufacturing','Intelligent Manufacturing','智能制造',     '🦾', 4),
+  ('manufacturing','Manufacturing','未来制造',     '🦾', 4),
   ('new-space',                'New Space',               '新太空',       '🚀', 5),
   ('advanced-materials',       'Advanced Materials',      '先进材料',     '⚛️', 6)
 ON CONFLICT (slug) DO NOTHING;

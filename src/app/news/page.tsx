@@ -3,12 +3,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
+import { INDUSTRY_HIERARCHY, INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
 
 interface NewsItem {
   id: number;
   title: string;
   summary: string | null;
   industry_slug: string;
+  industry_level2?: string | null;
   source_name: string | null;
   source_url: string | null;
   author: string | null;
@@ -19,45 +21,6 @@ interface NewsItem {
   is_featured: boolean;
   published_at: string;
 }
-
-const INDUSTRIES = [
-  { slug: '', label: 'All' },
-  { slug: 'ai', label: 'AI' },
-  { slug: 'ai-semiconductors', label: 'AI Chips' },
-  { slug: 'semiconductors-materials', label: 'Semiconductors' },
-  { slug: 'autonomous-vehicles', label: 'Autonomous Vehicles' },
-  { slug: 'green-tech', label: 'Green Tech' },
-  { slug: 'life-sciences', label: 'Life Sciences' },
-  { slug: 'new-space', label: 'New Space' },
-  { slug: 'advanced-materials', label: 'Advanced Materials' },
-  { slug: 'humanoid-robots', label: 'Humanoid Robots' },
-];
-
-const INDUSTRY_COLORS: Record<string, string> = {
-  'ai': 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-  'ai-semiconductors': 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
-  'semiconductors-materials': 'bg-violet-500/10 text-violet-400 border border-violet-500/20',
-  'green-tech': 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  'life-sciences': 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
-  'new-space': 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20',
-  'autonomous-vehicles': 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20',
-  'advanced-materials': 'bg-orange-500/10 text-orange-400 border border-orange-500/20',
-  'humanoid-robots': 'bg-teal-500/10 text-teal-400 border border-teal-500/20',
-  'ai-agents': 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-};
-
-const INDUSTRY_DOT_COLORS: Record<string, string> = {
-  'ai': 'bg-blue-400',
-  'ai-semiconductors': 'bg-purple-400',
-  'semiconductors-materials': 'bg-violet-400',
-  'green-tech': 'bg-emerald-400',
-  'life-sciences': 'bg-rose-400',
-  'new-space': 'bg-indigo-400',
-  'autonomous-vehicles': 'bg-cyan-400',
-  'advanced-materials': 'bg-orange-400',
-  'humanoid-robots': 'bg-teal-400',
-  'ai-agents': 'bg-blue-400',
-};
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -86,7 +49,7 @@ function newsHref(item: NewsItem) {
 
 function TimelineNewsCard({ item }: { item: NewsItem }) {
   const industryColor = INDUSTRY_COLORS[item.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
-  const industryLabel = INDUSTRIES.find(i => i.slug === item.industry_slug)?.label ?? item.industry_slug;
+  const industryLabel = item.industry_slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
   return (
     <Link
@@ -230,20 +193,59 @@ export default function NewsPage() {
               />
             </div>
 
-            {/* Industry tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
-              {INDUSTRIES.map(ind => (
-                <button
-                  key={ind.slug}
-                  onClick={() => setIndustry(ind.slug)}
-                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
-                    industry === ind.slug
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                  }`}
-                >
-                  {ind.label}
-                </button>
+            {/* Industry tabs - Level 1 & Level 2 */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
+              {/* All button */}
+              <button
+                onClick={() => setIndustry('')}
+                className={`shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
+                  industry === ''
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                }`}
+              >
+                All
+              </button>
+
+              {/* Industry groups */}
+              {INDUSTRY_HIERARCHY.map(group => (
+                <div key={group.level1.id} className="flex items-center gap-0.5">
+                  {/* Level 1 */}
+                  <button
+                    onClick={() => setIndustry(group.level1.id)}
+                    className={`shrink-0 px-3 py-1.5 rounded-l-lg text-xs font-medium transition-colors whitespace-nowrap ${
+                      industry === group.level1.id
+                        ? 'bg-gray-800 text-white border-r-0 border border-gray-600'
+                        : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                    }`}
+                  >
+                    {group.level1.label}
+                  </button>
+
+                  {/* Level 2 dropdown */}
+                  <div className="relative group">
+                    <button className="shrink-0 px-2 py-1.5 rounded-r-lg text-xs text-gray-400 hover:text-white bg-gray-900 border border-l-0 border-gray-700 hover:border-gray-500 transition-colors">
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+
+                    {/* Dropdown content */}
+                    <div className="absolute left-0 top-full mt-1 bg-gray-900 border border-gray-700 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 min-w-max">
+                      <div className="py-1">
+                        {group.level2.map(level2 => (
+                          <button
+                            key={level2}
+                            onClick={() => setIndustry(group.level1.id)}
+                            className="block w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-800 transition-colors whitespace-nowrap"
+                          >
+                            {group.level1.label} → {level2}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>

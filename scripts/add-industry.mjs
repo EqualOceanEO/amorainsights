@@ -26,7 +26,7 @@ async function query(sql) {
 
 // Insert all 6 top-level industry slugs that the frontend uses
 const slugs = [
-  { slug: 'intelligent-manufacturing', name: 'Intelligent Manufacturing', name_cn: '智能制造', icon: '🦾', sort_order: 40 },
+  { slug: 'manufacturing', name: 'Manufacturing', name_cn: '未来制造', icon: '🦾', sort_order: 40 },
 ];
 
 for (const ind of slugs) {

@@ -287,7 +287,7 @@ export type IndustrySlug =
   | 'ai'
   | 'life-sciences'
   | 'green-tech'
-  | 'intelligent-manufacturing'
+  | 'manufacturing'
   | 'new-space'
   | 'advanced-materials';
 
@@ -308,7 +308,7 @@ export const INDUSTRY_META: Record<IndustrySlug, { name: string; name_cn: string
   'ai':                        { name: 'AI',                       name_cn: '人工智能', icon: '🤖' },
   'life-sciences':             { name: 'Life Sciences',            name_cn: '生命科学', icon: '🧬' },
   'green-tech':                { name: 'Green Tech',               name_cn: '绿色科技', icon: '⚡' },
-  'intelligent-manufacturing': { name: 'Intelligent Manufacturing', name_cn: '智能制造', icon: '🦾' },
+  'manufacturing': { name: 'Manufacturing', name_cn: '未来制造', icon: '🦾' },
   'new-space':                 { name: 'New Space',                name_cn: '新太空',   icon: '🚀' },
   'advanced-materials':        { name: 'Advanced Materials',       name_cn: '先进材料', icon: '⚛️' },
 };
@@ -317,7 +317,7 @@ export const ALL_INDUSTRY_SLUGS: IndustrySlug[] = [
   'ai',
   'life-sciences',
   'green-tech',
-  'intelligent-manufacturing',
+  'manufacturing',
   'new-space',
   'advanced-materials',
 ];
