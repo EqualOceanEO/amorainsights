@@ -20,7 +20,18 @@ interface NewsItem {
   is_premium: boolean;
   is_featured: boolean;
   published_at: string;
-  related?: NewsItem[];
+  related?: RelatedItem[];
+}
+
+interface RelatedItem {
+  id: number;
+  title: string;
+  summary: string | null;
+  industry_slug: string;
+  source_name: string | null;
+  published_at: string;
+  cover_image_url: string | null;
+  slug: string | null;
 }
 
 const INDUSTRY_LABELS: Record<string, string> = {
@@ -57,19 +68,54 @@ const INDUSTRY_COLORS: Record<string, string> = {
   'energy-storage': 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
 };
 
+// Generate structured sections from summary text for richer display
+function buildSections(item: NewsItem) {
+  const summary = item.summary ?? '';
+  const sentences = summary.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 10);
+
+  // Extract numeric figures for key stats
+  const statsRegex = /\$[\d,.]+[BMKTbmkt%]*|\d+[\d,.]*\s*(?:billion|million|trillion|%|percent|GWh|nm|km|mph|years?|months?|days?|cities|satellites?)/gi;
+  const figures = summary.match(statsRegex) ?? [];
+
+  return { sentences, figures };
+}
+
+// Key stats extracted from text
+function KeyStats({ figures, industrySlug }: { figures: string[]; industrySlug: string }) {
+  if (figures.length === 0) return null;
+  const color = INDUSTRY_COLORS[industrySlug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-8">
+      {figures.slice(0, 6).map((fig, i) => (
+        <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
+          <div className={`text-lg font-bold mb-1 ${color.includes('text-') ? color.split(' ').find(c => c.startsWith('text-')) : 'text-blue-400'}`}>
+            {fig}
+          </div>
+          <div className="text-xs text-gray-600">Key figure</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
   });
 }
 
-function ContentBlock({ content }: { content: string }) {
-  const paragraphs = content.split(/\n\n+/).filter(Boolean);
+function formatDateShort(iso: string) {
+  return new Date(iso).toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+  });
+}
+
+// Section heading with left accent
+function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div className="space-y-5">
-      {paragraphs.map((para, i) => (
-        <p key={i} className="text-gray-300 leading-relaxed text-base">{para.trim()}</p>
-      ))}
+    <div className="flex items-center gap-3 mb-4">
+      <div className="w-1 h-5 bg-blue-500 rounded-full" />
+      <h2 className="text-base font-bold text-white uppercase tracking-wide">{children}</h2>
     </div>
   );
 }
@@ -98,13 +144,17 @@ export default function NewsDetailPage() {
     return (
       <div className="min-h-screen bg-gray-950 text-white">
         <SiteNav />
-        <div className="max-w-3xl mx-auto px-5 py-16 animate-pulse space-y-4">
-          <div className="h-6 bg-gray-800 rounded w-1/4" />
+        <div className="max-w-4xl mx-auto px-5 py-16 animate-pulse space-y-4">
+          <div className="h-5 bg-gray-800 rounded w-1/4" />
           <div className="h-10 bg-gray-800 rounded w-full" />
           <div className="h-10 bg-gray-800 rounded w-3/4" />
-          <div className="h-64 bg-gray-800 rounded-2xl mt-8" />
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-4 bg-gray-800 rounded" style={{ width: `${80 + Math.random() * 20}%` }} />
+          <div className="h-px bg-gray-800 my-6" />
+          <div className="h-32 bg-gray-800 rounded-xl" />
+          <div className="grid grid-cols-3 gap-3 mt-6">
+            {[1,2,3].map(i => <div key={i} className="h-20 bg-gray-800 rounded-xl" />)}
+          </div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-4 bg-gray-800 rounded" style={{ width: `${75 + i * 5}%` }} />
           ))}
         </div>
       </div>
@@ -127,119 +177,292 @@ export default function NewsDetailPage() {
 
   const industryLabel = INDUSTRY_LABELS[item.industry_slug] ?? item.industry_slug;
   const industryColor = INDUSTRY_COLORS[item.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
+  const { sentences, figures } = buildSections(item);
+
+  // Split sentences into intro + body for layout
+  const introSentences = sentences.slice(0, 2);
+  const bodySentences  = sentences.slice(2);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       <SiteNav />
 
-      <article className="max-w-3xl mx-auto px-5 py-12">
+      {/* Top gradient bar */}
+      <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+
+      <div className="max-w-4xl mx-auto px-5 py-10">
 
         {/* Back */}
-        <Link href="/news" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-white mb-8 transition-colors">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <Link href="/news" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-white mb-8 transition-colors group">
+          <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           Back to News
         </Link>
 
-        {/* Tags row */}
-        <div className="flex items-center flex-wrap gap-2 mb-4">
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${industryColor}`}>{industryLabel}</span>
-          {item.is_premium && (
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
-              Premium
-            </span>
-          )}
-          {item.tags?.map(tag => (
-            <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-gray-800 text-gray-400 border border-gray-700">
-              {tag}
-            </span>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10">
 
-        {/* Title */}
-        <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight mb-4">{item.title}</h1>
+          {/* ── Main column ── */}
+          <article>
 
-        {/* Meta */}
-        <div className="flex items-center flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500 mb-8 pb-6 border-b border-gray-800">
-          {item.author && <span className="text-gray-300 font-medium">{item.author}</span>}
-          {item.source_name && (
-            item.source_url
-              ? <a href={item.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">{item.source_name}</a>
-              : <span>{item.source_name}</span>
-          )}
-          <span>{formatDate(item.published_at)}</span>
-        </div>
-
-        {/* Cover image */}
-        {item.cover_image_url && (
-          <div className="relative rounded-2xl overflow-hidden mb-8 aspect-video">
-            <img src={item.cover_image_url} alt={item.title} className="w-full h-full object-cover" />
-          </div>
-        )}
-
-        {/* Summary callout */}
-        {item.summary && (
-          <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-5 mb-8">
-            <p className="text-blue-200 text-base leading-relaxed font-medium">{item.summary}</p>
-          </div>
-        )}
-
-        {/* Content */}
-        {item.content ? (
-          <ContentBlock content={item.content} />
-        ) : (
-          <div className="text-center py-16 text-gray-600">
-            <p className="text-sm">Full article content not available.</p>
-            {item.source_url && (
-              <a href={item.source_url} target="_blank" rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1.5 text-sm text-blue-400 hover:underline">
-                Read original article
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            )}
-          </div>
-        )}
-
-        {/* Source link */}
-        {item.source_url && item.content && (
-          <div className="mt-10 pt-6 border-t border-gray-800">
-            <a href={item.source_url} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-              Read full article on {item.source_name || 'source'}
-            </a>
-          </div>
-        )}
-      </article>
-
-      {/* Related articles */}
-      {item.related && item.related.length > 0 && (
-        <div className="border-t border-gray-800 mt-4">
-          <div className="max-w-3xl mx-auto px-5 py-12">
-            <h2 className="text-lg font-bold mb-6">Related Articles</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {item.related.map(rel => (
-                <Link
-                  key={rel.id}
-                  href={`/news/${rel.slug || rel.id}`}
-                  className="group block bg-gray-900 rounded-xl border border-gray-800 hover:border-gray-600 p-4 transition-all"
-                >
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${INDUSTRY_COLORS[rel.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20'}`}>
-                    {INDUSTRY_LABELS[rel.industry_slug] ?? rel.industry_slug}
-                  </span>
-                  <p className="mt-2 text-sm font-medium text-white group-hover:text-blue-400 transition-colors line-clamp-2">{rel.title}</p>
-                  <p className="mt-1.5 text-xs text-gray-600">{formatDate(rel.published_at)}</p>
-                </Link>
+            {/* Tags */}
+            <div className="flex items-center flex-wrap gap-2 mb-4">
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${industryColor}`}>{industryLabel}</span>
+              {item.is_premium && (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Premium</span>
+              )}
+              {item.tags?.map(tag => (
+                <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-gray-800 text-gray-400 border border-gray-700">{tag}</span>
               ))}
             </div>
-          </div>
+
+            {/* Title */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-5">{item.title}</h1>
+
+            {/* Meta bar */}
+            <div className="flex items-center flex-wrap gap-x-3 gap-y-1 text-sm text-gray-500 pb-6 border-b border-gray-800/60 mb-6">
+              {item.author && <span className="text-gray-300 font-medium">{item.author}</span>}
+              {item.author && item.source_name && <span>·</span>}
+              {item.source_name && (
+                item.source_url
+                  ? <a href={item.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">{item.source_name}</a>
+                  : <span>{item.source_name}</span>
+              )}
+              <span>·</span>
+              <span>{formatDate(item.published_at)}</span>
+            </div>
+
+            {/* Cover image */}
+            {item.cover_image_url && (
+              <div className="relative rounded-2xl overflow-hidden mb-8 aspect-video">
+                <img src={item.cover_image_url} alt={item.title} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 to-transparent" />
+              </div>
+            )}
+
+            {/* Summary / Lead */}
+            {item.summary && (
+              <div className="relative bg-gradient-to-br from-blue-500/8 to-blue-600/4 border border-blue-500/15 rounded-2xl p-6 mb-8">
+                <div className="absolute top-4 left-4 w-6 h-6 opacity-20">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="text-blue-400">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+                <p className="text-blue-100 text-base sm:text-lg leading-relaxed font-medium pl-2">
+                  {item.summary}
+                </p>
+              </div>
+            )}
+
+            {/* Key stats */}
+            {figures.length > 0 && (
+              <div className="mb-8">
+                <SectionHeading>Key Figures</SectionHeading>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {figures.slice(0, 6).map((fig, i) => {
+                    const textColorClass = industryColor.split(' ').find(c => c.startsWith('text-')) ?? 'text-blue-400';
+                    return (
+                      <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center hover:border-gray-700 transition-colors">
+                        <div className={`text-xl font-bold mb-0.5 ${textColorClass}`}>{fig}</div>
+                        <div className="text-xs text-gray-600 uppercase tracking-wider">Highlighted</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Article body — intro */}
+            {introSentences.length > 0 && (
+              <div className="mb-8">
+                <SectionHeading>Overview</SectionHeading>
+                <div className="space-y-4">
+                  {introSentences.map((s, i) => (
+                    <p key={i} className="text-gray-300 leading-relaxed text-base">{s}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Full content if available */}
+            {item.content && (
+              <div className="mb-8">
+                <SectionHeading>Full Analysis</SectionHeading>
+                <div className="space-y-5">
+                  {item.content.split(/\n\n+/).filter(Boolean).map((para, i) => (
+                    <p key={i} className="text-gray-300 leading-relaxed text-base">{para.trim()}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Body sentences (if no full content) */}
+            {!item.content && bodySentences.length > 0 && (
+              <div className="mb-8">
+                <SectionHeading>Details</SectionHeading>
+                <div className="space-y-4">
+                  {bodySentences.map((s, i) => (
+                    <p key={i} className="text-gray-300 leading-relaxed text-base">{s}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Market implications callout */}
+            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-8">
+              <SectionHeading>Market Implications</SectionHeading>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2.5 text-sm text-gray-400">
+                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                  Industry observers are closely watching execution timelines and competitive responses from key players across the value chain.
+                </li>
+                <li className="flex items-start gap-2.5 text-sm text-gray-400">
+                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                  Supply chain dynamics and regulatory environment remain pivotal variables that could reshape the competitive landscape in the coming quarters.
+                </li>
+                <li className="flex items-start gap-2.5 text-sm text-gray-400">
+                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                  Institutional investors with exposure to this sector should monitor downstream effects on margin profiles and capital allocation decisions.
+                </li>
+              </ul>
+            </div>
+
+            {/* Read original */}
+            {item.source_url && (
+              <div className="flex items-center justify-between pt-6 border-t border-gray-800">
+                <a
+                  href={item.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-gray-600 text-sm text-white font-medium transition-all"
+                >
+                  Read original article
+                  <svg className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+                {item.source_name && (
+                  <span className="text-xs text-gray-600">Source: {item.source_name}</span>
+                )}
+              </div>
+            )}
+          </article>
+
+          {/* ── Sidebar ── */}
+          <aside className="space-y-5">
+
+            {/* Article info card */}
+            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 space-y-4">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Article Info</h3>
+
+              <div className="space-y-3 text-sm">
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-gray-600 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <div>
+                    <div className="text-gray-600 text-xs mb-0.5">Published</div>
+                    <div className="text-gray-300">{formatDateShort(item.published_at)}</div>
+                  </div>
+                </div>
+
+                {item.source_name && (
+                  <div className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-gray-600 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6m-6-4h2" />
+                    </svg>
+                    <div>
+                      <div className="text-gray-600 text-xs mb-0.5">Source</div>
+                      <div className="text-gray-300">{item.source_name}</div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-gray-600 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a2 2 0 012-2z" />
+                  </svg>
+                  <div>
+                    <div className="text-gray-600 text-xs mb-0.5">Sector</div>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${industryColor}`}>{industryLabel}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Analyst note */}
+            <div className="bg-amber-500/5 border border-amber-500/15 rounded-2xl p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">AMORA Note</span>
+              </div>
+              <p className="text-xs text-amber-200/70 leading-relaxed">
+                This development is being tracked across our {industryLabel} coverage universe. Access full AMORA scoring and competitive analysis in our research reports.
+              </p>
+              <Link href="/reports" className="mt-3 inline-flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors">
+                View Reports →
+              </Link>
+            </div>
+
+            {/* Share */}
+            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Share</h3>
+              <div className="flex gap-2">
+                <button className="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs text-gray-400 hover:text-white transition-all">
+                  Copy Link
+                </button>
+                {item.source_url && (
+                  <a
+                    href={item.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs text-gray-400 hover:text-white transition-all text-center"
+                  >
+                    Original
+                  </a>
+                )}
+              </div>
+            </div>
+
+          </aside>
         </div>
-      )}
+
+        {/* Related articles */}
+        {item.related && item.related.length > 0 && (
+          <div className="mt-16 pt-10 border-t border-gray-800">
+            <SectionHeading>Related Articles</SectionHeading>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+              {item.related.map(rel => {
+                const relColor = INDUSTRY_COLORS[rel.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
+                const relLabel = INDUSTRY_LABELS[rel.industry_slug] ?? rel.industry_slug;
+                return (
+                  <Link
+                    key={rel.id}
+                    href={`/news/${rel.slug || rel.id}`}
+                    className="group block bg-gray-900 rounded-xl border border-gray-800 hover:border-gray-600 overflow-hidden transition-all hover:-translate-y-0.5"
+                  >
+                    {rel.cover_image_url ? (
+                      <div className="h-32 overflow-hidden">
+                        <img src={rel.cover_image_url} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    ) : (
+                      <div className="h-32 bg-gradient-to-br from-gray-800 to-gray-900" />
+                    )}
+                    <div className="p-4">
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${relColor}`}>{relLabel}</span>
+                      <p className="mt-2 text-sm font-semibold text-white group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug">{rel.title}</p>
+                      <p className="mt-2 text-xs text-gray-600">{formatDateShort(rel.published_at)}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }
