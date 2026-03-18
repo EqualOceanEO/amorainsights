@@ -285,7 +285,10 @@ function CompanyCard({ company }: { company: Company }) {
   };
 
   return (
-    <div className="group bg-gray-900 border border-gray-800 hover:border-blue-600/50 rounded-xl p-4 flex flex-col transition">
+    <Link
+      href={`/companies/${company.id}`}
+      className="group block bg-gray-900 border border-gray-800 hover:border-blue-600/50 rounded-xl p-4 flex flex-col transition"
+    >
       {/* Top row */}
       <div className="flex items-start justify-between gap-2 mb-3">
         <span className="text-xs font-medium bg-gray-800/80 text-gray-400 px-2 py-0.5 rounded-full flex items-center gap-1 truncate">
@@ -362,6 +365,6 @@ function CompanyCard({ company }: { company: Company }) {
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

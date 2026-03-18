@@ -1,1 +1,5 @@
-feat: gated paywall SVG charts remove AMORA Difference section
+feat: add company detail page and link from list
+
+- Create company detail page at /companies/[id]
+- Add clickable links from company cards to detail page
+- Update humanoid robots report v2.0 with verified data
