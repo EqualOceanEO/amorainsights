@@ -9,14 +9,14 @@
 - Environments: .env
 
   Creating an optimized production build ...
-✓ Compiled successfully in 19.5s
+✓ Compiled successfully in 9.5s
   Running TypeScript ...
   Collecting page data using 21 workers ...
-  Generating static pages using 21 workers (0/35) ...
-  Generating static pages using 21 workers (8/35) 
-  Generating static pages using 21 workers (17/35) 
-  Generating static pages using 21 workers (26/35) 
-✓ Generating static pages using 21 workers (35/35) in 2.2s
+  Generating static pages using 21 workers (0/37) ...
+  Generating static pages using 21 workers (9/37) 
+  Generating static pages using 21 workers (18/37) 
+  Generating static pages using 21 workers (27/37) 
+✓ Generating static pages using 21 workers (37/37) in 2.7s
   Finalizing page optimization ...
 
 Route (app)
@@ -51,6 +51,7 @@ Route (app)
 ├ ƒ /api/analytics/pageview
 ├ ƒ /api/auth/[...nextauth]
 ├ ƒ /api/auth/register
+├ ƒ /api/companies
 ├ ƒ /api/internal/compliance-scan
 ├ ƒ /api/news
 ├ ƒ /api/news/[id]/edit
@@ -60,6 +61,7 @@ Route (app)
 ├ ƒ /api/stripe/webhook
 ├ ƒ /api/subscribe
 ├ ƒ /api/unsubscribe
+├ ƒ /api/upload/image
 ├ ƒ /companies
 ├ ƒ /dashboard
 ├ ○ /industries

@@ -10,21 +10,38 @@ interface NewsItem {
   summary: string | null;
   content: string | null;
   industry_slug: string;
+  industry_level2?: string | null;
   source_name: string | null;
   source_url: string | null;
-  author: string | null;
   cover_image_url: string | null;
   tags: string[] | null;
   is_premium: boolean;
   is_featured: boolean;
   published_at: string;
+  company_id?: number | null;
+  company_name?: string | null;
+}
+
+interface Company {
+  id: number;
+  name: string;
 }
 
 const INDUSTRY_OPTIONS = [
-  'ai', 'ai-semiconductors', 'semiconductors-materials', 'autonomous-vehicles',
-  'green-tech', 'life-sciences', 'new-space', 'advanced-materials',
-  'humanoid-robots', 'ai-agents', 'launch-vehicles', 'gene-editing',
-  'ev-batteries', 'energy-storage',
+  { id: 'ai', label: 'AI', level2: ['Large Language Models', 'Computer Vision', 'NLP', 'Robotics'] },
+  { id: 'ai-semiconductors', label: 'AI Semiconductors', level2: ['GPU', 'TPU', 'AI Chip Design', 'Memory'] },
+  { id: 'semiconductors-materials', label: 'Semiconductors', level2: ['Foundry', 'Design', 'Materials', 'Equipment'] },
+  { id: 'autonomous-vehicles', label: 'Autonomous Vehicles', level2: ['Passenger', 'Logistics', 'Sensors', 'Software'] },
+  { id: 'green-tech', label: 'Green Tech', level2: ['Solar', 'Wind', 'Battery', 'Carbon Capture'] },
+  { id: 'life-sciences', label: 'Life Sciences', level2: ['Biotech', 'Pharma', 'Medical Devices', 'Diagnostics'] },
+  { id: 'new-space', label: 'New Space', level2: ['Launch Services', 'Satellites', 'Ground Infra', 'Space Tourism'] },
+  { id: 'advanced-materials', label: 'Advanced Materials', level2: ['Composites', 'Graphene', 'Ceramics', 'Polymers'] },
+  { id: 'humanoid-robots', label: 'Humanoid Robots', level2: ['Hardware', 'Software', 'AI', 'Manufacturing'] },
+  { id: 'ai-agents', label: 'AI Agents', level2: ['Autonomous Agents', 'Multi-Agent Systems', 'Agent Frameworks'] },
+  { id: 'launch-vehicles', label: 'Launch Vehicles', level2: ['Reusable', 'Small Lift', 'Heavy Lift'] },
+  { id: 'gene-editing', label: 'Gene Editing', level2: ['CRISPR', 'Base Editing', 'Prime Editing'] },
+  { id: 'ev-batteries', label: 'EV Batteries', level2: ['Lithium', 'Solid-State', 'Alternative Chemistry'] },
+  { id: 'energy-storage', label: 'Energy Storage', level2: ['Battery', 'Thermal', 'Mechanical'] },
 ];
 
 export default function NewsEditPage() {
@@ -34,20 +51,32 @@ export default function NewsEditPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
   const [formData, setFormData] = useState<Partial<NewsItem>>({
     title: '',
     summary: '',
     content: '',
     industry_slug: 'ai',
+    industry_level2: '',
     source_name: '',
     source_url: '',
-    author: '',
     cover_image_url: '',
     tags: [],
     is_premium: false,
     is_featured: false,
     published_at: new Date().toISOString(),
+    company_id: null,
+    company_name: '',
   });
+
+  // Company search
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [companySearch, setCompanySearch] = useState('');
+  const [showCompanyDropdown, setShowCompanyDropdown] = useState(false);
+  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
+
+  // Image upload
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Load existing news item
   useEffect(() => {
@@ -58,6 +87,7 @@ export default function NewsEditPage() {
       .then(data => {
         setItem(data);
         setFormData(data);
+        setCompanySearch(data.company_name || '');
       })
       .catch(err => {
         console.error(err);
@@ -65,6 +95,26 @@ export default function NewsEditPage() {
       })
       .finally(() => setLoading(false));
   }, [params?.id]);
+
+  // Load companies for autocomplete
+  useEffect(() => {
+    fetch('/api/companies?limit=1000')
+      .then(r => r.json())
+      .then(data => setCompanies(data.data || []))
+      .catch(console.error);
+  }, []);
+
+  // Filter companies on search
+  useEffect(() => {
+    if (companySearch.length > 0) {
+      const filtered = companies.filter(c =>
+        c.name.toLowerCase().includes(companySearch.toLowerCase())
+      );
+      setFilteredCompanies(filtered.slice(0, 8)); // Limit to 8 results
+    } else {
+      setFilteredCompanies([]);
+    }
+  }, [companySearch, companies]);
 
   const handleChange = (field: string, value: any) => {
     setFormData(prev => ({
@@ -82,6 +132,51 @@ export default function NewsEditPage() {
       ...prev,
       tags: tags.length > 0 ? tags : null,
     }));
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image must be less than 5MB');
+      return;
+    }
+
+    setUploadingImage(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload/image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const { url } = await res.json();
+      handleChange('cover_image_url', url);
+    } catch (err: any) {
+      setError(err.message || 'Upload failed');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleSelectCompany = (company: Company) => {
+    setFormData(prev => ({
+      ...prev,
+      company_id: company.id,
+      company_name: company.name,
+    }));
+    setCompanySearch(company.name);
+    setShowCompanyDropdown(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -108,6 +203,9 @@ export default function NewsEditPage() {
       setSaving(false);
     }
   };
+
+  const selectedIndustry = INDUSTRY_OPTIONS.find(ind => ind.id === formData.industry_slug);
+  const level2Options = selectedIndustry?.level2 || [];
 
   if (loading) {
     return (
@@ -155,6 +253,44 @@ export default function NewsEditPage() {
             />
           </div>
 
+          {/* Cover Image Upload */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
+              Cover Image
+            </label>
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="flex items-center justify-center w-full px-4 py-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900/50 hover:border-blue-500 hover:bg-gray-900 transition cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploadingImage}
+                    className="hidden"
+                  />
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400">
+                      {uploadingImage ? 'Uploading...' : 'Click to upload or drag image'}
+                    </div>
+                    <div className="text-xs text-gray-600 mt-1">
+                      Recommended: 1200x630px (16:9), max 5MB
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            {formData.cover_image_url && (
+              <div className="mt-3">
+                <img
+                  src={formData.cover_image_url}
+                  alt="Preview"
+                  className="h-32 rounded-lg object-cover"
+                />
+                <p className="text-xs text-gray-500 mt-2 truncate">{formData.cover_image_url}</p>
+              </div>
+            )}
+          </div>
+
           {/* Summary */}
           <div>
             <label className="block text-sm font-semibold text-gray-300 mb-2">
@@ -183,33 +319,90 @@ export default function NewsEditPage() {
             />
           </div>
 
-          {/* Industry */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Industry Sector <span className="text-red-400">*</span>
-            </label>
-            <select
-              value={formData.industry_slug || 'ai'}
-              onChange={(e) => handleChange('industry_slug', e.target.value)}
-              className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-blue-500"
-            >
-              {INDUSTRY_OPTIONS.map(ind => (
-                <option key={ind} value={ind}>{ind}</option>
-              ))}
-            </select>
+          {/* Industry & Level 2 */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Industry <span className="text-red-400">*</span>
+              </label>
+              <select
+                value={formData.industry_slug || 'ai'}
+                onChange={(e) => {
+                  handleChange('industry_slug', e.target.value);
+                  handleChange('industry_level2', ''); // Reset level2
+                }}
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-blue-500"
+              >
+                {INDUSTRY_OPTIONS.map(ind => (
+                  <option key={ind.id} value={ind.id}>{ind.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Sub-category
+              </label>
+              <select
+                value={formData.industry_level2 || ''}
+                onChange={(e) => handleChange('industry_level2', e.target.value)}
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-blue-500"
+              >
+                <option value="">Select sub-category</option>
+                {level2Options.map(opt => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          {/* Author */}
+          {/* Company Association */}
           <div>
             <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Author
+              Related Company
             </label>
-            <input
-              type="text"
-              value={formData.author || ''}
-              onChange={(e) => handleChange('author', e.target.value)}
-              className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                value={companySearch}
+                onChange={(e) => {
+                  setCompanySearch(e.target.value);
+                  setShowCompanyDropdown(true);
+                }}
+                onFocus={() => setShowCompanyDropdown(true)}
+                placeholder="Search company by name..."
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+              />
+              {showCompanyDropdown && filteredCompanies.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
+                  {filteredCompanies.map(company => (
+                    <button
+                      key={company.id}
+                      type="button"
+                      onClick={() => handleSelectCompany(company)}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-800 transition text-gray-300 hover:text-white"
+                    >
+                      {company.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            {formData.company_id && (
+              <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 border border-blue-500/30 rounded-full text-sm text-blue-300">
+                {formData.company_name}
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleChange('company_id', null);
+                    handleChange('company_name', '');
+                    setCompanySearch('');
+                  }}
+                  className="ml-1 hover:text-blue-100"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Source */}
@@ -236,19 +429,6 @@ export default function NewsEditPage() {
                 className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
               />
             </div>
-          </div>
-
-          {/* Cover image */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Cover Image URL
-            </label>
-            <input
-              type="url"
-              value={formData.cover_image_url || ''}
-              onChange={(e) => handleChange('cover_image_url', e.target.value)}
-              className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
-            />
           </div>
 
           {/* Tags */}

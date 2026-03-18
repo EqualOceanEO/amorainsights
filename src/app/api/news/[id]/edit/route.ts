@@ -17,27 +17,32 @@ export async function PUT(
       );
     }
 
-    // Upsert news item (update existing or create if not found by ID)
+    // Build update object - only include fields that exist in the schema
+    const updateData: Record<string, any> = {
+      id: parseInt(id),
+      title: body.title,
+      summary: body.summary || null,
+      content: body.content || null,
+      industry_slug: body.industry_slug,
+      source_name: body.source_name || null,
+      source_url: body.source_url || null,
+      cover_image_url: body.cover_image_url || null,
+      tags: body.tags || null,
+      is_premium: body.is_premium || false,
+      is_featured: body.is_featured || false,
+      published_at: body.published_at || new Date().toISOString(),
+    };
+
+    // Add optional fields only if they exist in the request
+    if (body.company_id) updateData.company_id = body.company_id;
+    if (body.company_name) updateData.company_name = body.company_name;
+    if (body.industry_level2) updateData.industry_level2 = body.industry_level2;
+    if (body.slug) updateData.slug = body.slug;
+
+    // Upsert news item
     const { data, error } = await supabase
       .from('news_items')
-      .upsert(
-        {
-          id: parseInt(id),
-          title: body.title,
-          summary: body.summary || null,
-          content: body.content || null,
-          industry_slug: body.industry_slug,
-          source_name: body.source_name || null,
-          source_url: body.source_url || null,
-          author: body.author || null,
-          cover_image_url: body.cover_image_url || null,
-          tags: body.tags || null,
-          is_premium: body.is_premium || false,
-          is_featured: body.is_featured || false,
-          published_at: body.published_at || new Date().toISOString(),
-        },
-        { onConflict: 'id' }
-      )
+      .upsert(updateData, { onConflict: 'id' })
       .select()
       .single();
 
