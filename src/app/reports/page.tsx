@@ -2,9 +2,9 @@ import Link from 'next/link';
 import SubscribeBox from '@/components/SubscribeBox';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
+import { INDUSTRY_HIERARCHY } from '@/lib/industries';
 import {
   getReports,
-  INDUSTRY_META,
   ALL_INDUSTRY_SLUGS,
   type IndustrySlug,
   type Report,
@@ -106,36 +106,49 @@ export default async function ReportsPage({
         </div>
 
         {/* ── Filters ─────────────────────────────────────────────────────── */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {/* Industry filter */}
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href={filterUrl({ industry: undefined, page: '1' })}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                !industryFilter
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              All Industries
-            </Link>
-            {ALL_INDUSTRY_SLUGS.map((slug) => {
-              const meta = INDUSTRY_META[slug];
-              return (
+        <div className="flex flex-col sm:flex-row gap-3 mb-8">
+          {/* Industry filter - Two rows */}
+          <div className="flex flex-col gap-2 flex-1">
+            {/* Level 1: Primary industries */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
+              <Link
+                href={filterUrl({ industry: undefined, page: '1' })}
+                className={`shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
+                  !industryFilter
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                }`}
+              >
+                All
+              </Link>
+              {INDUSTRY_HIERARCHY.map(group => (
                 <Link
-                  key={slug}
-                  href={filterUrl({ industry: slug, page: '1' })}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5 ${
-                    industryFilter === slug
+                  key={group.level1.id}
+                  href={filterUrl({ industry: group.level1.id, page: '1' })}
+                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
+                    industryFilter === group.level1.id
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                      : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
                   }`}
                 >
-                  <span>{meta.icon}</span>
-                  <span className="hidden sm:inline">{meta.name}</span>
+                  {group.level1.label}
                 </Link>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Level 2: Sub-categories (only show when level 1 is selected) */}
+            {industryFilter && (
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
+                {INDUSTRY_HIERARCHY.find(h => h.level1.id === industryFilter)?.level2.map(level2 => (
+                  <span
+                    key={level2}
+                    className="shrink-0 px-3 py-1 rounded-md text-xs font-medium text-gray-500 bg-gray-900 border border-gray-700"
+                  >
+                    {level2}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Premium filter */}
@@ -236,7 +249,10 @@ export default async function ReportsPage({
 // ─── Report Card Component ────────────────────────────────────────────────────
 
 function ReportCard({ report }: { report: Report }) {
-  const meta = INDUSTRY_META[report.industry_slug] ?? { name: report.industry_slug, icon: '📊' };
+  const group = INDUSTRY_HIERARCHY.find(h => h.level1.id === report.industry_slug);
+  const meta = group
+    ? { name: group.level1.label, icon: '' }
+    : { name: report.industry_slug, icon: '📊' };
 
   return (
     <Link
