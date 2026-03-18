@@ -50,6 +50,13 @@ export default function SiteNav({ activePath }: SiteNavProps) {
         {/* CTA */}
         <div className="flex items-center gap-2">
           <Link
+            href="/admin/news"
+            className="hidden sm:inline text-sm text-gray-400 hover:text-white transition px-3 py-1.5 rounded-md hover:bg-gray-800/60"
+            title="Admin panel"
+          >
+            Admin
+          </Link>
+          <Link
             href="/login"
             className="hidden sm:inline text-sm text-gray-400 hover:text-white transition px-3 py-1.5 rounded-md hover:bg-gray-800/60"
           >

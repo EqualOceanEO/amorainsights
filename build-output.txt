@@ -1,0 +1,85 @@
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of c:\Users\51229\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * c:\Users\51229\WorkBuddy\Claw\package-lock.json
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.5s
+  Running TypeScript ...
+  Collecting page data using 21 workers ...
+  Generating static pages using 21 workers (0/35) ...
+  Generating static pages using 21 workers (8/35) 
+  Generating static pages using 21 workers (17/35) 
+  Generating static pages using 21 workers (26/35) 
+✓ Generating static pages using 21 workers (35/35) in 2.2s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /403
+├ ○ /about
+├ ƒ /admin
+├ ƒ /admin/analytics
+├ ƒ /admin/companies
+├ ƒ /admin/industries
+├ ƒ /admin/news
+├ ƒ /admin/news/[id]/edit
+├ ƒ /admin/reports
+├ ƒ /admin/scores
+├ ƒ /admin/subscribers
+├ ƒ /admin/users
+├ ƒ /admin/users/[id]
+├ ƒ /api/admin/analytics/overview
+├ ƒ /api/admin/analytics/user/[id]
+├ ƒ /api/admin/analytics/users
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/companies/[id]
+├ ƒ /api/admin/news
+├ ƒ /api/admin/news/[id]
+├ ƒ /api/admin/reports
+├ ƒ /api/admin/reports/[id]
+├ ƒ /api/admin/scores
+├ ƒ /api/admin/subscribers
+├ ƒ /api/admin/subscribers/list
+├ ƒ /api/analytics/event
+├ ƒ /api/analytics/pageview
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/auth/register
+├ ƒ /api/internal/compliance-scan
+├ ƒ /api/news
+├ ƒ /api/news/[id]/edit
+├ ƒ /api/news/[slug]
+├ ƒ /api/newsletter/send
+├ ƒ /api/stripe/checkout
+├ ƒ /api/stripe/webhook
+├ ƒ /api/subscribe
+├ ƒ /api/unsubscribe
+├ ƒ /companies
+├ ƒ /dashboard
+├ ○ /industries
+├ ○ /login
+├ ○ /news
+├ ƒ /news/[slug]
+├ ○ /pricing
+├ ƒ /reports
+├ ƒ /reports/[slug]
+├ ○ /reports/test-premium
+├ ○ /signup
+├ ○ /subscribe
+├ ○ /subscribe/pro
+├ ○ /subscribe/success
+└ ○ /test-simple
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+BUILD_OK  

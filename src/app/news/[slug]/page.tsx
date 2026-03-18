@@ -68,35 +68,8 @@ const INDUSTRY_COLORS: Record<string, string> = {
   'energy-storage': 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
 };
 
-// Generate structured sections from summary text for richer display
-function buildSections(item: NewsItem) {
-  const summary = item.summary ?? '';
-  const sentences = summary.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 10);
+// No longer needed - removed Key Figures section
 
-  // Extract numeric figures for key stats
-  const statsRegex = /\$[\d,.]+[BMKTbmkt%]*|\d+[\d,.]*\s*(?:billion|million|trillion|%|percent|GWh|nm|km|mph|years?|months?|days?|cities|satellites?)/gi;
-  const figures = summary.match(statsRegex) ?? [];
-
-  return { sentences, figures };
-}
-
-// Key stats extracted from text
-function KeyStats({ figures, industrySlug }: { figures: string[]; industrySlug: string }) {
-  if (figures.length === 0) return null;
-  const color = INDUSTRY_COLORS[industrySlug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
-  return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-8">
-      {figures.slice(0, 6).map((fig, i) => (
-        <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
-          <div className={`text-lg font-bold mb-1 ${color.includes('text-') ? color.split(' ').find(c => c.startsWith('text-')) : 'text-blue-400'}`}>
-            {fig}
-          </div>
-          <div className="text-xs text-gray-600">Key figure</div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -177,9 +150,10 @@ export default function NewsDetailPage() {
 
   const industryLabel = INDUSTRY_LABELS[item.industry_slug] ?? item.industry_slug;
   const industryColor = INDUSTRY_COLORS[item.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
-  const { sentences, figures } = buildSections(item);
-
-  // Split sentences into intro + body for layout
+  
+  // Split summary into sentences for intro + body
+  const summary = item.summary ?? '';
+  const sentences = summary.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 10);
   const introSentences = sentences.slice(0, 2);
   const bodySentences  = sentences.slice(2);
 
@@ -190,7 +164,7 @@ export default function NewsDetailPage() {
       {/* Top gradient bar */}
       <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
 
-      <div className="max-w-4xl mx-auto px-5 py-10">
+      <div className="max-w-6xl mx-auto px-5 py-10">
 
         {/* Back */}
         <Link href="/news" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-white mb-8 transition-colors group">
@@ -200,7 +174,7 @@ export default function NewsDetailPage() {
           Back to News
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
 
           {/* ── Main column ── */}
           <article>
@@ -254,23 +228,7 @@ export default function NewsDetailPage() {
               </div>
             )}
 
-            {/* Key stats */}
-            {figures.length > 0 && (
-              <div className="mb-8">
-                <SectionHeading>Key Figures</SectionHeading>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {figures.slice(0, 6).map((fig, i) => {
-                    const textColorClass = industryColor.split(' ').find(c => c.startsWith('text-')) ?? 'text-blue-400';
-                    return (
-                      <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center hover:border-gray-700 transition-colors">
-                        <div className={`text-xl font-bold mb-0.5 ${textColorClass}`}>{fig}</div>
-                        <div className="text-xs text-gray-600 uppercase tracking-wider">Highlighted</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+
 
             {/* Article body — intro */}
             {introSentences.length > 0 && (
