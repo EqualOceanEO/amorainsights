@@ -46,95 +46,108 @@ const INDUSTRY_COLORS: Record<string, string> = {
   'ai-agents': 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
 };
 
+const INDUSTRY_DOT_COLORS: Record<string, string> = {
+  'ai': 'bg-blue-400',
+  'ai-semiconductors': 'bg-purple-400',
+  'semiconductors-materials': 'bg-violet-400',
+  'green-tech': 'bg-emerald-400',
+  'life-sciences': 'bg-rose-400',
+  'new-space': 'bg-indigo-400',
+  'autonomous-vehicles': 'bg-cyan-400',
+  'advanced-materials': 'bg-orange-400',
+  'humanoid-robots': 'bg-teal-400',
+  'ai-agents': 'bg-blue-400',
+};
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric',
   });
 }
 
+function formatDateFull(iso: string) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+function groupByDate(items: NewsItem[]) {
+  const groups: { [date: string]: NewsItem[] } = {};
+  items.forEach(item => {
+    const dateKey = new Date(item.published_at).toISOString().split('T')[0];
+    if (!groups[dateKey]) groups[dateKey] = [];
+    groups[dateKey].push(item);
+  });
+  return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
+}
+
 function newsHref(item: NewsItem) {
   return `/news/${item.slug || item.id}`;
 }
 
-function NewsCard({ item, featured }: { item: NewsItem; featured?: boolean }) {
+function TimelineNewsCard({ item }: { item: NewsItem }) {
   const industryColor = INDUSTRY_COLORS[item.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
   const industryLabel = INDUSTRIES.find(i => i.slug === item.industry_slug)?.label ?? item.industry_slug;
 
-  if (featured) {
-    return (
-      <Link href={newsHref(item)} className="group block col-span-2 relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 hover:border-gray-600 transition-all duration-300">
+  return (
+    <Link
+      href={newsHref(item)}
+      className="group block bg-gray-900/50 hover:bg-gray-900 border border-gray-800 hover:border-gray-700 rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/5"
+    >
+      <div className="flex flex-col sm:flex-row gap-4 p-5">
+        
+        {/* Image */}
         {item.cover_image_url ? (
-          <div className="relative h-64 overflow-hidden">
+          <div className="relative w-full sm:w-32 h-32 rounded-xl overflow-hidden shrink-0">
             <img
               src={item.cover_image_url}
               alt={item.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 to-transparent" />
           </div>
         ) : (
-          <div className="h-64 bg-gradient-to-br from-blue-900/30 to-gray-900" />
-        )}
-        <div className="p-6">
-          <div className="flex items-center gap-2 mb-3">
-            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${industryColor}`}>{industryLabel}</span>
-            {item.is_premium && (
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Premium</span>
-            )}
-          </div>
-          <h2 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">{item.title}</h2>
-          {item.summary && <p className="text-gray-400 text-sm line-clamp-2 mb-4">{item.summary}</p>}
-          <div className="flex items-center gap-3 text-xs text-gray-500">
-            {item.source_name && <span>{item.source_name}</span>}
-            {item.author && <><span>·</span><span>{item.author}</span></>}
-            <span>·</span>
-            <span>{formatDate(item.published_at)}</span>
-          </div>
-        </div>
-      </Link>
-    );
-  }
-
-  return (
-    <Link href={newsHref(item)} className="group flex flex-col bg-gray-900 rounded-xl border border-gray-800 hover:border-gray-600 overflow-hidden transition-all duration-200 hover:-translate-y-0.5">
-      {item.cover_image_url ? (
-        <div className="relative h-44 overflow-hidden shrink-0">
-          <img
-            src={item.cover_image_url}
-            alt={item.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
-          <div className="absolute bottom-2 left-3 flex items-center gap-1.5">
-            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${industryColor}`}>{industryLabel}</span>
-            {item.is_premium && (
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Premium</span>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="h-44 bg-gradient-to-br from-gray-800 to-gray-900 shrink-0 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-2 opacity-40">
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-full sm:w-32 h-32 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 shrink-0 flex items-center justify-center">
+            <svg className="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6m-6-4h2" />
             </svg>
           </div>
-          <div className="absolute bottom-2 left-3 flex items-center gap-1.5">
-            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${industryColor}`}>{industryLabel}</span>
+        )}
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 ${industryColor}`}>
+              {industryLabel}
+            </span>
             {item.is_premium && (
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Premium</span>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
+                Premium
+              </span>
             )}
           </div>
+
+          <h3 className="text-sm font-bold text-white mb-2 line-clamp-2 group-hover:text-blue-300 transition-colors leading-snug">
+            {item.title}
+          </h3>
+
+          {item.summary && (
+            <p className="text-xs text-gray-400 line-clamp-2 mb-3">{item.summary}</p>
+          )}
+
+          <div className="flex items-center gap-2 text-xs text-gray-600">
+            {item.source_name && <span className="truncate">{item.source_name}</span>}
+            {item.source_name && item.author && <span>·</span>}
+            {item.author && <span className="truncate">{item.author}</span>}
+          </div>
         </div>
-      )}
-      <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-semibold text-white text-sm mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors leading-snug">{item.title}</h3>
-        {item.summary && <p className="text-gray-500 text-xs line-clamp-2 mb-3 flex-1">{item.summary}</p>}
-        <div className="flex items-center gap-2 text-xs text-gray-600 mt-auto">
-          {item.source_name && <span className="truncate">{item.source_name}</span>}
-          <span className="shrink-0">·</span>
-          <span className="shrink-0">{formatDate(item.published_at)}</span>
+
+        {/* Arrow */}
+        <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-lg bg-gray-800 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 border border-gray-700 transition-all opacity-0 group-hover:opacity-100">
+          <svg className="w-4 h-4 text-gray-500 group-hover:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </div>
+
       </div>
     </Link>
   );
@@ -142,13 +155,15 @@ function NewsCard({ item, featured }: { item: NewsItem; featured?: boolean }) {
 
 function SkeletonCard() {
   return (
-    <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden animate-pulse">
-      <div className="h-44 bg-gray-800" />
-      <div className="p-4 space-y-2">
-        <div className="h-4 bg-gray-800 rounded w-3/4" />
-        <div className="h-3 bg-gray-800 rounded w-full" />
-        <div className="h-3 bg-gray-800 rounded w-5/6" />
-        <div className="h-3 bg-gray-800 rounded w-1/3 mt-2" />
+    <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-5 animate-pulse">
+      <div className="flex gap-4">
+        <div className="w-32 h-32 rounded-xl bg-gray-800" />
+        <div className="flex-1 space-y-2">
+          <div className="h-4 bg-gray-800 rounded w-1/3" />
+          <div className="h-4 bg-gray-800 rounded w-full" />
+          <div className="h-3 bg-gray-800 rounded w-3/4" />
+          <div className="h-3 bg-gray-800 rounded w-1/2 mt-3" />
+        </div>
       </div>
     </div>
   );
@@ -167,7 +182,7 @@ export default function NewsPage() {
     try {
       const params = new URLSearchParams({
         page: String(page),
-        pageSize: '12',
+        pageSize: '24',
         ...(industry && { industry }),
         ...(search   && { search }),
       });
@@ -187,70 +202,59 @@ export default function NewsPage() {
   // Reset page when filter changes
   useEffect(() => { setPage(1); }, [industry, search]);
 
-  const featured = items.slice(0, 2);
-  const rest     = items.slice(2);
+  const groupedItems = groupByDate(items);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       <SiteNav />
 
       {/* Header */}
-      <div className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-5 py-10">
-          <h1 className="text-3xl font-bold mb-1">Market Intelligence</h1>
-          <p className="text-gray-400 text-sm">Latest developments across frontier industries</p>
+      <div className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur-sm sticky top-16 z-30">
+        <div className="max-w-7xl mx-auto px-5 py-8">
+          <h1 className="text-3xl font-bold mb-3">Market Intelligence</h1>
+          <p className="text-gray-400 text-sm mb-6">Latest developments across frontier industries</p>
+
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Search */}
+            <div className="relative flex-1 max-w-md">
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search news..."
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition"
+              />
+            </div>
+
+            {/* Industry tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
+              {INDUSTRIES.map(ind => (
+                <button
+                  key={ind.slug}
+                  onClick={() => setIndustry(ind.slug)}
+                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
+                    industry === ind.slug
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                  }`}
+                >
+                  {ind.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 py-8">
+      <div className="max-w-6xl mx-auto px-5 py-12">
 
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          {/* Search */}
-          <div className="relative flex-1 max-w-md">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Search news..."
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition"
-            />
-          </div>
-
-          {/* Industry tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
-            {INDUSTRIES.map(ind => (
-              <button
-                key={ind.slug}
-                onClick={() => setIndustry(ind.slug)}
-                className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
-                  industry === ind.slug
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                }`}
-              >
-                {ind.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Featured row */}
-        {!loading && featured.length > 0 && page === 1 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-            {featured.map(item => (
-              <NewsCard key={item.id} item={item} featured />
-            ))}
-          </div>
-        )}
-
-        {/* Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
+          <div className="space-y-4">
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-gray-500">
@@ -260,22 +264,67 @@ export default function NewsPage() {
             <p className="text-sm">No articles found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {(page === 1 ? rest : items).map(item => (
-              <NewsCard key={item.id} item={item} />
-            ))}
+          // Timeline layout
+          <div className="relative">
+            
+            {/* Timeline line */}
+            <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/50 via-blue-500/20 to-transparent" />
+
+            {/* Timeline groups */}
+            <div className="space-y-8 md:space-y-12 pl-8">
+              {groupedItems.map(([dateKey, dateItems]) => {
+                const dateObj = new Date(dateKey);
+                const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+                const dayNum  = dateObj.getDate();
+                const monthShort = dateObj.toLocaleDateString('en-US', { month: 'short' });
+
+                return (
+                  <div key={dateKey}>
+                    {/* Timeline marker */}
+                    <div className="absolute -left-4 top-1 w-7 h-7 rounded-full bg-gray-950 border-2 border-blue-500 flex items-center justify-center">
+                      <div className="w-2.5 h-2.5 rounded-full bg-blue-400" />
+                    </div>
+
+                    {/* Date header */}
+                    <div className="mb-4">
+                      <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">
+                        {monthShort} {dayNum}
+                      </div>
+                      <h2 className="text-sm font-bold text-white">
+                        {formatDateFull(dateKey)}
+                      </h2>
+                      <div className="text-xs text-gray-600 mt-1">
+                        {dateItems.length} {dateItems.length === 1 ? 'update' : 'updates'}
+                      </div>
+                    </div>
+
+                    {/* Articles for this date */}
+                    <div className="space-y-3">
+                      {dateItems.map(item => (
+                        <div key={item.id} className="relative group">
+                          {/* Dot connector */}
+                          <div className={`absolute -left-7 top-5 w-3 h-3 rounded-full ${INDUSTRY_DOT_COLORS[item.industry_slug] ?? 'bg-gray-600'} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                          <TimelineNewsCard item={item} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
           </div>
         )}
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-10">
+        {totalPages > 1 && !loading && (
+          <div className="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-gray-800">
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
               className="px-4 py-2 rounded-lg text-sm bg-gray-900 border border-gray-700 text-gray-300 hover:border-gray-500 disabled:opacity-40 disabled:cursor-not-allowed transition"
             >
-              ← Prev
+              ← Previous
             </button>
             <span className="text-sm text-gray-500">
               Page {page} of {totalPages}
@@ -289,6 +338,7 @@ export default function NewsPage() {
             </button>
           </div>
         )}
+
       </div>
     </div>
   );
