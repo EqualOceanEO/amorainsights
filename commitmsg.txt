@@ -1,1 +1,4 @@
-fix: update industry hierarchy to match database (6 level-1 industries with level-2 data)
+style: narrow page layouts to max-w-5xl for consistent width
+
+- Narrow companies, news, and reports page layouts from max-w-7xl to max-w-5xl
+- Creates more uniform and focused reading experience
