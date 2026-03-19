@@ -6,59 +6,27 @@
 export const INDUSTRY_HIERARCHY = [
   {
     level1: { id: 'ai', label: 'AI' },
-    level2: ['Large Language Models', 'Computer Vision', 'NLP', 'Robotics']
-  },
-  {
-    level1: { id: 'ai-semiconductors', label: 'AI Semiconductors' },
-    level2: ['GPU', 'TPU', 'AI Chip Design', 'Memory']
-  },
-  {
-    level1: { id: 'semiconductors', label: 'Semiconductors' },
-    level2: ['Foundry', 'Design', 'Materials', 'Equipment']
-  },
-  {
-    level1: { id: 'autonomous-vehicles', label: 'Autonomous Vehicles' },
-    level2: ['Passenger', 'Logistics', 'Sensors', 'Software']
-  },
-  {
-    level1: { id: 'green-tech', label: 'Green Tech' },
-    level2: ['Solar', 'Wind', 'Battery', 'Carbon Capture']
+    level2: ['Foundation Models', 'AI Agents', 'AI Semiconductors', 'Computer Vision', 'NLP & Speech', 'AI for Science']
   },
   {
     level1: { id: 'life-sciences', label: 'Life Sciences' },
-    level2: ['Biotech', 'Pharma', 'Medical Devices', 'Diagnostics']
+    level2: ['Gene Editing', 'Synthetic Biology', 'Cell Therapy', 'AI Drug Discovery', 'Medical Devices', 'Genomics & Diagnostics']
+  },
+  {
+    level1: { id: 'green-tech', label: 'Green Tech' },
+    level2: ['EV Batteries', 'Green Hydrogen', 'Solar Photovoltaics', 'Energy Storage', 'Carbon Capture & Removal', 'Circular Economy']
+  },
+  {
+    level1: { id: 'manufacturing', label: 'Manufacturing' },
+    level2: []
   },
   {
     level1: { id: 'new-space', label: 'New Space' },
-    level2: ['Launch Services', 'Satellites', 'Ground Infra', 'Space Tourism']
+    level2: ['Launch Vehicles', 'Satellite Internet', 'Earth Observation', 'Space Propulsion', 'Low-Altitude Economy', 'Space Manufacturing']
   },
   {
     level1: { id: 'advanced-materials', label: 'Advanced Materials' },
-    level2: ['Composites', 'Graphene', 'Ceramics', 'Polymers']
-  },
-  {
-    level1: { id: 'humanoid-robots', label: 'Humanoid Robots' },
-    level2: ['Hardware', 'Software', 'AI', 'Manufacturing']
-  },
-  {
-    level1: { id: 'ai-agents', label: 'AI Agents' },
-    level2: ['Autonomous Agents', 'Multi-Agent Systems', 'Agent Frameworks']
-  },
-  {
-    level1: { id: 'launch-vehicles', label: 'Launch Vehicles' },
-    level2: ['Reusable', 'Small Lift', 'Heavy Lift']
-  },
-  {
-    level1: { id: 'gene-editing', label: 'Gene Editing' },
-    level2: ['CRISPR', 'Base Editing', 'Prime Editing']
-  },
-  {
-    level1: { id: 'ev-batteries', label: 'EV Batteries' },
-    level2: ['Lithium', 'Solid-State', 'Alternative Chemistry']
-  },
-  {
-    level1: { id: 'energy-storage', label: 'Energy Storage' },
-    level2: ['Battery', 'Thermal', 'Mechanical']
+    level2: ['Carbon Fiber & Composites', 'Semiconductor Materials', 'Battery Materials', 'Metamaterials', 'Graphene & Carbon Nanocomposites', 'Biomaterials']
   }
 ];
 
@@ -84,34 +52,18 @@ export function getLevel1Label(slug: string): string {
 // Color mapping
 export const INDUSTRY_COLORS: Record<string, string> = {
   'ai': 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-  'ai-semiconductors': 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
-  'semiconductors': 'bg-violet-500/10 text-violet-400 border border-violet-500/20',
-  'autonomous-vehicles': 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20',
-  'green-tech': 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
   'life-sciences': 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
+  'green-tech': 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+  'manufacturing': 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
   'new-space': 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20',
   'advanced-materials': 'bg-orange-500/10 text-orange-400 border border-orange-500/20',
-  'humanoid-robots': 'bg-teal-500/10 text-teal-400 border border-teal-500/20',
-  'ai-agents': 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-  'launch-vehicles': 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20',
-  'gene-editing': 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
-  'ev-batteries': 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  'energy-storage': 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
 };
 
 export const INDUSTRY_DOT_COLORS: Record<string, string> = {
   'ai': 'bg-blue-400',
-  'ai-semiconductors': 'bg-purple-400',
-  'semiconductors': 'bg-violet-400',
-  'autonomous-vehicles': 'bg-cyan-400',
-  'green-tech': 'bg-emerald-400',
   'life-sciences': 'bg-rose-400',
+  'green-tech': 'bg-emerald-400',
+  'manufacturing': 'bg-amber-400',
   'new-space': 'bg-indigo-400',
   'advanced-materials': 'bg-orange-400',
-  'humanoid-robots': 'bg-teal-400',
-  'ai-agents': 'bg-blue-400',
-  'launch-vehicles': 'bg-indigo-400',
-  'gene-editing': 'bg-rose-400',
-  'ev-batteries': 'bg-emerald-400',
-  'energy-storage': 'bg-yellow-400',
 };
