@@ -1,1 +1,8 @@
-feat: companies page two-row industry filter (level1 + level2)
+feat(companies): 一二级行业联动筛选，客户端组件重构
+
+- companies/page.tsx 改为 'use client' 客户端组件
+- 一级行业筛选：All + 6 大行业按钮
+- 点击一级后动态显示对应的 6 个二级子行业（可点击过滤）
+- 扩展 /api/companies 支持 industry/level2/country/public/search/page 参数
+- 新增搜索框、骨架屏 loading 动画、分页改为按钮交互
+- 与 news 页面风格完全统一
