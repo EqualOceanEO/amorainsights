@@ -1,4 +1,1 @@
-style: narrow page layouts to max-w-5xl for consistent width
-
-- Narrow companies, news, and reports page layouts from max-w-7xl to max-w-5xl
-- Creates more uniform and focused reading experience
+feat: companies page two-row industry filter (level1 + level2)

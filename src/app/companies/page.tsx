@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
+import { INDUSTRY_HIERARCHY, INDUSTRY_COLORS } from '@/lib/industries';
 import {
   getCompanies,
-  INDUSTRY_META,
   ALL_INDUSTRY_SLUGS,
   type IndustrySlug,
   type Company,
@@ -122,35 +122,48 @@ export default async function CompaniesPage({
 
         {/* ── Filters ────────────────────────────────────────────────────── */}
         <div className="space-y-3 mb-8">
-          {/* Industry */}
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href={filterUrl({ industry: undefined, page: '1' })}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                !industryFilter
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              All Industries
-            </Link>
-            {ALL_INDUSTRY_SLUGS.map((slug) => {
-              const meta = INDUSTRY_META[slug];
-              return (
+          {/* Industry - Two rows */}
+          <div className="flex flex-col gap-2">
+            {/* Level 1 */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
+              <Link
+                href={filterUrl({ industry: undefined, page: '1' })}
+                className={`shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
+                  !industryFilter
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                }`}
+              >
+                All
+              </Link>
+              {INDUSTRY_HIERARCHY.map(group => (
                 <Link
-                  key={slug}
-                  href={filterUrl({ industry: slug, page: '1' })}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5 ${
-                    industryFilter === slug
+                  key={group.level1.id}
+                  href={filterUrl({ industry: group.level1.id, page: '1' })}
+                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
+                    industryFilter === group.level1.id
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                      : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
                   }`}
                 >
-                  <span>{meta.icon}</span>
-                  <span className="hidden sm:inline">{meta.name}</span>
+                  {group.level1.label}
                 </Link>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Level 2 (shown when level 1 is selected) */}
+            {industryFilter && (
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
+                {INDUSTRY_HIERARCHY.find(h => h.level1.id === industryFilter)?.level2.map(level2 => (
+                  <span
+                    key={level2}
+                    className="shrink-0 px-3 py-1 rounded-md text-xs font-medium text-gray-500 bg-gray-900 border border-gray-700"
+                  >
+                    {level2}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Country + Listed status */}
@@ -279,10 +292,9 @@ export default async function CompaniesPage({
 // ─── Company Card ─────────────────────────────────────────────────────────────
 
 function CompanyCard({ company }: { company: Company }) {
-  const industry = INDUSTRY_META[company.industry_slug] ?? {
-    name: company.industry_slug,
-    icon: '🏢',
-  };
+  const group = INDUSTRY_HIERARCHY.find(h => h.level1.id === company.industry_slug);
+  const industryLabel = group?.level1.label ?? company.industry_slug;
+  const industryColor = INDUSTRY_COLORS[company.industry_slug] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
 
   return (
     <Link
@@ -291,9 +303,8 @@ function CompanyCard({ company }: { company: Company }) {
     >
       {/* Top row */}
       <div className="flex items-start justify-between gap-2 mb-3">
-        <span className="text-xs font-medium bg-gray-800/80 text-gray-400 px-2 py-0.5 rounded-full flex items-center gap-1 truncate">
-          {industry.icon}
-          <span className="truncate">{industry.name}</span>
+        <span className={`text-xs font-medium px-2 py-0.5 rounded-full flex items-center gap-1 truncate ${industryColor}`}>
+          <span className="truncate">{industryLabel}</span>
         </span>
         <div className="flex items-center gap-1 shrink-0">
           <span className="text-base">{countryFlag(company.country)}</span>
