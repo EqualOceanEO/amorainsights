@@ -135,7 +135,7 @@ export default function NewsDetailPage() {
       {/* Top gradient bar */}
       <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
 
-      <div className="max-w-6xl mx-auto px-5 py-10">
+      <div className="max-w-7xl mx-auto px-5 py-10">
 
         {/* Back */}
         <Link href="/news" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-white mb-8 transition-colors group">

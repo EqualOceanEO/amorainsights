@@ -175,7 +175,7 @@ export default function NewsPage() {
 
       {/* Header */}
       <div className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur-sm sticky top-16 z-30">
-        <div className="max-w-5xl mx-auto px-5 py-8">
+        <div className="max-w-7xl mx-auto px-5 py-8">
           <h1 className="text-3xl font-bold mb-3">Market Intelligence</h1>
           <p className="text-gray-400 text-sm mb-6">Latest developments across frontier industries</p>
 
@@ -264,7 +264,7 @@ export default function NewsPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-5 py-12">
+      <div className="max-w-7xl mx-auto px-5 py-12">
 
         {loading ? (
           <div className="space-y-4">

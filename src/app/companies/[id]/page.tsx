@@ -92,7 +92,7 @@ export default async function CompanyDetailPage({ params }: Props) {
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
       <SiteNav activePath="/companies" />
       
-      <main className="max-w-5xl mx-auto px-5 py-10 flex-1">
+      <main className="max-w-7xl mx-auto px-5 py-10 flex-1">
         {/* ── Breadcrumb ─────────────────────────────────────────────────────── */}
         <nav className="mb-6">
           <ol className="flex items-center gap-2 text-sm text-gray-500">
