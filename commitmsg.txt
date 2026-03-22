@@ -1,8 +1,8 @@
-feat(companies): 一二级行业联动筛选，客户端组件重构
+fix: 宽度统一 + API 查询优化
 
-- companies/page.tsx 改为 'use client' 客户端组件
-- 一级行业筛选：All + 6 大行业按钮
-- 点击一级后动态显示对应的 6 个二级子行业（可点击过滤）
-- 扩展 /api/companies 支持 industry/level2/country/public/search/page 参数
-- 新增搜索框、骨架屏 loading 动画、分页改为按钮交互
-- 与 news 页面风格完全统一
+- Companies 页面 padding 从 px-5 改为 px-6，与 Reports 页面完全一致
+- 优化 /api/news 和 /api/companies 查询：
+  * 显式指定 select 字段（避免 SELECT *）
+  * 添加查询时间日志（Vercel console 查看）
+  * 添加 try-catch 错误保护
+  * pageSize 最大限制 100（避免过大数据集）

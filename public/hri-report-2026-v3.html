@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Humanoid Robot Index 2026 | AMORA Insights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-tertiary: #18181b;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent-red: #ef4444;
+            --accent-gold: #f59e0b;
+            --accent-emerald: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --border-color: #27272a;
+            --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'JetBrains Mono', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                var(--bg-primary);
+            padding: 60px 24px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 100px;
+            font-size: 13px;
+            color: #60a5fa;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #fafafa 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .hero-meta-item svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        /* Key Numbers */
+        .key-numbers {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 48px 0;
+        }
+
+        .key-numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            text-align: center;
+        }
+
+        .key-number {
+            padding: 24px;
+        }
+
+        .key-number-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .key-number-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Executive Summary */
+        .exec-summary {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .exec-summary-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exec-summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-gold), var(--accent-red));
+        }
+
+        .exec-summary-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 24px;
+            color: var(--accent-gold);
+        }
+
+        .exec-summary-card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .exec-summary-card strong {
+            color: var(--text-primary);
+        }
+
+        .highlight-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .highlight-box p {
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Industry Rating */
+        .rating-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 32px 0;
+        }
+
+        .rating-table th,
+        .rating-table td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .rating-table th {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .rating-table td {
+            font-size: 15px;
+        }
+
+        .rating-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .rating-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-emerald);
+        }
+
+        .rating-score.high {
+            color: var(--accent-emerald);
+        }
+
+        .rating-score.medium {
+            color: var(--accent-gold);
+        }
+
+        /* Company Cards */
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .company-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .company-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .company-rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--accent-blue);
+            color: white;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .company-rank.gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .company-rank.silver {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .company-rank.bronze {
+            background: linear-gradient(135deg, #cd7f32, #a0522d);
+        }
+
+        .company-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .company-name-cn {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .company-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .company-location svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .company-stat {
+            text-align: center;
+        }
+
+        .company-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .company-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .company-score {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .company-score span {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 32px 0;
+            font-size: 14px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--bg-secondary);
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .data-table td:first-child {
+            font-weight: 500;
+        }
+
+        .highlight-row {
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .highlight-row td {
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        /* AMORA Dimensions */
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .dimension-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+        }
+
+        .dimension-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .dimension-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .dimension-name-en {
+            font-size: 13px;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .dimension-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .dimension-metrics {
+            list-style: none;
+        }
+
+        .dimension-metrics li {
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dimension-metrics li:last-child {
+            border-bottom: none;
+        }
+
+        /* Ranking Table */
+        .ranking-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 32px 0;
+        }
+
+        .ranking-table th,
+        .ranking-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ranking-table th {
+            background: var(--bg-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .ranking-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .ranking-table tbody tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .rank-1 { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .rank-2 { background: linear-gradient(135deg, #6b7280, #4b5563); color: white; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: white; }
+        .rank-other { background: var(--bg-tertiary); color: var(--text-muted); }
+
+        .score-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        .country-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .country-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .country-cn { background: #ef4444; }
+        .country-us { background: #3b82f6; }
+        .country-eu { background: #10b981; }
+
+        /* China vs World */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .comparison-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+        }
+
+        .comparison-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-card h3 .flag {
+            font-size: 1.5rem;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-list .check {
+            color: var(--accent-emerald);
+            font-weight: bold;
+        }
+
+        .comparison-list .cross {
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        /* Quote Block */
+        .quote-block {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-gold);
+            padding: 32px 48px;
+            margin: 48px 0;
+            position: relative;
+        }
+
+        .quote-block::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--accent-gold);
+            opacity: 0.3;
+            position: absolute;
+            top: 16px;
+            left: 24px;
+            line-height: 1;
+        }
+
+        .quote-block p {
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        /* Appendix */
+        .appendix-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .appendix-section h3 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--accent-blue);
+        }
+
+        .appendix-section ul {
+            list-style: none;
+        }
+
+        .appendix-section li {
+            padding: 8px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .appendix-section li:last-child {
+            border-bottom: none;
+        }
+
+        .appendix-section li strong {
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 48px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer-disclaimer {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .exec-summary-card {
+                padding: 24px;
+            }
+
+            .company-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px 12px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-badge">AMORA Insights 旗舰报告</div>
+        <h1>The Humanoid Robot<br><span>Index 2026</span></h1>
+        <p class="hero-subtitle">全球人形机器人行业深度对标研究 · 25家公司全景分析</p>
+        <div class="hero-meta">
+            <div class="hero-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                2026年3月
+            </div>
+            <div class="hero-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                覆盖25家公司
+            </div>
+            <div class="hero-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                5大评估维度
+            </div>
+        </div>
+    </header>
+
+    <!-- Key Numbers -->
+    <div class="key-numbers">
+        <div class="container">
+            <div class="key-numbers-grid">
+                <div class="key-number">
+                    <div class="key-number-value">17.08亿</div>
+                    <div class="key-number-label">宇树2025营收（人民币）</div>
+                </div>
+                <div class="key-number">
+                    <div class="key-number-value">6亿</div>
+                    <div class="key-number-label">宇树净利润</div>
+                </div>
+                <div class="key-number">
+                    <div class="key-number-value">60.27%</div>
+                    <div class="key-number-label">宇树毛利率</div>
+                </div>
+                <div class="key-number">
+                    <div class="key-number-value">5,500+</div>
+                    <div class="key-number-label">宇树年出货量（台）</div>
+                </div>
+                <div class="key-number">
+                    <div class="key-number-value">42亿</div>
+                    <div class="key-number-label">宇树IPO募资（人民币）</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Summary -->
+    <section class="exec-summary">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">EXECUTIVE SUMMARY</div>
+                <h2 class="section-title">执行摘要</h2>
+            </div>
+
+            <div class="exec-summary-card">
+                <h3>⭐ 核心更新：宇树科技IPO</h3>
+                <p><strong>2026年3月20日</strong>，宇树科技正式提交科创板IPO申请（上交所受理），这是<strong>A股人形机器人第一股</strong>。本节所有核心数据均来自宇树科技招股说明书，为L1级别官方来源。</p>
+                
+                <div class="highlight-box">
+                    <p>"在整个行业绝大多数公司还在烧钱时，宇树用17亿营收、6亿净利润告诉市场：机器人不是概念，是生意。但<strong>73.6%的客户是高校和科研机构</strong>——这意味着当前所谓的'商业化'，主要是卖给学生写论文，真正的工业替代浪潮还在路上。"</p>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 24px; font-size: 1.25rem;">三大核心发现</h3>
+
+            <div class="company-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="company-card">
+                    <div class="company-rank" style="background: linear-gradient(135deg, #10b981, #059669);">1</div>
+                    <h4 class="company-name">发现一：中国已出现首个"证明盈利"的厂商</h4>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-top: 12px;">宇树2025年营收17.08亿元，同比增长335%；扣非净利润6亿元，同比增长674%。在整个行业绝大多数公司还在烧钱的时候，宇树已经连续两年盈利。</p>
+                </div>
+                <div class="company-card">
+                    <div class="company-rank" style="background: linear-gradient(135deg, #f59e0b, #d97706);">2</div>
+                    <h4 class="company-name">发现二：融资与部署量的不对称性极端</h4>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-top: 12px;">Figure AI融资6.75亿美元，约为宇树的13倍，但出货量仅约150台，而宇树5500台——差距是<strong>37倍</strong>。资本效率的差异比资本总量差异更重要。</p>
+                </div>
+                <div class="company-card">
+                    <div class="company-rank" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">3</div>
+                    <h4 class="company-name">发现三：产能军备竞赛已经开始</h4>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-top: 12px;">宇树IPO拟募资42亿元，85%用于研发。新建产能规划：<strong>人形机器人7.5万台/年 + 四足机器人11.5万台/年</strong>。这是行业里程碑事件。</p>
+                </div>
+            </div>
+
+            <h3 style="margin: 48px 0 24px;">行业创新评级</h3>
+            <table class="rating-table">
+                <thead>
+                    <tr>
+                        <th>评级维度</th>
+                        <th>评分</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>行业均值</td>
+                        <td><span class="rating-score medium">7.2/10</span></td>
+                    </tr>
+                    <tr>
+                        <td>中国第一梯队平均</td>
+                        <td><span class="rating-score high">7.9/10</span></td>
+                    </tr>
+                    <tr>
+                        <td>美国第一梯队平均</td>
+                        <td><span class="rating-score medium">7.5/10</span></td>
+                    </tr>
+                    <tr>
+                        <td>欧洲第一梯队平均</td>
+                        <td><span class="rating-score medium">7.1/10</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="color: var(--text-secondary); margin-top: 24px;">趋势判断：中国在商业化落地（Operations）维度领先，且正通过IPO加速技术投入（研发占募资85%）；美国在算法壁垒（Advancement）和顶尖人才（Mastery）维度保持优势。12-18个月内，中国能否在具身大模型端缩小差距，是最关键的变量。</p>
+        </div>
+    </section>
+
+    <!-- Financial Data -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">UNITREE IPO DATA</div>
+                <h2 class="section-title">宇树科技招股书核心数据</h2>
+                <p class="section-subtitle">数据来源：招股书（上交所受理），L1级别官方披露</p>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>指标</th>
+                        <th>2022年</th>
+                        <th>2023年</th>
+                        <th>2024年</th>
+                        <th>2025年</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>营业收入</td>
+                        <td>1.23亿元</td>
+                        <td>1.59亿元</td>
+                        <td>3.92亿元</td>
+                        <td style="color: var(--accent-gold); font-weight: 600;">17.08亿元</td>
+                    </tr>
+                    <tr>
+                        <td>扣非净利润</td>
+                        <td>-0.22亿元</td>
+                        <td>-0.11亿元</td>
+                        <td>0.95亿元</td>
+                        <td style="color: var(--accent-gold); font-weight: 600;">6.00亿元</td>
+                    </tr>
+                    <tr>
+                        <td>综合毛利率</td>
+                        <td>44.18%</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td style="color: var(--accent-gold); font-weight: 600;">60.27%</td>
+                    </tr>
+                    <tr>
+                        <td>经营现金流净额</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td style="color: var(--accent-emerald); font-weight: 600;">6.72亿元</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="color: var(--text-secondary); margin-top: 24px; font-size: 14px;">营收2年复合增长率78.73%。利润增速（674%）远超收入增速（335%），说明规模效应正在显现。<br>毛利率从44%→60%，核心原因是外购部件成本占比仅14-18%（电机、减速器、灵巧手等核心部件全栈自研）。</p>
+        </div>
+    </section>
+
+    <!-- Market Comparison -->
+    <section style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">MARKET LANDSCAPE</div>
+                <h2 class="section-title">竞争格局：融资 vs 出货量</h2>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>公司</th>
+                        <th>融资总额（美元）</th>
+                        <th>2025年出货量（台）</th>
+                        <th>市场份额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td>宇树科技 ⭐</td>
+                        <td>投后127亿元（≈$17.5亿）</td>
+                        <td>5,500+</td>
+                        <td>~55%</td>
+                    </tr>
+                    <tr>
+                        <td>智元机器人(Agibot)</td>
+                        <td>约$1亿+</td>
+                        <td>~4,000</td>
+                        <td>~40%</td>
+                    </tr>
+                    <tr>
+                        <td>乐聚机器人</td>
+                        <td>~$3000万</td>
+                        <td>~1,000</td>
+                        <td>~5%</td>
+                    </tr>
+                    <tr>
+                        <td>UBTECH优必选</td>
+                        <td>港股IPO（9880.HK）</td>
+                        <td>~150</td>
+                        <td>&lt;2%</td>
+                    </tr>
+                    <tr>
+                        <td>Figure AI</td>
+                        <td>$6.75亿</td>
+                        <td>~150</td>
+                        <td>&lt;2%</td>
+                    </tr>
+                    <tr>
+                        <td>Tesla Optimus</td>
+                        <td>未单独披露</td>
+                        <td>&lt;50</td>
+                        <td>&lt;1%</td>
+                    </tr>
+                    <tr>
+                        <td>Boston Dynamics</td>
+                        <td>累计$1.5亿+</td>
+                        <td>~1,000（含Spot）</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>Agility Robotics</td>
+                        <td>$1.5亿+</td>
+                        <td>~150</td>
+                        <td>&lt;2%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="quote-block">
+                <p><strong>结论：谁融资最多 ≠ 谁跑得最快</strong><br><br>Figure AI融资规模是宇树的13倍，但实际出货量仅为宇树的1/37。这不是否定融资的价值——融资是必要条件——而是说：<strong>在人形机器人行业，资本效率的差异比资本总量的差异更重要。</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Rankings -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">AMORA SCORECARD</div>
+                <h2 class="section-title">第一梯队排名（12家）</h2>
+                <p class="section-subtitle">基于AMORA五维评分体系的综合排名</p>
+            </div>
+
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>公司</th>
+                        <th>国家</th>
+                        <th>综合评分</th>
+                        <th>排名变化</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="rank-badge rank-1">1</span></td>
+                        <td><strong>宇树科技</strong></td>
+                        <td><span class="country-badge"><span class="country-dot country-cn"></span>中国</span></td>
+                        <td><span class="score-badge">8.9</span></td>
+                        <td style="color: var(--accent-emerald);">↑1</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-2">2</span></td>
+                        <td>Tesla Optimus</td>
+                        <td><span class="country-badge"><span class="country-dot country-us"></span>美国</span></td>
+                        <td><span class="score-badge">8.4</span></td>
+                        <td style="color: var(--text-muted);">→</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-3">3</span></td>
+                        <td>Boston Dynamics</td>
+                        <td><span class="country-badge"><span class="country-dot country-us"></span>美国</span></td>
+                        <td><span class="score-badge">8.2</span></td>
+                        <td style="color: var(--accent-red);">↓1</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">4</span></td>
+                        <td>智元机器人(Agibot)</td>
+                        <td><span class="country-badge"><span class="country-dot country-cn"></span>中国</span></td>
+                        <td><span class="score-badge">8.0</span></td>
+                        <td style="color: var(--text-muted);">→</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">5</span></td>
+                        <td><strong>UBTECH</strong></td>
+                        <td><span class="country-badge"><span class="country-dot country-cn"></span>中国</span></td>
+                        <td><span class="score-badge">6.8</span></td>
+                        <td style="color: var(--accent-red);">↓2</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">6</span></td>
+                        <td>Agility Robotics</td>
+                        <td><span class="country-badge"><span class="country-dot country-us"></span>美国</span></td>
+                        <td><span class="score-badge">7.4</span></td>
+                        <td style="color: var(--accent-emerald);">↑1</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">7</span></td>
+                        <td>Figure AI</td>
+                        <td><span class="country-badge"><span class="country-dot country-us"></span>美国</span></td>
+                        <td><span class="score-badge">7.2</span></td>
+                        <td style="color: var(--text-muted);">→</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">8</span></td>
+                        <td>1X Technologies</td>
+                        <td><span class="country-badge"><span class="country-dot country-eu"></span>挪威</span></td>
+                        <td><span class="score-badge">7.4</span></td>
+                        <td style="color: var(--text-muted);">→</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">9</span></td>
+                        <td>乐聚机器人</td>
+                        <td><span class="country-badge"><span class="country-dot country-cn"></span>中国</span></td>
+                        <td><span class="score-badge">7.0</span></td>
+                        <td style="color: var(--accent-emerald);">↑1</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">10</span></td>
+                        <td>Fourier Intelligence</td>
+                        <td><span class="country-badge"><span class="country-dot country-cn"></span>中国</span></td>
+                        <td><span class="score-badge">6.8</span></td>
+                        <td style="color: var(--text-muted);">→</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">11</span></td>
+                        <td>Apptronik</td>
+                        <td><span class="country-badge"><span class="country-dot country-us"></span>美国</span></td>
+                        <td><span class="score-badge">6.8</span></td>
+                        <td style="color: var(--text-muted);">→</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-other">12</span></td>
+                        <td>Sanctuary AI</td>
+                        <td><span class="country-badge"><span class="country-dot country-eu"></span>加拿大</span></td>
+                        <td><span class="score-badge">6.6</span></td>
+                        <td style="color: var(--text-muted);">→</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px;">* UBTECH Operations评分从8.5下调至6.8。150台 vs 宇树5500台，差距超过35倍。</p>
+        </div>
+    </section>
+
+    <!-- AMORA Dimensions -->
+    <section style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">METHODOLOGY</div>
+                <h2 class="section-title">AMORA五维评分体系</h2>
+            </div>
+
+            <div class="dimensions-grid">
+                <div class="dimension-card">
+                    <div class="dimension-icon">🎯</div>
+                    <h4 class="dimension-name">Advancement</h4>
+                    <div class="dimension-name-en">技术壁垒</div>
+                    <p class="dimension-desc">公司在核心技术上的护城河深度</p>
+                    <ul class="dimension-metrics">
+                        <li>核心专利密度</li>
+                        <li>核心算法自研率</li>
+                        <li>技术成熟度（TRL）</li>
+                    </ul>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-icon">🧠</div>
+                    <h4 class="dimension-name">Mastery</h4>
+                    <div class="dimension-name-en">人才优势</div>
+                    <p class="dimension-desc">团队深度决定技术上限</p>
+                    <ul class="dimension-metrics">
+                        <li>创始人/CTO深科技背景</li>
+                        <li>核心技术团队平均从业年限</li>
+                        <li>关键岗位年流失率</li>
+                    </ul>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-icon">⚡</div>
+                    <h4 class="dimension-name">Operations</h4>
+                    <div class="dimension-name-en">商业落地</div>
+                    <p class="dimension-desc">从技术到产品的转化能力</p>
+                    <ul class="dimension-metrics">
+                        <li>实际部署量（台数）</li>
+                        <li>客户留存率</li>
+                        <li>单台边际成本</li>
+                    </ul>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-icon">🌍</div>
+                    <h4 class="dimension-name">Reach</h4>
+                    <div class="dimension-name-en">全球化能力</div>
+                    <p class="dimension-desc">市场覆盖的广度与深度</p>
+                    <ul class="dimension-metrics">
+                        <li>海外营收占比</li>
+                        <li>本土化团队覆盖国家数</li>
+                        <li>海外客户数占比</li>
+                    </ul>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-icon">♻️</div>
+                    <h4 class="dimension-name">Affinity</h4>
+                    <div class="dimension-name-en">可持续能力</div>
+                    <p class="dimension-desc">品牌与资本的长期韧性</p>
+                    <ul class="dimension-metrics">
+                        <li>ESG评级</li>
+                        <li>品牌搜索指数</li>
+                        <li>机构投资者持仓比例</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 48px; padding: 24px; background: var(--bg-tertiary); border-radius: 12px;">
+                <h4 style="margin-bottom: 16px;">评分规则</h4>
+                <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <li style="color: var(--text-secondary); font-size: 14px;"><strong style="color: var(--text-primary);">评分范围：</strong>1-10分，保留一位小数</li>
+                    <li style="color: var(--text-secondary); font-size: 14px;"><strong style="color: var(--text-primary);">行业均值线：</strong>7.0/10</li>
+                    <li style="color: var(--text-secondary); font-size: 14px;"><strong style="color: var(--text-primary);">L1权重：</strong>公司官方披露 50%</li>
+                    <li style="color: var(--text-secondary); font-size: 14px;"><strong style="color: var(--text-primary);">L2权重：</strong>权威第三方 30%</li>
+                    <li style="color: var(--text-secondary); font-size: 14px;"><strong style="color: var(--text-primary);">L3权重：</strong>媒体/公开信息 20%</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- China vs World -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">COMPARATIVE ANALYSIS</div>
+                <h2 class="section-title">中国 vs 美国：谁在领跑？</h2>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h3><span class="flag">🇨🇳</span> 中国已经赢在哪里</h3>
+                    <ul class="comparison-list">
+                        <li><span class="check">✓</span> <strong>制造密度：</strong>全球70%以上机器人零部件供应链在中国，制造成本比美国低30-50%</li>
+                        <li><span class="check">✓</span> <strong>规模效应：</strong>宇树G1 ¥8.5万起已量产，毛利率60%；Tesla Optimus目标$20K尚未量产</li>
+                        <li><span class="check">✓</span> <strong>迭代速度：</strong>中国厂商产品迭代周期约6-12个月，美国厂商约18-24个月</li>
+                        <li><span class="check">✓</span> <strong>IPO加速：</strong>宇树IPO融资42亿元，85%投入研发</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h3><span class="flag">🇺🇸</span> 美国仍然领先在哪里</h3>
+                    <ul class="comparison-list">
+                        <li><span class="check">✓</span> <strong>算法深度：</strong>VLA模型（Figure+OpenAI）、仿真平台（NVIDIA Isaac Sim）仍由美国主导</li>
+                        <li><span class="check">✓</span> <strong>顶尖人才：</strong>MIT/Stanford/Berkeley的具身智能实验室80%在美国</li>
+                        <li><span class="check">✓</span> <strong>资本体量：</strong>美国公司的绝对融资规模仍是中国的数倍</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quote-block" style="margin-top: 48px;">
+                <p><strong>关键变量：具身大模型</strong><br><br>宇树招股书坦承："全球范围内具身大模型均处于研发测试阶段。"宇树的UnifoLM-X1-1模型目前仅在自有工厂完成试点部署，尚未规模化。这是整个行业共同面临的瓶颈，也是美国算法优势最有可能发挥作用的领域。<br><br><strong style="color: var(--accent-gold);">12-18个月内，谁能率先实现具身大模型的规模化部署，谁就能在下半场占据主动。</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Specs -->
+    <section style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">PRODUCT SPECS</div>
+                <h2 class="section-title">产品参数对比</h2>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="data-table" style="min-width: 900px;">
+                    <thead>
+                        <tr>
+                            <th>公司</th>
+                            <th>机型</th>
+                            <th>高度</th>
+                            <th>重量</th>
+                            <th>DOF</th>
+                            <th>最大速度</th>
+                            <th>续航</th>
+                            <th>价格(USD)</th>
+                            <th>场景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td>宇树科技</td>
+                            <td>G1</td>
+                            <td>1.32m</td>
+                            <td>35kg</td>
+                            <td>23</td>
+                            <td>2.5 m/s</td>
+                            <td>2h</td>
+                            <td>$11,800起</td>
+                            <td>工厂/研究</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td>宇树科技</td>
+                            <td>H1</td>
+                            <td>1.80m</td>
+                            <td>47kg</td>
+                            <td>19</td>
+                            <td>3.3 m/s</td>
+                            <td>2h</td>
+                            <td>$21,000+</td>
+                            <td>研究/工业</td>
+                        </tr>
+                        <tr>
+                            <td>Tesla</td>
+                            <td>Optimus Gen 2</td>
+                            <td>1.73m</td>
+                            <td>56kg</td>
+                            <td>28</td>
+                            <td>5 km/h</td>
+                            <td>4h</td>
+                            <td>$20K-30K*</td>
+                            <td>工厂/物流</td>
+                        </tr>
+                        <tr>
+                            <td>Figure AI</td>
+                            <td>Figure 02</td>
+                            <td>1.70m</td>
+                            <td>63kg</td>
+                            <td>41</td>
+                            <td>1.2 m/s</td>
+                            <td>5h</td>
+                            <td>$25K-40K*</td>
+                            <td>工厂</td>
+                        </tr>
+                        <tr>
+                            <td>Boston Dynamics</td>
+                            <td>Atlas(电动版)</td>
+                            <td>1.75m</td>
+                            <td>89kg</td>
+                            <td>28</td>
+                            <td>3 m/s</td>
+                            <td>1h</td>
+                            <td>租赁制</td>
+                            <td>物流/研发</td>
+                        </tr>
+                        <tr>
+                            <td>Agility</td>
+                            <td>Digit</td>
+                            <td>1.57m</td>
+                            <td>42kg</td>
+                            <td>20</td>
+                            <td>1.5 m/s</td>
+                            <td>4h</td>
+                            <td>$18,000</td>
+                            <td>仓储</td>
+                        </tr>
+                        <tr>
+                            <td>UBTECH</td>
+                            <td>Walker S</td>
+                            <td>1.75m</td>
+                            <td>77kg</td>
+                            <td>41</td>
+                            <td>3 km/h</td>
+                            <td>3h</td>
+                            <td>$150K+</td>
+                            <td>汽车工厂</td>
+                        </tr>
+                        <tr>
+                            <td>智元机器人</td>
+                            <td>A1 Pro</td>
+                            <td>1.65m</td>
+                            <td>48kg</td>
+                            <td>34</td>
+                            <td>2.5 m/s</td>
+                            <td>3h</td>
+                            <td>$18K-25K</td>
+                            <td>工厂</td>
+                        </tr>
+                        <tr>
+                            <td>1X Technologies</td>
+                            <td>NEO Beta</td>
+                            <td>1.65m</td>
+                            <td>30kg</td>
+                            <td>21</td>
+                            <td>1.6 m/s</td>
+                            <td>4h</td>
+                            <td>$15K-20K*</td>
+                            <td>家庭/服务</td>
+                        </tr>
+                        <tr>
+                            <td>Agibot</td>
+                            <td>Apollo</td>
+                            <td>1.73m</td>
+                            <td>72kg</td>
+                            <td>55</td>
+                            <td>1.5 m/s</td>
+                            <td>4h</td>
+                            <td>$25,000*</td>
+                            <td>物流</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px;">* 注：宇树产品价格来源为招股书（L1官方）；其余为官网/估算。Tesla Optimus定价为官方目标价，尚未量产。</p>
+        </div>
+    </section>
+
+    <!-- Appendix -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">APPENDIX</div>
+                <h2 class="section-title">附录</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                <div class="appendix-section">
+                    <h3>A — 方法论说明</h3>
+                    <ul>
+                        <li><strong>AMORA五维评分体系</strong>包含25个二级指标，每个维度5个指标</li>
+                        <li>评分采用1-10分制，行业均值线为7.0分</li>
+                        <li>评分范围：1-10分，保留一位小数</li>
+                    </ul>
+                </div>
+                <div class="appendix-section">
+                    <h3>B — 数据来源分级</h3>
+                    <ul>
+                        <li><strong>L1（50%权重）</strong>：招股书、年报、产品白皮书</li>
+                        <li><strong>L2（30%权重）</strong>：IDC、麦肯锡、高盛、行业学术论文</li>
+                        <li><strong>L3（20%权重）</strong>：TechCrunch、The Verge、公司官方社交媒体</li>
+                    </ul>
+                </div>
+                <div class="appendix-section">
+                    <h3>C — 术语表</h3>
+                    <ul>
+                        <li><strong>TRL</strong>：Technology Readiness Level，技术成熟度等级（1-9级）</li>
+                        <li><strong>DOF</strong>：Degrees of Freedom，自由度</li>
+                        <li><strong>VLA</strong>：Vision-Language-Action，视觉-语言-动作模型</li>
+                        <li><strong>Sim-to-Real</strong>：仿真到真实的迁移</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="appendix-section" style="margin-top: 24px;">
+                <h3>E — 宇树招股书关键数据摘要</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+                    <div><span style="color: var(--text-muted);">招股书受理日期：</span><strong>2026年3月20日</strong></div>
+                    <div><span style="color: var(--text-muted);">上市板块：</span><strong>科创板</strong></div>
+                    <div><span style="color: var(--text-muted);">保荐机构：</span><strong>中信证券</strong></div>
+                    <div><span style="color: var(--text-muted);">拟募资：</span><strong>42.02亿元</strong></div>
+                    <div><span style="color: var(--text-muted);">2025年营收：</span><strong>17.08亿元</strong></div>
+                    <div><span style="color: var(--text-muted);">扣非净利润：</span><strong>6.00亿元</strong></div>
+                    <div><span style="color: var(--text-muted);">毛利率：</span><strong>60.27%</strong></div>
+                    <div><span style="color: var(--text-muted);">人形机器人出货量：</span><strong>5,500+台</strong></div>
+                    <div><span style="color: var(--text-muted);">四足机器人累计：</span><strong>超3万台</strong></div>
+                    <div><span style="color: var(--text-muted);">境外收入占比：</span><strong>持续超35%</strong></div>
+                    <div><span style="color: var(--text-muted);">创始人持股：</span><strong>23.82%（控制68.78%表决权）</strong></div>
+                    <div><span style="color: var(--text-muted);">最新投后估值：</span><strong>127亿元</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">AMORA Insights</div>
+            <p class="footer-disclaimer">本报告仅供信息参考，不构成投资建议。AMORA评分反映截至数据截止日期的公开信息与研究分析，实际情况可能因市场变化而异。版权归属AMORA Insights。</p>
+            <p style="margin-top: 24px; color: var(--text-muted); font-size: 13px;">字数：约10,000字 | 数据截止：2026年Q1 | 本版本：v3.0（新增宇树招股书数据）</p>
+        </div>
+    </footer>
+</body>
+</html>

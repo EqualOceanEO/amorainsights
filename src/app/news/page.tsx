@@ -15,7 +15,6 @@ interface NewsItem {
   source_url: string | null;
   author: string | null;
   cover_image_url: string | null;
-  slug: string | null;
   tags: string[] | null;
   is_premium: boolean;
   is_featured: boolean;
@@ -44,7 +43,7 @@ function groupByDate(items: NewsItem[]) {
 }
 
 function newsHref(item: NewsItem) {
-  return `/news/${item.slug || item.id}`;
+  return `/news/${item.id}`;
 }
 
 function TimelineNewsCard({ item }: { item: NewsItem }) {
@@ -160,7 +159,7 @@ export default function NewsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, industry, search]);
+  }, [page, industry, industryLevel2, search]);
 
   useEffect(() => { fetchNews(); }, [fetchNews]);
 
@@ -175,7 +174,7 @@ export default function NewsPage() {
 
       {/* Header */}
       <div className="border-b border-gray-800/60 bg-gray-950/80 backdrop-blur-sm sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-5 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <h1 className="text-3xl font-bold mb-3">Market Intelligence</h1>
           <p className="text-gray-400 text-sm mb-6">Latest developments across frontier industries</p>
 
@@ -264,7 +263,7 @@ export default function NewsPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-12">
 
         {loading ? (
           <div className="space-y-4">

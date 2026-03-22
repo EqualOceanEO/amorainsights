@@ -200,7 +200,7 @@ export default function CompaniesPage() {
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
       <SiteNav activePath="/companies" />
 
-      <main className="max-w-7xl mx-auto px-5 py-10 flex-1">
+      <main className="max-w-7xl mx-auto px-6 py-10 flex-1">
         {/* ── Header ─────────────────────────────────────────────────────── */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Company Database</h1>
