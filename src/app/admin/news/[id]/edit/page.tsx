@@ -11,16 +11,18 @@ interface NewsItem {
   summary: string | null;
   content: string | null;
   industry_slug: string;
-  industry_level2?: string | null;
   source_name: string | null;
   source_url: string | null;
+  author: string | null;
   cover_image_url: string | null;
   tags: string[] | null;
   is_premium: boolean;
+  is_published: boolean;
   is_featured: boolean;
   published_at: string;
   company_id?: number | null;
   company_name?: string | null;
+  slug?: string | null;
 }
 
 interface Company {
@@ -41,16 +43,18 @@ export default function NewsEditPage() {
     summary: '',
     content: '',
     industry_slug: 'ai',
-    industry_level2: '',
     source_name: '',
     source_url: '',
+    author: '',
     cover_image_url: '',
     tags: [],
     is_premium: false,
+    is_published: true,
     is_featured: false,
     published_at: new Date().toISOString(),
     company_id: null,
     company_name: '',
+    slug: '',
   });
 
   // Company search
@@ -189,7 +193,6 @@ export default function NewsEditPage() {
   };
 
   const selectedIndustry = INDUSTRY_HIERARCHY.find(h => h.level1.id === formData.industry_slug);
-  const level2Options = selectedIndustry?.level2 || [];
 
   if (loading) {
     return (
@@ -303,41 +306,21 @@ export default function NewsEditPage() {
             />
           </div>
 
-          {/* Industry & Level 2 */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                Industry <span className="text-red-400">*</span>
-              </label>
-              <select
-                value={formData.industry_slug || 'ai'}
-                onChange={(e) => {
-                  handleChange('industry_slug', e.target.value);
-                  handleChange('industry_level2', ''); // Reset level2
-                }}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-blue-500"
-              >
-                <option value="">Select industry</option>
-                {INDUSTRY_HIERARCHY.map(h => (
-                  <option key={h.level1.id} value={h.level1.id}>{h.level1.label}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                Sub-category
-              </label>
-              <select
-                value={formData.industry_level2 || ''}
-                onChange={(e) => handleChange('industry_level2', e.target.value)}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-blue-500"
-              >
-                <option value="">Select sub-category</option>
-                {level2Options.map(opt => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
-            </div>
+          {/* Industry */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
+              Industry <span className="text-red-400">*</span>
+            </label>
+            <select
+              value={formData.industry_slug || 'ai'}
+              onChange={(e) => handleChange('industry_slug', e.target.value)}
+              className="w-full px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-blue-500"
+            >
+              <option value="">Select industry</option>
+              {INDUSTRY_HIERARCHY.map(h => (
+                <option key={h.level1.id} value={h.level1.id}>{h.level1.label}</option>
+              ))}
+            </select>
           </div>
 
           {/* Company Association */}

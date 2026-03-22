@@ -8,7 +8,7 @@ export async function GET(
 ) {
   const { id } = await params;
   const { data, error } = await supabase
-    .from('news_items')
+    .from('news')
     .select('*')
     .eq('id', id)
     .maybeSingle();
@@ -28,7 +28,7 @@ export async function PATCH(
   body.updated_at = new Date().toISOString();
 
   const { data, error } = await supabase
-    .from('news_items')
+    .from('news')
     .update(body)
     .eq('id', id)
     .select()
@@ -45,7 +45,7 @@ export async function DELETE(
 ) {
   const { id } = await params;
   const { error } = await supabase
-    .from('news_items')
+    .from('news')
     .delete()
     .eq('id', id);
 

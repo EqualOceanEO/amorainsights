@@ -8,9 +8,10 @@ import { INDUSTRY_HIERARCHY, INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/
 interface NewsItem {
   id: number;
   title: string;
+  slug: string;
   summary: string | null;
+  content?: string | null;
   industry_slug: string;
-  industry_level2?: string | null;
   source_name: string | null;
   source_url: string | null;
   author: string | null;
@@ -19,6 +20,7 @@ interface NewsItem {
   is_premium: boolean;
   is_featured: boolean;
   published_at: string;
+  created_at: string;
 }
 
 function formatDate(iso: string) {
@@ -43,7 +45,7 @@ function groupByDate(items: NewsItem[]) {
 }
 
 function newsHref(item: NewsItem) {
-  return `/news/${item.id}`;
+  return `/news/${item.slug || item.id}`;
 }
 
 function TimelineNewsCard({ item }: { item: NewsItem }) {
@@ -136,7 +138,6 @@ export default function NewsPage() {
   const [loading, setLoading]     = useState(true);
   const [search, setSearch]       = useState('');
   const [industry, setIndustry]   = useState('');
-  const [industryLevel2, setIndustryLevel2] = useState('');
   const [page, setPage]           = useState(1);
   const [totalPages, setTotal]    = useState(1);
 
@@ -147,7 +148,6 @@ export default function NewsPage() {
         page: String(page),
         pageSize: '24',
         ...(industry && { industry }),
-        ...(industryLevel2 && { level2: industryLevel2 }),
         ...(search   && { search }),
       });
       const res = await fetch(`/api/news?${params}`);
@@ -159,7 +159,7 @@ export default function NewsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, industry, industryLevel2, search]);
+  }, [page, industry, search]);
 
   useEffect(() => { fetchNews(); }, [fetchNews]);
 
@@ -194,70 +194,31 @@ export default function NewsPage() {
               />
             </div>
 
-            {/* Industry filters - Two rows */}
-            <div className="flex flex-col gap-2">
-              {/* Level 1: Primary industries */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
+            {/* Industry filters */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
+              <button
+                onClick={() => setIndustry('')}
+                className={`shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
+                  industry === ''
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                }`}
+              >
+                All
+              </button>
+              {INDUSTRY_HIERARCHY.map(group => (
                 <button
-                  onClick={() => {
-                    setIndustry('');
-                    setIndustryLevel2('');
-                  }}
-                  className={`shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
-                    industry === ''
+                  key={group.level1.id}
+                  onClick={() => setIndustry(group.level1.id)}
+                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
+                    industry === group.level1.id
                       ? 'bg-blue-600 text-white'
                       : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
                   }`}
                 >
-                  All
+                  {group.level1.label}
                 </button>
-                {INDUSTRY_HIERARCHY.map(group => (
-                  <button
-                    key={group.level1.id}
-                    onClick={() => {
-                      setIndustry(group.level1.id);
-                      setIndustryLevel2('');
-                    }}
-                    className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
-                      industry === group.level1.id && !industryLevel2
-                        ? 'bg-blue-600 text-white'
-                        : industry === group.level1.id && industryLevel2
-                          ? 'bg-gray-800 text-white border border-gray-600'
-                          : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                    }`}
-                  >
-                    {group.level1.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Level 2: Sub-categories (only show when level 1 is selected) */}
-              {industry && (
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
-                  {INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2.map(level2 => (
-                    <button
-                      key={level2}
-                      onClick={() => setIndustryLevel2(level2)}
-                      className={`shrink-0 px-3 py-1 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
-                        industryLevel2 === level2
-                          ? 'bg-blue-600 text-white'
-                          : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                      }`}
-                    >
-                      {level2}
-                    </button>
-                  ))}
-                  {/* Clear level 2 selection */}
-                  {industryLevel2 && (
-                    <button
-                      onClick={() => setIndustryLevel2('')}
-                      className="shrink-0 px-2 py-1 rounded-md text-xs text-gray-500 hover:text-white transition"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
-              )}
+              ))}
             </div>
           </div>
         </div>

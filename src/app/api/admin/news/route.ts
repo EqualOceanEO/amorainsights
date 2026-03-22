@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const offset   = (page - 1) * pageSize;
 
   let query = supabase
-    .from('news_items')
+    .from('news')
     .select('*', { count: 'exact' })
     .order('published_at', { ascending: false })
     .range(offset, offset + pageSize - 1);
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { data, error } = await supabase
-    .from('news_items')
+    .from('news')
     .insert([{
       title,
       summary:         summary || null,

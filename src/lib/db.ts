@@ -391,11 +391,18 @@ export interface Report {
 export interface NewsItem {
   id: number;
   title: string;
-  summary: string;
+  slug: string;
+  summary: string | null;
+  content: string | null;
   industry_slug: IndustrySlug;
   source_url: string | null;
   source_name: string | null;
+  author: string | null;
+  cover_image_url: string | null;
+  tags: string[];
+  is_premium: boolean;
   is_featured: boolean;
+  is_published: boolean;
   published_at: string;
   created_at: string;
 }
@@ -530,7 +537,7 @@ export async function getReportCountByIndustry(): Promise<Record<IndustrySlug, n
   return counts as Record<IndustrySlug, number>;
 }
 
-// ─── NewsItems operations ─────────────────────────────────────────────────────
+// ─── News operations ────────────────────────────────────────────────────────
 
 export async function getNewsItems(options?: {
   page?: number;
@@ -544,8 +551,9 @@ export async function getNewsItems(options?: {
   const to = from + pageSize - 1;
 
   let query = supabase
-    .from('news_items')
+    .from('news')
     .select('*', { count: 'exact' })
+    .eq('is_published', true)
     .order('published_at', { ascending: false });
 
   if (options?.industrySlug) query = query.eq('industry_slug', options.industrySlug);
@@ -566,8 +574,9 @@ export async function getNewsItems(options?: {
 
 export async function getRecentNewsItems(limit = 5): Promise<NewsItem[]> {
   const { data, error } = await supabase
-    .from('news_items')
+    .from('news')
     .select('*')
+    .eq('is_published', true)
     .order('published_at', { ascending: false })
     .limit(limit);
 
@@ -639,8 +648,9 @@ export async function getDashboardStats(): Promise<{
     supabase.from('reports').select('id', { count: 'exact', head: true }),
     supabase.from('companies').select('id', { count: 'exact', head: true }).eq('is_tracked', true),
     supabase
-      .from('news_items')
+      .from('news')
       .select('id', { count: 'exact', head: true })
+      .eq('is_published', true)
       .gte('published_at', today.toISOString()),
   ]);
 

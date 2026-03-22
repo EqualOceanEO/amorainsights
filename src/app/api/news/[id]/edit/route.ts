@@ -17,7 +17,7 @@ export async function PUT(
       );
     }
 
-    // Build update object - only include fields that exist in the schema
+    // Build update object - fields matching the 'news' table schema
     const updateData: Record<string, any> = {
       id: parseInt(id),
       title: body.title,
@@ -26,22 +26,23 @@ export async function PUT(
       industry_slug: body.industry_slug,
       source_name: body.source_name || null,
       source_url: body.source_url || null,
+      author: body.author || null,
       cover_image_url: body.cover_image_url || null,
-      tags: body.tags || null,
-      is_premium: body.is_premium || false,
-      is_featured: body.is_featured || false,
+      tags: body.tags || [],
+      is_premium: body.is_premium ?? false,
+      is_published: body.is_published ?? true,
+      is_featured: body.is_featured ?? false,
       published_at: body.published_at || new Date().toISOString(),
     };
 
     // Add optional fields only if they exist in the request
-    if (body.company_id) updateData.company_id = body.company_id;
-    if (body.company_name) updateData.company_name = body.company_name;
-    if (body.industry_level2) updateData.industry_level2 = body.industry_level2;
     if (body.slug) updateData.slug = body.slug;
+    if (body.company_id) updateData.company_id = body.company_id;
+    if (body.company_ids) updateData.company_ids = body.company_ids;
 
     // Upsert news item
     const { data, error } = await supabase
-      .from('news_items')
+      .from('news')
       .upsert(updateData, { onConflict: 'id' })
       .select()
       .single();
@@ -73,7 +74,7 @@ export async function GET(
     const { id } = await params;
 
     const { data, error } = await supabase
-      .from('news_items')
+      .from('news')
       .select('*')
       .eq('id', parseInt(id))
       .single();

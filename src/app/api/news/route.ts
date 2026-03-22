@@ -3,10 +3,9 @@ import { supabase } from '@/lib/db';
 
 /**
  * GET /api/news
- * Public news list from news_items table
+ * Public news list from news table (published items only)
  * Query params:
  *   industry  - industry_slug filter
- *   level2    - industry_level2 filter
  *   search    - title search
  *   page      - page number (default 1)
  *   pageSize  - items per page (default 12)
@@ -15,22 +14,21 @@ export async function GET(req: NextRequest) {
   const startTime = Date.now();
   const { searchParams } = new URL(req.url);
   const industry  = searchParams.get('industry') || '';
-  const level2    = searchParams.get('level2') || '';
   const search    = searchParams.get('search')   || '';
   const page      = parseInt(searchParams.get('page')     || '1', 10);
   const pageSize  = Math.min(50, parseInt(searchParams.get('pageSize') || '12', 10));
   const offset    = (page - 1) * pageSize;
 
   try {
-    // Build query with explicit select for better performance
+    // Use 'news' table (rich schema), only published items
     let query = supabase
-      .from('news_items')
-      .select('id, title, summary, industry_slug, industry_level2, source_name, source_url, author, cover_image_url, tags, is_premium, is_featured, published_at', { count: 'exact' })
+      .from('news')
+      .select('id, title, slug, summary, content, industry_slug, source_name, source_url, author, cover_image_url, tags, is_premium, is_featured, published_at, created_at', { count: 'exact' })
+      .eq('is_published', true)
       .order('published_at', { ascending: false })
       .range(offset, offset + pageSize - 1);
 
     if (industry) query = query.eq('industry_slug', industry);
-    if (level2)   query = query.eq('industry_level2', level2);
     if (search)   query = query.ilike('title', `%${search}%`);
 
     const { data, error, count } = await query;
