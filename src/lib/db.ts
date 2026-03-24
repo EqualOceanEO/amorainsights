@@ -537,7 +537,7 @@ export async function getReportCountByIndustry(): Promise<Record<IndustrySlug, n
   return counts as Record<IndustrySlug, number>;
 }
 
-// ─── News operations ────────────────────────────────────────────────────────
+// ─── NewsItems operations ─────────────────────────────────────────────────────
 
 export async function getNewsItems(options?: {
   page?: number;
@@ -551,7 +551,7 @@ export async function getNewsItems(options?: {
   const to = from + pageSize - 1;
 
   let query = supabase
-    .from('news')
+    .from('news_items')
     .select('*', { count: 'exact' })
     .eq('is_published', true)
     .order('published_at', { ascending: false });
@@ -574,7 +574,7 @@ export async function getNewsItems(options?: {
 
 export async function getRecentNewsItems(limit = 5): Promise<NewsItem[]> {
   const { data, error } = await supabase
-    .from('news')
+    .from('news_items')
     .select('*')
     .eq('is_published', true)
     .order('published_at', { ascending: false })
@@ -648,7 +648,7 @@ export async function getDashboardStats(): Promise<{
     supabase.from('reports').select('id', { count: 'exact', head: true }),
     supabase.from('companies').select('id', { count: 'exact', head: true }).eq('is_tracked', true),
     supabase
-      .from('news')
+      .from('news_items')
       .select('id', { count: 'exact', head: true })
       .eq('is_published', true)
       .gte('published_at', today.toISOString()),

@@ -1,8 +1,10 @@
-fix: 宽度统一 + API 查询优化
+feat: complete news_items schema migration and API refactor
 
-- Companies 页面 padding 从 px-5 改为 px-6，与 Reports 页面完全一致
-- 优化 /api/news 和 /api/companies 查询：
-  * 显式指定 select 字段（避免 SELECT *）
-  * 添加查询时间日志（Vercel console 查看）
-  * 添加 try-catch 错误保护
-  * pageSize 最大限制 100（避免过大数据集）
+- Add 11 new columns to news_items: slug, content, cover_image_url, author,
+  tags, is_premium, is_published, company_id, industry_id, sub_sector_id, updated_at
+- Refactor /api/news to use new schema with fallback for legacy data
+- Refactor /api/news/[slug] to query by slug or id
+- Add /api/admin/migrate endpoint for DDL via run_migration RPC
+- Add /api/admin/news CRUD endpoints with service_role key
+- Update news page to use new industry_id and slug fields
+- Update db.ts with full NewsItem type matching new schema

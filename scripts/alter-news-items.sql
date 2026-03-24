@@ -15,6 +15,10 @@ ALTER TABLE news_items
 -- Back-fill slug from id for existing rows
 UPDATE news_items SET slug = 'news-item-' || id WHERE slug IS NULL;
 
+-- Back-fill is_published: existing rows without a value default to TRUE
+-- (so all pre-migration news becomes visible; set FALSE manually to hide specific items)
+UPDATE news_items SET is_published = TRUE WHERE is_published IS NULL;
+
 -- Index
 CREATE INDEX IF NOT EXISTS idx_news_items_slug         ON news_items(slug);
 CREATE INDEX IF NOT EXISTS idx_news_items_published_at ON news_items(published_at DESC);

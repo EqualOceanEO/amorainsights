@@ -7,10 +7,13 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const numericId = parseInt(id, 10);
+  if (isNaN(numericId)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
+
   const { data, error } = await supabase
-    .from('news')
+    .from('news_items')
     .select('*')
-    .eq('id', id)
+    .eq('id', numericId)
     .maybeSingle();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -24,13 +27,20 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const numericId = parseInt(id, 10);
+  if (isNaN(numericId)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
+
   const body = await req.json();
   body.updated_at = new Date().toISOString();
 
+  // Remove fields that shouldn't be directly patched
+  delete body.id;
+  delete body.created_at;
+
   const { data, error } = await supabase
-    .from('news')
+    .from('news_items')
     .update(body)
-    .eq('id', id)
+    .eq('id', numericId)
     .select()
     .single();
 
@@ -44,10 +54,13 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const numericId = parseInt(id, 10);
+  if (isNaN(numericId)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
+
   const { error } = await supabase
-    .from('news')
+    .from('news_items')
     .delete()
-    .eq('id', id);
+    .eq('id', numericId);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return new NextResponse(null, { status: 204 });
