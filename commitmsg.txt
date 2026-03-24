@@ -1,6 +1,6 @@
-fix: align news page width to max-w-7xl matching reports and companies pages
+fix: align timeline dots and vertical line to same axis on news page
 
-- Change sticky header container: max-w-5xl → max-w-7xl
-- Change body container: max-w-5xl → max-w-7xl
-- All data-heavy list pages (news, reports, companies) now use consistent max-w-7xl mx-auto layout
-- Content pages (about, pricing, subscribe) intentionally keep narrower widths for readability
+- Unified vertical axis at left-[11px]
+- Date header dot: -left-[10px], centered on the axis, vertically aligned to date text
+- Item dots: -left-[14px], centered on the axis, aligned to card content top
+- Increased left padding from pl-8 to pl-10 for better spacing

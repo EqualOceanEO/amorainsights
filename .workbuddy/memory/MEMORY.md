@@ -30,6 +30,13 @@
 - 页面代码无 lint 错误，完全可用
 - `/api/admin/migrate` 端点可用于后续 DDL 变更（需 `?secret=run-migration-now`）
 
+## 页面布局规范（全站统一）
+
+- **数据密集型列表页**（news、reports、companies 等）：主容器用 `max-w-7xl mx-auto px-6`，全宽响应式
+- **内容型页面**（about、pricing、subscribe、详情页等）：可用 `max-w-4xl` / `max-w-5xl`，窄一点更易读
+- 所有页面在移动端通过 Tailwind 自适应缩放，`px-6` 保持左右内边距
+- 新建页面默认用 `max-w-7xl mx-auto px-6`，内容页按需缩窄
+
 ## Git 提交与自动部署
 
 - 仓库：`https://github.com/EqualOceanEO/amorainsights.git`，master 分支

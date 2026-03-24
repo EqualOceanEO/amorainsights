@@ -299,25 +299,25 @@ export default function NewsPage() {
         {/* Timeline */}
         {!loading && !error && items.length > 0 && (
           <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-blue-500/60 via-blue-500/20 to-transparent" />
+            {/* Vertical line — centered on left-[11px] */}
+            <div className="absolute left-[11px] top-2 bottom-2 w-px bg-gradient-to-b from-blue-500/60 via-blue-500/20 to-transparent" />
 
-            <div className="pl-8 space-y-10">
+            <div className="pl-10 space-y-10">
               {groupedItems.map(([dateKey, dateItems]) => {
                 const dotColor = INDUSTRY_DOT_COLORS[dateItems[0]?.industry_id || dateItems[0]?.industry_slug || ''] ?? 'bg-gray-600';
                 return (
                   <div key={dateKey} className="relative">
-                    {/* Timeline dot */}
-                    <div className="absolute -left-[2.05rem] top-1 w-6 h-6 rounded-full bg-gray-950 border-2 border-blue-500 flex items-center justify-center">
+                    {/* Timeline dot — w-[22px] h-[22px], centered on left-[11px], vertically centered on date label (~18px tall) */}
+                    <div className="absolute -left-[10px] top-0 translate-y-[2px] w-[22px] h-[22px] rounded-full bg-gray-950 border-2 border-blue-500 flex items-center justify-center">
                       <div className="w-2 h-2 rounded-full bg-blue-400" />
                     </div>
 
                     {/* Date label */}
                     <div className="mb-4">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest leading-4">
                         {formatDateFull(dateKey)}
                       </p>
-                      <p className="text-xs text-gray-700 mt-0.5">
+                      <p className="text-xs text-gray-700 mt-0.5 leading-4">
                         {dateItems.length} {dateItems.length === 1 ? 'update' : 'updates'}
                       </p>
                     </div>
@@ -328,7 +328,8 @@ export default function NewsPage() {
                         const itemDot = INDUSTRY_DOT_COLORS[item.industry_id || item.industry_slug || ''] ?? 'bg-gray-600';
                         return (
                           <div key={item.id} className="relative group">
-                            <div className={`absolute -left-6 top-5 w-2.5 h-2.5 rounded-full ${itemDot} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                            {/* small dot: centered on left-[11px] from parent, card top offset ~20px */}
+                            <div className={`absolute -left-[14px] top-[22px] w-[10px] h-[10px] rounded-full ${itemDot} opacity-60 group-hover:opacity-100 transition-opacity`} />
                             <TimelineNewsCard item={item} />
                           </div>
                         );
