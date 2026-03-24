@@ -3,7 +3,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
-import { INDUSTRY_HIERARCHY, INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
+import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
+import IndustryFilterBar from '@/components/IndustryFilterBar';
 
 interface NewsItem {
   id: number;
@@ -216,46 +217,14 @@ export default function NewsPage() {
           </div>
 
           {/* Controls */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            {/* Search */}
-            <div className="relative flex-1 max-w-sm">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder="Search articles…"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition"
-              />
-            </div>
-
-            {/* Industry filter tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none flex-1">
-              <button
-                onClick={() => setIndustry('')}
-                className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
-                  industry === '' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                }`}
-              >
-                All
-              </button>
-              {INDUSTRY_HIERARCHY.map(group => (
-                <button
-                  key={group.level1.id}
-                  onClick={() => setIndustry(group.level1.id)}
-                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
-                    industry === group.level1.id
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                  }`}
-                >
-                  {group.level1.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          <IndustryFilterBar
+            search={search}
+            industry={industry}
+            showSearch={true}
+            searchPlaceholder="Search articles…"
+            onSearchChange={setSearch}
+            onLevel1Change={setIndustry}
+          />
         </div>
       </div>
 

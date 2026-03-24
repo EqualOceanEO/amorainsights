@@ -3,6 +3,7 @@ import SubscribeBox from '@/components/SubscribeBox';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 import { INDUSTRY_HIERARCHY } from '@/lib/industries';
+import IndustryFilterBar from '@/components/IndustryFilterBar';
 import {
   getReports,
   ALL_INDUSTRY_SLUGS,
@@ -106,85 +107,48 @@ export default async function ReportsPage({
         </div>
 
         {/* ── Filters ─────────────────────────────────────────────────────── */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          {/* Industry filter - Two rows */}
-          <div className="flex flex-col gap-2 flex-1">
-            {/* Level 1: Primary industries */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
-              <Link
-                href={filterUrl({ industry: undefined, page: '1' })}
-                className={`shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
-                  !industryFilter
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                }`}
-              >
-                All
-              </Link>
-              {INDUSTRY_HIERARCHY.map(group => (
+        <div className="mb-8">
+          <IndustryFilterBar
+            industry={industryFilter ?? ''}
+            showSearch={false}
+            allHref={filterUrl({ industry: undefined, page: '1' })}
+            level1Href={(id) => filterUrl({ industry: id, page: '1' })}
+            extra={
+              <div className="flex gap-2">
                 <Link
-                  key={group.level1.id}
-                  href={filterUrl({ industry: group.level1.id, page: '1' })}
-                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
-                    industryFilter === group.level1.id
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                  href={filterUrl({ premium: undefined, page: '1' })}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                    premiumFilter === undefined
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
                   }`}
                 >
-                  {group.level1.label}
+                  All
                 </Link>
-              ))}
-            </div>
-
-            {/* Level 2: Sub-categories (only show when level 1 is selected) */}
-            {industryFilter && (
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
-                {INDUSTRY_HIERARCHY.find(h => h.level1.id === industryFilter)?.level2.map(level2 => (
-                  <span
-                    key={level2}
-                    className="shrink-0 px-3 py-1 rounded-md text-xs font-medium text-gray-500 bg-gray-900 border border-gray-700"
-                  >
-                    {level2}
-                  </span>
-                ))}
+                <Link
+                  href={filterUrl({ premium: 'false', page: '1' })}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                    premiumFilter === false
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  Free
+                </Link>
+                <Link
+                  href={filterUrl({ premium: 'true', page: '1' })}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1 ${
+                    premiumFilter === true
+                      ? 'bg-amber-600 text-white'
+                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  <span>⭐</span>
+                  <span>Premium</span>
+                </Link>
               </div>
-            )}
-          </div>
-
-          {/* Premium filter */}
-          <div className="flex gap-2 ml-auto">
-            <Link
-              href={filterUrl({ premium: undefined, page: '1' })}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                premiumFilter === undefined
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              All
-            </Link>
-            <Link
-              href={filterUrl({ premium: 'false', page: '1' })}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                premiumFilter === false
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              Free
-            </Link>
-            <Link
-              href={filterUrl({ premium: 'true', page: '1' })}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1 ${
-                premiumFilter === true
-                  ? 'bg-amber-600 text-white'
-                  : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              <span>⭐</span>
-              <span>Premium</span>
-            </Link>
-          </div>
+            }
+          />
         </div>
 
         {/* ── Report Grid ─────────────────────────────────────────────────── */}

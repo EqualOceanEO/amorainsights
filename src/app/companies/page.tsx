@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 import { INDUSTRY_HIERARCHY, INDUSTRY_COLORS } from '@/lib/industries';
+import IndustryFilterBar from '@/components/IndustryFilterBar';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -215,144 +216,76 @@ export default function CompaniesPage() {
         </div>
 
         {/* ── Filters ────────────────────────────────────────────────────── */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          {/* Search */}
-          <div className="relative max-w-md sm:max-w-md">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Search companies..."
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition"
-            />
-          </div>
-
-          {/* Industry - Two rows */}
-          <div className="flex flex-col gap-2 flex-1">
-            {/* Level 1 */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
-              <button
-                onClick={() => { setIndustry(''); setIndustryLevel2(''); }}
-                className={`shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
-                  industry === ''
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
-                }`}
-              >
-                All
-              </button>
-              {INDUSTRY_HIERARCHY.map(group => (
+        <div className="mb-8">
+          <IndustryFilterBar
+            search={search}
+            industry={industry}
+            industryLevel2={industryLevel2}
+            showSearch={true}
+            searchPlaceholder="Search companies..."
+            onSearchChange={setSearch}
+            onLevel1Change={(v) => { setIndustry(v); setIndustryLevel2(''); }}
+            onLevel2Change={setIndustryLevel2}
+            extra={
+              <div className="flex flex-wrap gap-2">
                 <button
-                  key={group.level1.id}
-                  onClick={() => {
-                    setIndustry(group.level1.id);
-                    setIndustryLevel2('');
-                  }}
-                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
-                    industry === group.level1.id && !industryLevel2
-                      ? 'bg-blue-600 text-white'
-                      : industry === group.level1.id && industryLevel2
-                        ? 'bg-gray-800 text-white border border-gray-600'
-                        : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                  onClick={() => setCountry('')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                    country === ''
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
                   }`}
                 >
-                  {group.level1.label}
+                  All Regions
                 </button>
-              ))}
-            </div>
-
-            {/* Level 2 (shown when level 1 is selected) */}
-            {industry && (
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
-                {INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2.map(lv2 => (
+                {COUNTRY_OPTIONS.map(({ code, label }) => (
                   <button
-                    key={lv2}
-                    onClick={() => setIndustryLevel2(industryLevel2 === lv2 ? '' : lv2)}
-                    className={`shrink-0 px-3 py-1 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
-                      industryLevel2 === lv2
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-400 hover:text-white bg-gray-900 border border-gray-700 hover:border-gray-500'
+                    key={code}
+                    onClick={() => setCountry(country === code ? '' : code)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1 ${
+                      country === code
+                        ? 'bg-gray-700 text-white'
+                        : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
                     }`}
                   >
-                    {lv2}
+                    <span>{countryFlag(code)}</span>
+                    <span>{label}</span>
                   </button>
                 ))}
-                {industryLevel2 && (
-                  <button
-                    onClick={() => setIndustryLevel2('')}
-                    className="shrink-0 px-2 py-1 rounded-md text-xs text-gray-500 hover:text-white transition"
-                  >
-                    ✕
-                  </button>
-                )}
+                <span className="w-px bg-gray-700 self-stretch mx-1" />
+                <button
+                  onClick={() => setPublicFilter('')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                    publicFilter === ''
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  All
+                </button>
+                <button
+                  onClick={() => setPublicFilter(publicFilter === 'true' ? '' : 'true')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                    publicFilter === 'true'
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  📈 Listed
+                </button>
+                <button
+                  onClick={() => setPublicFilter(publicFilter === 'false' ? '' : 'false')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                    publicFilter === 'false'
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  🔒 Private
+                </button>
               </div>
-            )}
-          </div>
-
-          {/* Country + Listed status */}
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setCountry('')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                country === ''
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              All Regions
-            </button>
-            {COUNTRY_OPTIONS.map(({ code, label }) => (
-              <button
-                key={code}
-                onClick={() => setCountry(country === code ? '' : code)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1 ${
-                  country === code
-                    ? 'bg-gray-700 text-white'
-                    : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <span>{countryFlag(code)}</span>
-                <span>{label}</span>
-              </button>
-            ))}
-
-            {/* Divider */}
-            <span className="w-px bg-gray-700 self-stretch mx-1" />
-
-            <button
-              onClick={() => setPublicFilter('')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                publicFilter === ''
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setPublicFilter(publicFilter === 'true' ? '' : 'true')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                publicFilter === 'true'
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              📈 Listed
-            </button>
-            <button
-              onClick={() => setPublicFilter(publicFilter === 'false' ? '' : 'false')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                publicFilter === 'false'
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              🔒 Private
-            </button>
-          </div>
+            }
+          />
         </div>
 
         {/* ── Company Grid ───────────────────────────────────────────────── */}

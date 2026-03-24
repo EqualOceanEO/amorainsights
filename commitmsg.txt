@@ -1,5 +1,7 @@
-fix(news): rewrite timeline layout with flex axis column
+feat(ui): unified IndustryFilterBar component across news/companies/reports
 
-Replace absolute-positioned dots/lines with flex-based axis column.
-32px axis col holds dot/line centered via justify-center, eliminating
-all negative-offset hacks that caused misalignment.
+- Create shared IndustryFilterBar component with search + two-level industry filter
+- Level-2 row always in DOM (min-h-[32px]) — eliminates layout jump on level-1 click
+- Supports both client-side callbacks (news/companies) and URL-mode (reports)
+- Extra slot for page-specific filters (Premium toggle, Country, Listed status)
+- Remove ~100 lines of duplicated filter markup from each page
