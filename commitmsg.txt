@@ -1,10 +1,5 @@
-feat: complete news_items schema migration and API refactor
+docs: add RUNBOOK.md and deploy.ps1 for team onboarding
 
-- Add 11 new columns to news_items: slug, content, cover_image_url, author,
-  tags, is_premium, is_published, company_id, industry_id, sub_sector_id, updated_at
-- Refactor /api/news to use new schema with fallback for legacy data
-- Refactor /api/news/[slug] to query by slug or id
-- Add /api/admin/migrate endpoint for DDL via run_migration RPC
-- Add /api/admin/news CRUD endpoints with service_role key
-- Update news page to use new industry_id and slug fields
-- Update db.ts with full NewsItem type matching new schema
+- RUNBOOK.md: complete operations manual covering database, deployment, APIs
+- scripts/deploy.ps1: one-click git commit + push with retry logic
+- Verified: push to master triggers Vercel auto-deploy
