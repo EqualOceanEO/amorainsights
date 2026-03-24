@@ -298,47 +298,48 @@ export default function NewsPage() {
 
         {/* Timeline */}
         {!loading && !error && items.length > 0 && (
-          <div className="relative">
-            {/* Vertical line — centered on left-[11px] */}
-            <div className="absolute left-[11px] top-2 bottom-2 w-px bg-gradient-to-b from-blue-500/60 via-blue-500/20 to-transparent" />
-
-            <div className="pl-10 space-y-10">
-              {groupedItems.map(([dateKey, dateItems]) => {
-                const dotColor = INDUSTRY_DOT_COLORS[dateItems[0]?.industry_id || dateItems[0]?.industry_slug || ''] ?? 'bg-gray-600';
-                return (
-                  <div key={dateKey} className="relative">
-                    {/* Timeline dot — w-[22px] h-[22px], centered on left-[11px], vertically centered on date label (~18px tall) */}
-                    <div className="absolute -left-[10px] top-0 translate-y-[2px] w-[22px] h-[22px] rounded-full bg-gray-950 border-2 border-blue-500 flex items-center justify-center">
+          <div className="space-y-10">
+            {groupedItems.map(([dateKey, dateItems]) => (
+              <div key={dateKey}>
+                {/* Date header row: [axis col 32px] + [content] */}
+                <div className="flex items-center gap-3 mb-4">
+                  {/* Axis: dot centered in 32px wide column */}
+                  <div className="flex-none w-8 flex justify-center">
+                    <div className="w-5 h-5 rounded-full bg-gray-950 border-2 border-blue-500 flex items-center justify-center">
                       <div className="w-2 h-2 rounded-full bg-blue-400" />
                     </div>
-
-                    {/* Date label */}
-                    <div className="mb-4">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest leading-4">
-                        {formatDateFull(dateKey)}
-                      </p>
-                      <p className="text-xs text-gray-700 mt-0.5 leading-4">
-                        {dateItems.length} {dateItems.length === 1 ? 'update' : 'updates'}
-                      </p>
-                    </div>
-
-                    {/* Cards */}
-                    <div className="space-y-3">
-                      {dateItems.map(item => {
-                        const itemDot = INDUSTRY_DOT_COLORS[item.industry_id || item.industry_slug || ''] ?? 'bg-gray-600';
-                        return (
-                          <div key={item.id} className="relative group">
-                            {/* small dot: centered on left-[11px] from parent, card top offset ~20px */}
-                            <div className={`absolute -left-[14px] top-[22px] w-[10px] h-[10px] rounded-full ${itemDot} opacity-60 group-hover:opacity-100 transition-opacity`} />
-                            <TimelineNewsCard item={item} />
-                          </div>
-                        );
-                      })}
-                    </div>
                   </div>
-                );
-              })}
-            </div>
+                  {/* Label */}
+                  <div>
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest leading-4">
+                      {formatDateFull(dateKey)}
+                    </p>
+                    <p className="text-xs text-gray-700 mt-0.5 leading-4">
+                      {dateItems.length} {dateItems.length === 1 ? 'update' : 'updates'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Cards column with vertical line on the left axis */}
+                <div className="flex gap-3">
+                  {/* Axis: vertical line centered in 32px col */}
+                  <div className="flex-none w-8 flex justify-center">
+                    <div className="w-px bg-gradient-to-b from-blue-500/40 via-blue-500/15 to-transparent" />
+                  </div>
+                  {/* Cards */}
+                  <div className="flex-1 space-y-3 pb-2">
+                    {dateItems.map(item => {
+                      const itemDot = INDUSTRY_DOT_COLORS[item.industry_id || item.industry_slug || ''] ?? 'bg-gray-600';
+                      return (
+                        <div key={item.id} className="group">
+                          <TimelineNewsCard item={item} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 

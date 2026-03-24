@@ -1,6 +1,5 @@
-fix: align timeline dots and vertical line to same axis on news page
+fix(news): rewrite timeline layout with flex axis column
 
-- Unified vertical axis at left-[11px]
-- Date header dot: -left-[10px], centered on the axis, vertically aligned to date text
-- Item dots: -left-[14px], centered on the axis, aligned to card content top
-- Increased left padding from pl-8 to pl-10 for better spacing
+Replace absolute-positioned dots/lines with flex-based axis column.
+32px axis col holds dot/line centered via justify-center, eliminating
+all negative-offset hacks that caused misalignment.
