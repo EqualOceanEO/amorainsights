@@ -1,5 +1,6 @@
-docs: add RUNBOOK.md and deploy.ps1 for team onboarding
+fix: align news page width to max-w-7xl matching reports and companies pages
 
-- RUNBOOK.md: complete operations manual covering database, deployment, APIs
-- scripts/deploy.ps1: one-click git commit + push with retry logic
-- Verified: push to master triggers Vercel auto-deploy
+- Change sticky header container: max-w-5xl → max-w-7xl
+- Change body container: max-w-5xl → max-w-7xl
+- All data-heavy list pages (news, reports, companies) now use consistent max-w-7xl mx-auto layout
+- Content pages (about, pricing, subscribe) intentionally keep narrower widths for readability

@@ -205,7 +205,7 @@ export default function NewsPage() {
 
       {/* Sticky header */}
       <div className="border-b border-gray-800/60 bg-gray-950/90 backdrop-blur-sm sticky top-16 z-30">
-        <div className="max-w-5xl mx-auto px-6 py-6">
+        <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-end justify-between mb-5">
             <div>
               <h1 className="text-2xl font-bold tracking-tight">Market Intelligence</h1>
@@ -260,7 +260,7 @@ export default function NewsPage() {
       </div>
 
       {/* Body */}
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-7xl mx-auto px-6 py-10">
 
         {/* Error state */}
         {error && (
