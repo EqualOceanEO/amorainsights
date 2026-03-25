@@ -6,6 +6,21 @@ import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
 import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
 
+const SUB_SECTOR_NAMES: Record<string, string> = {
+  '49': 'Foundation Models', '50': 'AI Agents', '51': 'AI Semiconductors',
+  '52': 'Computer Vision', '53': 'NLP & Speech', '54': 'AI for Science',
+  '55': 'Gene Editing', '56': 'Synthetic Biology', '57': 'Cell Therapy',
+  '58': 'AI Drug Discovery', '59': 'Medical Devices', '60': 'Genomics & Diagnostics',
+  '61': 'EV Batteries', '62': 'Green Hydrogen', '63': 'Solar Photovoltaics',
+  '64': 'Energy Storage', '65': 'Carbon Capture', '66': 'Circular Economy',
+  '67': 'Humanoid Robots', '68': 'Industrial Robots', '69': 'IIoT & Smart Factory',
+  '70': 'Additive Manufacturing', '71': 'Digital Twin', '72': 'Autonomous Vehicles',
+  '73': 'Launch Vehicles', '74': 'Satellite Internet', '75': 'Earth Observation',
+  '76': 'Space Propulsion', '77': 'Low-Altitude Economy', '78': 'Space Manufacturing',
+  '79': 'Carbon Fiber', '80': 'Semiconductor Materials', '81': 'Battery Materials',
+  '82': 'Metamaterials', '83': 'Graphene', '84': 'Biomaterials',
+};
+
 interface NewsItem {
   id: number;
   title: string;
@@ -13,6 +28,9 @@ interface NewsItem {
   summary: string | null;
   content: string | null;
   industry_slug: string;
+  industry_id: string | number | null;
+  sub_sector_id: string | number | null;
+  company_id: number | null;
   source_name: string | null;
   source_url: string | null;
   author: string | null;
@@ -144,10 +162,10 @@ export default function NewsDetailPage() {
           Back to News
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
 
-          {/* ── Main column ── */}
-          <article>
+          {/* ── Main column — expanded content width ── */}
+          <article className="min-w-0">
 
             {/* Tags */}
             <div className="flex items-center flex-wrap gap-2 mb-4">
@@ -213,14 +231,21 @@ export default function NewsDetailPage() {
               </div>
             )}
 
-            {/* Full content if available */}
+            {/* Full content if available — expanded reading layout */}
             {item.content && (
-              <div className="mb-8">
+              <div className="mb-10">
                 <SectionHeading>Full Analysis</SectionHeading>
-                <div className="space-y-5">
+                <div className="space-y-6">
                   {item.content.split(/\n\n+/).filter(Boolean).map((para, i) => (
-                    <p key={i} className="text-gray-300 leading-relaxed text-base">{para.trim()}</p>
+                    <p key={i} className="text-gray-300 leading-loose text-lg">{para.trim()}</p>
                   ))}
+                </div>
+                {/* Content footer */}
+                <div className="mt-8 pt-6 border-t border-gray-800 flex items-center gap-3 text-sm text-gray-600">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3.75 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 3.75 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 3.75 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-3.75 1.253" />
+                  </svg>
+                  <span>{item.content.split(/\s+/).filter(Boolean).length} words · AMORA Research</span>
                 </div>
               </div>
             )}
@@ -313,8 +338,13 @@ export default function NewsDetailPage() {
                   </svg>
                   <div>
                     <div className="text-gray-600 text-xs mb-0.5">Sector</div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex flex-col gap-1">
                       <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${industryColor}`}>{industryLabel1}</span>
+                      {item.sub_sector_id && (
+                        <span className="text-xs text-gray-400 px-1">
+                          {SUB_SECTOR_NAMES[String(item.sub_sector_id)] ?? item.sub_sector_id}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

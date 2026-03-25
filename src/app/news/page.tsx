@@ -6,6 +6,22 @@ import SiteNav from '@/components/SiteNav';
 import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
 import IndustryFilterBar from '@/components/IndustryFilterBar';
 
+// Sub-sector ID → name lookup (level-2 from industries table)
+const SUB_SECTOR_NAMES: Record<string, string> = {
+  '49': 'Foundation Models', '50': 'AI Agents', '51': 'AI Semiconductors',
+  '52': 'Computer Vision', '53': 'NLP & Speech', '54': 'AI for Science',
+  '55': 'Gene Editing', '56': 'Synthetic Biology', '57': 'Cell Therapy',
+  '58': 'AI Drug Discovery', '59': 'Medical Devices', '60': 'Genomics & Diagnostics',
+  '61': 'EV Batteries', '62': 'Green Hydrogen', '63': 'Solar Photovoltaics',
+  '64': 'Energy Storage', '65': 'Carbon Capture', '66': 'Circular Economy',
+  '67': 'Humanoid Robots', '68': 'Industrial Robots', '69': 'IIoT & Smart Factory',
+  '70': 'Additive Manufacturing', '71': 'Digital Twin', '72': 'Autonomous Vehicles',
+  '73': 'Launch Vehicles', '74': 'Satellite Internet', '75': 'Earth Observation',
+  '76': 'Space Propulsion', '77': 'Low-Altitude Economy', '78': 'Space Manufacturing',
+  '79': 'Carbon Fiber', '80': 'Semiconductor Materials', '81': 'Battery Materials',
+  '82': 'Metamaterials', '83': 'Graphene', '84': 'Biomaterials',
+};
+
 interface NewsItem {
   id: number;
   title: string;
@@ -91,7 +107,7 @@ function TimelineNewsCard({ item }: { item: NewsItem }) {
             </span>
             {item.sub_sector_id && (
               <span className="text-xs px-2 py-0.5 rounded-full bg-gray-800 text-gray-400 border border-gray-700">
-                {item.sub_sector_id}
+                {SUB_SECTOR_NAMES[String(item.sub_sector_id)] ?? item.sub_sector_id}
               </span>
             )}
             {item.is_premium && (

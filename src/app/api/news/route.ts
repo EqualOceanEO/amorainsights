@@ -59,11 +59,16 @@ export async function GET(req: NextRequest) {
 }
 
 function normalizeItem(item: any) {
-  // tags: handle array or JSON string
+  // tags: handle PostgreSQL array (returned as space-separated string by REST API),
+  // JSON array string, or already-parsed array
   let tags: string[] = [];
-  if (Array.isArray(item.tags)) tags = item.tags;
-  else if (typeof item.tags === 'string' && item.tags.length > 0) {
-    try { tags = JSON.parse(item.tags); } catch { tags = []; }
+  if (Array.isArray(item.tags)) {
+    tags = item.tags;
+  } else if (typeof item.tags === 'string' && item.tags.length > 0) {
+    try { tags = JSON.parse(item.tags); } catch {
+      // PostgreSQL array returned as space-separated string: "ai company-news US"
+      tags = item.tags.split(' ').filter(Boolean);
+    }
   }
 
   // slug fallback

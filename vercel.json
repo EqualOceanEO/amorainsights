@@ -8,6 +8,10 @@
     {
       "path": "/api/internal/compliance-scan",
       "schedule": "59 23 * * 5"
+    },
+    {
+      "path": "/api/admin/news-generator?secret=run-migration-now",
+      "schedule": "0 6 * * *"
     }
   ]
 }

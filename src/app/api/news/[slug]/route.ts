@@ -51,9 +51,12 @@ export async function GET(
 
     // Normalize
     let tags: string[] = [];
-    if (Array.isArray(data.tags)) tags = data.tags;
-    else if (typeof data.tags === 'string') {
-      try { tags = JSON.parse(data.tags); } catch { tags = []; }
+    if (Array.isArray(data.tags)) {
+      tags = data.tags;
+    } else if (typeof data.tags === 'string' && data.tags.length > 0) {
+      try { tags = JSON.parse(data.tags); } catch {
+        tags = data.tags.split(' ').filter(Boolean);
+      }
     }
 
     const industry_id = data.industry_id || data.industry_slug || '';

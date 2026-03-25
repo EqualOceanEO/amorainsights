@@ -1,28 +1,29 @@
 import https from 'https';
 
-async function query(sql) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({ query: sql });
+const supabaseUrl = 'https://jqppcuccqkxhhrvndsil.supabase.co';
+const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxcHBjdWNjcWt4aGhydm5kc2lsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDcxMDQsImV4cCI6MjA4ODcyMzEwNH0.twYdLldCw10hQADe5RximjkLTtrYE1zyvr1xMYVS3V8';
+
+function get(path) {
+  return new Promise((resolve) => {
+    const url = new URL(path, supabaseUrl);
     const opts = {
-      hostname: 'api.supabase.com',
-      path: '/v1/projects/jqppcuccqkxhhrvndsil/database/query',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer sbp_2d9e51cc04f38bb94e7b1394ed8c1d064126a8cc',
-        'Content-Length': Buffer.byteLength(body),
-      },
+      hostname: url.hostname, path: url.pathname + url.search,
+      headers: { apikey: anonKey, Authorization: 'Bearer ' + anonKey }
     };
-    const req = https.request(opts, (r) => {
-      let d = '';
-      r.on('data', (c) => (d += c));
-      r.on('end', () => resolve({ status: r.statusCode, body: d }));
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+    https.get(opts, r => {
+      let d = ''; r.on('data', c => d += c);
+      r.on('end', () => resolve(JSON.parse(d)));
+    }).on('error', () => resolve(null));
   });
 }
 
-const res = await query("SELECT slug FROM industries ORDER BY slug");
-console.log(res.status, res.body);
+async function main() {
+  const industries = await get('/rest/v1/industries?select=id,slug,name,level&order=id');
+  console.log('Industries table:', industries);
+
+  // Check a news item with company
+  const news = await get('/rest/v1/news_items?select=id,title,industry_slug,industry_id,company_id&limit=3&order=id.desc');
+  console.log('\nNews sample:', news);
+}
+
+main().catch(console.error);

@@ -37,6 +37,12 @@
 - 所有页面在移动端通过 Tailwind 自适应缩放，`px-6` 保持左右内边距
 - 新建页面默认用 `max-w-7xl mx-auto px-6`，内容页按需缩窄
 
+## Git 代理配置（2026-03-24 修复）
+
+- git push 需要走代理才能访问 GitHub，系统代理端口：`localhost:15236`
+- 已全局配置：`git config --global http.proxy http://localhost:15236` 和 `https.proxy` 同上
+- 如果代理端口变了，重新运行上面命令更新即可
+
 ## Git 提交与自动部署
 
 - 仓库：`https://github.com/EqualOceanEO/amorainsights.git`，master 分支
