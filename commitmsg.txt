@@ -1,7 +1,9 @@
-feat(ui): unified IndustryFilterBar component across news/companies/reports
+feat(news): daily automated news generation + detail page content display
 
-- Create shared IndustryFilterBar component with search + two-level industry filter
-- Level-2 row always in DOM (min-h-[32px]) — eliminates layout jump on level-1 click
-- Supports both client-side callbacks (news/companies) and URL-mode (reports)
-- Extra slot for page-specific filters (Premium toggle, Country, Listed status)
-- Remove ~100 lines of duplicated filter markup from each page
+- Add /api/admin/news-generator: daily auto-generates 6 industry-level news (one per L1 sector) + up to 8 company-level news (rotating through 359 tracked companies), all with populated content field
+- Vercel Cron: runs daily at 06:00 UTC via vercel.json schedule
+- News detail page: expand content to full article width (xl:grid-cols-[1fr_280px]), increase font to text-lg with leading-loose, add word count footer
+- News list page: add SUB_SECTOR_NAMES lookup to display sub-sector labels instead of integer IDs
+- Fix tags normalization: handle PostgreSQL array return format (space-separated string) in news API routes
+- Add .env.local with MIGRATION_SECRET=run-migration-now for local dev
+- Fix auth check in news-generator API to properly validate Bearer token

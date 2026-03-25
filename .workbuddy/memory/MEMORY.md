@@ -25,10 +25,18 @@
 
 ## 前台 news 页面状态
 
-- API `/api/news` 正常，返回 34 条新闻（200 OK）
-- 所有字段（slug、industry_id、content 等）均已在数据库中真实存在
-- 页面代码无 lint 错误，完全可用
+- API `/api/news` 正常
 - `/api/admin/migrate` 端点可用于后续 DDL 变更（需 `?secret=run-migration-now`）
+
+## News 每日自动化（2026-03-25）
+
+- **API**: `GET /api/admin/news-generator?secret=run-migration-now`
+  - 每天 06:00 UTC 由 Vercel Cron 自动触发（vercel.json `0 6 * * *`）
+  - 生成 6 条一级行业新闻（每个 L1 行业 1 条）+ 最多 8 条公司新闻（轮转 359 家追踪公司）
+  - 所有新闻带 `content` 字段（含完整正文）
+  - 鉴权：`?secret=run-migration-now` 或 Bearer service_role_key
+- **详情页**：`src/app/news/[slug]/page.tsx`，content 展示区扩大（xl:grid-cols-[1fr_280px]），text-lg leading-loose，字数统计 footer
+- **sub-sector**：列表页和详情页均用 SUB_SECTOR_NAMES 映射（ industries 表 ID 49-84）显示子行业名称
 
 ## 页面布局规范（全站统一）
 
