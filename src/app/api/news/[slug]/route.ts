@@ -10,43 +10,41 @@ export async function GET(
 
   try {
     let data: any = null;
-    let error: any = null;
 
     // Try numeric id first
     const numericId = parseInt(slug, 10);
     if (!isNaN(numericId) && String(numericId) === slug) {
-      ({ data, error } = await supabase
+      const result = await supabase
         .from('news_items')
         .select('*')
         .eq('id', numericId)
-        .maybeSingle());
+        .limit(1);
+      if (result.data && result.data.length > 0) data = result.data[0];
     }
 
     // Then try slug column
-    if (!data && !error) {
-      ({ data, error } = await supabase
+    if (!data) {
+      const result = await supabase
         .from('news_items')
         .select('*')
         .eq('slug', slug)
-        .maybeSingle());
+        .limit(1);
+      if (result.data && result.data.length > 0) data = result.data[0];
     }
 
     // Fallback: match "news-{id}" pattern
     if (!data && slug.startsWith('news-')) {
       const idPart = parseInt(slug.replace('news-', ''), 10);
       if (!isNaN(idPart)) {
-        ({ data, error } = await supabase
+        const result = await supabase
           .from('news_items')
           .select('*')
           .eq('id', idPart)
-          .maybeSingle());
+          .limit(1);
+        if (result.data && result.data.length > 0) data = result.data[0];
       }
     }
 
-    if (error) {
-      console.error('[API /news/[slug]] Error:', error.message);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
     if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
     // Normalize

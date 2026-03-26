@@ -1,0 +1,1 @@
+Get-Content "c:\Users\51229\WorkBuddy\Claw\build-error.txt" -Tail 80

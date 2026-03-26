@@ -1,9 +1,3 @@
-feat(news): daily automated news generation + detail page content display
-
-- Add /api/admin/news-generator: daily auto-generates 6 industry-level news (one per L1 sector) + up to 8 company-level news (rotating through 359 tracked companies), all with populated content field
-- Vercel Cron: runs daily at 06:00 UTC via vercel.json schedule
-- News detail page: expand content to full article width (xl:grid-cols-[1fr_280px]), increase font to text-lg with leading-loose, add word count footer
-- News list page: add SUB_SECTOR_NAMES lookup to display sub-sector labels instead of integer IDs
-- Fix tags normalization: handle PostgreSQL array return format (space-separated string) in news API routes
-- Add .env.local with MIGRATION_SECRET=run-migration-now for local dev
-- Fix auth check in news-generator API to properly validate Bearer token
+fix: 修复 news 详情页 API 重复 slug 导致报错的问题
+- 将 maybeSingle() 改为 limit(1) + 手动检查数组长度
+- 解决数据库中存在重复 slug 时 API 返回 "multiple rows returned" 错误的问题

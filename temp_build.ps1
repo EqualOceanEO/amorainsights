@@ -1,0 +1,1 @@
+Get-Content "c:\Users\51229\WorkBuddy\Claw\build-output.txt" -Tail 100
