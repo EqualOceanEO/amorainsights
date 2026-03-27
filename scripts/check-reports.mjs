@@ -1,25 +1,14 @@
-import https from 'https';
+import { createClient } from '@supabase/supabase-js';
+const s = createClient(
+  'https://jqppcuccqkxhhrvndsil.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxcHBjdWNjcWt4aGhydm5kc2lsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzE0NzEwNCwiZXhwIjoyMDg4NzIzMTA0fQ.EgU31ntq634GLVyO8bOK2YfsDNmyIL7vadgWROkW-Wc'
+);
 
-const body = JSON.stringify({ query: "SELECT id,title,slug,report_format,is_premium,published_at FROM reports ORDER BY created_at DESC LIMIT 10" });
+const { count: total } = await s.from('reports').select('id', { count: 'exact', head: true });
+const { count: pubCount } = await s.from('reports').select('id', { count: 'exact', head: true }).eq('is_published', true);
+console.log('Total reports:', total, '| Published:', pubCount);
 
-const opts = {
-  hostname: 'api.supabase.com',
-  path: '/v1/projects/jqppcuccqkxhhrvndsil/database/query',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer sbp_2d9e51cc04f38bb94e7b1394ed8c1d064126a8cc',
-    'Content-Length': Buffer.byteLength(body),
-  },
-};
-
-const req = https.request(opts, (r) => {
-  let d = '';
-  r.on('data', (c) => (d += c));
-  r.on('end', () => {
-    console.log('status:', r.statusCode);
-    console.log(d);
-  });
-});
-req.write(body);
-req.end();
+if (total > 0) {
+  const { data: sample } = await s.from('reports').select('id, title, is_published, industry_slug, sub_sector').limit(5);
+  console.log(JSON.stringify(sample, null, 2));
+}

@@ -402,7 +402,7 @@ export default function CompaniesPage() {
             )}
           </>
         ) : (
-          <div className="text-center py-24 text-gray-500">
+          <div className="w-full text-center py-24 text-gray-500">
             <div className="text-5xl mb-4">🏢</div>
             {(industry || country || publicFilter || search) ? (
               <>

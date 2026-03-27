@@ -1,6 +1,5 @@
-fix: companies API use industry_slug + sub_sector string filters
+fix: reports page data & companies empty state width
 
-- Replace integer industry_id/sub_sector_id filters with string-based
-  industry_slug and sub_sector column filters
-- Matches what the companies page actually passes as query params
-- Removes extra industries table JOIN (sub_sector now selected directly)
+- reports table has no is_published column; use production_status filter instead
+- set 12 existing reports production_status from draft -> published (DB update)
+- companies empty state: add w-full to ensure max-w-7xl width is maintained

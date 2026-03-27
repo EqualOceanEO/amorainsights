@@ -1,10 +1,10 @@
 Set-Location "c:\Users\51229\WorkBuddy\Claw"
 git add -A
 git commit --file=commitmsg.txt
-$retryCount = 0; $maxRetries = 3; $success = $false
-while (-not $success -and $retryCount -lt $maxRetries) {
-    git push origin master 2>&1
-    if ($LASTEXITCODE -eq 0) { $success = $true; Write-Host "Push succeeded." }
-    else { $retryCount++; Write-Host "Retry $retryCount..."; Start-Sleep -Seconds 3 }
+$maxRetries = 3
+for ($i = 1; $i -le $maxRetries; $i++) {
+    git push origin master
+    if ($LASTEXITCODE -eq 0) { Write-Host "Push succeeded"; break }
+    Write-Host "Push attempt $i failed, retrying..."
+    Start-Sleep -Seconds 3
 }
-if (-not $success) { Write-Host "Push failed after $maxRetries attempts." }

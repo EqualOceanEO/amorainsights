@@ -160,7 +160,7 @@ export default function ReportsPage() {
       let query = supabase
         .from('reports')
         .select('*', { count: 'exact' })
-        .eq('is_published', true)
+        .in('production_status', ['published', 'approved'])
         .order('published_at', { ascending: false })
         .range(from, to);
 
