@@ -28,7 +28,12 @@
 - API `/api/news` 正常
 - `/api/admin/migrate` 端点可用于后续 DDL 变更（需 `?secret=run-migration-now`）
 
-## News 每日自动化（2026-03-25）
+## News 页面 industry 显示 Bug（2026-03-27 修复）
+
+- **问题**：21 条旧 news_items 记录的 `industry_id` 是数字字符串（`"1"`, `"2"` 等），而不是 slug，导致行业标签显示为 `1`
+- **修复1（数据）**：直接更新 DB，把 21 条记录的 `industry_id` 从数字改为 slug（`"1"→"ai"` 等）
+- **修复2（前端）**：`getIndustryLabel` 和 `industryKey` 改为优先用 `industry_slug`，再 fallback 到 `industry_id`
+- **根因**：早期手动插入数据时 `industry_id` 写入的是整数 ID，`industry_slug` 字段才是正确的 slug
 
 - **API**: `GET /api/admin/news-generator?secret=run-migration-now`
   - 每天 06:00 UTC 由 Vercel Cron 自动触发（vercel.json `0 6 * * *`）

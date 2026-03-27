@@ -1,4 +1,7 @@
-fix: news card shows "1" instead of industry name
+fix: news industry label, reports search, companies empty state
 
-- news page: prefer industry_slug over industry_id (legacy records had numeric id)
-- DB: fix 21 news_items records where industry_id was numeric -> updated to slug
+- News: getIndustryLabel & industryKey prefer industry_slug over industry_id
+- News: fix 21 legacy records industry_id from numeric to slug in DB
+- Reports: add search box (w-52, title ilike filter)
+- Reports: fix is_published -> production_status filter; publish 12 records
+- Companies: add w-full to empty state div to maintain max-w-7xl width
