@@ -62,13 +62,14 @@ function newsHref(item: NewsItem) {
 }
 
 function getIndustryLabel(item: NewsItem) {
-  const id = item.industry_id || item.industry_slug || '';
+  // Prefer industry_slug (always a valid slug); industry_id may be a legacy numeric string
+  const id = item.industry_slug || item.industry_id || '';
   const group = INDUSTRY_HIERARCHY.find(h => h.level1.id === id);
   return group?.level1.label || id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'General';
 }
 
 function TimelineNewsCard({ item }: { item: NewsItem }) {
-  const industryKey = item.industry_id || item.industry_slug || '';
+  const industryKey = item.industry_slug || item.industry_id || '';
   const colorClass = INDUSTRY_COLORS[industryKey] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
   const industryLabel = getIndustryLabel(item);
 
@@ -399,7 +400,7 @@ export default function NewsPage() {
                   {/* Cards */}
                   <div className="flex-1 space-y-3 pb-2">
                     {dateItems.map(item => {
-                      const itemDot = INDUSTRY_DOT_COLORS[item.industry_id || item.industry_slug || ''] ?? 'bg-gray-600';
+                      const itemDot = INDUSTRY_DOT_COLORS[item.industry_slug || item.industry_id || ''] ?? 'bg-gray-600';
                       return (
                         <div key={item.id} className="group">
                           <TimelineNewsCard item={item} />

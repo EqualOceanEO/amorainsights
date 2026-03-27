@@ -1,5 +1,4 @@
-feat: add search box to reports page filter bar
+fix: news card shows "1" instead of industry name
 
-- add search state and ilike title query filter
-- search input (w-52) placed between L1 tabs and Free/Premium buttons
-- reset page to 1 on search change
+- news page: prefer industry_slug over industry_id (legacy records had numeric id)
+- DB: fix 21 news_items records where industry_id was numeric -> updated to slug

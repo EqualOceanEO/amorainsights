@@ -51,7 +51,7 @@
 - **API 修复（2026-03-27）**：`tags` 字段是 `text[]` 数组，不能用 `ilike`，改用 `.contains('tags', [subSector])` (`@>` 操作符)，修复 "operator does not exist: text[] ~~* unknown" 错误
 - **Companies 页面同步（2026-03-27）**：内嵌专属 filter，Row1=L1+搜索，Row2=L2，Row3=地区+Listed/Private，去掉 IndustryFilterBar 依赖
 - **Companies API 修复（2026-03-27）**：`/api/companies` 原来用 `industry_id`/`sub_sector_id`（整数）过滤，但页面传的是 slug 字符串，改为用 `industry_slug` + `sub_sector`（字符串）过滤，同时去掉多余的 industries 表 JOIN
-- **Reports 页面同步（2026-03-27）**：Server Component 改为 Client Component，内嵌 filter，Row1=L1+Free/Premium，Row2=L2，直接用 supabase-js 查询，不再依赖 getReports server function
+- **Reports 页面同步（2026-03-27）**：Server Component 改为 Client Component，内嵌 filter，Row1=L1+搜索框(w-52)+Free/Premium，Row2=L2，直接用 supabase-js 查询，不再依赖 getReports server function
 - **Reports 数据修复（2026-03-27）**：reports 表无 `is_published` 列，实际用 `production_status` 字段（'draft'/'published'）；12 条记录已改为 `production_status='published'`；前端查询改用 `.in('production_status', ['published', 'approved'])`
 - **Companies 空状态宽度修复（2026-03-27）**：No companies match 时加 `w-full` 确保撑满 max-w-7xl
 
