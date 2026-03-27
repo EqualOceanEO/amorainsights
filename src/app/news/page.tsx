@@ -236,7 +236,7 @@ export default function NewsPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-end justify-between mb-5">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Market Intelligence</h1>
+              <h1 className="text-3xl font-bold">Market Intelligence</h1>
               <p className="text-gray-400 mt-1">
                 {loading ? 'Loading…' : `${totalCount.toLocaleString()} articles across frontier industries`}
               </p>

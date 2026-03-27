@@ -1,7 +1,5 @@
-fix: news industry label, reports search, companies empty state
+style: unify page header font style across news/reports/companies
 
-- News: getIndustryLabel & industryKey prefer industry_slug over industry_id
-- News: fix 21 legacy records industry_id from numeric to slug in DB
-- Reports: add search box (w-52, title ilike filter)
-- Reports: fix is_published -> production_status filter; publish 12 records
-- Companies: add w-full to empty state div to maintain max-w-7xl width
+Remove tracking-tight from News page h1 so Market Intelligence title
+matches Research Reports and Company Database (text-3xl font-bold only).
+Subtitle color unified to text-gray-400 across all three pages.
