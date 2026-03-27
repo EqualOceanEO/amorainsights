@@ -1,5 +1,5 @@
-fix: reports page data & companies empty state width
+feat: add search box to reports page filter bar
 
-- reports table has no is_published column; use production_status filter instead
-- set 12 existing reports production_status from draft -> published (DB update)
-- companies empty state: add w-full to ensure max-w-7xl width is maintained
+- add search state and ilike title query filter
+- search input (w-52) placed between L1 tabs and Free/Premium buttons
+- reset page to 1 on search change

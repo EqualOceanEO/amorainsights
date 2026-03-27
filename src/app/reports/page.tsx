@@ -147,6 +147,7 @@ export default function ReportsPage() {
   const [industry, setIndustry]   = useState('');
   const [industryL2, setL2]       = useState('');
   const [premium, setPremium]     = useState<'all' | 'free' | 'premium'>('all');
+  const [search, setSearch]       = useState('');
 
   // Level-2 options for selected L1
   const level2Options = INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2 ?? [];
@@ -168,6 +169,7 @@ export default function ReportsPage() {
       if (industryL2) query = query.contains('tags', [industryL2]);
       if (premium === 'free')    query = query.eq('is_premium', false);
       if (premium === 'premium') query = query.eq('is_premium', true);
+      if (search) query = query.ilike('title', `%${search}%`);
 
       const { data, error, count } = await query;
       if (error) throw error;
@@ -181,10 +183,10 @@ export default function ReportsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, industry, industryL2, premium]);
+  }, [page, industry, industryL2, premium, search]);
 
   useEffect(() => { fetchReports(); }, [fetchReports]);
-  useEffect(() => { setPage(1); }, [industry, industryL2, premium]);
+  useEffect(() => { setPage(1); }, [industry, industryL2, premium, search]);
 
   const handleLevel1Change = (id: string) => {
     setIndustry(id);
@@ -239,6 +241,33 @@ export default function ReportsPage() {
                   </button>
                 );
               })}
+            </div>
+
+            {/* Search — fixed width */}
+            <div className="relative w-52 shrink-0">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search reports..."
+                className="w-full bg-gray-900/80 border border-gray-700/50 rounded-xl pl-9 pr-8 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/60 focus:bg-gray-900 transition-all duration-200"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
             </div>
 
             {/* Free / Premium — right-aligned, never wrap */}
