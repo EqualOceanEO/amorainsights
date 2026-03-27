@@ -1,3 +1,1 @@
-fix: 修复 news 详情页 API 重复 slug 导致报错的问题
-- 将 maybeSingle() 改为 limit(1) + 手动检查数组长度
-- 解决数据库中存在重复 slug 时 API 返回 "multiple rows returned" 错误的问题
+refactor: redesign IndustryFilterBar with smooth transitions, no page jump

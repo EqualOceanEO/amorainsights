@@ -67,3 +67,19 @@
 - `scripts/exec-ddl.ps1` — 使用 PAT 通过 Management API 执行 SQL（需要有效 PAT）
 - `scripts/migrate-pg.mjs` — Node.js pg 直连（被防火墙封，不可用）
 - **完整运维手册**：项目根目录 `RUNBOOK.md`
+
+## News 详情页修复（2026-03-26）
+
+**问题**：`maybeSingle()` 在数据库存在重复 slug 时报错 "multiple rows returned"，导致详情页显示 "Server Component Error"
+
+**修复**：`src/app/api/news/[slug]/route.ts` 中将 `maybeSingle()` 改为 `.limit(1)` + 手动检查数组长度，即使有重复记录也返回第一条
+
+**注意**：数据库中 `new-space-2026-03-25-1` 等 slug 可能仍有重复记录，建议后续清理
+
+## News 每日自动化异常（2026-03-26）
+
+- **问题**：Vercel Cron (`/api/admin/news-generator`) 今天未自动执行
+- **原因**：API 端点返回 404，可能是部署问题或 cron 配置失效
+- **临时处理**：直接通过 Supabase REST API 插入 13 条新闻（5 条行业 + 8 条公司）
+- **乱码修复**：PowerShell 脚本中 em-dash `—` (U+2014) 被错误编码为 `E9 88 A5`，导致显示为乱码。用 hex bytes `E2 80 94` 直接写入修复了 13 条 summary 记录
+- **建议**：检查 Vercel 部署状态和 cron 配置
