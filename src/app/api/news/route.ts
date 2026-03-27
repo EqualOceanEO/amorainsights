@@ -7,11 +7,12 @@ import { supabase } from '@/lib/db';
  */
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const industry  = searchParams.get('industry') || '';
-  const search    = searchParams.get('search')   || '';
-  const page      = Math.max(1, parseInt(searchParams.get('page')     || '1', 10));
-  const pageSize  = Math.min(50, parseInt(searchParams.get('pageSize') || '12', 10));
-  const offset    = (page - 1) * pageSize;
+  const industry   = searchParams.get('industry')   || '';
+  const subSector  = searchParams.get('sub_sector')  || '';
+  const search     = searchParams.get('search')      || '';
+  const page       = Math.max(1, parseInt(searchParams.get('page')     || '1', 10));
+  const pageSize   = Math.min(50, parseInt(searchParams.get('pageSize') || '12', 10));
+  const offset     = (page - 1) * pageSize;
 
   try {
     let query = supabase
@@ -20,10 +21,14 @@ export async function GET(req: NextRequest) {
       .order('published_at', { ascending: false })
       .range(offset, offset + pageSize - 1);
 
-    // Filter by industry — use industry_slug (always present in legacy table)
-    // After migration: industry_id column will also be populated
+    // Filter by L1 industry
     if (industry) {
       query = query.eq('industry_slug', industry);
+    }
+
+    // Filter by L2 sub-sector name (match against tags array or sub_sector_id)
+    if (subSector) {
+      query = query.ilike('tags', `%${subSector}%`);
     }
 
     if (search) {

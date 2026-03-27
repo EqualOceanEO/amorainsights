@@ -3,8 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
-import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
-import IndustryFilterBar from '@/components/IndustryFilterBar';
+import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS, INDUSTRY_HIERARCHY } from '@/lib/industries';
 
 // Sub-sector ID → name lookup (level-2 from industries table)
 const SUB_SECTOR_NAMES: Record<string, string> = {
@@ -174,14 +173,18 @@ function SkeletonCard() {
 }
 
 export default function NewsPage() {
-  const [items, setItems]       = useState<NewsItem[]>([]);
-  const [loading, setLoading]   = useState(true);
-  const [error, setError]       = useState<string | null>(null);
-  const [search, setSearch]     = useState('');
-  const [industry, setIndustry] = useState('');
-  const [page, setPage]         = useState(1);
-  const [totalPages, setTotal]  = useState(1);
+  const [items, setItems]         = useState<NewsItem[]>([]);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState<string | null>(null);
+  const [search, setSearch]       = useState('');
+  const [industry, setIndustry]   = useState('');
+  const [industryL2, setL2]       = useState('');
+  const [page, setPage]           = useState(1);
+  const [totalPages, setTotal]    = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+
+  // Level-2 options for the selected L1 industry
+  const level2Options = INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2 ?? [];
 
   const fetchNews = useCallback(async () => {
     setLoading(true);
@@ -190,8 +193,9 @@ export default function NewsPage() {
       const params = new URLSearchParams({
         page: String(page),
         pageSize: '24',
-        ...(industry && { industry }),
-        ...(search   && { search }),
+        ...(industry   && { industry }),
+        ...(industryL2 && { sub_sector: industryL2 }),
+        ...(search     && { search }),
       });
       const res = await fetch(`/api/news?${params}`);
       if (!res.ok) {
@@ -209,10 +213,16 @@ export default function NewsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, industry, search]);
+  }, [page, industry, industryL2, search]);
 
   useEffect(() => { fetchNews(); }, [fetchNews]);
-  useEffect(() => { setPage(1); }, [industry, search]);
+  useEffect(() => { setPage(1); }, [industry, industryL2, search]);
+
+  // When L1 changes, reset L2
+  const handleLevel1Change = (id: string) => {
+    setIndustry(id);
+    setL2('');
+  };
 
   const groupedItems = groupByDate(items);
 
@@ -232,15 +242,90 @@ export default function NewsPage() {
             </div>
           </div>
 
-          {/* Controls */}
-          <IndustryFilterBar
-            search={search}
-            industry={industry}
-            showSearch={true}
-            searchPlaceholder="Search articles…"
-            onSearchChange={setSearch}
-            onLevel1Change={setIndustry}
-          />
+          {/* ── Filter bar ─────────────────────────────────────────────────── */}
+          {/* Row 1: L1 industry tabs (left) + Search (right) */}
+          <div className="flex items-center gap-2">
+            {/* L1 tabs — scrollable, takes remaining width */}
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide flex-1 min-h-[38px]">
+              {/* All */}
+              <button
+                onClick={() => { handleLevel1Change(''); setSearch(''); }}
+                className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 whitespace-nowrap ${
+                  industry === ''
+                    ? 'bg-blue-500 text-white shadow shadow-blue-500/30'
+                    : 'text-gray-400 hover:text-white bg-gray-800/60 hover:bg-gray-800 border border-gray-700/50 hover:border-gray-600'
+                }`}
+              >
+                All
+              </button>
+
+              {INDUSTRY_HIERARCHY.map(group => {
+                const isActive = industry === group.level1.id;
+                return (
+                  <button
+                    key={group.level1.id}
+                    onClick={() => handleLevel1Change(isActive ? '' : group.level1.id)}
+                    className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-blue-500 text-white shadow shadow-blue-500/30'
+                        : 'text-gray-400 hover:text-white bg-gray-800/60 hover:bg-gray-800 border border-gray-700/50 hover:border-gray-600'
+                    }`}
+                  >
+                    {group.level1.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Search — fixed width, always right-aligned */}
+            <div className="relative w-52 shrink-0">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search articles…"
+                className="w-full bg-gray-900/80 border border-gray-700/50 rounded-xl pl-9 pr-8 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/60 focus:bg-gray-900 transition-all duration-200"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Row 2: L2 sub-sectors — only shown when L1 is active */}
+          {industry && level2Options.length > 0 && (
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide mt-2 min-h-[32px]">
+              {level2Options.map(lv2 => {
+                const isActive = industryL2 === lv2;
+                return (
+                  <button
+                    key={lv2}
+                    onClick={() => setL2(isActive ? '' : lv2)}
+                    className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-gray-700 text-white border border-gray-600'
+                        : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
+                    }`}
+                  >
+                    {lv2}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
@@ -273,8 +358,8 @@ export default function NewsPage() {
                 d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6m-6-4h2" />
             </svg>
             <p className="text-sm font-medium">No articles found</p>
-            {(search || industry) && (
-              <button onClick={() => { setSearch(''); setIndustry(''); }} className="mt-3 text-xs text-blue-500 hover:underline">
+            {(search || industry || industryL2) && (
+              <button onClick={() => { setSearch(''); setIndustry(''); setL2(''); }} className="mt-3 text-xs text-blue-500 hover:underline">
                 Clear filters
               </button>
             )}

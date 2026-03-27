@@ -1,1 +1,1 @@
-refactor: IndustryFilterBar layout - right-side buttons always on Row 1
+feat(news): industry filter bar - L1/L2 two-level, tabs left, search right
