@@ -1,4 +1,6 @@
-fix: use contains() for text[] tags field in news API sub_sector filter
+feat: sync companies & reports pages with news filter layout
 
-- Replace ilike (invalid on text[]) with .contains() (@> operator)
-- Fixes "operator does not exist: text[] ~~* unknown" error
+- Companies: inline filter bar (L1 tabs left + search right + L2 row + region/listed row)
+- Reports: convert Server→Client Component, inline filter bar
+  (L1 tabs left + Free/Premium right + L2 sub-sector row)
+- Both pages: consistent pill-style buttons, scrollbar-hide, L2 auto-reset on L1 change

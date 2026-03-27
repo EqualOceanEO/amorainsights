@@ -5,7 +5,6 @@ import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 import { INDUSTRY_HIERARCHY, INDUSTRY_COLORS } from '@/lib/industries';
-import IndustryFilterBar from '@/components/IndustryFilterBar';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -216,76 +215,152 @@ export default function CompaniesPage() {
         </div>
 
         {/* ── Filters ────────────────────────────────────────────────────── */}
-        <div className="mb-8">
-          <IndustryFilterBar
-            search={search}
-            industry={industry}
-            industryLevel2={industryLevel2}
-            showSearch={true}
-            searchPlaceholder="Search companies..."
-            onSearchChange={setSearch}
-            onLevel1Change={(v) => { setIndustry(v); setIndustryLevel2(''); }}
-            onLevel2Change={setIndustryLevel2}
-            extra={
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setCountry('')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                    country === ''
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-                  }`}
-                >
-                  All Regions
-                </button>
-                {COUNTRY_OPTIONS.map(({ code, label }) => (
+        <div className="mb-8 space-y-2">
+          {/* Row 1: L1 industry tabs (left) + Search (right) */}
+          <div className="flex items-center gap-2">
+            {/* L1 tabs — scrollable */}
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide flex-1 min-h-[38px]">
+              <button
+                onClick={() => { setIndustry(''); setIndustryLevel2(''); }}
+                className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 whitespace-nowrap ${
+                  industry === ''
+                    ? 'bg-blue-500 text-white shadow shadow-blue-500/30'
+                    : 'text-gray-400 hover:text-white bg-gray-800/60 hover:bg-gray-800 border border-gray-700/50 hover:border-gray-600'
+                }`}
+              >
+                All
+              </button>
+              {INDUSTRY_HIERARCHY.map(group => {
+                const isActive = industry === group.level1.id;
+                return (
                   <button
-                    key={code}
-                    onClick={() => setCountry(country === code ? '' : code)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1 ${
-                      country === code
-                        ? 'bg-gray-700 text-white'
-                        : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
+                    key={group.level1.id}
+                    onClick={() => { setIndustry(isActive ? '' : group.level1.id); setIndustryLevel2(''); }}
+                    className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-blue-500 text-white shadow shadow-blue-500/30'
+                        : 'text-gray-400 hover:text-white bg-gray-800/60 hover:bg-gray-800 border border-gray-700/50 hover:border-gray-600'
                     }`}
                   >
-                    <span>{countryFlag(code)}</span>
-                    <span>{label}</span>
+                    {group.level1.label}
                   </button>
-                ))}
-                <span className="w-px bg-gray-700 self-stretch mx-1" />
-                <button
-                  onClick={() => setPublicFilter('')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                    publicFilter === ''
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setPublicFilter(publicFilter === 'true' ? '' : 'true')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                    publicFilter === 'true'
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-                  }`}
-                >
-                  📈 Listed
-                </button>
-                <button
-                  onClick={() => setPublicFilter(publicFilter === 'false' ? '' : 'false')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                    publicFilter === 'false'
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-gray-800 text-gray-500 hover:text-white hover:bg-gray-700'
-                  }`}
-                >
-                  🔒 Private
-                </button>
+                );
+              })}
+            </div>
+
+            {/* Search — fixed width right */}
+            <div className="relative w-52 shrink-0">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
               </div>
-            }
-          />
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search companies..."
+                className="w-full bg-gray-900/80 border border-gray-700/50 rounded-xl pl-9 pr-8 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/60 focus:bg-gray-900 transition-all duration-200"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Row 2: L2 sub-sectors — only when L1 selected */}
+          {industry && (INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2 ?? []).length > 0 && (
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide min-h-[32px]">
+              {(INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2 ?? []).map(lv2 => {
+                const isActive = industryLevel2 === lv2;
+                return (
+                  <button
+                    key={lv2}
+                    onClick={() => setIndustryLevel2(isActive ? '' : lv2)}
+                    className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-gray-700 text-white border border-gray-600'
+                        : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
+                    }`}
+                  >
+                    {lv2}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Row 3: Region + Listed/Private filters */}
+          <div className="flex items-center gap-2 pt-1">
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide flex-1">
+              <button
+                onClick={() => setCountry('')}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+                  country === ''
+                    ? 'bg-gray-700 text-white border border-gray-600'
+                    : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
+                }`}
+              >
+                All Regions
+              </button>
+              {COUNTRY_OPTIONS.map(({ code, label }) => (
+                <button
+                  key={code}
+                  onClick={() => setCountry(country === code ? '' : code)}
+                  className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex items-center gap-1 ${
+                    country === code
+                      ? 'bg-gray-700 text-white border border-gray-600'
+                      : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
+                  }`}
+                >
+                  <span>{countryFlag(code)}</span>
+                  <span>{label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Listed/Private — right-aligned, never wrap */}
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                onClick={() => setPublicFilter('')}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 ${
+                  publicFilter === ''
+                    ? 'bg-gray-700 text-white border border-gray-600'
+                    : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setPublicFilter(publicFilter === 'true' ? '' : 'true')}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 ${
+                  publicFilter === 'true'
+                    ? 'bg-gray-700 text-white border border-gray-600'
+                    : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
+                }`}
+              >
+                📈 Listed
+              </button>
+              <button
+                onClick={() => setPublicFilter(publicFilter === 'false' ? '' : 'false')}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 ${
+                  publicFilter === 'false'
+                    ? 'bg-gray-700 text-white border border-gray-600'
+                    : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
+                }`}
+              >
+                🔒 Private
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* ── Company Grid ───────────────────────────────────────────────── */}

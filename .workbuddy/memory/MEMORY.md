@@ -48,6 +48,7 @@
 - `src/app/api/news/route.ts` 新增 `sub_sector` 参数支持（ilike tags 过滤）
 - 添加 `scrollbar-hide` utility 类（globals.css）隐藏滚动条
 - **构建修复（2026-03-27）**：`news-generator/route.ts` 中 `Company` 类型未定义导致 Vercel 构建失败，改为 `any[]` 修复
+- **API 修复（2026-03-27）**：`tags` 字段是 `text[]` 数组，不能用 `ilike`，改用 `.contains('tags', [subSector])` (`@>` 操作符)，修复 "operator does not exist: text[] ~~* unknown" 错误
 
 ## 页面布局规范（全站统一）
 

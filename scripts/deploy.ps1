@@ -15,6 +15,4 @@ while (-not $success -and $retryCount -lt $maxRetries) {
         Start-Sleep -Seconds 3
     }
 }
-if (-not $success) {
-    Write-Host "Push failed after $maxRetries attempts."
-}
+if (-not $success) { Write-Host "Push failed after $maxRetries attempts." }
