@@ -47,6 +47,7 @@
   - 二级联动状态：`industryL2` state，切换 L1 自动重置
 - `src/app/api/news/route.ts` 新增 `sub_sector` 参数支持（ilike tags 过滤）
 - 添加 `scrollbar-hide` utility 类（globals.css）隐藏滚动条
+- **构建修复（2026-03-27）**：`news-generator/route.ts` 中 `Company` 类型未定义导致 Vercel 构建失败，改为 `any[]` 修复
 
 ## 页面布局规范（全站统一）
 

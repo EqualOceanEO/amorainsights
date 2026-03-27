@@ -26,9 +26,9 @@ export async function GET(req: NextRequest) {
       query = query.eq('industry_slug', industry);
     }
 
-    // Filter by L2 sub-sector name (match against tags array or sub_sector_id)
+    // Filter by L2 sub-sector name — tags is text[], use @> (contains) operator
     if (subSector) {
-      query = query.ilike('tags', `%${subSector}%`);
+      query = query.contains('tags', [subSector]);
     }
 
     if (search) {

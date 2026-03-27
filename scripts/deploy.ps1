@@ -1,16 +1,20 @@
-$ErrorActionPreference = "Continue"
-$repo = "C:\Users\51229\WorkBuddy\Claw"
-$proxy = "http://localhost:15236"
-Set-Location $repo
-$env:HTTP_PROXY = $proxy
-$env:HTTPS_PROXY = $proxy
-git config --global http.proxy $proxy
-git config --global https.proxy $proxy
+Set-Location "c:\Users\51229\WorkBuddy\Claw"
 git add -A
 git commit --file=commitmsg.txt
-for ($i = 1; $i -le 3; $i++) {
-    Write-Host "[$i/3] Pushing..."
-    git push origin master 2>&1
-    if ($LASTEXITCODE -eq 0) { Write-Host "Push OK"; break }
-    Write-Host "Retry in 5s..."; Start-Sleep 5
+$retryCount = 0
+$maxRetries = 3
+$success = $false
+while (-not $success -and $retryCount -lt $maxRetries) {
+    $result = git push origin master 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        $success = $true
+        Write-Host "Push succeeded."
+    } else {
+        $retryCount++
+        Write-Host "Push failed (attempt $retryCount). Retrying..."
+        Start-Sleep -Seconds 3
+    }
+}
+if (-not $success) {
+    Write-Host "Push failed after $maxRetries attempts."
 }

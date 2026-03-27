@@ -1,1 +1,4 @@
-fix: resolve build error - Company type undefined in news-generator route
+fix: use contains() for text[] tags field in news API sub_sector filter
+
+- Replace ilike (invalid on text[]) with .contains() (@> operator)
+- Fixes "operator does not exist: text[] ~~* unknown" error
