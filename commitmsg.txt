@@ -1,1 +1,1 @@
-feat(news): industry filter bar - L1/L2 two-level, tabs left, search right
+fix: resolve build error - Company type undefined in news-generator route

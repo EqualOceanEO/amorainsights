@@ -40,10 +40,13 @@
 
 ## 搜索框和一二级联动重新设计（2026-03-27）
 
-- `IndustryFilterBar` v2：固定高度容器（min-h-[36px]）防止二级行业区域导致页面跳动
-- CSS transition 过渡动画，所有交互元素平滑过渡
-- 搜索框优化：添加清除按钮，增强 focus 状态样式
-- 添加 `scrollbar-hide` utility 类隐藏滚动条
+- `IndustryFilterBar` v3：right-side extra 按钮与 L1 tabs 同行，L2 独占第二行
+- News 页面（`src/app/news/page.tsx`）内嵌专属 filter 区，不再用通用组件
+  - **Row 1**：L1 行业 tabs（居左，水平滚动）+ 搜索框（居右，固定 w-52）
+  - **Row 2**：L2 sub-sectors，仅当 L1 选中时显示，pill 样式
+  - 二级联动状态：`industryL2` state，切换 L1 自动重置
+- `src/app/api/news/route.ts` 新增 `sub_sector` 参数支持（ilike tags 过滤）
+- 添加 `scrollbar-hide` utility 类（globals.css）隐藏滚动条
 
 ## 页面布局规范（全站统一）
 

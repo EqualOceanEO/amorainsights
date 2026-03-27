@@ -175,7 +175,7 @@ export async function GET(req: NextRequest) {
       .eq('is_tracked', true);
 
     if (coErr) return NextResponse.json({ error: coErr.message }, { status: 500 });
-    const companyList: Company[] = (companies as Company[]) || [];
+    const companyList: any[] = (companies as any[]) || [];
 
     // ── 2. Check which companies already have news today ───────────────────
     const { data: existingToday } = await supabase
