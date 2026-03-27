@@ -38,6 +38,13 @@
 - **详情页**：`src/app/news/[slug]/page.tsx`，content 展示区扩大（xl:grid-cols-[1fr_280px]），text-lg leading-loose，字数统计 footer
 - **sub-sector**：列表页和详情页均用 SUB_SECTOR_NAMES 映射（ industries 表 ID 49-84）显示子行业名称
 
+## 搜索框和一二级联动重新设计（2026-03-27）
+
+- `IndustryFilterBar` v2：固定高度容器（min-h-[36px]）防止二级行业区域导致页面跳动
+- CSS transition 过渡动画，所有交互元素平滑过渡
+- 搜索框优化：添加清除按钮，增强 focus 状态样式
+- 添加 `scrollbar-hide` utility 类隐藏滚动条
+
 ## 页面布局规范（全站统一）
 
 - **数据密集型列表页**（news、reports、companies 等）：主容器用 `max-w-7xl mx-auto px-6`，全宽响应式

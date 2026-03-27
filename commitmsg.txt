@@ -1,1 +1,1 @@
-refactor: redesign IndustryFilterBar with smooth transitions, no page jump
+refactor: IndustryFilterBar layout - right-side buttons always on Row 1
