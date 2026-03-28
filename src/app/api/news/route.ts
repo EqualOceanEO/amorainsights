@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const subSector  = searchParams.get('sub_sector')  || '';
   const search     = searchParams.get('search')      || '';
   const page       = Math.max(1, parseInt(searchParams.get('page')     || '1', 10));
-  const pageSize   = Math.min(50, parseInt(searchParams.get('pageSize') || '12', 10));
+  const pageSize   = Math.min(200, parseInt(searchParams.get('pageSize') || '12', 10));
   const offset     = (page - 1) * pageSize;
 
   try {

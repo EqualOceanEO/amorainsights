@@ -17,9 +17,9 @@ export default function AdminNewsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/news?limit=100')
+    fetch('/api/news?pageSize=200&page=1')
       .then(r => r.json())
-      .then(data => setItems(data.items || []))
+      .then(data => setItems(data.data || []))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);

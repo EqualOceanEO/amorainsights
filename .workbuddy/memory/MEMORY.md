@@ -1,5 +1,28 @@
 # Claw Project Memory
 
+## 人形机器人研究报告合集（2026-03-27）
+
+已下载8份国内外人形机器人研究报告至 `reports/humanoid-robot/` 目录：
+
+**国际报告（6份）：**
+- IDTechEx Humanoid Robots 2025-2035 (样章)
+- METATREND Humanoid Robots 2025-2035
+- FutureMarkets Humanoid Robots 2024-2035
+- DIGITIMES Humanoid Robotics 2025
+- Moonshot Humanoid Robot Evolution Report
+- NEXERY Humanoid Robot Study 2025
+
+**国内报告（2份）：**
+- WIC 人形机器人应用与发展前瞻 2025
+- M2觅途 2025人形机器人应用场景洞察白皮书
+
+**关键数据参考：**
+- 2025年全球出货量预测：1.45-1.7万台
+- 2025年市场规模：$2.92B (MarketsandMarkets) / 28.8亿元 (中国电子报)
+- 宇树科技2025年出货量：5500+台（全球第一）
+
+---
+
 ## Supabase Access Credentials
 
 - **Project Ref**: jqppcuccqkxhhrvndsil
@@ -59,6 +82,12 @@
 - **Reports 页面同步（2026-03-27）**：Server Component 改为 Client Component，内嵌 filter，Row1=L1+搜索框(w-52)+Free/Premium，Row2=L2，直接用 supabase-js 查询，不再依赖 getReports server function
 - **Reports 数据修复（2026-03-27）**：reports 表无 `is_published` 列，实际用 `production_status` 字段（'draft'/'published'）；12 条记录已改为 `production_status='published'`；前端查询改用 `.in('production_status', ['published', 'approved'])`
 - **Companies 空状态宽度修复（2026-03-27）**：No companies match 时加 `w-full` 确保撑满 max-w-7xl
+
+## 页面标题样式规范（全站统一，2026-03-27）
+
+- h1：`text-3xl font-bold`（不加 tracking-tight）
+- 副标题 p：`text-gray-400 mt-1`
+- 三页（News/Reports/Companies）均已对齐
 
 ## 页面布局规范（全站统一）
 

@@ -1,5 +1,7 @@
-style: unify page header font style across news/reports/companies
+fix: admin news page not showing data
 
-Remove tracking-tight from News page h1 so Market Intelligence title
-matches Research Reports and Company Database (text-3xl font-bold only).
-Subtitle color unified to text-gray-400 across all three pages.
+- Fix wrong API param (limit->pageSize) and wrong response key (items->data)
+- Increase news API pageSize limit to 200 for admin use
+- Add company slug field and getCompanyBySlug function
+- Change company detail page route from [id] to [slug]
+- Update company list card links to use slug
