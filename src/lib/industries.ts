@@ -18,7 +18,7 @@ export const INDUSTRY_HIERARCHY = [
   },
   {
     level1: { id: 'manufacturing', label: 'Manufacturing' },
-    level2: []
+    level2: ['Industrial Robots', 'Additive Manufacturing', 'Digital Twin', 'IIoT & Smart Factory', 'Autonomous Vehicles']
   },
   {
     level1: { id: 'new-space', label: 'New Space' },
@@ -26,7 +26,7 @@ export const INDUSTRY_HIERARCHY = [
   },
   {
     level1: { id: 'advanced-materials', label: 'Advanced Materials' },
-    level2: ['Carbon Fiber & Composites', 'Semiconductor Materials', 'Battery Materials', 'Metamaterials', 'Graphene & Carbon Nanocomposites', 'Biomaterials']
+    level2: ['Carbon Fiber', 'Semiconductor Materials', 'Battery Materials', 'Metamaterials', 'Graphene', 'Biomaterials']
   }
 ];
 

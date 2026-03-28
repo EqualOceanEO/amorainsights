@@ -1,7 +1,8 @@
-fix: admin news page not showing data
+fix: add Manufacturing L2 sub-sectors; align Advanced Materials L2 with DB
 
-- Fix wrong API param (limit->pageSize) and wrong response key (items->data)
-- Increase news API pageSize limit to 200 for admin use
-- Add company slug field and getCompanyBySlug function
-- Change company detail page route from [id] to [slug]
-- Update company list card links to use slug
+- Manufacturing level2 was empty []; add actual sub_sectors from DB:
+  Industrial Robots, Additive Manufacturing, Digital Twin,
+  IIoT & Smart Factory, Autonomous Vehicles
+- Advanced Materials: rename to match DB values
+  "Carbon Fiber & Composites" -> "Carbon Fiber"
+  "Graphene & Carbon Nanocomposites" -> "Graphene"

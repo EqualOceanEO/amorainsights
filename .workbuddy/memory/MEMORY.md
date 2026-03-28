@@ -62,7 +62,8 @@
   - 每天 06:00 UTC 由 Vercel Cron 自动触发（vercel.json `0 6 * * *`）
   - 生成 6 条一级行业新闻（每个 L1 行业 1 条）+ 最多 8 条公司新闻（轮转 359 家追踪公司）
   - 所有新闻带 `content` 字段（含完整正文）
-  - 鉴权：`?secret=run-migration-now` 或 Bearer service_role_key
+  - 鉴权：`?secret=run-migration-now`（`MIGRATION_SECRET` 环境变量，已于 2026-03-28 在 Vercel 配置完成）或 Bearer service_role_key
+  - **历史故障**：2026-03-26~28 停更，根因是 `MIGRATION_SECRET` 未在 Vercel 设置，3月28日已修复
 - **详情页**：`src/app/news/[slug]/page.tsx`，content 展示区扩大（xl:grid-cols-[1fr_280px]），text-lg leading-loose，字数统计 footer
 - **sub-sector**：列表页和详情页均用 SUB_SECTOR_NAMES 映射（ industries 表 ID 49-84）显示子行业名称
 
