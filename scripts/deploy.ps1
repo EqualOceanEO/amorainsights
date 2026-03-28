@@ -8,5 +8,5 @@ for ($i = 1; $i -le $maxRetries; $i++) {
     git push origin master
     if ($LASTEXITCODE -eq 0) { Write-Host "Push succeeded."; break }
     if ($i -lt $maxRetries) { Write-Host "Retrying..."; Start-Sleep -Seconds 3 }
-    else { Write-Host "Push failed after $maxRetries attempts." }
+    else { Write-Host "Push failed." }
 }

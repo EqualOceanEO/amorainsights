@@ -18,7 +18,7 @@ export const INDUSTRY_HIERARCHY = [
   },
   {
     level1: { id: 'manufacturing', label: 'Manufacturing' },
-    level2: ['Industrial Robots', 'Additive Manufacturing', 'Digital Twin', 'IIoT & Smart Factory', 'Autonomous Vehicles']
+    level2: ['Industrial Robots', 'Humanoid Robots', 'Additive Manufacturing', 'Digital Twin', 'IIoT & Smart Factory', 'Autonomous Vehicles']
   },
   {
     level1: { id: 'new-space', label: 'New Space' },

@@ -1,8 +1,7 @@
-fix: add Manufacturing L2 sub-sectors; align Advanced Materials L2 with DB
+fix: add Humanoid Robots to Manufacturing L2 sub-sectors
 
-- Manufacturing level2 was empty []; add actual sub_sectors from DB:
-  Industrial Robots, Additive Manufacturing, Digital Twin,
-  IIoT & Smart Factory, Autonomous Vehicles
-- Advanced Materials: rename to match DB values
-  "Carbon Fiber & Composites" -> "Carbon Fiber"
-  "Graphene & Carbon Nanocomposites" -> "Graphene"
+industries.ts Manufacturing level2: add 'Humanoid Robots'
+DB already has 10 tracked Humanoid Robots companies:
+  Boston Dynamics, Tesla Optimus, Figure AI, Agility Robotics,
+  Unitree Robotics, UBTECH Robotics, Fourier Intelligence,
+  Agibot, 1X Technologies, Apptronik
