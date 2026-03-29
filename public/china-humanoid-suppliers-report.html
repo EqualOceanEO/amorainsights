@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>中国人形机器人上游零部件产业Mapping报告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #00d4ff;
+            --secondary: #ff006e;
+            --accent: #ffbe0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(255,255,255,0.03);
+            --border: rgba(255,255,255,0.08);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-dark);
+            color: #fff;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        .app {
+            max-width: 100%;
+            min-height: 100vh;
+        }
+        
+        /* 导航 */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, transparent 100%);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-title {
+            font-size: 15px;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-progress {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .nav-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+        
+        .nav-dot.active {
+            background: var(--primary);
+            width: 20px;
+            border-radius: 3px;
+        }
+        
+        /* 页面区块 */
+        .section {
+            min-height: 100vh;
+            padding: 80px 24px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .section-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+        }
+        
+        /* 封面 */
+        .cover {
+            text-align: center;
+            position: relative;
+        }
+        
+        .cover-tag {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+        
+        .cover-title {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .cover-subtitle {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        
+        .cover-visual {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+        
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+        
+        .orbit-1 { width: 100%; height: 100%; }
+        .orbit-2 { width: 70%; height: 70%; top: 15%; left: 15%; animation-direction: reverse; }
+        .orbit-3 { width: 40%; height: 40%; top: 30%; left: 30%; }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .orbit-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--primary);
+        }
+        
+        .orbit-1 .orbit-dot { top: -6px; left: 50%; transform: translateX(-50%); }
+        .orbit-2 .orbit-dot { top: 50%; right: -6px; transform: translateY(-50%); background: var(--secondary); }
+        .orbit-3 .orbit-dot { bottom: -6px; left: 50%; transform: translateX(-50%); background: var(--accent); }
+        
+        .cover-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 0 40px rgba(0,212,255,0.4);
+        }
+        
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 12px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+        
+        /* 内容卡片 */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .card-body {
+            font-size: 15px;
+            color: #bbb;
+            line-height: 1.8;
+        }
+        
+        .card-body p {
+            margin-bottom: 12px;
+        }
+        
+        .card-body strong {
+            color: #fff;
+        }
+        
+        /* 数据展示 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-card .num {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-card .label {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+        
+        /* 分类标签 */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab {
+            flex-shrink: 0;
+            padding: 10px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            color: #fff;
+        }
+        
+        /* 供应商列表 */
+        .supplier-section {
+            display: none;
+        }
+        
+        .supplier-section.active {
+            display: block;
+        }
+        
+        .supplier-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .supplier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .supplier-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .supplier-tags {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .tag-item {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .tag-item.ipo {
+            background: rgba(16,185,129,0.15);
+            color: var(--success);
+        }
+        
+        .tag-item.leader {
+            background: rgba(0,212,255,0.15);
+            color: var(--primary);
+        }
+        
+        .tag-item.unicorn {
+            background: rgba(255,0,110,0.15);
+            color: var(--secondary);
+        }
+        
+        .supplier-info {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .info-row {
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+        }
+        
+        .info-label {
+            color: #666;
+            min-width: 60px;
+        }
+        
+        .info-value {
+            color: #bbb;
+            flex: 1;
+        }
+        
+        /* 洞察卡片 */
+        .insight-card {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,0,110,0.1));
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .insight-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .insight-body {
+            font-size: 14px;
+            color: #aaa;
+            line-height: 1.8;
+        }
+        
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -26px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--bg-dark);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+        }
+        
+        .timeline-date {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .timeline-content {
+            font-size: 14px;
+            color: #bbb;
+        }
+        
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 60px 24px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+        
+        .footer p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        /* 交互元素 */
+        .expand-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            color: #888;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.3s;
+        }
+        
+        .expand-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .hidden-content.show {
+            display: block;
+        }
+        
+        /* 高亮文本 */
+        .highlight {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+        
+        /* 列表样式 */
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list .icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        
+        .feature-list .content {
+            flex: 1;
+        }
+        
+        .feature-list .title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .feature-list .desc {
+            font-size: 13px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- 导航 -->
+        <nav class="nav">
+            <span class="nav-title">AMORA Insights</span>
+            <div class="nav-progress">
+                <div class="nav-dot active"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+            </div>
+        </nav>
+        
+        <!-- 第1页：封面 -->
+        <section class="section cover" data-page="1">
+            <div class="section-bg">
+                <div class="glow" style="width:400px;height:400px;top:-100px;right:-100px;background:var(--primary);"></div>
+                <div class="glow" style="width:300px;height:300px;bottom:100px;left:-100px;background:var(--secondary);"></div>
+            </div>
+            
+            <div class="cover-tag">产业研究报告</div>
+            <h1 class="cover-title">中国人形机器人<br>上游核心零部件<br>产业Mapping</h1>
+            <p class="cover-subtitle">减速器 · 电机 · 传感器 · 丝杠 · 灵巧手<br>30家核心供应商全景扫描</p>
+            
+            <div class="cover-visual">
+                <div class="orbit orbit-1"><div class="orbit-dot"></div></div>
+                <div class="orbit orbit-2"><div class="orbit-dot"></div></div>
+                <div class="orbit orbit-3"><div class="orbit-dot"></div></div>
+                <div class="cover-center">🤖</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="num">30</div>
+                    <div class="label">核心供应商</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num">7</div>
+                    <div class="label">零部件类别</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num">16</div>
+                    <div class="label">上市公司</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num">53%</div>
+                    <div class="label">上市占比</div>
+                </div>
+            </div>
+            
+            <div class="scroll-hint">
+                <span>↓</span>
+                <span>向上滑动开始阅读</span>
+            </div>
+        </section>
+        
+        <!-- 第2页：执行摘要 -->
+        <section class="section" data-page="2">
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-icon">📋</div>
+                    执行摘要
+                </div>
+                <div class="card-body">
+                    <p>人形机器人产业正处于从实验室走向商业化的关键节点。<span class="highlight">2025年被业内视为"人形机器人量产元年"</span>，特斯拉Optimus、宇树H1、优必选Walker等产品的迭代速度超出预期。</p>
+                    
+                    <p>在这一波产业浪潮中，<strong>上游核心零部件供应商</strong>扮演着决定性角色。本报告系统梳理了中国在人形机器人产业链上游的布局现状，覆盖<span class="highlight">减速器、电机/执行器、传感器、丝杠/轴承、灵巧手、关节模组</span>等6大核心品类。</p>
+                    
+                    <p>核心发现：</p>
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-title">💡 核心洞察</div>
+                <div class="insight-body">
+                    中国在人形机器人零部件领域已形成完整布局，减速器（绿的谐波）、电机（汇川技术）、视觉（奥比中光）等关键环节均有上市公司主导，但整体技术水平较日本（精密减速器）、美国（AI芯片/传感器）仍有1-2代差距。
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <ul class="feature-list">
+                        <li>
+                            <div class="icon" style="background:rgba(16,185,129,0.2);color:var(--success);">✓</div>
+                            <div class="content">
+                                <div class="title">上市公司占主导</div>
+                                <div class="desc">16家上市公司，占比53%，绿的谐波、汇川技术、奥比中光等细分领域龙头已实现资本化</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon" style="background:rgba(0,212,255,0.2);color:var(--primary);">↗</div>
+                            <div class="content">
+                                <div class="title">融资热度高涨</div>
+                                <div class="desc">非上市公司多处于B轮前后，因时机器人、帕西尼感知等获得多轮融资</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon" style="background:rgba(245,158,11,0.2);color:var(--warning);">⚠</div>
+                            <div class="content">
+                                <div class="title">高端依赖进口</div>
+                                <div class="desc">精密减速器、六维力传感器、AI芯片等高端零部件仍高度依赖美日欧供应商</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第3页：减速器 -->
+        <section class="section" data-page="3">
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-icon">⚙️</div>
+                    减速器：精密传动的核心
+                </div>
+                <div class="card-body">
+                    <p>减速器是人形机器人关节的"骨骼与肌肉"，负责将电机的高转速低扭矩转换为低转速高扭矩。人形机器人主要使用<span class="highlight">谐波减速器</span>（手臂）和<span class="highlight">行星/RV减速器</span>（腿部）。</p>
+                    
+                    <p>全球精密减速器市场长期被<span class="highlight">日本Harmonic Drive（谐波）和Nabtesco（RV）</span>垄断，合计占据70%以上份额。中国企业正在快速追赶。</p>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">绿的谐波</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item ipo">科创板</span>
+                        <span class="tag-item leader">龙头</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">谐波减速器（国内市占率25%+）</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">主要客户</span>
+                        <span class="info-value">宇树科技、优必选、汇川技术、埃斯顿</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">国内谐波减速器绝对龙头，产品寿命已接近HD水平，价格优势30-40%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">双环传动</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item ipo">深交所</span>
+                        <span class="tag-item leader">龙头</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">RV减速器、精密齿轮</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">主要客户</span>
+                        <span class="info-value">埃斯顿、新松机器人、广州数控</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">国内RV减速器龙头，子公司环动科技专注机器人减速器</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">来福谐波</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item">B轮</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">谐波减速器、机电一体化执行器</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">融资情况</span>
+                        <span class="info-value">2023年完成B轮融资，投资方包括顺为资本、小米产投</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-title">📊 减速器市场格局</div>
+                <div class="insight-body">
+                    日本HD和Nabtesco仍占据高端市场70%+份额，但绿的谐波、双环传动在中低端市场已实现国产替代。人形机器人对减速器寿命要求（>8000小时）较工业机器人（>20000小时）更低，给国产供应商带来切入机会。
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第4页：电机/执行器 -->
+        <section class="section" data-page="4">
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-icon">🔌</div>
+                    电机/执行器：动力之源
+                </div>
+                <div class="card-body">
+                    <p>人形机器人全身约需<span class="highlight">40-60个电机</span>，包括无框力矩电机（关节）、空心杯电机（灵巧手）等。电机性能直接决定机器人的负载能力、响应速度和能耗水平。</p>
+                    
+                    <p>中国企业在电机领域布局完善，<span class="highlight">汇川技术</span>是国内工业自动化龙头，<span class="highlight">步科股份</span>的无框力矩电机已进入优必选、宇树供应链。</p>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">汇川技术</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item ipo">深交所</span>
+                        <span class="tag-item leader">龙头</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">伺服电机、伺服驱动器、PLC、变频器</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">主要客户</span>
+                        <span class="info-value">宇树科技、优必选、埃斯顿、3C/锂电/光伏设备商</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">国内工业自动化龙头，市值1500亿+，伺服系统市占率国内第一</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">步科股份</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item ipo">科创板</span>
+                        <span class="tag-item leader">细分龙头</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">无框力矩电机、伺服系统</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">主要客户</span>
+                        <span class="info-value">优必选、宇树科技、协作机器人厂商</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">无框力矩电机国内领先，专为机器人关节设计</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">鸣志电器</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item ipo">上交所</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">步进电机、空心杯电机、伺服电机</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">空心杯电机技术领先，可用于灵巧手驱动</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-title">💡 电机选型趋势</div>
+                <div class="insight-body">
+                    人形机器人关节电机正向"高扭矩密度+低重量"方向发展。无框力矩电机因可直接嵌入关节设计，成为主流选择。步科股份、汇川技术的产品已能满足人形机器人需求，国产替代程度较高。
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第5页：传感器 -->
+        <section class="section" data-page="5">
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-icon">📡</div>
+                    传感器：机器人的感官
+                </div>
+                <div class="card-body">
+                    <p>传感器是人形机器人感知环境、实现自主决策的基础。核心传感器包括<span class="highlight">3D视觉（深度相机/激光雷达）、力/力矩传感器、IMU（惯性测量单元）</span>等。</p>
+                    
+                    <p>中国企业在3D视觉和激光雷达领域已形成全球竞争力，<span class="highlight">奥比中光、速腾聚创、禾赛科技</span>均为细分领域龙头。</p>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">奥比中光</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item ipo">科创板</span>
+                        <span class="tag-item leader">3D视觉龙头</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">3D结构光、ToF、双目深度相机</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">主要客户</span>
+                        <span class="info-value">宇树科技、优必选、智元机器人、支付宝刷脸设备</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">国内3D视觉传感器龙头，全球少数量产消费级3D传感器的厂商</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">速腾聚创</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item ipo">港交所</span>
+                        <span class="tag-item leader">激光雷达龙头</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">MEMS激光雷达、机械式激光雷达</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">主要客户</span>
+                        <span class="info-value">小鹏、路特斯、宇树科技、自动驾驶厂商</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">全球车载激光雷达市占率第一，产品可用于机器人环境感知</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-item">
+                <div class="supplier-header">
+                    <span class="supplier-name">宇立仪器</span>
+                    <div class="supplier-tags">
+                        <span class="tag-item leader">力传感龙头</span>
+                    </div>
+                </div>
+                <div class="supplier-info">
+                    <div class="info-row">
+                        <span class="info-label">核心产品</span>
+                        <span class="info-value">六维力传感器、三维力传感器</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">主要客户</span>
+                        <span class="info-value">宇树科技、优必选、KUKA、ABB</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">竞争力</span>
+                        <span class="info-value">国内六维力传感器龙头，打破ATI垄断，价格优势50%+</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-title">📊 传感器国产化程度</div>
+                <div class="insight-body">
+                    3D视觉和激光雷达国产化程度最高（>80%），六维力传感器中等（~40%），高端IMU仍依赖博世、ADI等进口品牌。整体而言，传感器是中国在人形机器人产业链中最具竞争力的环节之一。
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第6页：其他零部件 -->
+        <section class="section" data-page="6">
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-icon">🔧</div>
+                    其他核心零部件
+                </div>
+                <div class="card-body">
+                    <p>除减速器、电机、传感器外，人形机器人还需要<span class="highlight">丝杠/轴承、灵巧手、关节模组</span>等关键零部件。这些领域中国企业正在快速突破。</p>
+                </div>
+            </div>
+            
+            <div class="category-tabs">
+                <div class="tab active" data-tab="screw">丝杠/轴承</div>
+                <div class="tab" data-tab="hand">灵巧手</div>
+                <div class="tab" data-tab="joint">关节模组</div>
+            </div>
+            
+            <div class="supplier-section active" data-section="screw">
+                <div class="supplier-item">
+                    <div class="supplier-header">
+                        <span class="supplier-name">鼎智科技</span>
+                        <div class="supplier-tags">
+                            <span class="tag-item ipo">北交所</span>
+                        </div>
+                    </div>
+                    <div class="supplier-info">
+                        <div class="info-row">
+                            <span class="info-label">核心产品</span>
+                            <span class="info-value">微型丝杠、行星滚柱丝杠</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">应用</span>
+                            <span class="info-value">机器人线性执行器、医疗器械</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="supplier-item">
+                    <div class="supplier-header">
+                        <span class="supplier-name">五洲新春</span>
+                        <div class="supplier-tags">
+                            <span class="tag-item ipo">上交所</span>
+                        </div>
+                    </div>
+                    <div class="supplier-info">
+                        <div class="info-row">
+                            <span class="info-label">核心产品</span>
+                            <span class="info-value">精密轴承、汽车轴承</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">竞争力</span>
+                            <span class="info-value">精密轴承技术领先，可用于机器人关节</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-section" data-section="hand">
+                <div class="supplier-item">
+                    <div class="supplier-header">
+                        <span class="supplier-name">因时机器人</span>
+                        <div class="supplier-tags">
+                            <span class="tag-item leader">B轮</span>
+                        </div>
+                    </div>
+                    <div class="supplier-info">
+                        <div class="info-row">
+                            <span class="info-label">核心产品</span>
+                            <span class="info-value">微型伺服电缸、仿生灵巧手</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">主要客户</span>
+                            <span class="info-value">优必选、智元机器人</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">竞争力</span>
+                            <span class="info-value">微型伺服电缸国内首创，实现灵巧手核心部件国产替代</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="supplier-item">
+                    <div class="supplier-header">
+                        <span class="supplier-name">帕西尼感知</span>
+                        <div class="supplier-tags">
+                            <span class="tag-item">A轮</span>
+                        </div>
+                    </div>
+                    <div class="supplier-info">
+                        <div class="info-row">
+                            <span class="info-label">核心产品</span>
+                            <span class="info-value">触觉传感器、灵巧手</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">竞争力</span>
+                            <span class="info-value">高精度触觉传感技术，可用于机器人精细操作</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="supplier-section" data-section="joint">
+                <div class="supplier-item">
+                    <div class="supplier-header">
+                        <span class="supplier-name">智同科技</span>
+                        <div class="supplier-tags">
+                            <span class="tag-item">B轮</span>
+                        </div>
+                    </div>
+                    <div class="supplier-info">
+                        <div class="info-row">
+                            <span class="info-label">核心产品</span>
+                            <span class="info-value">精密关节模组、谐波减速器</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">竞争力</span>
+                            <span class="info-value">一体化关节设计，降低机器人厂商集成难度</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="supplier-item">
+                    <div class="supplier-header">
+                        <span class="supplier-name">本末科技</span>
+                        <div class="supplier-tags">
+                            <span class="tag-item">A轮</span>
+                        </div>
+                    </div>
+                    <div class="supplier-info">
+                        <div class="info-row">
+                            <span class="info-label">核心产品</span>
+                            <span class="info-value">直驱电机、关节模组</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">竞争力</span>
+                            <span class="info-value">直驱技术省去减速器，结构更简单</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第7页：总结 -->
+        <section class="section" data-page="7">
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-icon">🎯</div>
+                    总结与展望
+                </div>
+                <div class="card-body">
+                    <p>中国在人形机器人上游零部件领域已形成<span class="highlight">较为完整的产业生态</span>，30家核心供应商覆盖减速器、电机、传感器、丝杠、灵巧手等关键环节。</p>
+                </div>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">已具备竞争力</div>
+                    <div class="timeline-content">3D视觉（奥比中光）、激光雷达（速腾/禾赛）、伺服电机（汇川/步科）已实现国产替代</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">快速追赶中</div>
+                    <div class="timeline-content">谐波减速器（绿的谐波）、六维力传感器（宇立仪器）差距缩小，价格优势明显</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">仍存较大差距</div>
+                    <div class="timeline-content">RV减速器、高端IMU、AI芯片仍依赖进口，是国产替代的重点方向</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2025展望</div>
+                    <div class="timeline-content">随着人形机器人量产，上游零部件厂商将迎来业绩爆发期，建议关注绿的谐波、步科股份、奥比中光等核心标的</div>
+                </div>
+            </div>
+            
+            <div class="insight-card" style="margin-top:24px;">
+                <div class="insight-title">📈 投资建议</div>
+                <div class="insight-body">
+                    短期关注已进入特斯拉、宇树、优必选供应链的厂商；中期看好在精密减速器、力传感器领域实现技术突破的企业；长期布局具备一体化关节模组供应能力的系统集成商。
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div class="footer-logo">AMORA Insights</div>
+                <p>本报告仅供参考，不构成投资建议</p>
+                <p>数据截至 2026年3月</p>
+                <p style="margin-top:16px; font-size:11px; color:#444;">© 2026 AMORA Research</p>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // 页面滚动监听
+        const sections = document.querySelectorAll('.section');
+        const dots = document.querySelectorAll('.nav-dot');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const page = parseInt(entry.target.dataset.page);
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === page - 1);
+                    });
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => observer.observe(section));
+        
+        // Tab切换
+        document.querySelectorAll('.category-tabs').forEach(tabsContainer => {
+            const tabs = tabsContainer.querySelectorAll('.tab');
+            const section = tabsContainer.closest('.section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetSection = tab.dataset.tab;
+                    
+                    // 切换tab状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // 切换内容
+                    section.querySelectorAll('.supplier-section').forEach(s => {
+                        s.classList.toggle('active', s.dataset.section === targetSection);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

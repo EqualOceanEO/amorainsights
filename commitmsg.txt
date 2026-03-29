@@ -1,7 +1,17 @@
-fix: add Humanoid Robots to Manufacturing L2 sub-sectors
+feat: enrich company detail page with full data fields and XL7 layout
 
-industries.ts Manufacturing level2: add 'Humanoid Robots'
-DB already has 10 tracked Humanoid Robots companies:
-  Boston Dynamics, Tesla Optimus, Figure AI, Agility Robotics,
-  Unitree Robotics, UBTECH Robotics, Fourier Intelligence,
-  Agibot, 1X Technologies, Apptronik
+Company detail page major upgrade:
+- Adopt two-column layout (xl:grid-cols-[1fr_280px]) matching news detail page
+- Max-w-7xl full width for data-intensive display
+- Add comprehensive field sections:
+  * Funding & Valuation (stage, total, valuation, investors)
+  * Team & Leadership (CEO, founders, background)
+  * Products & Technology (core products, tech route, patents)
+  * Supply Chain & Ecosystem (tier, position, components, partners)
+  * Use Cases & Customers (primary scenarios, customer breakdown)
+  * AMORA Scores (5 dimensions + total, gradient cards)
+- Design consistency with news page (SectionHeading, cards, hover effects)
+- Responsive grid layouts (1/2/3/4 columns)
+- Enhanced interactions (animated back button, unified website link)
+
+DB: companies table now has 37+ fields fully utilized in UI
