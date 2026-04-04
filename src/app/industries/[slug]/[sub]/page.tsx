@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-import { INDUSTRY_META, type IndustrySlug } from '@/lib/db';
+import { INDUSTRY_META, ALL_INDUSTRY_SLUGS, type IndustrySlug } from '@/lib/db';
 import { getLevel2Options, INDUSTRY_COLORS } from '@/lib/industries';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
@@ -24,6 +24,17 @@ function timeAgo(dateStr: string | null): string {
   if (days < 30) return `${Math.floor(days / 7)}w ago`;
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
+
+// ─── Static params for ISR ──────────────────────────────────────────────────
+
+export function generateStaticParams() {
+  return ALL_INDUSTRY_SLUGS.flatMap((slug) =>
+    getLevel2Options(slug).map((sub) => ({ slug, sub })),
+  );
+}
+
+// Allow dynamic params beyond pre-generated ones
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; sub: string }> }) {
   const { slug, sub } = await params;
@@ -104,10 +115,7 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
 
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">{meta.icon}</span>
-            <div>
-              <h1 className="text-3xl font-bold text-white">{sub}</h1>
-              <p className="text-gray-400 text-sm">{meta.name} / {meta.name_cn}</p>
-            </div>
+            <h1 className="text-3xl font-bold text-white">{sub}</h1>
           </div>
           <p className="text-gray-500 text-sm max-w-xl leading-relaxed">
             {news.length} news, {companies.length} companies, {reports.length} reports.

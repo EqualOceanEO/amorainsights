@@ -102,12 +102,7 @@ export default function SiteNav({ activePath }: SiteNavProps) {
                             }`}
                           >
                             <span className="text-base">{INDUSTRY_META[g.level1.id as IndustrySlug]?.icon}</span>
-                            <div className="min-w-0">
-                              <div className="font-medium truncate">{g.level1.label}</div>
-                              <div className="text-[10px] text-gray-600 truncate">
-                                {INDUSTRY_META[g.level1.id as IndustrySlug]?.name_cn}
-                              </div>
-                            </div>
+                            <span className="font-medium truncate">{g.level1.label}</span>
                           </Link>
                         ))}
                       </div>

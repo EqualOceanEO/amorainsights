@@ -16,14 +16,14 @@ s not needed.
 - Environments: .env.local, .env
 
   Creating an optimized production build ...
-✓ Compiled successfully in 11.6s
+✓ Compiled successfully in 22.8s
   Running TypeScript ...
   Collecting page data using 21 workers ...
-  Generating static pages using 21 workers (0/44) ...
-  Generating static pages using 21 workers (11/44) 
-  Generating static pages using 21 workers (22/44) 
-  Generating static pages using 21 workers (33/44) 
-✓ Generating static pages using 21 workers (44/44) in 2.7s
+  Generating static pages using 21 workers (0/80) ...
+  Generating static pages using 21 workers (20/80) 
+  Generating static pages using 21 workers (40/80) 
+  Generating static pages using 21 workers (60/80) 
+✓ Generating static pages using 21 workers (80/80) in 2.3s
   Finalizing page optimization ...
 
 Route (app)
@@ -80,7 +80,11 @@ Route (app)
 │ ├ /industries/life-sciences
 │ ├ /industries/green-tech
 │ └ [+3 more paths]
-├ ƒ /industries/[slug]/[sub]
+├ ● /industries/[slug]/[sub]
+│ ├ /industries/ai/Foundation Models
+│ ├ /industries/ai/AI Agents
+│ ├ /industries/ai/AI Semiconductors
+│ └ [+33 more paths]
 ├ ○ /login
 ├ ○ /news
 ├ ƒ /news/[slug]

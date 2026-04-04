@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!meta) return { title: 'Industry Not Found' };
   return {
     title: `${meta.name} — AmoraInsights`,
-    description: `Latest news, companies, and research reports in ${meta.name} (${meta.name_cn}).`,
+    description: `Latest news, companies, and research reports in ${meta.name}.`,
   };
 }
 
@@ -101,10 +101,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-3xl">{meta.icon}</span>
-                <div>
-                  <h1 className="text-3xl font-bold text-white">{meta.name}</h1>
-                  <p className="text-gray-400 text-sm">{meta.name_cn}</p>
-                </div>
+                <h1 className="text-3xl font-bold text-white">{meta.name}</h1>
               </div>
               <p className="text-gray-500 text-sm max-w-xl leading-relaxed">
                 Tracking {news.length} news, {companies.length} companies, and {reports.length} reports in {meta.name}.
