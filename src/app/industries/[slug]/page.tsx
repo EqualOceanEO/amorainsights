@@ -58,7 +58,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
 
   const supabase = getSupabase();
 
-  const [newsRes, companiesRes, reportsRes] = await Promise.allSettled([
+  const [newsRes, companiesRes, reportsRes] = await Promise.all([
     supabase
       .from('news_items')
       .select('id,title,slug,summary,industry_slug,source_name,is_premium,published_at,tags,cover_image_url')
@@ -84,12 +84,17 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
       .limit(12),
   ]);
 
+  // Log errors for debugging
+  if (companiesRes.error) console.error('[IndustryPage] companies query error:', companiesRes.error.message, companiesRes.error.code);
+  if (newsRes.error) console.error('[IndustryPage] news query error:', newsRes.error.message);
+  if (reportsRes.error) console.error('[IndustryPage] reports query error:', reportsRes.error.message);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const news: any[] = newsRes.status === 'fulfilled' ? (newsRes.value.data ?? []) : [];
+  const news: any[] = newsRes.data ?? [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const companies: any[] = companiesRes.status === 'fulfilled' ? (companiesRes.value.data ?? []) : [];
+  const companies: any[] = companiesRes.data ?? [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const reports: any[] = reportsRes.status === 'fulfilled' ? (reportsRes.value.data ?? []) : [];
+  const reports: any[] = reportsRes.data ?? [];
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">

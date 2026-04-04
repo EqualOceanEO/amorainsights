@@ -1,1 +1,1 @@
-﻿fix: reorder industry page sections to Companies > Reports > News
+﻿fix: use force-dynamic for industry pages to fix empty companies/data in SSG
