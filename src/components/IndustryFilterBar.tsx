@@ -138,32 +138,32 @@ export default function IndustryFilterBar({
       {industry && level2Options.length > 0 && (
         <div className="min-h-[36px] flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-hide pl-52">
           {level2Options.map(lv2 => {
-            const isActive = industryLevel2 === lv2;
+            const isActive = industryLevel2 === lv2.name;
             if (isUrlMode) {
               return (
                 <span
-                  key={lv2}
+                  key={lv2.slug}
                   className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                     isActive
                       ? 'bg-gray-700 text-white border border-gray-600'
                       : 'text-gray-500 bg-transparent border border-transparent'
                   }`}
                 >
-                  {lv2}
+                  {lv2.name}
                 </span>
               );
             }
             return (
               <button
-                key={lv2}
-                onClick={() => onLevel2Change?.(industryLevel2 === lv2 ? '' : lv2)}
+                key={lv2.slug}
+                onClick={() => onLevel2Change?.(industryLevel2 === lv2.name ? '' : lv2.name)}
                 className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                   isActive
                     ? 'bg-blue-500/90 text-white shadow-md shadow-blue-500/20'
                     : 'text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-700 border border-gray-700/50 hover:border-gray-600'
                 }`}
               >
-                {lv2}
+                {lv2.name}
               </button>
             );
           })}

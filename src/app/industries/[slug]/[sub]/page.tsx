@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { INDUSTRY_META, ALL_INDUSTRY_SLUGS, type IndustrySlug } from '@/lib/db';
-import { getLevel2Options, INDUSTRY_COLORS } from '@/lib/industries';
+import { getLevel2Options, getSubSectorName, getLevel2Slugs, INDUSTRY_COLORS } from '@/lib/industries';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 
@@ -29,36 +29,39 @@ function timeAgo(dateStr: string | null): string {
 
 export function generateStaticParams() {
   return ALL_INDUSTRY_SLUGS.flatMap((slug) =>
-    getLevel2Options(slug).map((sub) => ({ slug, sub })),
+    getLevel2Slugs(slug).map((sub) => ({ slug, sub })),
   );
 }
 
 // Allow dynamic params beyond pre-generated ones
 export const dynamicParams = true;
 
+// ─── Page metadata ──────────────────────────────────────────────────────────
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; sub: string }> }) {
-  const { slug, sub: rawSub } = await params;
-  const sub = decodeURIComponent(rawSub);
+  const { slug, sub } = await params;
   const meta = INDUSTRY_META[slug as IndustrySlug];
   if (!meta) return { title: 'Industry Not Found' };
+  const subName = getSubSectorName(sub, slug);
   return {
-    title: `${sub} — ${meta.name} — AmoraInsights`,
-    description: `${sub} coverage: latest news, companies, and reports in ${meta.name}.`,
+    title: `${subName} — ${meta.name} — AmoraInsights`,
+    description: `${subName} coverage: latest news, companies, and reports in ${meta.name}.`,
   };
 }
 
+// ─── Page ───────────────────────────────────────────────────────────────────
+
 export default async function SubIndustryPage({ params }: { params: Promise<{ slug: string; sub: string }> }) {
-  const { slug, sub: rawSub } = await params;
-  const sub = decodeURIComponent(rawSub);
+  const { slug, sub } = await params;
   const meta = INDUSTRY_META[slug as IndustrySlug];
 
   if (!meta) notFound();
 
-  // Validate sub-sector belongs to this L1
-  const validSubs = getLevel2Options(slug);
-  if (!validSubs.includes(sub)) notFound();
+  // Validate sub-sector slug belongs to this L1
+  const validSubSlugs = getLevel2Slugs(slug);
+  if (!validSubSlugs.includes(sub)) notFound();
 
-  const colorClass = INDUSTRY_COLORS[slug] || 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
+  const subName = getSubSectorName(sub, slug);
   const dotColor = slug === 'ai' ? 'bg-blue-400' : slug === 'life-sciences' ? 'bg-rose-400' : slug === 'green-tech' ? 'bg-emerald-400' : slug === 'manufacturing' ? 'bg-amber-400' : slug === 'new-space' ? 'bg-indigo-400' : 'bg-orange-400';
 
   const supabase = getSupabase();
@@ -69,7 +72,7 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
       .select('id,title,slug,summary,industry_slug,source_name,is_premium,published_at,tags,cover_image_url')
       .eq('is_published', true)
       .eq('industry_slug', slug)
-      .contains('tags', [sub])
+      .contains('tags', [subName])
       .order('published_at', { ascending: false })
       .limit(12),
 
@@ -78,7 +81,7 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
       .select('id,name,name_cn,sub_sector,country,hq_city,description,is_public,amora_total,logo_url')
       .eq('industry_slug', slug)
       .eq('is_tracked', true)
-      .eq('sub_sector', sub)
+      .eq('sub_sector', subName)
       .order('amora_total', { ascending: false, nullsFirst: false })
       .limit(12),
 
@@ -87,7 +90,7 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
       .select('id,title,slug,summary,is_premium,author,tags,published_at,report_format,cover_image_url')
       .in('production_status', ['published', 'approved'])
       .eq('industry_slug', slug)
-      .contains('tags', [sub])
+      .contains('tags', [subName])
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(12),
   ]);
@@ -112,12 +115,12 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
             <span>/</span>
             <Link href={`/industries/${slug}`} className="hover:text-gray-400 transition">{meta.name}</Link>
             <span>/</span>
-            <span className="text-gray-400">{sub}</span>
+            <span className="text-gray-400">{subName}</span>
           </div>
 
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">{meta.icon}</span>
-            <h1 className="text-3xl font-bold text-white">{sub}</h1>
+            <h1 className="text-3xl font-bold text-white">{subName}</h1>
           </div>
           <p className="text-gray-500 text-sm max-w-xl leading-relaxed">
             {news.length} news, {companies.length} companies, {reports.length} reports.

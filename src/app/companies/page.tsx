@@ -280,18 +280,18 @@ export default function CompaniesPage() {
           {industry && (INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2 ?? []).length > 0 && (
             <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide min-h-[32px]">
               {(INDUSTRY_HIERARCHY.find(h => h.level1.id === industry)?.level2 ?? []).map(lv2 => {
-                const isActive = industryLevel2 === lv2;
+                const isActive = industryLevel2 === lv2.name;
                 return (
                   <button
-                    key={lv2}
-                    onClick={() => setIndustryLevel2(isActive ? '' : lv2)}
+                    key={lv2.slug}
+                    onClick={() => setIndustryLevel2(isActive ? '' : lv2.name)}
                     className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                       isActive
                         ? 'bg-gray-700 text-white border border-gray-600'
                         : 'text-gray-500 hover:text-gray-300 bg-transparent border border-gray-700/40 hover:border-gray-600'
                     }`}
                   >
-                    {lv2}
+                    {lv2.name}
                   </button>
                 );
               })}

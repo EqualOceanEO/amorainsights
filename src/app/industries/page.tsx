@@ -41,22 +41,19 @@ export default function IndustriesIndexPage() {
               {/* Header */}
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-2xl">{ind.icon}</span>
-                <div>
-                  <h2 className="text-lg font-bold text-white group-hover:text-blue-300 transition">
-                    {ind.name}
-                  </h2>
-                  <p className="text-xs text-gray-500">{ind.name_cn}</p>
-                </div>
+                <h2 className="text-lg font-bold text-white group-hover:text-blue-300 transition">
+                  {ind.name}
+                </h2>
               </div>
 
               {/* Sub-sectors */}
               <div className="flex flex-wrap gap-1.5 mb-4 flex-1">
-                {ind.subSectors.slice(0, 4).map((sub) => (
+                {ind.subSectors.slice(0, 4).map((item) => (
                   <span
-                    key={sub}
+                    key={item.slug}
                     className={`text-[10px] px-2 py-0.5 rounded-full ${ind.colorClass}`}
                   >
-                    {sub}
+                    {item.name}
                   </span>
                 ))}
                 {ind.subSectors.length > 4 && (

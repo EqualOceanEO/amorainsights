@@ -1,1 +1,1 @@
-﻿fix: remove Chinese names from industry pages, add generateStaticParams for L2 sub-sector routes
+﻿fix: decodeURIComponent for L2 sub-sector param to handle URL-encoded spaces

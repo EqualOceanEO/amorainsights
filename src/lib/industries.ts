@@ -3,31 +3,83 @@
  * Used across news pages, admin forms, and other components
  */
 
-export const INDUSTRY_HIERARCHY = [
+interface Level2Item {
+  name: string;   // Display name (e.g. "Cell Therapy")
+  slug: string;   // URL-friendly slug (e.g. "cell-therapy")
+}
+
+interface IndustryGroup {
+  level1: { id: string; label: string };
+  level2: Level2Item[];
+}
+
+export const INDUSTRY_HIERARCHY: IndustryGroup[] = [
   {
     level1: { id: 'ai', label: 'AI' },
-    level2: ['Foundation Models', 'AI Agents', 'AI Semiconductors', 'Computer Vision', 'NLP & Speech', 'AI for Science']
+    level2: [
+      { name: 'Foundation Models', slug: 'foundation-models' },
+      { name: 'AI Agents', slug: 'ai-agents' },
+      { name: 'AI Semiconductors', slug: 'ai-semiconductors' },
+      { name: 'Computer Vision', slug: 'computer-vision' },
+      { name: 'NLP & Speech', slug: 'nlp-speech' },
+      { name: 'AI for Science', slug: 'ai-for-science' },
+    ],
   },
   {
     level1: { id: 'life-sciences', label: 'Life Sciences' },
-    level2: ['Gene Editing', 'Synthetic Biology', 'Cell Therapy', 'AI Drug Discovery', 'Medical Devices', 'Genomics & Diagnostics']
+    level2: [
+      { name: 'Gene Editing', slug: 'gene-editing' },
+      { name: 'Synthetic Biology', slug: 'synthetic-biology' },
+      { name: 'Cell Therapy', slug: 'cell-therapy' },
+      { name: 'AI Drug Discovery', slug: 'ai-drug-discovery' },
+      { name: 'Medical Devices', slug: 'medical-devices' },
+      { name: 'Genomics & Diagnostics', slug: 'genomics-diagnostics' },
+    ],
   },
   {
     level1: { id: 'green-tech', label: 'Green Tech' },
-    level2: ['EV Batteries', 'Green Hydrogen', 'Solar Photovoltaics', 'Energy Storage', 'Carbon Capture & Removal', 'Circular Economy']
+    level2: [
+      { name: 'EV Batteries', slug: 'ev-batteries' },
+      { name: 'Green Hydrogen', slug: 'green-hydrogen' },
+      { name: 'Solar Photovoltaics', slug: 'solar-photovoltaics' },
+      { name: 'Energy Storage', slug: 'energy-storage' },
+      { name: 'Carbon Capture & Removal', slug: 'carbon-capture-removal' },
+      { name: 'Circular Economy', slug: 'circular-economy' },
+    ],
   },
   {
     level1: { id: 'manufacturing', label: 'Manufacturing' },
-    level2: ['Industrial Robots', 'Humanoid Robots', 'Additive Manufacturing', 'Digital Twin', 'IIoT & Smart Factory', 'Autonomous Vehicles']
+    level2: [
+      { name: 'Industrial Robots', slug: 'industrial-robots' },
+      { name: 'Humanoid Robots', slug: 'humanoid-robots' },
+      { name: 'Additive Manufacturing', slug: 'additive-manufacturing' },
+      { name: 'Digital Twin', slug: 'digital-twin' },
+      { name: 'IIoT & Smart Factory', slug: 'iiot-smart-factory' },
+      { name: 'Autonomous Vehicles', slug: 'autonomous-vehicles' },
+    ],
   },
   {
     level1: { id: 'new-space', label: 'New Space' },
-    level2: ['Launch Vehicles', 'Satellite Internet', 'Earth Observation', 'Space Propulsion', 'Low-Altitude Economy', 'Space Manufacturing']
+    level2: [
+      { name: 'Launch Vehicles', slug: 'launch-vehicles' },
+      { name: 'Satellite Internet', slug: 'satellite-internet' },
+      { name: 'Earth Observation', slug: 'earth-observation' },
+      { name: 'Space Propulsion', slug: 'space-propulsion' },
+      { name: 'Low-Altitude Economy', slug: 'low-altitude-economy' },
+      { name: 'Space Manufacturing', slug: 'space-manufacturing' },
+    ],
   },
   {
     level1: { id: 'advanced-materials', label: 'Advanced Materials' },
-    level2: ['Carbon Fiber', 'Semiconductor Materials', 'Battery Materials', 'Metamaterials', 'Graphene', 'Biomaterials']
-  }
+    level2: [
+      { name: 'Carbon Fiber', slug: 'carbon-fiber' },
+      { name: 'Semiconductor Materials', slug: 'semiconductor-materials' },
+      { name: 'Battery Materials', slug: 'battery-materials' },
+      { name: 'Metamaterials', slug: 'metamaterials' },
+      { name: 'Graphene', slug: 'graphene' },
+      { name: 'Biomaterials', slug: 'biomaterials' },
+    ],
+  },
 ];
 
 // Flatten to simple industry list for backward compatibility
@@ -36,10 +88,30 @@ export const INDUSTRIES = [
   ...INDUSTRY_HIERARCHY.map(h => ({ slug: h.level1.id, label: h.level1.label }))
 ];
 
-// Get level 2 options by level 1 ID
-export function getLevel2Options(level1Id: string): string[] {
+// Get level 2 items (name + slug) by level 1 ID
+export function getLevel2Options(level1Id: string): Level2Item[] {
   const group = INDUSTRY_HIERARCHY.find(h => h.level1.id === level1Id);
   return group?.level2 || [];
+}
+
+// Get level 2 slugs only (for generateStaticParams)
+export function getLevel2Slugs(level1Id: string): string[] {
+  return getLevel2Options(level1Id).map(item => item.slug);
+}
+
+// Resolve a slug back to its display name
+export function getSubSectorName(slug: string, level1Id?: string): string {
+  if (level1Id) {
+    const items = getLevel2Options(level1Id);
+    const found = items.find(i => i.slug === slug);
+    if (found) return found.name;
+  }
+  // fallback: search all groups
+  for (const group of INDUSTRY_HIERARCHY) {
+    const found = group.level2.find(i => i.slug === slug);
+    if (found) return found.name;
+  }
+  return slug;
 }
 
 // Get level 1 label by slug

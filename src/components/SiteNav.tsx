@@ -115,13 +115,13 @@ export default function SiteNav({ activePath }: SiteNavProps) {
                               Sub-sectors
                             </p>
                             <div className="grid grid-cols-1 gap-0.5">
-                              {l2.map((sub) => (
+                              {l2.map((item) => (
                                 <Link
-                                  key={sub}
-                                  href={`/industries/${hoverL1}/${encodeURIComponent(sub)}`}
+                                  key={item.slug}
+                                  href={`/industries/${hoverL1}/${item.slug}`}
                                   className="text-sm text-gray-400 hover:text-white hover:bg-gray-800/40 rounded-lg px-3 py-2 transition-colors"
                                 >
-                                  {sub}
+                                  {item.name}
                                 </Link>
                               ))}
                             </div>

@@ -226,7 +226,7 @@ export async function GET(req: NextRequest) {
 
         // Pick a random level-2 sub-sector if available
         const subSector = group.level2.length > 0 ? randomElement(group.level2) : null;
-        const subSectorIdInt = subSector ? (SUB_SECTOR_SLUG_MAP[slugify(subSector)] || null) : null;
+        const subSectorIdInt = subSector ? (SUB_SECTOR_SLUG_MAP[slugify(subSector.name)] || null) : null;
 
         toInsert.push({
           title: `${group.level1.label} Sector Update: ${templateText.slice(0, 80)}`,

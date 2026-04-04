@@ -52,7 +52,6 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
   if (!meta) notFound();
 
   const subSectors = getLevel2Options(slug);
-  const colorClass = INDUSTRY_COLORS[slug] || 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
   const dotColor = slug === 'ai' ? 'bg-blue-400' : slug === 'life-sciences' ? 'bg-rose-400' : slug === 'green-tech' ? 'bg-emerald-400' : slug === 'manufacturing' ? 'bg-amber-400' : slug === 'new-space' ? 'bg-indigo-400' : 'bg-orange-400';
 
   const supabase = getSupabase();
@@ -111,15 +110,15 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
             {/* Sub-sector pills */}
             {subSectors.length > 0 && (
               <div className="flex flex-wrap gap-2 md:justify-end">
-                {subSectors.map((sub) => (
+                {subSectors.map((item) => (
                   <Link
-                    key={sub}
-                    href={`/industries/${slug}/${encodeURIComponent(sub)}`}
+                    key={item.slug}
+                    href={`/industries/${slug}/${item.slug}`}
                     className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
-                      colorClass
+                      INDUSTRY_COLORS[slug] || 'bg-gray-500/10 text-gray-400 border-gray-500/20'
                     } hover:opacity-80`}
                   >
-                    {sub}
+                    {item.name}
                   </Link>
                 ))}
               </div>
