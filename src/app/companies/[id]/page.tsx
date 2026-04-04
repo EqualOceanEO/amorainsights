@@ -194,6 +194,83 @@ export default async function CompanyDetailPage({ params }: Props) {
               </div>
             </div>
             
+            {/* AMORA Score — always visible */}
+            <div className="mb-8">
+              <SectionHeading>AMORA Score</SectionHeading>
+              {company.amora_total_score !== null && company.amora_total_score !== undefined ? (
+                <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6">
+                  {/* Total Score — big number */}
+                  <div className="bg-gradient-to-br from-blue-600/20 to-indigo-600/10 border border-blue-500/30 rounded-2xl p-6 flex flex-col items-center justify-center">
+                    <div className="text-xs text-blue-400 uppercase tracking-widest mb-2">Total</div>
+                    <div className={`text-5xl font-extrabold ${company.amora_total_score >= 8 ? 'text-emerald-400' : company.amora_total_score >= 6.5 ? 'text-blue-400' : 'text-gray-300'}`}>
+                      {company.amora_total_score}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">out of 10</div>
+                  </div>
+                  {/* 5 Dimensions */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                    {[
+                      { key: 'amora_advancement_score', label: 'Advancement', color: 'blue', icon: '🔬' },
+                      { key: 'amora_mastery_score', label: 'Mastery', color: 'purple', icon: '🧠' },
+                      { key: 'amora_operations_score', label: 'Operations', color: 'emerald', icon: '⚙️' },
+                      { key: 'amora_reach_score', label: 'Reach', color: 'orange', icon: '🌍' },
+                      { key: 'amora_affinity_score', label: 'Affinity', color: 'teal', icon: '♻️' },
+                    ].map((dim) => {
+                      const val = company[dim.key as keyof Company] as number | null;
+                      return (
+                        <div
+                          key={dim.key}
+                          className="bg-gray-900 border border-gray-800 rounded-xl p-3 text-center"
+                        >
+                          <div className="text-lg mb-0.5">{dim.icon}</div>
+                          <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">{dim.label}</div>
+                          {val !== null && val !== undefined ? (
+                            <>
+                              <div className={`text-xl font-bold ${
+                                dim.color === 'blue' ? 'text-blue-400' :
+                                dim.color === 'purple' ? 'text-purple-400' :
+                                dim.color === 'emerald' ? 'text-emerald-400' :
+                                dim.color === 'orange' ? 'text-orange-400' :
+                                'text-teal-400'
+                              }`}>{val}</div>
+                              {/* Score bar */}
+                              <div className="mt-2 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                                <div
+                                  className={`h-full rounded-full transition-all duration-500 ${
+                                    dim.color === 'blue' ? 'bg-blue-500' :
+                                    dim.color === 'purple' ? 'bg-purple-500' :
+                                    dim.color === 'emerald' ? 'bg-emerald-500' :
+                                    dim.color === 'orange' ? 'bg-orange-500' :
+                                    'bg-teal-500'
+                                  }`}
+                                  style={{ width: `${Math.max(val * 10, 2)}%` }}
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-sm text-gray-600">—</div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                /* No score yet — placeholder */
+                <div className="bg-gradient-to-br from-gray-900 to-gray-900/50 border border-gray-800 rounded-2xl p-8 text-center">
+                  <div className="text-4xl mb-3 opacity-40">📊</div>
+                  <div className="text-sm text-gray-400 mb-1">AMORA Score not yet available</div>
+                  <div className="text-xs text-gray-600">This company is being evaluated across 5 dimensions: Advancement, Mastery, Operations, Reach, and Affinity.</div>
+                  <Link
+                    href="/about"
+                    className="inline-block mt-4 text-xs text-blue-400 hover:text-blue-300 transition"
+                  >
+                    Learn how AMORA Score works →
+                  </Link>
+                </div>
+              )}
+            </div>
+            
             {/* Description */}
             {company.description && (
               <div className="mb-8">
@@ -387,52 +464,6 @@ export default async function CompanyDetailPage({ params }: Props) {
                     <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
                       <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Customer Breakdown</div>
                       <p className="text-white">{company.customer_breakdown}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            
-            {/* AMORA Scores */}
-            {(company.amora_advancement_score || company.amora_mastery_score || company.amora_operations_score || 
-              company.amora_reach_score || company.amora_affinity_score || company.amora_total_score) && (
-              <div className="mb-8">
-                <SectionHeading>AMORA Scores</SectionHeading>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {company.amora_advancement_score !== null && company.amora_advancement_score !== undefined && (
-                    <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-xl p-4">
-                      <div className="text-xs text-blue-400 uppercase tracking-wider mb-1">Advancement</div>
-                      <div className="font-bold text-blue-300 text-xl">{company.amora_advancement_score}/10</div>
-                    </div>
-                  )}
-                  {company.amora_mastery_score !== null && company.amora_mastery_score !== undefined && (
-                    <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-xl p-4">
-                      <div className="text-xs text-purple-400 uppercase tracking-wider mb-1">Mastery</div>
-                      <div className="font-bold text-purple-300 text-xl">{company.amora_mastery_score}/10</div>
-                    </div>
-                  )}
-                  {company.amora_operations_score !== null && company.amora_operations_score !== undefined && (
-                    <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-4">
-                      <div className="text-xs text-emerald-400 uppercase tracking-wider mb-1">Operations</div>
-                      <div className="font-bold text-emerald-300 text-xl">{company.amora_operations_score}/10</div>
-                    </div>
-                  )}
-                  {company.amora_reach_score !== null && company.amora_reach_score !== undefined && (
-                    <div className="bg-gradient-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 rounded-xl p-4">
-                      <div className="text-xs text-orange-400 uppercase tracking-wider mb-1">Reach</div>
-                      <div className="font-bold text-orange-300 text-xl">{company.amora_reach_score}/10</div>
-                    </div>
-                  )}
-                  {company.amora_affinity_score !== null && company.amora_affinity_score !== undefined && (
-                    <div className="bg-gradient-to-br from-teal-500/10 to-teal-600/5 border border-teal-500/20 rounded-xl p-4">
-                      <div className="text-xs text-teal-400 uppercase tracking-wider mb-1">Affinity</div>
-                      <div className="font-bold text-teal-300 text-xl">{company.amora_affinity_score}/10</div>
-                    </div>
-                  )}
-                  {company.amora_total_score !== null && company.amora_total_score !== undefined && (
-                    <div className="bg-gradient-to-br from-gray-500/10 to-gray-600/5 border border-gray-500/20 rounded-xl p-4">
-                      <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Score</div>
-                      <div className="font-bold text-gray-300 text-xl">{company.amora_total_score}/10</div>
                     </div>
                   )}
                 </div>
