@@ -1,1 +1,1 @@
-﻿feat: add Industries nav dropdown with L1/L2 cascade, dynamic industry pages
+﻿fix: remove Chinese names from industry pages, add generateStaticParams for L2 sub-sector routes

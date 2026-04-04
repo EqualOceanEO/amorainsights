@@ -37,7 +37,8 @@ export function generateStaticParams() {
 export const dynamicParams = true;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; sub: string }> }) {
-  const { slug, sub } = await params;
+  const { slug, sub: rawSub } = await params;
+  const sub = decodeURIComponent(rawSub);
   const meta = INDUSTRY_META[slug as IndustrySlug];
   if (!meta) return { title: 'Industry Not Found' };
   return {
@@ -47,7 +48,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function SubIndustryPage({ params }: { params: Promise<{ slug: string; sub: string }> }) {
-  const { slug, sub } = await params;
+  const { slug, sub: rawSub } = await params;
+  const sub = decodeURIComponent(rawSub);
   const meta = INDUSTRY_META[slug as IndustrySlug];
 
   if (!meta) notFound();
