@@ -182,7 +182,7 @@ export default function SiteNav({ activePath }: SiteNavProps) {
             href="/signup"
             className="text-sm bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-1.5 rounded-lg transition"
           >
-            Get Started
+            Start Free
           </Link>
         </div>
       </div>

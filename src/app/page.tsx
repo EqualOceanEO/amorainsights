@@ -103,13 +103,18 @@ export default async function Home() {
                 Frontier Tech Intelligence
               </span>
               <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-4 tracking-tight">
-                Mapping the companies<br />
-                <span className="text-blue-400">shaping tomorrow.</span>
+                The AMORA Score<br />
+                <span className="text-blue-400">Know who's winning.</span>
               </h1>
               <p className="text-gray-400 text-base md:text-lg max-w-xl leading-relaxed">
-                Deep-dive research, live company tracking, and daily intelligence
-                across AI, robotics, biotech, clean energy, and the frontier industries
-                defining the next decade.
+                We score 389 frontier tech companies across 5 dimensions — so you know
+                which AI, robotics and biotech players will win,{' '}
+                <span className="text-gray-300">before the market catches up.</span>
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                <Link href="/about" className="text-blue-400/70 hover:text-blue-300 transition underline underline-offset-2">
+                  How does the AMORA Score work? →
+                </Link>
               </p>
             </div>
 
@@ -130,13 +135,13 @@ export default async function Home() {
           {/* CTA row */}
           <div className="flex flex-wrap gap-3 mt-7">
             <Link href="/reports" className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm">
-              Browse Reports →
+              Explore AMORA Scores →
             </Link>
             <Link href="/companies" className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm">
               Company Tracker
             </Link>
-            <Link href="/news" className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm">
-              Latest News
+            <Link href="/subscribe" className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm">
+              AMORA Weekly — Free
             </Link>
           </div>
         </div>

@@ -1,1 +1,8 @@
-﻿fix: use force-dynamic for industry pages to fix empty companies/data in SSG
+﻿feat(marketing): upgrade Hero section with AMORA Score as core differentiator
+
+- Hero H1: "Mapping companies" → "The AMORA Score: Know who's winning"
+- Hero subtitle: emphasize 5-dimension scoring of 389 companies
+- Primary CTA: "Browse Reports →" → "Explore AMORA Scores →"
+- Add third CTA: "AMORA Weekly — Free" (newsletter entry point)
+- Add "How does the AMORA Score work? →" methodology link under subtitle
+- Nav CTA: "Get Started" → "Start Free" (lower friction, aligned with Hero)
