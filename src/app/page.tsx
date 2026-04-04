@@ -149,7 +149,7 @@ export default async function Home() {
           {industries.map((ind) => (
             <Link
               key={ind.slug}
-              href={`/news?industry=${ind.slug}`}
+              href={`/industries/${ind.slug}`}
               className="shrink-0 flex items-center gap-1.5 bg-gray-800/60 hover:bg-gray-700 border border-gray-700/50 hover:border-gray-600 text-gray-300 hover:text-white text-xs font-medium px-3 py-1.5 rounded-full transition"
             >
               <span>{ind.icon}</span>
