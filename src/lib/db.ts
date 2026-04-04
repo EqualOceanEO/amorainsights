@@ -455,13 +455,12 @@ export interface Company {
   primary_use_cases: string | null;
   customer_breakdown: string | null;
   // AMORA scores
-  amora_total: number | null;
+  amora_total_score: number | null;
   amora_advancement_score: number | null;
   amora_mastery_score: number | null;
   amora_operations_score: number | null;
   amora_reach_score: number | null;
   amora_affinity_score: number | null;
-  amora_total_score: number | null;
   // Additional
   last_funding_type: string | null;
   logo_url: string | null;

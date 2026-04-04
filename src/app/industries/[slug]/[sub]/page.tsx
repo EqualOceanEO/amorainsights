@@ -80,11 +80,11 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
 
     supabase
       .from('companies')
-      .select('id,name,name_cn,sub_sector,country,hq_city,description,is_public,amora_total,logo_url')
+      .select('id,name,name_cn,sub_sector,country,hq_city,description,is_public,amora_total_score,logo_url')
       .eq('industry_slug', slug)
       .eq('is_tracked', true)
       .eq('sub_sector', subName)
-      .order('amora_total', { ascending: false, nullsFirst: false })
+      .order('amora_total_score', { ascending: false, nullsFirst: false })
       .limit(12),
 
     supabase
@@ -181,7 +181,7 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
           {companies.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {companies.map((co) => {
-                const score = co.amora_total ? Number(co.amora_total).toFixed(1) : null;
+                const score = co.amora_total_score ? Number(co.amora_total_score).toFixed(1) : null;
                 const scoreColor = !score ? 'text-gray-500' : Number(score) >= 8 ? 'text-emerald-400' : Number(score) >= 6.5 ? 'text-blue-400' : 'text-gray-400';
                 return (
                   <Link

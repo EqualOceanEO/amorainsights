@@ -7,15 +7,9 @@ import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 
 function getSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  // Debug: check if env vars are available
-  console.log('[getSupabase] URL:', url ? url.substring(0, 30) + '...' : 'MISSING');
-  console.log('[getSupabase] KEY:', key ? key.substring(0, 20) + '...' : 'MISSING');
-  console.log('[getSupabase] has SERVICE_ROLE_KEY:', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
   return createClient(
-    url!,
-    key!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     { auth: { persistSession: false } },
   );
 }
@@ -75,10 +69,10 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
 
     supabase
       .from('companies')
-      .select('id,name,name_cn,sub_sector,country,hq_city,description,is_public,amora_total,logo_url')
+      .select('id,name,name_cn,sub_sector,country,hq_city,description,is_public,amora_total_score,logo_url')
       .eq('industry_slug', slug)
       .eq('is_tracked', true)
-      .order('amora_total', { ascending: false, nullsFirst: false })
+      .order('amora_total_score', { ascending: false, nullsFirst: false })
       .limit(12),
 
     supabase
@@ -89,11 +83,6 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(12),
   ]);
-
-  // Log errors for debugging
-  if (companiesRes.error) console.error('[IndustryPage] companies query error:', companiesRes.error.message, companiesRes.error.code);
-  if (newsRes.error) console.error('[IndustryPage] news query error:', newsRes.error.message);
-  if (reportsRes.error) console.error('[IndustryPage] reports query error:', reportsRes.error.message);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const news: any[] = newsRes.data ?? [];
@@ -145,8 +134,8 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
 
 
 
+
         {/* Companies */}
-        <div className="hidden" data-debug={`companies=${companies.length} error=${companiesRes.error?.message ?? 'none'} hasSvcKey=${!!process.env.SUPABASE_SERVICE_ROLE_KEY}`} />
         <section className="mb-14">
           <div className="flex items-center gap-2.5 mb-5">
             <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
@@ -161,7 +150,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
           {companies.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {companies.map((co) => {
-                const score = co.amora_total ? Number(co.amora_total).toFixed(1) : null;
+                const score = co.amora_total_score ? Number(co.amora_total_score).toFixed(1) : null;
                 const scoreColor = !score ? 'text-gray-500' : Number(score) >= 8 ? 'text-emerald-400' : Number(score) >= 6.5 ? 'text-blue-400' : 'text-gray-400';
                 return (
                   <Link

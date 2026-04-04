@@ -1,1 +1,1 @@
-﻿debug: add env var and query error logging to industry page
+﻿debug: add visible debug div with companies query info
