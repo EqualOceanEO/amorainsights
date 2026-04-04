@@ -113,15 +113,16 @@ export default async function Home() {
               </p>
             </div>
 
-            {/* Right — subscribe + stat pills */}
-            <div className="flex flex-col gap-4 md:items-end shrink-0 w-full md:w-auto">
-              <div className="w-full md:w-64">
-                <SubscribeBox source="homepage" />
-              </div>
-              <div className="flex flex-wrap gap-3 md:flex-col md:items-end">
-                <StatPill icon="📊" label="Reports" value={reportsCount} href="/reports" />
-                <StatPill icon="🏢" label="Companies" value={companiesCount} href="/companies" />
-                <StatPill icon="📰" label="News articles" value={newsCount} href="/news" />
+            {/* Right — glass card: subscribe + stats */}
+            <div className="flex flex-col gap-4 md:items-end shrink-0 w-full md:w-72">
+              <div className="w-full rounded-xl border border-gray-700/40 bg-gray-900/60 backdrop-blur-sm p-5 flex flex-col gap-4">
+                <SubscribeBox source="homepage" compact />
+                <div className="border-t border-gray-800/60" />
+                <div className="flex flex-col gap-2">
+                  <StatPill icon="📊" label="Reports" value={reportsCount} href="/reports" />
+                  <StatPill icon="🏢" label="Companies" value={companiesCount} href="/companies" />
+                  <StatPill icon="📰" label="News articles" value={newsCount} href="/news" />
+                </div>
               </div>
             </div>
           </div>
@@ -270,11 +271,12 @@ function StatPill({
   return (
     <Link
       href={href}
-      className="flex items-center gap-2 bg-gray-900/80 border border-gray-800 hover:border-blue-600/40 rounded-lg px-4 py-2 transition"
+      className="flex items-center gap-2.5 py-1.5 group transition"
     >
       <span className="text-sm">{icon}</span>
-      <span className="text-lg font-bold text-white">{value.toLocaleString()}</span>
+      <span className="text-base font-bold text-white group-hover:text-blue-300 transition">{value.toLocaleString()}</span>
       <span className="text-xs text-gray-500">{label}</span>
+      <span className="ml-auto text-[10px] text-gray-600 group-hover:text-blue-400 transition">→</span>
     </Link>
   );
 }
