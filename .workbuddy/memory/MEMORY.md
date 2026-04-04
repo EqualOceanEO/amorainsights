@@ -127,10 +127,18 @@
 
 - 仓库：`https://github.com/EqualOceanEO/amorainsights.git`，master 分支
 - 部署平台：Vercel（区域 sin1），push 到 master **自动触发构建部署**（2-3分钟）
-- **一键部署脚本**：`powershell -NoProfile -ExecutionPolicy Bypass -File "c:\Users\51229\WorkBuddy\Claw\scripts\deploy.ps1"`
-- 提交信息：写入 `commitmsg.txt`，用 `git commit --file=commitmsg.txt`（避免特殊字符问题）
+- **一键部署脚本**：`scripts/deploy.ps1`（如存在）
+- 提交信息：写入 `commitmsg.txt`，用 `git commit --file=commitmsg.txt`（避免特殊字符问题）；或直接 `git commit -m "..."`（注意 NUL 字节问题）
 - push 失败重试 3 次，失败不影响本地 commit
 - Vercel 上需配置：`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `MIGRATION_SECRET=run-migration-now`
+- **package.json 必须用 `"type": "module"`**（2026-04-04 确认），否则 Turbopack 会报 78 个 CommonJS vs ESM 冲突错误
+
+## package.json type: "module" 重要提示（2026-04-04）
+
+- 项目所有 .ts/.tsx 源码使用 ESM import/export，`package.json` 必须声明 `"type": "module"`
+- 如果需要写 CommonJS 脚本（如 PPT 生成），必须用 `.cjs` 后缀
+- 本地构建有上层 lockfile 警告（`C:\Users\51229\package-lock.json`），不影响 Vercel 构建
+- `Company` 接口在 `src/lib/db.ts` 中定义，包含 funding、AMORA scores、team、products、supply chain 等 40+ 字段
 
 ## Supabase 执行 SQL 的脚本位置
 

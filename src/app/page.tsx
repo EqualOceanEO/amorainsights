@@ -123,11 +123,16 @@ export default async function Home() {
               </p>
             </div>
 
-            {/* Right — stat pills */}
-            <div className="flex flex-wrap gap-3 md:flex-col md:items-end shrink-0">
-              <StatPill icon="📊" label="Reports" value={reportsCount} href="/reports" />
-              <StatPill icon="🏢" label="Companies" value={companiesCount} href="/companies" />
-              <StatPill icon="📰" label="News articles" value={newsCount} href="/news" />
+            {/* Right — subscribe + stat pills */}
+            <div className="flex flex-col gap-4 md:items-end shrink-0 w-full md:w-auto">
+              <div className="w-full md:w-64">
+                <SubscribeBox source="homepage" />
+              </div>
+              <div className="flex flex-wrap gap-3 md:flex-col md:items-end">
+                <StatPill icon="📊" label="Reports" value={reportsCount} href="/reports" />
+                <StatPill icon="🏢" label="Companies" value={companiesCount} href="/companies" />
+                <StatPill icon="📰" label="News articles" value={newsCount} href="/news" />
+              </div>
             </div>
           </div>
 
@@ -274,20 +279,6 @@ export default async function Home() {
         </section>
 
       </main>
-
-      {/* ── Newsletter ──────────────────────────────────────────────────────── */}
-      <section className="border-t border-gray-800/60 bg-gray-900/30 py-16">
-        <div className="max-w-xl mx-auto px-5 text-center">
-          <p className="text-xs tracking-widest text-blue-400 uppercase mb-3">Every Friday</p>
-          <h2 className="text-2xl font-bold text-white mb-3">AMORA Weekly</h2>
-          <p className="text-gray-500 text-sm mb-7 leading-relaxed">
-            Six frontier tracks, one briefing. No noise, no account required.
-          </p>
-          <div className="max-w-sm mx-auto">
-            <SubscribeBox source="homepage" />
-          </div>
-        </div>
-      </section>
 
       <SiteFooter />
     </div>
