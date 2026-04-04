@@ -1,1 +1,1 @@
-﻿fix: use slug-based URLs for L2 sub-sector routes to fix Vercel 404 with spaces
+﻿fix: reorder industry page sections to Companies > Reports > News

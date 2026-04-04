@@ -25,7 +25,9 @@ function timeAgo(dateStr: string | null): string {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-// ─── Static params for ISR ──────────────────────────────────────────────────
+// ─── Dynamic rendering ────────────────────────────────────────────────────
+
+export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
   return ALL_INDUSTRY_SLUGS.flatMap((slug) =>

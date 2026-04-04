@@ -16,14 +16,14 @@ s not needed.
 - Environments: .env.local, .env
 
   Creating an optimized production build ...
-✓ Compiled successfully in 10.4s
+✓ Compiled successfully in 6.5s
   Running TypeScript ...
   Collecting page data using 21 workers ...
   Generating static pages using 21 workers (0/80) ...
   Generating static pages using 21 workers (20/80) 
   Generating static pages using 21 workers (40/80) 
   Generating static pages using 21 workers (60/80) 
-✓ Generating static pages using 21 workers (80/80) in 3.1s
+✓ Generating static pages using 21 workers (80/80) in 338.9ms
   Finalizing page optimization ...
 
 Route (app)
@@ -75,16 +75,8 @@ Route (app)
 ├ ƒ /companies/[id]
 ├ ƒ /dashboard
 ├ ○ /industries
-├ ● /industries/[slug]
-│ ├ /industries/ai
-│ ├ /industries/life-sciences
-│ ├ /industries/green-tech
-│ └ [+3 more paths]
-├ ● /industries/[slug]/[sub]
-│ ├ /industries/ai/foundation-models
-│ ├ /industries/ai/ai-agents
-│ ├ /industries/ai/ai-semiconductors
-│ └ [+33 more paths]
+├ ƒ /industries/[slug]
+├ ƒ /industries/[slug]/[sub]
 ├ ○ /login
 ├ ○ /news
 ├ ƒ /news/[slug]
@@ -102,6 +94,5 @@ Route (app)
 ƒ Proxy (Middleware)
 
 ○  (Static)   prerendered as static content
-●  (SSG)      prerendered as static HTML (uses generateStaticParams)
 ƒ  (Dynamic)  server-rendered on demand
 
