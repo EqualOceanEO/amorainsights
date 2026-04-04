@@ -144,8 +144,9 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
       <main className="max-w-7xl mx-auto px-5 py-10 flex-1">
 
 
+
         {/* Companies */}
-        {/* DEBUG: companies.length={companies.length} error={companiesRes.error?.message} hasServiceKey={!!process.env.SUPABASE_SERVICE_ROLE_KEY} */}
+        <div className="hidden" data-debug={`companies=${companies.length} error=${companiesRes.error?.message ?? 'none'} hasSvcKey=${!!process.env.SUPABASE_SERVICE_ROLE_KEY}`} />
         <section className="mb-14">
           <div className="flex items-center gap-2.5 mb-5">
             <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
