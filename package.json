@@ -21,6 +21,7 @@
     "pdf-parse": "^2.4.5",
     "pdfkit": "^0.18.0",
     "pg": "^8.20.0",
+    "pptxgenjs": "^4.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "stripe": "^20.4.1"
@@ -38,5 +39,18 @@
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
     "typescript": "^5"
-  }
+  },
+  "description": "AI-powered research insights platform.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EqualOceanEO/amorainsights.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/EqualOceanEO/amorainsights/issues"
+  },
+  "homepage": "https://github.com/EqualOceanEO/amorainsights#readme"
 }

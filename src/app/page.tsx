@@ -68,8 +68,10 @@ export default async function Home() {
     ]),
   ]);
 
-  const latestNews: NewsItem[] = newsRes.status === 'fulfilled' ? (newsRes.value.data ?? []) as NewsItem[] : [];
-  const latestReports: Report[] = reportsRes.status === 'fulfilled' ? (reportsRes.value.data ?? []) as Report[] : [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const latestNews: any[] = newsRes.status === 'fulfilled' ? (newsRes.value.data ?? []) : [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const latestReports: any[] = reportsRes.status === 'fulfilled' ? (reportsRes.value.data ?? []) : [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const topCompanies: any[] = companiesRes.status === 'fulfilled' ? (companiesRes.value.data ?? []) : [];
 

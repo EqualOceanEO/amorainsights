@@ -428,6 +428,43 @@ export interface Company {
   tags: string[];
   created_at: string;
   updated_at: string;
+  // Funding & valuation
+  funding_stage: string | null;
+  funding_total_usd: number | null;
+  funding_total_cny: number | null;
+  valuation_usd: number | null;
+  valuation_date: string | null;
+  lead_investors: string | null;
+  all_investors: string | null;
+  // Team
+  ceo_name: string | null;
+  founders: string | null;
+  team_background: string | null;
+  // Products & tech
+  core_products: string | null;
+  tech_route: string | null;
+  product_status: string | null;
+  unit_shipment: number | null;
+  patent_count: number | null;
+  // Supply chain
+  supply_chain_tier: string | null;
+  ecosystem_position: string | null;
+  key_components: string | null;
+  key_partners: string | null;
+  // Customers
+  primary_use_cases: string | null;
+  customer_breakdown: string | null;
+  // AMORA scores
+  amora_total: number | null;
+  amora_advancement_score: number | null;
+  amora_mastery_score: number | null;
+  amora_operations_score: number | null;
+  amora_reach_score: number | null;
+  amora_affinity_score: number | null;
+  amora_total_score: number | null;
+  // Additional
+  last_funding_type: string | null;
+  logo_url: string | null;
 }
 
 export interface PaginatedResult<T> {
