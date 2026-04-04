@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
+import ShareBar from '@/components/ShareBar';
 import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
 
 const SUB_SECTOR_NAMES: Record<string, string> = {
@@ -162,6 +163,18 @@ export default function NewsDetailPage() {
           Back to News
         </Link>
 
+        {/* Floating Share Bar — left sidebar on desktop */}
+        <div className="hidden xl:block">
+          <div className="fixed left-6 top-1/2 -translate-y-1/2 z-40">
+            <ShareBar
+              title={item.title}
+              summary={item.summary ?? ''}
+              url={`https://amorainsights.com/news/${item.slug}`}
+              variant="floating"
+            />
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
 
           {/* ── Main column — expanded content width ── */}
@@ -301,6 +314,16 @@ export default function NewsDetailPage() {
               </div>
             )}
           </article>
+
+          {/* ── Share Bar ── */}
+          <div className="mt-8 mb-2">
+            <ShareBar
+              title={item.title}
+              summary={item.summary ?? ''}
+              url={`https://amorainsights.com/news/${item.slug}`}
+              variant="horizontal"
+            />
+          </div>
 
           {/* ── Sidebar ── */}
           <aside className="space-y-5">

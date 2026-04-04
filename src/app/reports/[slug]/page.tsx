@@ -96,6 +96,18 @@ export default async function ReportDetailPage({
         </>
       ) : (
         <>
+          {/* Floating Share Bar — left sidebar on desktop */}
+          <div className="hidden xl:block">
+            <div className="fixed left-6 top-1/2 -translate-y-1/2 z-40">
+              <ShareBar
+                title={report.title}
+                summary={report.summary ?? ''}
+                url={`https://amorainsights.com/reports/${report.slug}`}
+                variant="floating"
+              />
+            </div>
+          </div>
+
           <main className="flex-1 max-w-4xl mx-auto w-full px-5 py-10">
 
             {/* ── Breadcrumb ─────────────────────────────────────────────── */}
@@ -215,6 +227,16 @@ export default async function ReportDetailPage({
                 )
               )}
             </article>
+
+            {/* ── Share Bar ─────────────────────────────────────────────── */}
+            <div className="mt-10">
+              <ShareBar
+                title={report.title}
+                summary={report.summary ?? ''}
+                url={`https://amorainsights.com/reports/${report.slug}`}
+                variant="horizontal"
+              />
+            </div>
 
             {/* ── Related Reports ──────────────────────────────────────── */}
             {relatedReports.length > 0 && (

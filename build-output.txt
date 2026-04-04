@@ -1,13 +1,6 @@
-﻿npx.cmd : ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
-所在位置 行:1 字符: 210
-+ ... tion "c:\Users\51229\WorkBuddy\Claw"; npx.cmd next build 2>&1 | Out-F ...
-+                                           ~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (⚠ Warning: Next...not be correct.:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
  We detected multiple lockfiles and selected the directory of C:\Users\51229\package-lock.json as the root directory.
- To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it'
-s not needed.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
    See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
  Detected additional lockfiles: 
    * C:\Users\51229\WorkBuddy\Claw\package-lock.json
@@ -16,14 +9,14 @@ s not needed.
 - Environments: .env.local, .env
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.4s
+✓ Compiled successfully in 7.4s
   Running TypeScript ...
   Collecting page data using 21 workers ...
   Generating static pages using 21 workers (0/80) ...
   Generating static pages using 21 workers (20/80) 
   Generating static pages using 21 workers (40/80) 
   Generating static pages using 21 workers (60/80) 
-✓ Generating static pages using 21 workers (80/80) in 364.3ms
+✓ Generating static pages using 21 workers (80/80) in 405.8ms
   Finalizing page optimization ...
 
 Route (app)

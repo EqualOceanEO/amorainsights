@@ -1,1 +1,1 @@
-﻿debug: add visible debug div with companies query info
+﻿fix: amora_total -> amora_total_score to match DB column name, remove debug div

@@ -68,16 +68,27 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
 
   const supabase = getSupabase();
 
-  const [newsRes, companiesRes, reportsRes] = await Promise.allSettled([
-    supabase
-      .from('news_items')
-      .select('id,title,slug,summary,industry_slug,source_name,is_premium,published_at,tags,cover_image_url')
-      .eq('is_published', true)
-      .eq('industry_slug', slug)
-      .contains('tags', [subName])
-      .order('published_at', { ascending: false })
-      .limit(12),
+  // Fetch news: try sub-sector tag match first, fallback to industry-level news
+  const newsWithTag = await supabase
+    .from('news_items')
+    .select('id,title,slug,summary,industry_slug,source_name,is_premium,published_at,tags,cover_image_url')
+    .eq('is_published', true)
+    .eq('industry_slug', slug)
+    .contains('tags', [sub])
+    .order('published_at', { ascending: false })
+    .limit(12);
 
+  const newsFinal = (newsWithTag.data?.length ?? 0) > 0
+    ? newsWithTag.data
+    : (await supabase
+        .from('news_items')
+        .select('id,title,slug,summary,industry_slug,source_name,is_premium,published_at,tags,cover_image_url')
+        .eq('is_published', true)
+        .eq('industry_slug', slug)
+        .order('published_at', { ascending: false })
+        .limit(12)).data ?? [];
+
+  const [companiesRes, reportsRes] = await Promise.all([
     supabase
       .from('companies')
       .select('id,name,name_cn,sub_sector,country,hq_city,description,is_public,amora_total_score,logo_url')
@@ -92,17 +103,17 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
       .select('id,title,slug,summary,is_premium,author,tags,published_at,report_format,cover_image_url')
       .in('production_status', ['published', 'approved'])
       .eq('industry_slug', slug)
-      .contains('tags', [subName])
+      .contains('tags', [sub])
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(12),
   ]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const news: any[] = newsRes.status === 'fulfilled' ? (newsRes.value.data ?? []) : [];
+  const companies: any[] = companiesRes.data ?? [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const companies: any[] = companiesRes.status === 'fulfilled' ? (companiesRes.value.data ?? []) : [];
+  const reports: any[] = reportsRes.data ?? [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const reports: any[] = reportsRes.status === 'fulfilled' ? (reportsRes.value.data ?? []) : [];
+  const news: any[] = newsFinal ?? [];
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
@@ -133,42 +144,6 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
       {/* ── Content ──────────────────────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-5 py-10 flex-1">
 
-        {/* News */}
-        <section className="mb-14">
-          <div className="flex items-center gap-2.5 mb-5">
-            <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
-            <h2 className="text-base font-bold text-white tracking-wide">
-              <span className="mr-2 text-sm">📰</span>Latest News
-            </h2>
-            <span className="text-xs text-gray-600 ml-auto">{news.length} articles</span>
-          </div>
-
-          {news.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {news.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/news/${item.slug}`}
-                  className="group bg-gray-900 border border-gray-800 hover:border-blue-600/40 rounded-xl p-5 flex flex-col transition"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] text-gray-600">{timeAgo(item.published_at)}</span>
-                    {item.is_premium && (
-                      <span className="text-[10px] bg-amber-900/40 text-amber-300 px-2 py-0.5 rounded-full">⭐</span>
-                    )}
-                  </div>
-                  <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition leading-snug line-clamp-3 flex-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-gray-600 mt-3">{item.source_name ?? 'AMORA'}</p>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-600 py-10 text-center">No news yet for this sub-sector.</p>
-          )}
-        </section>
-
         {/* Companies */}
         <section className="mb-14">
           <div className="flex items-center gap-2.5 mb-5">
@@ -176,6 +151,7 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
             <h2 className="text-base font-bold text-white tracking-wide">
               <span className="mr-2 text-sm">🏢</span>Companies
             </h2>
+            <span className="text-xs text-gray-600 ml-auto">{companies.length} companies</span>
           </div>
 
           {companies.length > 0 ? (
@@ -215,12 +191,13 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
         </section>
 
         {/* Reports */}
-        <section className="mb-10">
+        <section className="mb-14">
           <div className="flex items-center gap-2.5 mb-5">
             <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
             <h2 className="text-base font-bold text-white tracking-wide">
               <span className="mr-2 text-sm">📊</span>Research Reports
             </h2>
+            <Link href={`/reports?industry=${slug}`} className="text-xs text-gray-500 hover:text-gray-300 transition ml-auto">View all →</Link>
           </div>
 
           {reports.length > 0 ? (
@@ -250,6 +227,42 @@ export default async function SubIndustryPage({ params }: { params: Promise<{ sl
             </div>
           ) : (
             <p className="text-sm text-gray-600 py-10 text-center">No reports yet for this sub-sector.</p>
+          )}
+        </section>
+
+        {/* News */}
+        <section className="mb-10">
+          <div className="flex items-center gap-2.5 mb-5">
+            <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
+            <h2 className="text-base font-bold text-white tracking-wide">
+              <span className="mr-2 text-sm">📰</span>Latest News
+            </h2>
+            <Link href={`/news?industry=${slug}`} className="text-xs text-gray-500 hover:text-gray-300 transition ml-auto">View all →</Link>
+          </div>
+
+          {news.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {news.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/news/${item.slug}`}
+                  className="group bg-gray-900 border border-gray-800 hover:border-blue-600/40 rounded-xl p-5 flex flex-col transition"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] text-gray-600">{timeAgo(item.published_at)}</span>
+                    {item.is_premium && (
+                      <span className="text-[10px] bg-amber-900/40 text-amber-300 px-2 py-0.5 rounded-full">⭐</span>
+                    )}
+                  </div>
+                  <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition leading-snug line-clamp-3 flex-1">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 mt-3">{item.source_name ?? 'AMORA'}</p>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-600 py-10 text-center">No news yet for this sub-sector.</p>
           )}
         </section>
       </main>
