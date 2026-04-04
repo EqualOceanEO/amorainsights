@@ -1,5 +1,25 @@
 # Claw Project Memory
 
+## AMORA 双框架区分（2026-04-03 确认）
+
+> **极易混淆，必须记住：AMORA 有两套完全不同的框架，勿混用！**
+
+| 框架 | 用途 | A | M | O | R | A |
+|------|------|---|---|---|---|---|
+| **AMORA Report**（行业报告模板） | 研究报告章节结构 | Advancement（技术先进性） | **Mapping（产业链生态位）** | Operations（商业化运营） | **Reach（市场容量）** | **Assets（资本价值）** |
+| **AMORA Score**（企业评分框架） | 单家公司评分 | Advancement（技术壁垒） | **Mastery（人才优势）** | Operations（商业落地） | **Reach（全球化能力）** | **Affinity（可持续能力）** |
+
+**HRI-2026 报告各章节对应文件：**
+- Part A（Advancement）→ `HRI-2026-Outline-Advancement.md`（1137行）
+- Part M（Mapping）→ `HRI-2026-Report-Mapping-Chinese-v1.0.md`（1017行）
+- Part O（Operations）→ `HRI-2026-Outline-Operations.md`（765行）
+- Part R（Reach）→ `HRI-2026-Outline-Reach.md`（564行）
+- Part A2（Assets）→ `HRI-2026-Outline-Assets.md`（365行）
+- 整合文件 → `HRI-2026-Outline-COMPLETE.md`（4291行，180KB，v3.0）
+- 合并脚本 → `scripts/merge_outlines.py`（一键重新生成整合文件）
+
+---
+
 ## 人形机器人研究报告合集（2026-03-27）
 
 已下载8份国内外人形机器人研究报告至 `reports/humanoid-robot/` 目录：
