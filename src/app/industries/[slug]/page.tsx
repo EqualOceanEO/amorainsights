@@ -7,9 +7,15 @@ import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 
 function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Debug: check if env vars are available
+  console.log('[getSupabase] URL:', url ? url.substring(0, 30) + '...' : 'MISSING');
+  console.log('[getSupabase] KEY:', key ? key.substring(0, 20) + '...' : 'MISSING');
+  console.log('[getSupabase] has SERVICE_ROLE_KEY:', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
   return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url!,
+    key!,
     { auth: { persistSession: false } },
   );
 }
@@ -137,7 +143,9 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
       {/* ── Content ──────────────────────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-5 py-10 flex-1">
 
+
         {/* Companies */}
+        {/* DEBUG: companies.length={companies.length} error={companiesRes.error?.message} hasServiceKey={!!process.env.SUPABASE_SERVICE_ROLE_KEY} */}
         <section className="mb-14">
           <div className="flex items-center gap-2.5 mb-5">
             <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
