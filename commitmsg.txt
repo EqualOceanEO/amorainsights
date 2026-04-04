@@ -1,1 +1,1 @@
-﻿fix: decodeURIComponent for L2 sub-sector param to handle URL-encoded spaces
+﻿fix: use slug-based URLs for L2 sub-sector routes to fix Vercel 404 with spaces

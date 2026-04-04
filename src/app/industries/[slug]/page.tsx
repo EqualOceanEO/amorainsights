@@ -130,42 +130,6 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
       {/* ── Content ──────────────────────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-5 py-10 flex-1">
 
-        {/* News */}
-        <section className="mb-14">
-          <div className="flex items-center gap-2.5 mb-5">
-            <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
-            <h2 className="text-base font-bold text-white tracking-wide">
-              <span className="mr-2 text-sm">📰</span>Latest News
-            </h2>
-            <span className="text-xs text-gray-600 ml-auto">{news.length} articles</span>
-          </div>
-
-          {news.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {news.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/news/${item.slug}`}
-                  className="group bg-gray-900 border border-gray-800 hover:border-blue-600/40 rounded-xl p-5 flex flex-col transition"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] text-gray-600">{timeAgo(item.published_at)}</span>
-                    {item.is_premium && (
-                      <span className="text-[10px] bg-amber-900/40 text-amber-300 px-2 py-0.5 rounded-full">⭐</span>
-                    )}
-                  </div>
-                  <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition leading-snug line-clamp-3 flex-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-gray-600 mt-3">{item.source_name ?? 'AMORA'}</p>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-600 py-10 text-center">No news yet for this industry.</p>
-          )}
-        </section>
-
         {/* Companies */}
         <section className="mb-14">
           <div className="flex items-center gap-2.5 mb-5">
@@ -234,7 +198,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
         </section>
 
         {/* Reports */}
-        <section className="mb-10">
+        <section className="mb-14">
           <div className="flex items-center gap-2.5 mb-5">
             <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
             <h2 className="text-base font-bold text-white tracking-wide">
@@ -276,6 +240,44 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
             </div>
           ) : (
             <p className="text-sm text-gray-600 py-10 text-center">No reports yet for this industry.</p>
+          )}
+        </section>
+
+        {/* News */}
+        <section className="mb-10">
+          <div className="flex items-center gap-2.5 mb-5">
+            <span className={`w-1.5 h-5 rounded-full ${dotColor}`} />
+            <h2 className="text-base font-bold text-white tracking-wide">
+              <span className="mr-2 text-sm">📰</span>Latest News
+            </h2>
+            <Link href={`/news?industry=${slug}`} className="text-xs text-blue-400 hover:text-blue-300 ml-auto font-medium">
+              View all →
+            </Link>
+          </div>
+
+          {news.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {news.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/news/${item.slug}`}
+                  className="group bg-gray-900 border border-gray-800 hover:border-blue-600/40 rounded-xl p-5 flex flex-col transition"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] text-gray-600">{timeAgo(item.published_at)}</span>
+                    {item.is_premium && (
+                      <span className="text-[10px] bg-amber-900/40 text-amber-300 px-2 py-0.5 rounded-full">⭐</span>
+                    )}
+                  </div>
+                  <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition leading-snug line-clamp-3 flex-1">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 mt-3">{item.source_name ?? 'AMORA'}</p>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-600 py-10 text-center">No news yet for this industry.</p>
           )}
         </section>
       </main>
