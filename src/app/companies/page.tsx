@@ -20,6 +20,53 @@ interface Company {
   tags: string[];
   founded_year: number | null;
   employee_count: number | null;
+  // AMORA scores
+  amora_total_score: number | null;
+  amora_advancement_score: number | null;
+  amora_mastery_score: number | null;
+  amora_operations_score: number | null;
+  amora_reach_score: number | null;
+  amora_affinity_score: number | null;
+}
+
+// AMORA dimension labels
+const AMORA_DIMS = [
+  { key: 'advancement', label: 'A', color: 'bg-blue-500' },
+  { key: 'mastery',     label: 'M', color: 'bg-purple-500' },
+  { key: 'operations',  label: 'O', color: 'bg-emerald-500' },
+  { key: 'reach',       label: 'R', color: 'bg-amber-500' },
+  { key: 'affinity',    label: 'A', color: 'bg-rose-500' },
+] as const;
+
+function scoreColor(score: number): string {
+  if (score >= 8.0) return 'text-emerald-400';
+  if (score >= 7.0) return 'text-blue-400';
+  if (score >= 6.0) return 'text-yellow-400';
+  return 'text-gray-400';
+}
+
+function AmoraBadge({ company }: { company: Company }) {
+  if (!company.amora_total_score) return null;
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className={`text-sm font-bold ${scoreColor(company.amora_total_score)}`}>
+        {company.amora_total_score.toFixed(1)}
+      </span>
+      <div className="flex gap-0.5">
+        {AMORA_DIMS.map(dim => {
+          const val = company[`amora_${dim.key}_score` as keyof Company] as number | null;
+          return val != null ? (
+            <span
+              key={dim.key}
+              title={`${dim.label}: ${val}`}
+              className={`w-1.5 h-4 rounded-sm ${dim.color} opacity-${val >= 8 ? '100' : val >= 6 ? '80' : '50'}`}
+              style={{ opacity: Math.max(0.3, val / 10) }}
+            />
+          ) : null;
+        })}
+      </div>
+    </div>
+  );
 }
 
 // ─── Country helpers ──────────────────────────────────────────────────────────
@@ -90,7 +137,8 @@ function CompanyCard({ company }: { company: Company }) {
         <span className={`text-xs font-medium px-2 py-0.5 rounded-full flex items-center gap-1 truncate ${industryColor}`}>
           <span className="truncate">{industryLabel}</span>
         </span>
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
+          <AmoraBadge company={company} />
           <span className="text-base">{countryFlag(company.country)}</span>
           {company.is_public ? (
             <span className="text-xs bg-emerald-900/40 text-emerald-400 px-1.5 py-0.5 rounded font-medium">
@@ -166,6 +214,7 @@ export default function CompaniesPage() {
   const [country, setCountry]           = useState('');
   const [publicFilter, setPublicFilter] = useState('');
   const [search, setSearch]             = useState('');
+  const [sortBy, setSortBy]             = useState('name'); // 'name' | 'amora'
 
   const fetchCompanies = useCallback(async () => {
     setLoading(true);
@@ -178,6 +227,7 @@ export default function CompaniesPage() {
         ...(country       && { country }),
         ...(publicFilter  && { public: publicFilter }),
         ...(search        && { search }),
+        ...(sortBy !== 'name' && { sortBy }),
       });
       const res  = await fetch(`/api/companies?${params}`);
       const json = await res.json();
@@ -189,12 +239,12 @@ export default function CompaniesPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, industry, industryLevel2, country, publicFilter, search]);
+  }, [page, industry, industryLevel2, country, publicFilter, search, sortBy]);
 
   useEffect(() => { fetchCompanies(); }, [fetchCompanies]);
 
   // Reset page when filters change
-  useEffect(() => { setPage(1); }, [industry, industryLevel2, country, publicFilter, search]);
+  useEffect(() => { setPage(1); }, [industry, industryLevel2, country, publicFilter, search, sortBy]);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
@@ -298,8 +348,20 @@ export default function CompaniesPage() {
             </div>
           )}
 
-          {/* Row 3: Region + Listed/Private filters */}
+          {/* Row 3: Region + Sort + Listed/Private filters */}
           <div className="flex items-center gap-2 pt-1">
+            {/* Sort dropdown */}
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value)}
+              className="shrink-0 bg-gray-800 border border-gray-700/50 text-gray-400 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-blue-500/60 cursor-pointer"
+            >
+              <option value="name">A → Z</option>
+              <option value="amora">⭐ AMORA Score</option>
+            </select>
+
+            <div className="w-px h-5 bg-gray-700 shrink-0" />
+
             <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide flex-1">
               <button
                 onClick={() => setCountry('')}

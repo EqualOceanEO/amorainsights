@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
     const country    = searchParams.get('country')      || '';
     const isPublic   = searchParams.get('public')       || '';
     const search     = searchParams.get('search')       || '';
+    const sortBy     = searchParams.get('sortBy')       || 'name';
     const page       = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
     const pageSize   = Math.min(100, Math.max(1, parseInt(searchParams.get('pageSize') || '24', 10)));
     const from       = (page - 1) * pageSize;
@@ -28,9 +29,12 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from('companies')
-      .select('id, name, name_cn, slug, industry_id, industry_slug, sub_sector_id, sub_sector, description, country, is_public, tags, founded_year, employee_count', { count: 'exact' })
+      .select('id, name, name_cn, slug, industry_id, industry_slug, sub_sector_id, sub_sector, description, country, is_public, tags, founded_year, employee_count, amora_total_score, amora_advancement_score, amora_mastery_score, amora_operations_score, amora_reach_score, amora_affinity_score', { count: 'exact' })
       .eq('is_tracked', true)
-      .order('name', { ascending: true })
+      .order(sortBy === 'amora' ? 'amora_total_score' : 'name', {
+        ascending: sortBy === 'amora' ? false : true,
+        nullsFirst: sortBy === 'amora' ? true : false,
+      })
       .range(from, to);
 
     if (industry)             query = query.eq('industry_slug', industry);

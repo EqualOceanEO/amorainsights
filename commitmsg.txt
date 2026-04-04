@@ -1,7 +1,8 @@
-﻿feat: add ShareBar to news detail, company detail pages
+﻿feat: add AMORA scores to 42 humanoid robot companies
 
-- News detail (`/news/[slug]`): floating + horizontal ShareBar (was missing entirely)
-- Company detail (`/companies/[id]`): floating + horizontal ShareBar
-- Report detail (`/reports/[slug]`): floating ShareBar + horizontal at article bottom
-  (floating sidebar on left, visible as user scrolls)
-- All share links include UTM parameters for attribution
+- Update Company interface with all 6 AMORA score fields
+- Update /api/companies to include AMORA columns in SELECT
+- Add sortBy=amora support to companies API (sort by AMORA score desc)
+- Display AMORA score badge on company cards (total score + 5-dim bar)
+- Add sort dropdown (A→Z / ⭐ AMORA Score) to companies filter bar
+- Batch write 42 companies via Supabase REST API (41 from HRI-2026 report, 1 estimated)
