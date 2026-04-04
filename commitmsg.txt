@@ -1,1 +1,7 @@
-﻿fix: amora_total -> amora_total_score to match DB column name, remove debug div
+﻿feat: add ShareBar to news detail, company detail pages
+
+- News detail (`/news/[slug]`): floating + horizontal ShareBar (was missing entirely)
+- Company detail (`/companies/[id]`): floating + horizontal ShareBar
+- Report detail (`/reports/[slug]`): floating ShareBar + horizontal at article bottom
+  (floating sidebar on left, visible as user scrolls)
+- All share links include UTM parameters for attribution

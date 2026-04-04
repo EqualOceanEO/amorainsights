@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getCompanyById, getCompanies, INDUSTRY_META, type Company } from '@/lib/db';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
+import ShareBar from '@/components/ShareBar';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -119,6 +120,18 @@ export default async function CompanyDetailPage({ params }: Props) {
       
       <div className="max-w-7xl mx-auto px-5 py-10">
         
+        {/* Floating Share Bar — left sidebar on desktop */}
+        <div className="hidden xl:block">
+          <div className="fixed left-6 top-1/2 -translate-y-1/2 z-40">
+            <ShareBar
+              title={company.name}
+              summary={company.description ?? ''}
+              url={`https://amorainsights.com/companies/${company.id}`}
+              variant="floating"
+            />
+          </div>
+        </div>
+
         {/* Back */}
         <Link href="/companies" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-white mb-8 transition-colors group">
           <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -444,7 +457,17 @@ export default async function CompanyDetailPage({ params }: Props) {
               </div>
             )}
           </article>
-          
+
+          {/* ── Share Bar ── */}
+          <div className="mt-8 mb-2">
+            <ShareBar
+              title={company.name}
+              summary={company.description ?? ''}
+              url={`https://amorainsights.com/companies/${company.id}`}
+              variant="horizontal"
+            />
+          </div>
+
           {/* ── Sidebar ── */}
           <aside className="space-y-5">
             
