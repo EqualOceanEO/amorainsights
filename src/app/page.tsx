@@ -38,7 +38,7 @@ export default async function Home() {
   const supabase = getSupabase();
 
   // Parallel fetch: latest news (8), latest reports (6), featured companies (6), stats
-  const [newsRes, reportsRes, companiesRes, statsRes] = await Promise.allSettled([
+  const [newsRes, reportsRes, statsRes] = await Promise.allSettled([
     supabase
       .from('news_items')
       .select('id,title,slug,summary,industry_slug,industry_id,source_name,is_featured,is_premium,published_at,tags,cover_image_url')
@@ -53,14 +53,6 @@ export default async function Home() {
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(6),
 
-    supabase
-      .from('companies')
-      .select('id,name,name_cn,industry_slug,sub_sector,country,hq_city,description,is_public,employee_count,amora_total,valuation_usd,last_funding_type,logo_url,tags')
-      .eq('is_tracked', true)
-      .not('amora_total', 'is', null)
-      .order('amora_total', { ascending: false })
-      .limit(6),
-
     Promise.all([
       supabase.from('reports').select('id', { count: 'exact', head: true }).in('production_status', ['published', 'approved']),
       supabase.from('companies').select('id', { count: 'exact', head: true }).eq('is_tracked', true),
@@ -72,8 +64,6 @@ export default async function Home() {
   const latestNews: any[] = newsRes.status === 'fulfilled' ? (newsRes.value.data ?? []) : [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const latestReports: any[] = reportsRes.status === 'fulfilled' ? (reportsRes.value.data ?? []) : [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const topCompanies: any[] = companiesRes.status === 'fulfilled' ? (companiesRes.value.data ?? []) : [];
 
   let reportsCount = 0, companiesCount = 0, newsCount = 0;
   if (statsRes.status === 'fulfilled') {
@@ -210,7 +200,10 @@ export default async function Home() {
               </div>
             </div>
           ) : (
-            <EmptyState emoji="📰" text="News coming soon" />
+            <div className="text-center py-16 text-gray-600">
+              <div className="text-4xl mb-3">📰</div>
+              <p className="text-gray-500">News coming soon</p>
+            </div>
           )}
         </section>
 
@@ -235,47 +228,11 @@ export default async function Home() {
               ))}
             </div>
           ) : (
-            <EmptyState emoji="📊" text="Reports coming soon" />
-          )}
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════════
-            SECTION 3 — TOP COMPANIES (by AMORA score)
-        ═══════════════════════════════════════════════════════════════ */}
-        <section className="mb-12 pt-10 border-t border-gray-800/50">
-          <SectionHeader title="Top Tracked Companies" href="/companies" icon="🏢" />
-
-          {topCompanies.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {topCompanies.map((co) => (
-                <CompanyCard key={co.id} company={co} />
-              ))}
+            <div className="text-center py-16 text-gray-600">
+              <div className="text-4xl mb-3">📊</div>
+              <p className="text-gray-500">Reports coming soon</p>
             </div>
-          ) : (
-            <EmptyState emoji="🏢" text="Company data coming soon" />
           )}
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════════
-            SECTION 4 — SIX INDUSTRIES
-        ═══════════════════════════════════════════════════════════════ */}
-        <section className="mb-4 pt-10 border-t border-gray-800/50">
-          <SectionHeader title="Six Frontier Industries" href="/reports" icon="🌐" hideViewAll />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {industries.map((ind) => (
-              <Link
-                key={ind.slug}
-                href={`/reports?industry=${ind.slug}`}
-                className="group bg-gray-900 border border-gray-800 hover:border-blue-600/50 rounded-xl p-4 text-center transition"
-              >
-                <div className="text-2xl mb-2">{ind.icon}</div>
-                <div className="text-xs font-semibold text-white group-hover:text-blue-300 transition leading-snug">
-                  {ind.name}
-                </div>
-                <div className="text-xs text-gray-600 mt-0.5">{ind.name_cn}</div>
-              </Link>
-            ))}
-          </div>
         </section>
 
       </main>
@@ -322,16 +279,7 @@ function StatPill({
   );
 }
 
-function EmptyState({ emoji, text }: { emoji: string; text: string }) {
-  return (
-    <div className="text-center py-16 text-gray-600">
-      <div className="text-4xl mb-3">{emoji}</div>
-      <p className="text-gray-500">{text}</p>
-    </div>
-  );
-}
-
-// ─── News Cards ───────────────────────────────────────────────────────────────
+// ─── News Cards
 
 function FeaturedNewsCard({ item }: { item: NewsItem }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -507,70 +455,4 @@ function ReportCard({ report }: { report: Report }) {
   );
 }
 
-// ─── Company Card ─────────────────────────────────────────────────────────────
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function CompanyCard({ company }: { company: any }) {
-  const ind = industryMeta(company.industry_slug ?? '');
-  const score = company.amora_total ? Number(company.amora_total).toFixed(1) : null;
-
-  // Score color
-  const scoreColor =
-    !score ? 'text-gray-500' :
-    Number(score) >= 8 ? 'text-emerald-400' :
-    Number(score) >= 6.5 ? 'text-blue-400' : 'text-gray-400';
-
-  return (
-    <Link
-      href={`/companies/${company.id}`}
-      className="group bg-gray-900 border border-gray-800 hover:border-blue-600/50 rounded-xl p-5 flex flex-col gap-3 transition"
-    >
-      {/* Header */}
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="font-bold text-sm text-white group-hover:text-blue-300 transition truncate leading-snug">
-            {company.name}
-          </p>
-          {company.name_cn && (
-            <p className="text-xs text-gray-500 truncate">{company.name_cn}</p>
-          )}
-        </div>
-        {/* AMORA score badge */}
-        {score && (
-          <div className="shrink-0 flex flex-col items-center bg-gray-800/80 border border-gray-700/50 rounded-lg px-2.5 py-1.5">
-            <span className={`text-base font-bold leading-none ${scoreColor}`}>{score}</span>
-            <span className="text-[9px] text-gray-600 mt-0.5 tracking-wide">AMORA</span>
-          </div>
-        )}
-      </div>
-
-      {/* Tags row */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-xs bg-gray-800 text-gray-500 px-2 py-0.5 rounded-full flex items-center gap-1">
-          {ind.icon} {ind.name}
-        </span>
-        {company.sub_sector && (
-          <span className="text-xs bg-gray-800/60 text-gray-600 px-2 py-0.5 rounded-full truncate max-w-[120px]">
-            {company.sub_sector}
-          </span>
-        )}
-        {company.is_public && (
-          <span className="text-xs bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded-full">Listed</span>
-        )}
-      </div>
-
-      {/* Description */}
-      <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 flex-1">
-        {company.description ?? '—'}
-      </p>
-
-      {/* Footer */}
-      <div className="flex items-center justify-between text-xs text-gray-600 border-t border-gray-800/60 pt-2 mt-auto">
-        <span>{company.hq_city ? `${company.hq_city}, ` : ''}{company.country}</span>
-        {company.last_funding_type && (
-          <span className="bg-gray-800 px-2 py-0.5 rounded text-gray-500">{company.last_funding_type}</span>
-        )}
-      </div>
-    </Link>
-  );
-}

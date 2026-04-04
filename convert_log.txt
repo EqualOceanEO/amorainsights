@@ -1,0 +1,7 @@
+PPTX: C:\Users\51229\WorkBuddy\Claw\HRI-2026-Report-Presentation-v2.pptx
+Exists: True
+comtypes OK
+Starting PowerPoint...
+PowerPoint started
+Opening presentation...
+ERROR: (-2147467259, '未指定的错误', ('PowerPoint could not open the file.', 'Microsoft PowerPoint', '', 0, None))

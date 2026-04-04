@@ -1,218 +1,223 @@
 """
-Convert PPTX to PDF using python-pptx + pypdfium2 + Pillow.
-Extracts slide content as images and assembles into a PDF.
+Convert PPTX to PDF using python-pptx + Pillow.
+Extracts slide content and renders as images in a PDF.
 """
 import os
+from pptx import Presentation
+from pptx.util import Inches, Pt, Emu
+from pptx.dml.color import RGBColor
+from PIL import Image, ImageDraw, ImageFont
 import io
-import sys
-
-python_exe = os.path.abspath(__file__).replace(os.path.basename(__file__), '') + os.sep + '..' + os.sep + '..' + os.sep + '.workbuddy' + os.sep + 'binaries' + os.sep + 'python' + os.sep + 'versions' + os.sep + '3.13.12' + os.sep + 'python.exe'
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 pptx_path = r"C:\Users\51229\WorkBuddy\Claw\HRI-2026-Report-Presentation-v2.pptx"
 pdf_path = r"C:\Users\51229\WorkBuddy\Claw\HRI-2026-Report-Presentation-v2.pdf"
 
 print(f"PPTX: {pptx_path}")
-print(f"PDF output: {pdf_path}")
+print(f"PDF: {pdf_path}")
 
-try:
-    from pptx import Presentation
-    from pptx.util import Inches, Pt, Emu
-    from PIL import Image, ImageDraw, ImageFont
-    import pypdfium2 as pdfium
-    print("All libraries imported successfully")
-except ImportError as e:
-    print(f"Import error: {e}")
-    sys.exit(1)
-
-# Load the presentation
 prs = Presentation(pptx_path)
-print(f"Loaded presentation with {len(prs.slides)} slides")
-
-# Slide dimensions (inches)
-slide_width_in = prs.slide_width.inches
-slide_height_in = prs.slide_height.inches
-print(f"Slide size: {slide_width_in:.2f} x {slide_height_in:.2f} inches")
+slide_w_in = prs.slide_width.inches
+slide_h_in = prs.slide_height.inches
+print(f"Slide size: {slide_w_in:.2f} x {slide_h_in:.2f} inches")
 
 # DPI and pixel dimensions
 DPI = 150
-img_width = int(slide_width_in * DPI)
-img_height = int(slide_height_in * DPI)
+W = int(slide_w_in * DPI)
+H = int(slide_h_in * DPI)
+print(f"Image size: {W} x {H} px @ {DPI} DPI")
 
-print(f"Image size: {img_width} x {img_height} pixels at {DPI} DPI")
+# Color palette
+BG_DARK = (10, 20, 40)
+BG_MID = (15, 30, 60)
+BG_CARD = (25, 40, 80)
+TEXT_WHITE = (255, 255, 255)
+TEXT_GRAY = (180, 190, 210)
+ACCENT = (0, 180, 216)
+GOLD = (255, 193, 7)
+GREEN = (76, 175, 80)
+RED = (244, 67, 54)
+ORANGE = (255, 152, 0)
+PURPLE = (156, 39, 176)
 
-# Color palette from the PPT
-BG_COLOR = (10, 20, 40)     # Dark navy
-TEXT_COLOR = (255, 255, 255)
-ACCENT_COLOR = (0, 180, 216)  # Tech blue
-GOLD_COLOR = (255, 193, 7)   # Gold
-SECTION_BG = (20, 35, 65)
+def make_font(size_pt, bold=False):
+    try:
+        if bold:
+            return ImageFont.truetype("C:\\Windows\\Fonts\\arialbd.ttf", int(size_pt * DPI / 72))
+        return ImageFont.truetype("C:\\Windows\\Fonts\\arial.ttf", int(size_pt * DPI / 72))
+    except:
+        return ImageFont.load_default()
 
-def rgb_to_hex(rgb):
-    return '#{:02x}{:02x}{:02x}'.format(*rgb)
+def hex_to_rgb(h):
+    h = h.lstrip('#')
+    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
 
-def draw_slide_as_image(slide, slide_num, total):
-    """Draw a slide as a PIL Image based on PPTX XML data."""
-    from pptx.oxml.ns import qn
-    from pptx.oxml import parse_xml
-    from lxml import etree
+def draw_bg(draw, W, H):
+    """Draw gradient background."""
+    for y in range(H):
+        ratio = y / H
+        r = int(BG_DARK[0] + (BG_MID[0] - BG_DARK[0]) * ratio * 0.5)
+        g = int(BG_DARK[1] + (BG_MID[1] - BG_DARK[1]) * ratio * 0.5)
+        b = int(BG_DARK[2] + (BG_MID[2] - BG_DARK[2]) * ratio * 0.5)
+        draw.line([(0, y), (W, y)], fill=(r, g, b))
 
-    img = Image.new('RGB', (img_width, img_height), color=BG_COLOR)
+def draw_shape(shape, draw):
+    """Draw a single shape."""
+    try:
+        left = int(shape.left / 914400 * DPI)
+        top = int(shape.top / 914400 * DPI)
+        width = int(shape.width / 914400 * DPI)
+        height = int(shape.height / 914400 * DPI)
+    except:
+        return
+
+    # Get fill color
+    try:
+        fill = shape.fill
+        if fill and hasattr(fill, 'fore_color') and fill.fore_color:
+            fc = fill.fore_color
+            if hasattr(fc, 'rgb') and fc.rgb:
+                rgb = fc.rgb
+                color = (rgb[0], rgb[1], rgb[2])
+                draw.rectangle([left, top, left+width, top+height], fill=color)
+    except:
+        pass
+
+def get_text_info(para, run=None):
+    """Extract text formatting from paragraph/run."""
+    font_size = 14
+    bold = False
+    italic = False
+    color = TEXT_WHITE
+    font_name = None
+
+    if para and hasattr(para, 'font'):
+        f = para.font
+        if f.size:
+            font_size = f.size.pt
+        if f.bold:
+            bold = True
+        if f.italic:
+            italic = True
+        if f.color and hasattr(f.color, 'rgb') and f.color.rgb:
+            rgb = f.color.rgb
+            color = (rgb[0], rgb[1], rgb[2])
+        if f.name:
+            font_name = f.name
+
+    return font_size, bold, italic, color, font_name
+
+def draw_textbox(shape, draw):
+    """Draw a textbox shape."""
+    try:
+        left = int(shape.left / 914400 * DPI)
+        top = int(shape.top / 914400 * DPI)
+        width = int(shape.width / 914400 * DPI)
+        height = int(shape.height / 914400 * DPI)
+    except:
+        return
+
+    if not shape.has_text_frame:
+        return
+
+    tf = shape.text_frame
+    paragraphs = list(tf.paragraphs)
+    if not paragraphs:
+        return
+
+    # Get default paragraph formatting
+    default_size, default_bold, default_italic, default_color, default_font = get_text_info(paragraphs[0])
+
+    # Calculate line height
+    line_h = max(default_size * 1.2, 20)
+    y = top
+
+    for para in paragraphs:
+        if not para.text.strip():
+            y += line_h * 0.5
+            continue
+
+        font_size, bold, italic, color, font_name = get_text_info(para)
+
+        # Choose font
+        font_path = None
+        try:
+            if font_name and 'bold' in font_name.lower():
+                font_path = "C:\\Windows\\Fonts\\arialbd.ttf"
+            elif bold:
+                font_path = "C:\\Windows\\Fonts\\arialbd.ttf"
+            else:
+                font_path = "C:\\Windows\\Fonts\\arial.ttf"
+            font = ImageFont.truetype(font_path, int(font_size * DPI / 72))
+        except:
+            font = make_font(font_size, bold)
+
+        # Wrap text
+        words = para.text.split()
+        lines = []
+        current = ""
+        for word in words:
+            test = (current + " " + word).strip()
+            try:
+                bbox = draw.textbbox((0, 0), test, font=font)
+                if bbox[2] - bbox[0] <= width - 10:
+                    current = test
+                else:
+                    if current:
+                        lines.append(current)
+                    current = word
+            except:
+                if len(current) < 30:
+                    current = test
+                else:
+                    lines.append(current)
+                    current = word
+        if current:
+            lines.append(current)
+
+        for line in lines:
+            if y < top + height - 5 and y < H - 10:
+                draw.text((left, y), line, font=font, fill=color)
+                try:
+                    bbox = draw.textbbox((0, 0), line, font=font)
+                    line_height = bbox[3] - bbox[1] + 4
+                except:
+                    line_height = font_size + 4
+                y += max(line_height, font_size * 1.2)
+
+def draw_slide_image(slide, slide_num, total):
+    """Render a slide as a PIL Image."""
+    img = Image.new('RGB', (W, H), color=BG_DARK)
     draw = ImageDraw.Draw(img)
 
-    # Try to load fonts
-    try:
-        font_bold = ImageFont.truetype("arialbd.ttf", 24)
-        font_regular = ImageFont.truetype("arial.ttf", 18)
-        font_small = ImageFont.truetype("arial.ttf", 14)
-        font_large = ImageFont.truetype("arialbd.ttf", 36)
-        font_xlarge = ImageFont.truetype("arialbd.ttf", 48)
-    except:
-        font_bold = ImageFont.load_default()
-        font_regular = ImageFont.load_default()
-        font_small = ImageFont.load_default()
-        font_large = font_bold
-        font_xlarge = font_bold
+    draw_bg(draw, W, H)
 
-    # Collect all shapes
-    shapes_data = []
-
+    # Draw shapes (rectangles first, then text)
     for shape in slide.shapes:
-        left_px = int(shape.left / 914400 * DPI)
-        top_px = int(shape.top / 914400 * DPI)
-        width_px = int(shape.width / 914400 * DPI)
-        height_px = int(shape.height / 914400 * DPI)
+        if not shape.has_text_frame:
+            draw_shape(shape, draw)
 
-        shape_type = shape.shape_type
+    # Draw textboxes
+    for shape in slide.shapes:
+        if shape.has_text_frame:
+            draw_textbox(shape, draw)
 
-        if hasattr(shape, "text_frame") and shape.has_text_frame:
-            text = shape.text_frame.text.strip()
-            if text:
-                # Determine text style from shape
-                font_size = 18
-                fill_color = TEXT_COLOR
-                bold = False
-
-                for para in shape.text_frame.paragraphs:
-                    for run in para.runs:
-                        if run.font.size:
-                            font_size = int(run.font.size.pt)
-                        if run.font.bold:
-                            bold = True
-                        if run.font.color and hasattr(run.font.color, 'rgb'):
-                            fill_color = (run.font.color.rgb[0],
-                                          run.font.color.rgb[1],
-                                          run.font.color.rgb[2])
-
-                shapes_data.append({
-                    'type': 'text',
-                    'x': left_px, 'y': top_px,
-                    'w': width_px, 'h': height_px,
-                    'text': text,
-                    'font_size': font_size,
-                    'fill': fill_color,
-                    'bold': bold
-                })
-
-        if hasattr(shape, 'fill') and shape.fill and hasattr(shape.fill, 'fore_color'):
-            fill = shape.fill
-            if hasattr(fill.fore_color, 'rgb') and fill.fore_color.rgb:
-                fc = fill.fore_color.rgb
-                fill_rgb = (fc[0], fc[1], fc[2])
-                shapes_data.append({
-                    'type': 'shape',
-                    'x': left_px, 'y': top_px,
-                    'w': width_px, 'h': height_px,
-                    'fill': fill_rgb
-                })
-
-    # Draw background gradient simulation (dark navy)
-    for i in range(img_height):
-        ratio = i / img_height
-        r = int(BG_COLOR[0] * (1 - ratio * 0.3))
-        g = int(BG_COLOR[1] * (1 - ratio * 0.2))
-        b = int(BG_COLOR[2] * (1 + ratio * 0.1))
-        b = min(255, b)
-        draw.line([(0, i), (img_width, i)], fill=(r, g, b))
-
-    # Draw all shapes
-    for sd in shapes_data:
-        if sd['type'] == 'shape':
-            fill_rgb = sd['fill']
-            # Only draw if it's a background/rectangle shape
-            if sd['w'] > 50 and sd['h'] > 20:
-                draw.rectangle([sd['x'], sd['y'], sd['x']+sd['w'], sd['y']+sd['h']],
-                             fill=fill_rgb)
-
-    # Draw text shapes
-    for sd in shapes_data:
-        if sd['type'] == 'text' and sd['text']:
-            font_size = sd['font_size']
-            if sd['bold']:
-                try:
-                    fnt = ImageFont.truetype("arialbd.ttf", font_size)
-                except:
-                    fnt = font_bold
-            else:
-                try:
-                    fnt = ImageFont.truetype("arial.ttf", font_size)
-                except:
-                    fnt = font_regular
-
-            # Wrap text
-            text = sd['text']
-            max_width = max(sd['w'], 100)
-            lines = []
-            words = text.split()
-            current_line = ""
-            for word in words:
-                test_line = current_line + (" " if current_line else "") + word
-                try:
-                    bbox = draw.textbbox((0, 0), test_line, font=fnt)
-                    if bbox[2] - bbox[0] <= max_width:
-                        current_line = test_line
-                    else:
-                        if current_line:
-                            lines.append(current_line)
-                        current_line = word
-                except:
-                    lines.append(current_line)
-                    break
-            if current_line:
-                lines.append(current_line)
-
-            y = sd['y']
-            for line in lines:
-                if y < img_height - 5:
-                    draw.text((sd['x'], y), line, font=fnt, fill=sd['fill'])
-                    try:
-                        bbox = draw.textbbox((0, 0), line, font=fnt)
-                        line_height = bbox[3] - bbox[1] + 4
-                    except:
-                        line_height = font_size + 4
-                    y += max(line_height, font_size + 4)
-
-    # Add slide number
-    try:
-        fnt_small = ImageFont.truetype("arial.ttf", 12)
-    except:
-        fnt_small = font_small
-    draw.text((img_width - 60, img_height - 30), f"{slide_num}/{total}",
-               font=fnt_small, fill=(150, 150, 150))
+    # Slide number footer
+    font_small = make_font(10)
+    draw.text((W - 80, H - 30), f"{slide_num} / {total}",
+               font=font_small, fill=(120, 130, 160))
 
     return img
 
-# Create images for each slide
 print("Generating slide images...")
 images = []
+total = len(prs.slides)
 for i, slide in enumerate(prs.slides, 1):
-    print(f"  Slide {i}/{len(prs.slides)}...", end="")
-    img = draw_slide_as_image(slide, i, len(prs.slides))
+    print(f"  Slide {i}/{total}...", end="", flush=True)
+    img = draw_slide_image(slide, i, total)
     images.append(img)
-    print(" done")
+    print(" OK")
 
-# Save as PDF using Pillow
-print(f"Saving PDF to {pdf_path}...")
+print(f"\nSaving PDF: {pdf_path}")
 images[0].save(
     pdf_path,
     save_all=True,
@@ -220,5 +225,5 @@ images[0].save(
     resolution=DPI
 )
 
-print(f"PDF saved: {pdf_path}")
-print(f"PDF size: {os.path.getsize(pdf_path)} bytes")
+size_mb = os.path.getsize(pdf_path) / 1024 / 1024
+print(f"Done! PDF size: {size_mb:.2f} MB")
