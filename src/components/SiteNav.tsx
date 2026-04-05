@@ -111,31 +111,29 @@ export default function SiteNav({ activePath }: SiteNavProps) {
     <header className="border-b border-gray-800/60 bg-gray-950/90 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-5 h-14 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 select-none">
-          {/* Axis Mark SVG Icon */}
-          <svg width="34" height="40" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <Link href="/" className="flex items-center gap-3 shrink-0 select-none">
+          {/* Axis Mark SVG Icon - 横向拉宽变胖 */}
+          <svg width="40" height="38" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <linearGradient id="nav-bar-grad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#00d4aa"/>
                 <stop offset="100%" stopColor="#0072ff"/>
               </linearGradient>
             </defs>
-            {/* 5 bars — normal distribution heights: 18/28/44/28/18 */}
-            <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#nav-bar-grad)" opacity="0.40"/>
-            <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#nav-bar-grad)" opacity="0.65"/>
-            <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#nav-bar-grad)" opacity="1.0"/>
-            <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#nav-bar-grad)" opacity="0.65"/>
-            <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#nav-bar-grad)" opacity="0.40"/>
-            {/* Glow dot */}
-            <circle cx="21.5" cy="5" r="3" fill="#00d4aa" opacity="0.85"/>
+            {/* 5 bars - 胖版横向拉伸 */}
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#nav-bar-grad)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#nav-bar-grad)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#nav-bar-grad)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#nav-bar-grad)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#nav-bar-grad)" opacity="0.40"/>
           </svg>
 
-          {/* Wordmark: AMORA / insights, two lines */}
-          <div className="flex flex-col items-start gap-px leading-none">
-            <span className="text-[17px] font-bold tracking-tight text-white" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '-0.025em' }}>
+          {/* Wordmark: AMORA / insights - Inter字体，上下等宽对齐 */}
+          <div className="flex flex-col items-start gap-[3px] leading-none">
+            <span className="text-[19px] font-semibold text-white" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '0.08em' }}>
               AMORA
             </span>
-            <span className="text-[8px] font-medium tracking-[0.12em] uppercase text-blue-400" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+            <span className="text-[9px] font-medium text-blue-400 lowercase" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '0.55em' }}>
               insights
             </span>
           </div>

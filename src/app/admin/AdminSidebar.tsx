@@ -18,6 +18,7 @@ const NAV = [
     section: 'Users & Growth',
     items: [
       { href: '/admin/users',       label: 'Users',       icon: '👤' },
+      { href: '/admin/orders',      label: 'Orders',      icon: '💳' },
       { href: '/admin/analytics',   label: 'Analytics',   icon: '📈' },
       { href: '/admin/subscribers', label: 'Subscribers', icon: '📬' },
     ],
