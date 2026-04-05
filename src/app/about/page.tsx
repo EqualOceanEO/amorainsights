@@ -68,7 +68,7 @@ export default function AboutPage() {
               href="/signup"
               className="text-sm bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg font-semibold transition"
             >
-              Start Free Trial
+              Subscribe Now
             </Link>
           </div>
         </div>
@@ -166,7 +166,7 @@ export default function AboutPage() {
             href="/signup"
             className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-lg transition"
           >
-            Start Free Trial
+            Subscribe Now
           </Link>
           <Link
             href="/industries"

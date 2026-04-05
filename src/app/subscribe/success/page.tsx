@@ -20,7 +20,7 @@ export default function SuccessPage() {
           Welcome to <span className="text-blue-400">AMORA Pro</span>
         </h1>
         <p className="text-slate-400 text-base leading-relaxed mb-8">
-          Your 7-day free trial has started. You now have full access to all reports and deep-dive analysis.
+          Your subscription is now active. You have full access to all reports and deep-dive analysis.
         </p>
 
         <div className="bg-white/3 border border-white/8 rounded-xl p-5 mb-8 text-left space-y-3">

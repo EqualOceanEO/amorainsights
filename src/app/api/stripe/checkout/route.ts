@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
       metadata: { plan, source: 'web_checkout' },
       subscription_data: {
         metadata: { plan },
-        trial_period_days: 7,  // 7-day free trial
       },
       allow_promotion_codes: true,
     });

@@ -147,7 +147,7 @@ export default function ProPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-600/10 border border-blue-600/20 text-blue-400 text-xs tracking-widest uppercase mb-6">
-            7-day free trial · Cancel anytime
+            Cancel anytime
           </div>
           <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight mb-4">
             Go deeper with <span className="text-blue-400">AMORA Pro</span>
@@ -240,9 +240,9 @@ export default function ProPage() {
                   onClick={handleDirectCheckout}
                   disabled={loading}
                   className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-sm py-3 rounded-lg transition">
-                  {loading ? 'Redirecting...' : 'Start 7-day free trial →'}
+                  {loading ? 'Redirecting to checkout...' : 'Subscribe Now →'}
                 </button>
-                <p className="text-xs text-slate-600 text-center">No charge during trial · Cancel anytime</p>
+                <p className="text-xs text-slate-600 text-center">Cancel anytime</p>
               </div>
             ) : (
               /* Not logged in: show email input */
@@ -260,9 +260,9 @@ export default function ProPage() {
                   onClick={handleCheckout}
                   disabled={loading}
                   className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-sm py-3 rounded-lg transition">
-                  {loading ? 'Redirecting...' : 'Start 7-day free trial →'}
+                  {loading ? 'Redirecting to checkout...' : 'Subscribe Now →'}
                 </button>
-                <p className="text-xs text-slate-600 text-center">No charge during trial · Cancel anytime</p>
+                <p className="text-xs text-slate-600 text-center">Cancel anytime</p>
               </div>
             )}
           </div>
@@ -273,8 +273,8 @@ export default function ProPage() {
           <h2 className="text-sm font-semibold text-slate-400 tracking-widest uppercase mb-6 text-center">FAQ</h2>
           <div className="space-y-4">
             {[
-              { q: 'What happens after the free trial?', a: 'You\'ll be charged at the start of your billing cycle. We\'ll send a reminder 3 days before the trial ends.' },
               { q: 'Can I cancel anytime?', a: 'Yes. Cancel from your account settings or email us — no questions asked.' },
+              { q: 'What happens when I subscribe?', a: 'You\'ll get instant access to all Pro content immediately after payment. The subscription renews monthly unless cancelled.' },
               { q: 'What payment methods are accepted?', a: 'All major credit and debit cards via Stripe. Secure, encrypted checkout.' },
               { q: 'Is there a team or institutional plan?', a: 'Yes. Contact us at hello@amorainsights.com for enterprise pricing.' },
             ].map(item => (

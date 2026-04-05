@@ -9,7 +9,7 @@ export default function SignupPage() {
             href="/subscribe"
             className="block w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition"
           >
-            Start Free Trial
+            Subscribe Free
           </a>
           <a
             href="/subscribe/pro"
