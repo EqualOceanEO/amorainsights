@@ -112,15 +112,14 @@ export default function SiteNav({ activePath }: SiteNavProps) {
       <div className="max-w-7xl mx-auto px-5 h-14 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 shrink-0 select-none">
-          {/* Axis Mark SVG Icon - 横向拉宽变胖 */}
-          <svg width="40" height="38" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          {/* Axis Mark SVG Icon */}
+          <svg width="32" height="30" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <linearGradient id="nav-bar-grad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#00d4aa"/>
                 <stop offset="100%" stopColor="#0072ff"/>
               </linearGradient>
             </defs>
-            {/* 5 bars - 胖版横向拉伸 */}
             <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#nav-bar-grad)" opacity="0.40"/>
             <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#nav-bar-grad)" opacity="0.65"/>
             <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#nav-bar-grad)" opacity="1.0"/>
@@ -128,15 +127,10 @@ export default function SiteNav({ activePath }: SiteNavProps) {
             <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#nav-bar-grad)" opacity="0.40"/>
           </svg>
 
-          {/* Wordmark: AMORA / insights - Inter字体，上下等宽对齐 */}
-          <div className="flex flex-col items-start gap-[3px] leading-none">
-            <span className="text-[19px] font-semibold text-white" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '0.08em' }}>
-              AMORA
-            </span>
-            <span className="text-[9px] font-medium text-blue-400 lowercase" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '0.55em' }}>
-              insights
-            </span>
-          </div>
+          {/* Wordmark: AMORA only */}
+          <span className="text-[22px] font-bold text-white leading-none" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '0.10em' }}>
+            AMORA
+          </span>
         </Link>
 
         {/* Nav links */}
