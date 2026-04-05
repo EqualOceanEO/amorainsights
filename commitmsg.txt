@@ -1,8 +1,9 @@
-﻿feat(admin): redesign subscribers management — edit, delete, export, auth
+﻿fix: add stripe verify API, auto-activate Pro after checkout
 
-- Add auth to GET /api/admin/subscribers/list (secret OR admin session)
-- Add GET/PATCH/DELETE /api/admin/subscribers/[id]
-- Add GET /api/admin/subscribers/export (CSV download)
-- Expand list API fields: confirmed_at, plan, plan_status, stripe_customer_id
-- Redesign admin subscribers page: edit modal, delete confirm, CSV export button,
-  stats tabs (overview + by-source), plan badges, hover action buttons
+- Add /api/stripe/verify endpoint: queries Stripe session status
+  and updates users.subscription_tier to 'pro' on payment success
+- Convert success page to Client Component: auto-calls verify API
+  on load to immediately activate subscription
+- Add missing columns to subscribers table (plan, plan_status,
+  stripe_customer_id) for webhook compatibility
+- Manually activate amorainsight@gmail.com Pro tier

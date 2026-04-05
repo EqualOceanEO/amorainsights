@@ -87,9 +87,22 @@ export default function PremiumWall({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/auth/session')
-      .then((res) => res.ok ? res.json() : null)
-      .then((data) => setSession(data))
+    Promise.all([
+      fetch('/api/auth/session').then((res) => res.ok ? res.json() : null),
+    ])
+      .then(async ([sessionData]) => {
+        if (sessionData?.user?.email) {
+          // Cross-check tier directly from DB to avoid stale JWT cache
+          try {
+            const tierRes = await fetch('/api/user/tier');
+            if (tierRes.ok) {
+              const { tier } = await tierRes.json();
+              sessionData.user.subscriptionTier = tier;
+            }
+          } catch { /* non-critical */ }
+        }
+        setSession(sessionData);
+      })
       .catch(() => setSession(null))
       .finally(() => setLoading(false));
   }, []);

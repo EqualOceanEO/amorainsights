@@ -19,6 +19,11 @@ export default function SuccessPage() {
       .then(data => {
         if (data.success) {
           setVerified(true);
+          // After a short delay, hard-refresh the page so SiteNav re-fetches
+          // session with the updated subscriptionTier=pro from DB
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         } else {
           setError(data.error || 'Verification failed');
         }

@@ -35,13 +35,25 @@ export default function SiteNav({ activePath }: SiteNavProps) {
   const isPro = user?.subscriptionTier === 'pro';
   const userName = user?.name || user?.email?.split('@')[0] || 'User';
 
-  // Fetch session on mount
+  // Fetch session on mount, then cross-check tier from DB directly
+  // (JWT may cache stale subscriptionTier; DB is always authoritative)
   const fetchSession = useCallback(async () => {
     try {
       const res = await fetch('/api/auth/session');
       if (res.ok) {
         const data = await res.json();
-        setUser(data.user);
+        const user = data.user;
+        // If logged in, fetch tier directly from DB to avoid stale JWT cache
+        if (user?.email) {
+          try {
+            const tierRes = await fetch('/api/user/tier');
+            if (tierRes.ok) {
+              const { tier } = await tierRes.json();
+              user.subscriptionTier = tier;
+            }
+          } catch { /* non-critical, keep session value */ }
+        }
+        setUser(user);
       }
     } catch {
       // Silent fail — stay logged out
