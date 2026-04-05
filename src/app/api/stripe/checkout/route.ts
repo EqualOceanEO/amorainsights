@@ -21,6 +21,11 @@ export async function POST(req: NextRequest) {
     apiVersion: '2026-02-25.clover',
   });
 
+  // Quick env check
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json({ error: 'Stripe is not configured. Please set STRIPE_SECRET_KEY env var.' }, { status: 500 });
+  }
+
   try {
     const { email, plan } = await req.json();
 
@@ -48,9 +53,10 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (e) {
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : 'Unknown error';
     console.error('[stripe/checkout] error:', e);
-    return NextResponse.json({ error: 'Failed to create checkout session' }, { status: 500 });
+    return NextResponse.json({ error: `Checkout failed: ${msg}` }, { status: 500 });
   }
 }
 
