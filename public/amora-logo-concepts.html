@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMORA Logo Concepts</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #030812;
+    color: #fff;
+    font-family: -apple-system, 'Inter', sans-serif;
+    padding: 40px 24px;
+  }
+  h1 {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #3b82f6;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 60px;
+  }
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .concept-card {
+    background: #0a1220;
+    border: 1px solid #1e2d45;
+    border-radius: 16px;
+    padding: 40px 32px;
+  }
+  .concept-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #334155;
+    margin-bottom: 32px;
+  }
+
+  /* Preview area */
+  .preview-dark {
+    background: #060d1c;
+    border-radius: 10px;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+  }
+  .preview-light {
+    background: #f0f4ff;
+    border-radius: 10px;
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+  }
+  .preview-icon-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .preview-icon-dark {
+    background: #060d1c;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .preview-icon-light {
+    background: #f0f4ff;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .concept-desc {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.6;
+    border-top: 1px solid #1e2d45;
+    padding-top: 16px;
+  }
+  .concept-desc strong { color: #94a3b8; }
+
+  /* ── CONCEPT A: Orbit Diamond ── */
+  .logo-a { display: flex; align-items: center; gap: 12px; }
+  .logo-a-mark {
+    width: 40px; height: 40px;
+    position: relative; flex-shrink: 0;
+  }
+  .logo-a-wordmark { line-height: 1; }
+  .logo-a-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #fff;
+    font-family: Georgia, serif;
+  }
+  .logo-a-sub {
+    font-size: 8px;
+    letter-spacing: 3.5px;
+    color: #3b82f6;
+    font-family: -apple-system, sans-serif;
+    font-weight: 400;
+  }
+  /* Light version */
+  .logo-a-light .logo-a-title { color: #0f172a; }
+
+  /* ── CONCEPT B: Signal Arc ── */
+  .logo-b { display: flex; align-items: center; gap: 14px; }
+  .logo-b-wordmark { line-height: 1; }
+  .logo-b-title {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #fff 0%, #93c5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  }
+  .logo-b-sub {
+    font-size: 8.5px;
+    letter-spacing: 2.5px;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .logo-b-light .logo-b-title {
+    background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── CONCEPT C: Hex ── */
+  .logo-c { display: flex; align-items: center; gap: 14px; }
+  .logo-c-wordmark { line-height: 1; }
+  .logo-c-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: #f8fafc;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  }
+  .logo-c-sep {
+    width: 28px; height: 1px;
+    background: linear-gradient(90deg, #3b82f6, transparent);
+    margin: 5px 0 4px;
+  }
+  .logo-c-sub {
+    font-size: 7.5px;
+    letter-spacing: 3px;
+    color: #3b82f6;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .logo-c-light .logo-c-title { color: #0f172a; }
+  .logo-c-light .logo-c-sep {
+    background: linear-gradient(90deg, #1d4ed8, transparent);
+  }
+  .logo-c-light .logo-c-sub { color: #1d4ed8; }
+
+  /* ── CONCEPT D: Minimal Monogram ── */
+  .logo-d { display: flex; align-items: center; gap: 16px; }
+  .logo-d-wordmark { line-height: 1; }
+  .logo-d-title {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    color: #fff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+  }
+  .logo-d-sub {
+    font-size: 7px;
+    letter-spacing: 4px;
+    color: #475569;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .logo-d-light .logo-d-title { color: #0f172a; }
+  .logo-d-light .logo-d-sub { color: #475569; }
+
+  /* Icon only row labels */
+  .icon-label {
+    font-size: 11px;
+    color: #334155;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 720px) {
+    .concept-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>AMORA Insights — Logo Concepts</h1>
+<p class="subtitle">4 design directions · dark + light variants · icon mark</p>
+
+<div class="concept-grid">
+
+  <!-- ══════════════════════════════════════════════
+       CONCEPT A — Orbit Diamond
+       精密感，像导航/雷达，对应"映射"概念
+  ══════════════════════════════════════════════ -->
+  <div class="concept-card">
+    <p class="concept-label">A — Orbit Diamond</p>
+
+    <!-- Dark -->
+    <div class="preview-dark">
+      <div class="logo-a">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <!-- Outer ring -->
+          <circle cx="20" cy="20" r="17" stroke="#1e3a6e" stroke-width="1" stroke-dasharray="2 3"/>
+          <!-- Inner diamond -->
+          <path d="M20 8 L29 20 L20 32 L11 20 Z" fill="none" stroke="url(#gA)" stroke-width="1.5"/>
+          <!-- Core dot -->
+          <circle cx="20" cy="20" r="3" fill="url(#gA)"/>
+          <!-- Orbit dots -->
+          <circle cx="20" cy="3" r="2" fill="#3b82f6"/>
+          <circle cx="37" cy="20" r="1.5" fill="#60a5fa" opacity="0.6"/>
+          <circle cx="20" cy="37" r="1" fill="#93c5fd" opacity="0.4"/>
+          <defs>
+            <linearGradient id="gA" x1="11" y1="8" x2="29" y2="32" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#818cf8"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-a-wordmark">
+          <div class="logo-a-title">AMORA</div>
+          <div class="logo-a-sub">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light -->
+    <div class="preview-light">
+      <div class="logo-a logo-a-light">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="17" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="2 3"/>
+          <path d="M20 8 L29 20 L20 32 L11 20 Z" fill="none" stroke="url(#gAL)" stroke-width="1.5"/>
+          <circle cx="20" cy="20" r="3" fill="url(#gAL)"/>
+          <circle cx="20" cy="3" r="2" fill="#2563eb"/>
+          <circle cx="37" cy="20" r="1.5" fill="#3b82f6" opacity="0.6"/>
+          <circle cx="20" cy="37" r="1" fill="#60a5fa" opacity="0.4"/>
+          <defs>
+            <linearGradient id="gAL" x1="11" y1="8" x2="29" y2="32" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1d4ed8"/>
+              <stop offset="100%" stop-color="#4f46e5"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-a-wordmark">
+          <div class="logo-a-title">AMORA</div>
+          <div class="logo-a-sub" style="color:#1d4ed8">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icon marks -->
+    <div class="preview-icon-row">
+      <div>
+        <div class="preview-icon-dark">
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="17" stroke="#1e3a6e" stroke-width="1" stroke-dasharray="2 3"/>
+            <path d="M20 8 L29 20 L20 32 L11 20 Z" fill="none" stroke="url(#gAI)" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="3" fill="url(#gAI)"/>
+            <circle cx="20" cy="3" r="2" fill="#3b82f6"/>
+            <defs>
+              <linearGradient id="gAI" x1="11" y1="8" x2="29" y2="32" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#818cf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">dark</p>
+      </div>
+      <div>
+        <div class="preview-icon-light">
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="17" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="2 3"/>
+            <path d="M20 8 L29 20 L20 32 L11 20 Z" fill="none" stroke="#1d4ed8" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="3" fill="#1d4ed8"/>
+            <circle cx="20" cy="3" r="2" fill="#2563eb"/>
+          </svg>
+        </div>
+        <p class="icon-label" style="color:#64748b">light</p>
+      </div>
+      <div>
+        <div class="preview-icon-dark" style="border-radius: 12px; padding: 0; overflow:hidden; width:48px; height:48px; display:flex; align-items:center; justify-content:center;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="12" fill="#060d1c"/>
+            <circle cx="24" cy="24" r="14" stroke="#1e3a6e" stroke-width="1" stroke-dasharray="2 3"/>
+            <path d="M24 12 L32 24 L24 36 L16 24 Z" fill="none" stroke="url(#gAFav)" stroke-width="1.5"/>
+            <circle cx="24" cy="24" r="3" fill="url(#gAFav)"/>
+            <circle cx="24" cy="10" r="2" fill="#3b82f6"/>
+            <defs>
+              <linearGradient id="gAFav" x1="16" y1="12" x2="32" y2="36" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#818cf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">favicon</p>
+      </div>
+    </div>
+
+    <p class="concept-desc"><strong>概念：</strong> 轨道 + 钻石切面。外圆虚线=全局视野，内菱形=精准定位，中心点=AMORA Score核心。暗示「映射全球科技版图，精准定位领先者」。适合作为专业投研品牌标识。</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CONCEPT B — Signal Arc
+       动感，像信号波形，对应"洞察/情报"概念
+  ══════════════════════════════════════════════ -->
+  <div class="concept-card">
+    <p class="concept-label">B — Signal Arc</p>
+
+    <!-- Dark -->
+    <div class="preview-dark">
+      <div class="logo-b">
+        <svg width="42" height="40" viewBox="0 0 42 40" fill="none">
+          <!-- Left arcs — signal waves -->
+          <path d="M8 20 Q12 8 21 8" stroke="#1e3a6e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M4 20 Q10 2 21 2" stroke="#2d5a9e" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <!-- Right arcs -->
+          <path d="M34 20 Q30 8 21 8" stroke="#1e3a6e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M38 20 Q32 2 21 2" stroke="#2d5a9e" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <!-- Vertical axis line -->
+          <line x1="21" y1="6" x2="21" y2="34" stroke="#334155" stroke-width="1" stroke-dasharray="2 3"/>
+          <!-- Score ring -->
+          <circle cx="21" cy="24" r="9" fill="none" stroke="url(#gB)" stroke-width="2"/>
+          <!-- A letter inside score ring -->
+          <text x="21" y="29" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="700" fill="url(#gB)">A</text>
+          <defs>
+            <linearGradient id="gB" x1="12" y1="15" x2="30" y2="33" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-b-wordmark">
+          <div class="logo-b-title">AMORA</div>
+          <div class="logo-b-sub">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light -->
+    <div class="preview-light">
+      <div class="logo-b logo-b-light">
+        <svg width="42" height="40" viewBox="0 0 42 40" fill="none">
+          <path d="M8 20 Q12 8 21 8" stroke="#bfdbfe" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M4 20 Q10 2 21 2" stroke="#93c5fd" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <path d="M34 20 Q30 8 21 8" stroke="#bfdbfe" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M38 20 Q32 2 21 2" stroke="#93c5fd" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <line x1="21" y1="6" x2="21" y2="34" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 3"/>
+          <circle cx="21" cy="24" r="9" fill="none" stroke="url(#gBL)" stroke-width="2"/>
+          <text x="21" y="29" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="700" fill="url(#gBL)">A</text>
+          <defs>
+            <linearGradient id="gBL" x1="12" y1="15" x2="30" y2="33" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1d4ed8"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-b-wordmark">
+          <div class="logo-b-title">AMORA</div>
+          <div class="logo-b-sub" style="color:#64748b">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icon marks -->
+    <div class="preview-icon-row">
+      <div>
+        <div class="preview-icon-dark">
+          <svg width="32" height="32" viewBox="0 0 42 40" fill="none">
+            <path d="M8 20 Q12 8 21 8" stroke="#1e3a6e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M4 20 Q10 2 21 2" stroke="#2d5a9e" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+            <path d="M34 20 Q30 8 21 8" stroke="#1e3a6e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M38 20 Q32 2 21 2" stroke="#2d5a9e" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+            <circle cx="21" cy="24" r="9" fill="none" stroke="url(#gBI)" stroke-width="2"/>
+            <text x="21" y="29" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="700" fill="url(#gBI)">A</text>
+            <defs>
+              <linearGradient id="gBI" x1="12" y1="15" x2="30" y2="33" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">dark</p>
+      </div>
+      <div>
+        <div class="preview-icon-light">
+          <svg width="32" height="32" viewBox="0 0 42 40" fill="none">
+            <path d="M8 20 Q12 8 21 8" stroke="#bfdbfe" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M34 20 Q30 8 21 8" stroke="#bfdbfe" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <circle cx="21" cy="24" r="9" fill="none" stroke="#1d4ed8" stroke-width="2"/>
+            <text x="21" y="29" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="700" fill="#1d4ed8">A</text>
+          </svg>
+        </div>
+        <p class="icon-label" style="color:#64748b">light</p>
+      </div>
+      <div>
+        <div class="preview-icon-dark" style="border-radius: 12px; padding: 0; overflow:hidden; width:48px; height:48px; display:flex; align-items:center; justify-content:center;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="12" fill="#060d1c"/>
+            <path d="M10 24 Q14 13 24 13" stroke="#1e3a6e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M38 24 Q34 13 24 13" stroke="#1e3a6e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <circle cx="24" cy="28" r="9" fill="none" stroke="url(#gBFav)" stroke-width="2"/>
+            <text x="24" y="33" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="700" fill="url(#gBFav)">A</text>
+            <defs>
+              <linearGradient id="gBFav" x1="15" y1="19" x2="33" y2="37" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">favicon</p>
+      </div>
+    </div>
+
+    <p class="concept-desc"><strong>概念：</strong> 信号弧 + AMORA Score指针。弧线代表「情报扫描/雷达探测」，底部圆环中的「A」是AMORA Score的视觉符号。蓝→紫渐变暗示「深度」与「洞察」。</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CONCEPT C — Axis Mark
+       极简，适合小尺寸，强数据感
+  ══════════════════════════════════════════════ -->
+  <div class="concept-card">
+    <p class="concept-label">C — Axis Mark</p>
+
+    <!-- Dark -->
+    <div class="preview-dark">
+      <div class="logo-c">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <!-- 5-bar chart: representing 5 AMORA dimensions -->
+          <rect x="3" y="26" width="5" height="7" rx="1.5" fill="url(#gC)" opacity="0.4"/>
+          <rect x="10" y="20" width="5" height="13" rx="1.5" fill="url(#gC)" opacity="0.6"/>
+          <rect x="17" y="12" width="5" height="21" rx="1.5" fill="url(#gC)" opacity="0.8"/>
+          <rect x="24" y="7" width="5" height="26" rx="1.5" fill="url(#gC)"/>
+          <!-- Rising accent line -->
+          <path d="M5.5 27 L12.5 21 L19.5 13 L26.5 8" stroke="#93c5fd" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2" opacity="0.5"/>
+          <!-- Score dot at peak -->
+          <circle cx="26.5" cy="8" r="2.5" fill="#60a5fa"/>
+          <defs>
+            <linearGradient id="gC" x1="3" y1="0" x2="30" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1d4ed8"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-c-wordmark">
+          <div class="logo-c-title">AMORA</div>
+          <div class="logo-c-sep"></div>
+          <div class="logo-c-sub">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light -->
+    <div class="preview-light">
+      <div class="logo-c logo-c-light">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <rect x="3" y="26" width="5" height="7" rx="1.5" fill="url(#gCL)" opacity="0.4"/>
+          <rect x="10" y="20" width="5" height="13" rx="1.5" fill="url(#gCL)" opacity="0.6"/>
+          <rect x="17" y="12" width="5" height="21" rx="1.5" fill="url(#gCL)" opacity="0.8"/>
+          <rect x="24" y="7" width="5" height="26" rx="1.5" fill="url(#gCL)"/>
+          <path d="M5.5 27 L12.5 21 L19.5 13 L26.5 8" stroke="#3b82f6" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2" opacity="0.5"/>
+          <circle cx="26.5" cy="8" r="2.5" fill="#2563eb"/>
+          <defs>
+            <linearGradient id="gCL" x1="3" y1="0" x2="30" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1d4ed8"/>
+              <stop offset="100%" stop-color="#0891b2"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-c-wordmark">
+          <div class="logo-c-title">AMORA</div>
+          <div class="logo-c-sep"></div>
+          <div class="logo-c-sub">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icon marks -->
+    <div class="preview-icon-row">
+      <div>
+        <div class="preview-icon-dark">
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+            <rect x="3" y="26" width="5" height="7" rx="1.5" fill="url(#gCI)" opacity="0.4"/>
+            <rect x="10" y="20" width="5" height="13" rx="1.5" fill="url(#gCI)" opacity="0.6"/>
+            <rect x="17" y="12" width="5" height="21" rx="1.5" fill="url(#gCI)" opacity="0.8"/>
+            <rect x="24" y="7" width="5" height="26" rx="1.5" fill="url(#gCI)"/>
+            <circle cx="26.5" cy="8" r="2.5" fill="#60a5fa"/>
+            <defs>
+              <linearGradient id="gCI" x1="3" y1="0" x2="30" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">dark</p>
+      </div>
+      <div>
+        <div class="preview-icon-light">
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+            <rect x="3" y="26" width="5" height="7" rx="1.5" fill="#1d4ed8" opacity="0.4"/>
+            <rect x="10" y="20" width="5" height="13" rx="1.5" fill="#1d4ed8" opacity="0.6"/>
+            <rect x="17" y="12" width="5" height="21" rx="1.5" fill="#1d4ed8" opacity="0.8"/>
+            <rect x="24" y="7" width="5" height="26" rx="1.5" fill="#1d4ed8"/>
+            <circle cx="26.5" cy="8" r="2.5" fill="#1d4ed8"/>
+          </svg>
+        </div>
+        <p class="icon-label" style="color:#64748b">light</p>
+      </div>
+      <div>
+        <div class="preview-icon-dark" style="border-radius: 12px; padding: 0; overflow:hidden; width:48px; height:48px; display:flex; align-items:center; justify-content:center;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="12" fill="#060d1c"/>
+            <rect x="6" y="34" width="6" height="8" rx="2" fill="url(#gCFav)" opacity="0.4"/>
+            <rect x="15" y="28" width="6" height="14" rx="2" fill="url(#gCFav)" opacity="0.6"/>
+            <rect x="24" y="20" width="6" height="22" rx="2" fill="url(#gCFav)" opacity="0.8"/>
+            <rect x="33" y="12" width="6" height="30" rx="2" fill="url(#gCFav)"/>
+            <circle cx="36" cy="12" r="3" fill="#60a5fa"/>
+            <defs>
+              <linearGradient id="gCFav" x1="6" y1="0" x2="40" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">favicon</p>
+      </div>
+    </div>
+
+    <p class="concept-desc"><strong>概念：</strong> 五维柱状图 = AMORA五维评分框架。高度递增的5根柱子暗示「领先者的五项优势逐步建立」，顶部蓝色圆点=达到最高分。蓝→青渐变，干净、现代、直接传递「数据+排名」。</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CONCEPT D — Serif Monogram
+       高端感，像高盛/麦肯锡风格，适合B2B
+  ══════════════════════════════════════════════ -->
+  <div class="concept-card">
+    <p class="concept-label">D — Serif Monogram</p>
+
+    <!-- Dark -->
+    <div class="preview-dark">
+      <div class="logo-d">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <!-- Outer square — precision frame -->
+          <rect x="3" y="3" width="38" height="38" rx="4" stroke="url(#gD)" stroke-width="1.5" fill="none"/>
+          <!-- Corner accents -->
+          <path d="M3 12 L3 3 L12 3" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M32 3 L41 3 L41 12" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <path d="M41 32 L41 41 L32 41" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+          <path d="M12 41 L3 41 L3 32" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.2"/>
+          <!-- A monogram -->
+          <text x="22" y="29" text-anchor="middle"
+            font-family="Georgia, 'Times New Roman', serif"
+            font-size="22" font-weight="700"
+            fill="url(#gD)">A</text>
+          <defs>
+            <linearGradient id="gD" x1="3" y1="3" x2="41" y2="41" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#6366f1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-d-wordmark">
+          <div class="logo-d-title">AMORA</div>
+          <div class="logo-d-sub">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light -->
+    <div class="preview-light">
+      <div class="logo-d logo-d-light">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect x="3" y="3" width="38" height="38" rx="4" stroke="url(#gDL)" stroke-width="1.5" fill="none"/>
+          <path d="M3 12 L3 3 L12 3" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M32 3 L41 3 L41 12" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <path d="M41 32 L41 41 L32 41" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+          <path d="M12 41 L3 41 L3 32" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.2"/>
+          <text x="22" y="29" text-anchor="middle"
+            font-family="Georgia, 'Times New Roman', serif"
+            font-size="22" font-weight="700"
+            fill="url(#gDL)">A</text>
+          <defs>
+            <linearGradient id="gDL" x1="3" y1="3" x2="41" y2="41" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1d4ed8"/>
+              <stop offset="100%" stop-color="#4f46e5"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-d-wordmark">
+          <div class="logo-d-title">AMORA</div>
+          <div class="logo-d-sub">INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icon marks -->
+    <div class="preview-icon-row">
+      <div>
+        <div class="preview-icon-dark">
+          <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+            <rect x="3" y="3" width="38" height="38" rx="4" stroke="url(#gDI)" stroke-width="1.5" fill="none"/>
+            <path d="M3 12 L3 3 L12 3" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <path d="M32 3 L41 3 L41 12" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+            <text x="22" y="29" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" fill="url(#gDI)">A</text>
+            <defs>
+              <linearGradient id="gDI" x1="3" y1="3" x2="41" y2="41" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">dark</p>
+      </div>
+      <div>
+        <div class="preview-icon-light">
+          <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+            <rect x="3" y="3" width="38" height="38" rx="4" stroke="#1d4ed8" stroke-width="1.5" fill="none"/>
+            <path d="M3 12 L3 3 L12 3" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <path d="M32 3 L41 3 L41 12" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+            <text x="22" y="29" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" fill="#1d4ed8">A</text>
+          </svg>
+        </div>
+        <p class="icon-label" style="color:#64748b">light</p>
+      </div>
+      <div>
+        <div class="preview-icon-dark" style="border-radius: 12px; padding: 0; overflow:hidden; width:48px; height:48px; display:flex; align-items:center; justify-content:center;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="12" fill="#060d1c"/>
+            <rect x="6" y="6" width="36" height="36" rx="4" stroke="url(#gDFav)" stroke-width="1.5" fill="none"/>
+            <path d="M6 15 L6 6 L15 6" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <path d="M33 6 L42 6 L42 15" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+            <text x="24" y="33" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" fill="url(#gDFav)">A</text>
+            <defs>
+              <linearGradient id="gDFav" x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="icon-label">favicon</p>
+      </div>
+    </div>
+
+    <p class="concept-desc"><strong>概念：</strong> 精密边框 + 衬线字母A。四角切割 = 「精准聚焦的四个维度」；衬线体"A"代表AMORA首字母，同时暗示「学术级严谨」。整体气质更接近Bloomberg/高盛报告的品牌感，适合机构客户。</p>
+  </div>
+
+</div>
+
+<!-- Bottom note -->
+<div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #1e2d45; display:flex; justify-content: space-between; align-items: center;">
+  <p style="font-size: 11px; color: #334155;">
+    Select one direction → I'll update all SVG files, favicon, OG image, and SiteNav
+  </p>
+  <p style="font-size: 11px; color: #475569;">
+    A = Orbit · B = Signal · C = Axis · D = Serif
+  </p>
+</div>
+
+</body>
+</html>

@@ -1,8 +1,1 @@
-﻿feat: add AMORA scores to 42 humanoid robot companies
-
-- Update Company interface with all 6 AMORA score fields
-- Update /api/companies to include AMORA columns in SELECT
-- Add sortBy=amora support to companies API (sort by AMORA score desc)
-- Display AMORA score badge on company cards (total score + 5-dim bar)
-- Add sort dropdown (A→Z / ⭐ AMORA Score) to companies filter bar
-- Batch write 42 companies via Supabase REST API (41 from HRI-2026 report, 1 estimated)
+﻿add: AMORA logo concepts preview page

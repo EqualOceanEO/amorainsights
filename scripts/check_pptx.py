@@ -1,23 +1,22 @@
-import sys
-python_exe = r"C:\Users\51229\.workbuddy\binaries\python\versions\3.13.12\python.exe"
+from pptx import Presentation
+import io
 
-# Check for pptx
-try:
-    import pptx
-    print(f"python-pptx available: {pptx.__version__}")
-except ImportError:
-    print("python-pptx NOT available")
+prs = Presentation(r"C:\Users\51229\WorkBuddy\Claw\HRI-2026-Report-Presentation-v2.pptx")
+lines = []
+lines.append(f"Total slides: {len(prs.slides)}")
 
-# Check for pymupdf
-try:
-    import fitz
-    print(f"PyMuPDF available: {fitz.__version__}")
-except ImportError:
-    print("PyMuPDF NOT available")
+for i, slide in enumerate(prs.slides):
+    lines.append(f"=== Slide {i+1} ===")
+    for shape in slide.shapes:
+        if hasattr(shape, "text") and shape.text.strip():
+            try:
+                txt = shape.text.strip()[:100]
+                txt = txt.encode('ascii', 'replace').decode('ascii')
+                lines.append(f"  {shape.name}: {txt}")
+            except:
+                pass
 
-# Check for reportlab
-try:
-    import reportlab
-    print(f"reportlab available: {reportlab.Version}")
-except ImportError:
-    print("reportlab NOT available")
+output = "\n".join(lines)
+with open(r"C:\Users\51229\WorkBuddy\Claw\scripts\pptx_content.txt", "w", encoding="utf-8") as f:
+    f.write(output)
+print("Done - written to pptx_content.txt")
