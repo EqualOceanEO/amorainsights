@@ -9,8 +9,32 @@ export default function SiteFooter() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <Link href="/" className="text-base font-bold tracking-tight">
-              Amora<span className="text-blue-400">Insights</span>
+            <Link href="/" className="flex items-center gap-2.5 shrink-0 select-none">
+              {/* Axis Mark SVG Icon */}
+              <svg width="28" height="34" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="footer-bar-grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#00d4aa"/>
+                    <stop offset="100%" stopColor="#0072ff"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#footer-bar-grad)" opacity="0.40"/>
+                <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#footer-bar-grad)" opacity="0.65"/>
+                <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#footer-bar-grad)" opacity="1.0"/>
+                <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#footer-bar-grad)" opacity="0.65"/>
+                <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#footer-bar-grad)" opacity="0.40"/>
+                <circle cx="21.5" cy="5" r="3" fill="#00d4aa" opacity="0.75"/>
+              </svg>
+
+              {/* Wordmark */}
+              <div className="flex flex-col items-start gap-px leading-none">
+                <span className="text-[14px] font-bold tracking-tight text-white" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '-0.025em' }}>
+                  AMORA
+                </span>
+                <span className="text-[7px] font-medium tracking-[0.12em] uppercase text-blue-400" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+                  insights
+                </span>
+              </div>
             </Link>
             <p className="mt-2 text-xs text-gray-500 leading-relaxed max-w-xs">
               Mapping frontier industries. Measuring applications. Benchmarking the world.

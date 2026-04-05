@@ -46,8 +46,25 @@ export default function AboutPage() {
       {/* ── Nav ── */}
       <header className="border-b border-gray-800 bg-gray-900/60 backdrop-blur sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            Amora<span className="text-blue-400">Insights</span>
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 select-none">
+            <svg width="34" height="40" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="about-bar-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#00d4aa"/>
+                  <stop offset="100%" stopColor="#0072ff"/>
+                </linearGradient>
+              </defs>
+              <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#about-bar-grad)" opacity="0.40"/>
+              <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#about-bar-grad)" opacity="0.65"/>
+              <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#about-bar-grad)" opacity="1.0"/>
+              <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#about-bar-grad)" opacity="0.65"/>
+              <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#about-bar-grad)" opacity="0.40"/>
+              <circle cx="21.5" cy="5" r="3" fill="#00d4aa" opacity="0.85"/>
+            </svg>
+            <div className="flex flex-col items-start gap-px leading-none">
+              <span className="text-[17px] font-bold tracking-tight text-white" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '-0.025em' }}>AMORA</span>
+              <span className="text-[8px] font-medium tracking-[0.12em] uppercase text-blue-400" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>insights</span>
+            </div>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm text-gray-300">
             <Link href="/industries" className="hover:text-white transition">
@@ -195,10 +212,27 @@ export default function AboutPage() {
       <footer className="border-t border-gray-800 bg-gray-900">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
-            <div className="font-bold text-lg">
-              Amora<span className="text-blue-400">Insights</span>
+            <div className="flex items-center gap-2">
+              <svg width="28" height="34" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="about-ft-grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#00d4aa"/>
+                    <stop offset="100%" stopColor="#0072ff"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#about-ft-grad)" opacity="0.40"/>
+                <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#about-ft-grad)" opacity="0.65"/>
+                <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#about-ft-grad)" opacity="1.0"/>
+                <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#about-ft-grad)" opacity="0.65"/>
+                <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#about-ft-grad)" opacity="0.40"/>
+                <circle cx="21.5" cy="5" r="3" fill="#00d4aa" opacity="0.75"/>
+              </svg>
+              <div className="flex flex-col items-start gap-px leading-none">
+                <span className="text-[14px] font-bold tracking-tight text-white" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '-0.025em' }}>AMORA</span>
+                <span className="text-[7px] font-medium tracking-[0.12em] uppercase text-blue-400" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>insights</span>
+              </div>
             </div>
-            <div className="text-xs text-gray-500 mt-0.5">
+            <div className="text-xs text-gray-500 mt-0.5 ml-10">
               China Innovation Intelligence
             </div>
           </div>
