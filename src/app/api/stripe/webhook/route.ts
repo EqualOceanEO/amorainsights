@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 import { supabase } from '@/lib/db';
 
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? '';
@@ -12,7 +13,14 @@ const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? '';
  * Also updates users.subscription_tier for auth session
  */
 export async function POST(req: NextRequest) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '');
+  // Dynamic import for runtime — types come from the type import above
+  const { default: StripeSDK } = await import('stripe');
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json({ error: 'STRIPE_SECRET_KEY not configured' }, { status: 500 });
+  }
+
+  const stripe = new StripeSDK(process.env.STRIPE_SECRET_KEY);
 
   const body = await req.text();
   const sig = req.headers.get('stripe-signature') ?? '';

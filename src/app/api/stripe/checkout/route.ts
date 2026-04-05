@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
 
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const SITE_URL = process.env.NEXTAUTH_URL ?? 'https://amorainsights.com';
-
-// Price IDs — set these in Stripe dashboard and add to env vars
-const PRICES = {
-  pro_monthly: process.env.STRIPE_PRICE_PRO_MONTHLY ?? '',   // $14.9/month
-  pro_annual: process.env.STRIPE_PRICE_PRO_ANNUAL ?? '',     // $99/year
-};
 
 /**
  * POST /api/stripe/checkout
@@ -17,12 +11,23 @@ const PRICES = {
  * Returns: { url: string } — Stripe Checkout session URL
  */
 export async function POST(req: NextRequest) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '');
-
-  // Quick env check
-  if (!process.env.STRIPE_SECRET_KEY) {
-    return NextResponse.json({ error: 'Stripe is not configured. Please set STRIPE_SECRET_KEY env var.' }, { status: 500 });
+  // Import Stripe inside the handler to catch module load errors
+  let Stripe;
+  try {
+    Stripe = (await import('stripe')).default;
+  } catch (e) {
+    console.error('[stripe/checkout] Failed to import Stripe:', e);
+    return NextResponse.json({ error: 'Stripe SDK failed to load' }, { status: 500 });
   }
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json({ error: 'STRIPE_SECRET_KEY not configured' }, { status: 500 });
+  }
+
+  const PRICES: Record<string, string> = {
+    pro_monthly: process.env.STRIPE_PRICE_PRO_MONTHLY ?? '',
+    pro_annual: process.env.STRIPE_PRICE_PRO_ANNUAL ?? '',
+  };
 
   try {
     const { email, plan } = await req.json();
@@ -31,10 +36,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing email or plan' }, { status: 400 });
     }
 
-    const priceId = PRICES[plan as keyof typeof PRICES];
+    const priceId = PRICES[plan];
     if (!priceId) {
-      return NextResponse.json({ error: `Unknown plan: ${plan}. Set STRIPE_PRICE_${plan.toUpperCase()} env var.` }, { status: 400 });
+      return NextResponse.json({ error: `Unknown plan: ${plan}` }, { status: 400 });
     }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -57,4 +64,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `Checkout failed: ${msg}` }, { status: 500 });
   }
 }
-
