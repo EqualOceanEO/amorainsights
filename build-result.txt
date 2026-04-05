@@ -1,26 +1,22 @@
-
-> amorainsights@0.1.0 build
-> next build
-
-⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
- We detected multiple lockfiles and selected the directory of c:\Users\51229\package-lock.json as the root directory.
+﻿⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\51229\package-lock.json as the root directory.
  To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
    See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
  Detected additional lockfiles: 
-   * c:\Users\51229\WorkBuddy\Claw\package-lock.json
+   * C:\Users\51229\WorkBuddy\Claw\package-lock.json
 
 ▲ Next.js 16.1.6 (Turbopack)
-- Environments: .env
+- Environments: .env.local, .env
 
   Creating an optimized production build ...
-✓ Compiled successfully in 9.1s
+✓ Compiled successfully in 11.1s
   Running TypeScript ...
   Collecting page data using 21 workers ...
-  Generating static pages using 21 workers (0/37) ...
-  Generating static pages using 21 workers (9/37) 
-  Generating static pages using 21 workers (18/37) 
-  Generating static pages using 21 workers (27/37) 
-✓ Generating static pages using 21 workers (37/37) in 1704.8ms
+  Generating static pages using 21 workers (0/80) ...
+  Generating static pages using 21 workers (20/80) 
+  Generating static pages using 21 workers (40/80) 
+  Generating static pages using 21 workers (60/80) 
+✓ Generating static pages using 21 workers (80/80) in 570.3ms
   Finalizing page optimization ...
 
 Route (app)
@@ -44,7 +40,9 @@ Route (app)
 ├ ƒ /api/admin/analytics/users
 ├ ƒ /api/admin/companies
 ├ ƒ /api/admin/companies/[id]
+├ ƒ /api/admin/migrate
 ├ ƒ /api/admin/news
+├ ƒ /api/admin/news-generator
 ├ ƒ /api/admin/news/[id]
 ├ ƒ /api/admin/reports
 ├ ƒ /api/admin/reports/[id]
@@ -55,11 +53,12 @@ Route (app)
 ├ ƒ /api/analytics/pageview
 ├ ƒ /api/auth/[...nextauth]
 ├ ƒ /api/auth/register
+├ ƒ /api/auth/session
 ├ ƒ /api/companies
 ├ ƒ /api/internal/compliance-scan
 ├ ƒ /api/news
-├ ƒ /api/news/[id]/edit
 ├ ƒ /api/news/[slug]
+├ ƒ /api/news/[slug]/edit
 ├ ƒ /api/newsletter/send
 ├ ƒ /api/stripe/checkout
 ├ ƒ /api/stripe/webhook
@@ -70,11 +69,13 @@ Route (app)
 ├ ƒ /companies/[id]
 ├ ƒ /dashboard
 ├ ○ /industries
+├ ƒ /industries/[slug]
+├ ƒ /industries/[slug]/[sub]
 ├ ○ /login
 ├ ○ /news
 ├ ƒ /news/[slug]
 ├ ○ /pricing
-├ ƒ /reports
+├ ○ /reports
 ├ ƒ /reports/[slug]
 ├ ○ /reports/test-premium
 ├ ○ /signup

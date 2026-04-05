@@ -140,6 +140,28 @@
 - 本地构建有上层 lockfile 警告（`C:\Users\51229\package-lock.json`），不影响 Vercel 构建
 - `Company` 接口在 `src/lib/db.ts` 中定义，包含 funding、AMORA scores、team、products、supply chain 等 40+ 字段
 
+## 用户订阅 + 注册自动化（2026-04-05 部署）
+
+### 核心流程
+- **SubscribeBox 提交 email** → `/api/subscribe` → 同时完成：
+  1. Upsert `subscribers` 表（newsletter）
+  2. 若 `users` 表无此 email → 自动创建账户（random password + bcrypt），name=null（auto-created 标记）
+  3. 发送欢迎邮件（含 Set Password 链接 → `/login?email=xxx`）
+- 用户收到邮件后点链接到 /login 设置密码（但当前 /login 还不支持密码设置，需要后续开发 /account/reset-password）
+
+### Session 架构
+- `/api/auth/session` — 新建端点，供 Client Component 读取 session
+- `SiteNav` — 自主获取 session（不需要 props），登录后显示头像+下拉菜单
+- `PremiumWall` — 检查 session，Pro 用户返回 null（不渲染付费墙）
+- `auth.ts` — JWT callback 中从 DB 刷新 subscriptionTier
+- Stripe webhook — checkout/subscription 事件同时更新 `users.subscription_tier`
+
+### 前台改动
+- **Admin 入口已从 SiteNav 移除**（仅后台 /admin/* 路由保留，前台不显示链接）
+- Pro 用户在 Nav 显示 PRO 徽章（蓝色）
+- 未登录用户看到 Sign In + Start Free 按钮
+- 已登录 Free 用户看到头像 + Upgrade to Pro 菜单项
+
 ## Supabase 执行 SQL 的脚本位置
 
 - `scripts/deploy.ps1` — **一键提交+部署**（最常用）

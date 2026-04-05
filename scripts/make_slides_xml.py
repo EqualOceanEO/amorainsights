@@ -12,16 +12,21 @@ def xfrm(x,y,cx,cy):
 
 def rect_solid(sid,lx,ly,cx,cy,fill,border_color=None):
     lc = border_color if border_color else C_BORDER
-    return ('<p:sp><p:nvSpPr><p:cNvPr id="%s" name=""/><p:cNvSpPr/><p:nvPr></p:nvPr>'
-            '<p:spPr>%s<a:prstGeom prst="rect"><a:avLst></a:avLst></a:prstGeom>'
+    return ('<p:sp><p:nvSpPr><p:cNvPr id="%s" name=""/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>'
+            '<p:spPr>%s'
+            '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
             '<a:solidFill><a:srgbClr val="%s"/></a:solidFill>'
             '<a:ln w="12700"><a:solidFill><a:srgbClr val="%s"/></a:solidFill>'
-            '<a:prstDash val="solid"/></a:ln></p:spPr></p:sp>')%(sid,xfrm(lx,ly,cx,cy),fill,lc)
+            '<a:prstDash val="solid"/></a:ln>'
+            '</p:spPr></p:sp>')%(sid,xfrm(lx,ly,cx,cy),fill,lc)
 
 def rect_noline(sid,lx,ly,cx,cy,fill):
-    return ('<p:sp><p:nvSpPr><p:cNvPr id="%s" name=""/><p:cNvSpPr/><p:nvPr></p:nvPr>'
-            '<p:spPr>%s<a:prstGeom prst="rect"><a:avLst></a:avLst></a:prstGeom>'
-            '<a:solidFill><a:srgbClr val="%s"/></a:solidFill><a:ln></a:ln></p:spPr></p:sp>')%(sid,xfrm(lx,ly,cx,cy),fill)
+    return ('<p:sp><p:nvSpPr><p:cNvPr id="%s" name=""/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>'
+            '<p:spPr>%s'
+            '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
+            '<a:solidFill><a:srgbClr val="%s"/></a:solidFill>'
+            '<a:ln/>'
+            '</p:spPr></p:sp>')%(sid,xfrm(lx,ly,cx,cy),fill)
 
 def card(sid,lx,ly,cx,cy,border_col):
     return (rect_solid(sid,lx,ly,cx,cy,C_BG,C_BORDER) +
@@ -31,9 +36,13 @@ def card(sid,lx,ly,cx,cy,border_col):
 def t(sid,lx,ly,cx,cy,txt_str,sz,col,bold=False,italic=False):
     ba = ' b="1"' if bold else ''
     ia = ' i="1"' if italic else ''
-    return ('<p:sp><p:nvSpPr><p:cNvPr id="%s" name=""/><p:cNvSpPr/><p:nvPr></p:nvPr>'
-            '<p:spPr>%s<a:prstGeom prst="rect"><a:avLst></a:avLst></a:prstGeom>'
-            '<a:noFill/><a:ln></a:ln></p:spPr>'
+    # Escape XML special chars in text content
+    txt_esc = txt_str.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
+    return ('<p:sp><p:nvSpPr><p:cNvPr id="%s" name=""/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>'
+            '<p:spPr>%s'
+            '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
+            '<a:noFill/><a:ln/>'
+            '</p:spPr>'
             '<p:txBody><a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="ctr"/>'
             '<a:lstStyle/><a:p><a:pPr indent="0" marL="0"><a:buNone/></a:pPr>'
             '<a:r><a:rPr lang="en-US" sz="%s"%s%s dirty="0">'
@@ -42,7 +51,7 @@ def t(sid,lx,ly,cx,cy,txt_str,sz,col,bold=False,italic=False):
             '<a:ea typeface="Calibri" pitchFamily="34" charset="-122"/>'
             '<a:cs typeface="Calibri" pitchFamily="34" charset="-120"/>'
             '</a:rPr><a:t>%s</a:t></a:r></a:p></p:txBody></p:sp>')%(
-                sid, xfrm(lx,ly,cx,cy), sz, ba, ia, col, txt_str)
+                sid, xfrm(lx,ly,cx,cy), sz, ba, ia, col, txt_esc)
 
 def slide_shell(title, subtitle, body_xml, sid_start=200, page=9):
     hdr = rect_noline(sid_start,lx=0,ly=128016,cx=9144000,cy=54864,fill=C_CYAN)
