@@ -122,7 +122,10 @@ async function syncStripeInvoices() {
 
     const invoices = await stripe.invoices.list(params as any);
 
-    for (const inv of invoices.data) {
+    for (const rawInv of invoices.data) {
+      // Stripe TS SDK types lag behind the API; cast to access runtime fields
+      const inv = rawInv as any;
+
       const email = inv.customer_email
         ?? (typeof inv.customer === 'object' ? inv.customer?.email : null)
         ?? '';
@@ -137,8 +140,10 @@ async function syncStripeInvoices() {
         : inv.status === 'uncollectible' ? 'uncollectible'
         : inv.status ?? 'draft';
 
-      const paidAt = inv.status === 'paid' && inv.paid_at
-        ? new Date(inv.paid_at * 1000).toISOString()
+      // Stripe TS SDK may use status_transitions.paid_at or legacy paid_at
+      const paidAtTimestamp = inv.status_transitions?.paid_at ?? inv.paid_at ?? null;
+      const paidAt = inv.status === 'paid' && paidAtTimestamp
+        ? new Date(paidAtTimestamp * 1000).toISOString()
         : null;
 
       const billingPeriod = inv.billing_reason === 'subscription_create' ? 'first'
@@ -147,12 +152,13 @@ async function syncStripeInvoices() {
         : inv.billing_reason ?? null;
 
       const description = inv.lines.data.length > 0
-        ? inv.lines.data.map((l) => l.description).filter(Boolean).join(', ')
+        ? inv.lines.data.map((l: any) => l.description).filter(Boolean).join(', ')
         : null;
 
-      const plan = inv.lines.data.length > 0
-        ? (inv.lines.data[0].plan?.nickname ?? inv.lines.data[0].plan?.id ?? null)
-        : null;
+      const firstLine = inv.lines.data[0];
+      const plan = firstLine?.plan?.nickname ?? firstLine?.plan?.id
+        ?? firstLine?.price?.nickname ?? firstLine?.price?.id
+        ?? null;
 
       // Upsert by stripe_invoice_id
       const { error } = await supabase.from('orders').upsert(
