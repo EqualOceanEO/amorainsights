@@ -34,6 +34,14 @@ export default function SubscribeBox({
       if (res.ok) {
         const data = await res.json();
         if (data?.user) {
+          // Cross-check tier directly from DB to avoid stale JWT cache
+          try {
+            const tierRes = await fetch('/api/user/tier');
+            if (tierRes.ok) {
+              const { tier } = await tierRes.json();
+              data.user.subscriptionTier = tier;
+            }
+          } catch { /* non-critical */ }
           setSession(data.user);
           return data.user;
         }
@@ -176,6 +184,11 @@ export default function SubscribeBox({
         </div>
       </div>
     );
+  }
+
+  // ── Pro users: don't show subscribe box ──
+  if (session?.subscriptionTier === 'pro') {
+    return null;
   }
 
   // ── Logged-in user view ──
