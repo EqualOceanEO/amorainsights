@@ -1,13 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
+import { auth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
+
+const INTERNAL_API_SECRET = process.env.INTERNAL_API_SECRET;
+
+// Auth helper — secret OR admin session
+async function requireAdmin(req: NextRequest) {
+  const secret = req.nextUrl.searchParams.get('secret');
+  if (INTERNAL_API_SECRET && secret === INTERNAL_API_SECRET) return true;
+  const session = await auth();
+  if (!session?.user) return { error: 'Unauthorized', status: 401 };
+  const isAdmin = (session.user as { isAdmin?: boolean }).isAdmin ?? false;
+  if (!isAdmin) return { error: 'Admin access required', status: 403 };
+  return true;
+}
 
 /**
  * GET /api/admin/subscribers/list
  * Returns paginated subscriber list for admin UI
+ * Auth: INTERNAL_API_SECRET OR admin session
  */
 export async function GET(req: NextRequest) {
+  const authResult = await requireAdmin(req);
+  if (authResult !== true) {
+    return NextResponse.json({ error: authResult.error }, { status: authResult.status });
+  }
+
   const url = req.nextUrl;
   const page = parseInt(url.searchParams.get('page') ?? '1');
   const pageSize = 30;
@@ -18,7 +38,10 @@ export async function GET(req: NextRequest) {
 
   let query = supabase
     .from('subscribers')
-    .select('id, email, source, confirmed, unsubscribed, subscribed_at', { count: 'exact' })
+    .select(
+      'id, email, source, confirmed, confirmed_at, unsubscribed, subscribed_at, plan, plan_status, stripe_customer_id',
+      { count: 'exact' }
+    )
     .order('subscribed_at', { ascending: false })
     .range(from, to);
 

@@ -162,6 +162,13 @@
 - 未登录用户看到 Sign In + Start Free 按钮
 - 已登录 Free 用户看到头像 + Upgrade to Pro 菜单项
 
+### Dashboard 账户管理（2026-04-05 commit f77c9a2）
+- **布局**：`/dashboard/layout.tsx` + `DashboardSidebar.tsx`（左侧导航：Overview/Account/Newsletter(Admin)/Admin Panel）
+- **Account 页面**（`/dashboard/account`）：个人信息编辑、订阅层级显示、Newsletter 订阅/退订、密码修改
+- **Newsletter 页面**（`/dashboard/newsletter`，admin-only）：6 track section 编辑器、test email dry run、全量发送
+- **API**：`/api/user/profile`（GET+PATCH）、`/api/user/newsletter/unsubscribe`（POST 退订/DELETE 重订阅）
+- `/api/newsletter/send` 和 `/api/admin/subscribers` 同时支持 INTERNAL_API_SECRET 和 admin session 鉴权
+
 ## Supabase 执行 SQL 的脚本位置
 
 - `scripts/deploy.ps1` — **一键提交+部署**（最常用）

@@ -1,17 +1,8 @@
-﻿feat: HRI-2026 PPTX v3 - Mapping Part 2 slides (M3-M7) + auth/subscription
+﻿feat(admin): redesign subscribers management — edit, delete, export, auth
 
-PPTX fixes:
-- Add Mapping Part 2 slides (M3 China chain, M4 US chain, M5 7-dimension
-  comparison, M6 cost curve, M7 supply chain convergence) at positions 10-14
-- Fix XML structure bugs in make_slides_xml.py: rect_solid/rect_noline/t()
-  were missing </p:nvSpPr> closing tag, causing p:spPr to nest incorrectly
-  inside p:nvSpPr
-- Add XML char escaping (< > & in a:t text nodes) to prevent parse errors
-- Regenerate HRI-2026-Report-Presentation-v3.pptx (27 slides, all strict-valid)
-
-Subscription/Auth:
-- /api/subscribe: auto-create user account when email subscribes
-- /api/auth/session: new endpoint for client-side session reading
-- SiteNav: self-fetches session, PRO badge, avatar dropdown
-- PremiumWall: real session check, adapts CTA for logged-in vs anonymous users
-- /api/stripe/webhook: syncs subscription_tier to users table on all events
+- Add auth to GET /api/admin/subscribers/list (secret OR admin session)
+- Add GET/PATCH/DELETE /api/admin/subscribers/[id]
+- Add GET /api/admin/subscribers/export (CSV download)
+- Expand list API fields: confirmed_at, plan, plan_status, stripe_customer_id
+- Redesign admin subscribers page: edit modal, delete confirm, CSV export button,
+  stats tabs (overview + by-source), plan badges, hover action buttons
