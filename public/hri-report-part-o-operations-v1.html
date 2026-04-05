@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Humanoid Robot Index 2026 - Part O: Operations & Commercialization</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0d1f22 50%, #162113 100%);
+            min-height: 100vh; color: #fff;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .report-header {
+            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px;
+            margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
+        }
+        .report-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: linear-gradient(180deg, #06d6a0, #00d4ff);
+        }
+        .part-badge {
+            display: inline-block; background: linear-gradient(90deg, #06d6a0, #00d4ff);
+            padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+        .report-title {
+            font-size: 32px; font-weight: 800; margin-bottom: 12px;
+            background: linear-gradient(90deg, #fff, #06d6a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .report-subtitle { font-size: 16px; color: #888; margin-bottom: 24px; }
+        .report-meta { display: flex; gap: 30px; flex-wrap: wrap; }
+        .meta-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #666; }
+        .meta-item span { color: #fff; font-weight: 600; }
+
+        /* Key Findings */
+        .key-findings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .finding-card {
+            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease;
+        }
+        .finding-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+        .finding-number {
+            font-size: 36px; font-weight: 800; margin-bottom: 8px;
+            background: linear-gradient(90deg, #06d6a0, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .finding-label { font-size: 13px; color: #888; line-height: 1.5; }
+
+        /* Truth Banner */
+        .truth-banner {
+            background: linear-gradient(135deg, rgba(255,107,107,0.08), rgba(255,0,110,0.05));
+            border: 1px solid rgba(255,107,107,0.2); border-radius: 16px; padding: 24px;
+            margin-bottom: 24px; text-align: center;
+        }
+        .truth-banner .big { font-size: 48px; font-weight: 800; color: #ff6b6b; margin-bottom: 8px; }
+        .truth-banner .desc { font-size: 16px; color: #aaa; margin-bottom: 16px; line-height: 1.6; }
+        .truth-banner .insight {
+            display: inline-block; padding: 10px 20px; background: rgba(255,107,107,0.1);
+            border-radius: 10px; font-size: 14px; color: #ff8787;
+            border: 1px solid rgba(255,107,107,0.2);
+        }
+
+        /* Customer Structure */
+        .section-card {
+            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 20px; font-weight: 700; margin-bottom: 8px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-subtitle { font-size: 14px; color: #888; margin-bottom: 24px; }
+
+        .customer-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+        }
+        .pie-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .pie-svg { width: 280px; height: 280px; }
+        .pie-legend { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .legend-row {
+            display: flex; align-items: center; gap: 10px; font-size: 13px;
+        }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+        .legend-name { flex: 1; color: #aaa; }
+        .legend-pct { font-weight: 700; font-size: 14px; }
+
+        .roi-table {
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .roi-card {
+            background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px 16px;
+            border: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;
+        }
+        .roi-label { font-size: 13px; color: #888; }
+        .roi-value { font-size: 20px; font-weight: 800; }
+        .roi-value.green { color: #06d6a0; }
+        .roi-value.amber { color: #ffbe0b; }
+        .roi-value.red { color: #ff6b6b; }
+
+        /* 4 Scenarios */
+        .scenarios-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+        }
+        .scenario-card {
+            background: rgba(255,255,255,0.03); border-radius: 16px; padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;
+        }
+        .scenario-card:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+        .scenario-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+        }
+        .scenario-emoji { font-size: 28px; }
+        .scenario-title-group { flex: 1; }
+        .scenario-title { font-size: 16px; font-weight: 700; }
+        .scenario-stage {
+            display: inline-block; padding: 3px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; margin-top: 4px;
+        }
+        .stage-pilot { background: rgba(255,190,11,0.15); color: #ffbe0b; }
+        .stage-early { background: rgba(0,212,255,0.15); color: #00d4ff; }
+        .stage-clinical { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+        .stage-vision { background: rgba(161,121,255,0.15); color: #9775fa; }
+
+        .scenario-detail {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;
+        }
+        .detail-item { display: flex; flex-direction: column; }
+        .detail-label { font-size: 11px; color: #666; margin-bottom: 2px; }
+        .detail-value { font-size: 13px; font-weight: 600; }
+        .detail-value.highlight { color: #06d6a0; }
+        .detail-value.warn { color: #ffbe0b; }
+        .detail-value.danger { color: #ff6b6b; }
+
+        .scenario-players {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+        }
+        .player-tag {
+            display: inline-block; padding: 3px 10px; border-radius: 6px;
+            font-size: 11px; font-weight: 600;
+            background: rgba(255,255,255,0.08); color: #aaa;
+        }
+        .player-tag.cn { background: rgba(255,107,107,0.15); color: #ff8787; }
+        .player-tag.us { background: rgba(77,171,247,0.15); color: #74c0fc; }
+
+        .scenario-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .scenario-tag {
+            display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px;
+            background: rgba(255,255,255,0.05); color: #888;
+        }
+
+        /* ROI comparison table */
+        .roi-comparison {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+        }
+        .roi-col {
+            background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .roi-col h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; text-align: center; }
+        .roi-col .price { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 10px; }
+        .roi-stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
+        .roi-stat:last-child { border-bottom: none; }
+        .roi-stat .key { color: #666; }
+        .roi-stat .val { font-weight: 600; }
+
+        /* Footer */
+        .report-footer {
+            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1); text-align: center; margin-bottom: 24px;
+        }
+        .footer-logo { font-size: 18px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(90deg, #06d6a0, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .footer-text { font-size: 13px; color: #666; }
+
+        @media (max-width: 1200px) {
+            .scenarios-grid, .customer-grid, .roi-comparison { grid-template-columns: 1fr; }
+            .key-findings { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .report-title { font-size: 24px; }
+            .key-findings { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="report-header">
+        <div class="part-badge">PART O: OPERATIONS & COMMERCIALIZATION</div>
+        <h1 class="report-title">The Commercialization Truth: Who's Actually Selling?</h1>
+        <p class="report-subtitle">商业化运营：四大应用场景 · 客户结构真相 · ROI分析</p>
+        <div class="report-meta">
+            <div class="meta-item"><span>73.6%</span> Revenue from Research/Education</div>
+            <div class="meta-item"><span>3-5yr</span> ROI Payback Period</div>
+            <div class="meta-item"><span>4</span> Application Scenarios</div>
+            <div class="meta-item"><span>&lt;15%</span> Real Industrial Adoption</div>
+        </div>
+    </div>
+
+    <!-- Key Findings -->
+    <div class="key-findings">
+        <div class="finding-card">
+            <div class="finding-number">73.6%</div>
+            <div class="finding-label">Revenue from research & education customers — not industrial</div>
+        </div>
+        <div class="finding-card">
+            <div class="finding-number">&lt;50台</div>
+            <div class="finding-label">Real-world factory deployments across all US players combined</div>
+        </div>
+        <div class="finding-card">
+            <div class="finding-number">15-20%</div>
+            <div class="finding-label">Current IRR vs 25%+ target — payback period 3-5 years</div>
+        </div>
+        <div class="finding-card">
+            <div class="finding-number">60%</div>
+            <div class="finding-label">Manual replacement rate ceiling at current technology level</div>
+        </div>
+    </div>
+
+    <!-- Truth Banner -->
+    <div class="truth-banner">
+        <div class="big">73.6%</div>
+        <div class="desc">宇树招股书数据揭示：73.6% 收入来自科研教育客户，真正工业替代买单能力尚未形成。<br>人形机器人目前本质上是一台「高价科研设备」，而非工业级自动化工具。</div>
+        <div class="insight">💡 关键洞察：客户结构揭示行业真实阶段 — 绝大多数市场尚未被任何人占据</div>
+    </div>
+
+    <!-- Customer Structure -->
+    <div class="section-card">
+        <h2 class="section-title">📊 Customer Structure & ROI Analysis</h2>
+        <p class="section-subtitle">宇树科技 2024 年客户结构（来自招股书）— 揭示行业真实阶段</p>
+
+        <div class="customer-grid">
+            <div class="pie-container">
+                <svg class="pie-svg" viewBox="0 0 200 200">
+                    <!-- 73.6% 科研教育 -->
+                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#ff6b6b" stroke-width="40"
+                        stroke-dasharray="369.5 502.65" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                    <!-- 9% 企业导览 -->
+                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#ffbe0b" stroke-width="40"
+                        stroke-dasharray="45.24 502.65" stroke-dashoffset="-369.5" transform="rotate(-90 100 100)"/>
+                    <!-- 6.7% 肢体外骨骼 -->
+                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#9775fa" stroke-width="40"
+                        stroke-dasharray="33.68 502.65" stroke-dashoffset="-414.74" transform="rotate(-90 100 100)"/>
+                    <!-- 4.6% 自动化巡检 -->
+                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#00d4ff" stroke-width="40"
+                        stroke-dasharray="23.12 502.65" stroke-dashoffset="-448.42" transform="rotate(-90 100 100)"/>
+                    <!-- 6.1% 其他 -->
+                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#555" stroke-width="40"
+                        stroke-dasharray="30.65 502.65" stroke-dashoffset="-471.54" transform="rotate(-90 100 100)"/>
+                    <circle cx="100" cy="100" r="50" fill="#1a1a2e"/>
+                    <text x="100" y="95" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2024</text>
+                    <text x="100" y="112" text-anchor="middle" fill="#888" font-size="10">Unitree</text>
+                </svg>
+                <div class="pie-legend">
+                    <div class="legend-row">
+                        <div class="legend-dot" style="background:#ff6b6b"></div>
+                        <div class="legend-name">科研教育</div>
+                        <div class="legend-pct" style="color:#ff6b6b">73.6%</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-dot" style="background:#ffbe0b"></div>
+                        <div class="legend-name">企业导览/展示</div>
+                        <div class="legend-pct" style="color:#ffbe0b">9.0%</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-dot" style="background:#9775fa"></div>
+                        <div class="legend-name">肢体外骨骼</div>
+                        <div class="legend-pct" style="color:#9775fa">6.7%</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-dot" style="background:#00d4ff"></div>
+                        <div class="legend-name">自动化巡检</div>
+                        <div class="legend-pct" style="color:#00d4ff">4.6%</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-dot" style="background:#555"></div>
+                        <div class="legend-name">其他/个人</div>
+                        <div class="legend-pct" style="color:#888">6.1%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="roi-table">
+                <div class="roi-card">
+                    <div class="roi-label">当前 IRR</div>
+                    <div class="roi-value amber">15-20%</div>
+                </div>
+                <div class="roi-card">
+                    <div class="roi-label">目标 IRR</div>
+                    <div class="roi-value green">&gt;25%</div>
+                </div>
+                <div class="roi-card">
+                    <div class="roi-label">回本周期</div>
+                    <div class="roi-value amber">3-5年</div>
+                </div>
+                <div class="roi-card">
+                    <div class="roi-label">人工替代率</div>
+                    <div class="roi-value amber">~60%</div>
+                </div>
+                <div class="roi-card">
+                    <div class="roi-label">部署规模</div>
+                    <div class="roi-value red">3-10台</div>
+                </div>
+                <div class="roi-card">
+                    <div class="roi-label">行业评分</div>
+                    <div class="roi-value red">7.2/10</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 Application Scenarios -->
+    <div class="section-card">
+        <h2 class="section-title">🏭 Four Application Scenarios</h2>
+        <p class="section-subtitle">工厂制造 · 仓储物流 · 医疗康复 · 家庭服务 — 商业化成熟度对比</p>
+
+        <div class="scenarios-grid">
+            <!-- 工业制造 -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <div class="scenario-emoji">🏭</div>
+                    <div class="scenario-title-group">
+                        <div class="scenario-title">Industrial Manufacturing</div>
+                        <div class="scenario-stage stage-pilot">试点阶段</div>
+                    </div>
+                </div>
+                <div class="scenario-players">
+                    <span class="player-tag us">Tesla</span>
+                    <span class="player-tag cn">智元</span>
+                    <span class="player-tag">BMW</span>
+                </div>
+                <div class="scenario-detail">
+                    <div class="detail-item">
+                        <div class="detail-label">单价</div>
+                        <div class="detail-value">$50K-$150K</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">IRR</div>
+                        <div class="detail-value warn">~15%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">真实部署</div>
+                        <div class="detail-value danger">&lt;50台</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">替代率</div>
+                        <div class="detail-value">~60%</div>
+                    </div>
+                </div>
+                <div class="scenario-tags">
+                    <span class="scenario-tag">3D岗位替代</span>
+                    <span class="scenario-tag">危险环境</span>
+                    <span class="scenario-tag">改造成本大</span>
+                    <span class="scenario-tag">精度要求高</span>
+                </div>
+            </div>
+
+            <!-- 仓储物流 -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <div class="scenario-emoji">📦</div>
+                    <div class="scenario-title-group">
+                        <div class="scenario-title">Warehouse & Logistics</div>
+                        <div class="scenario-stage stage-early">早期商业化</div>
+                    </div>
+                </div>
+                <div class="scenario-players">
+                    <span class="player-tag us">Agility</span>
+                    <span class="player-tag cn">宇树</span>
+                    <span class="player-tag">顺丰</span>
+                </div>
+                <div class="scenario-detail">
+                    <div class="detail-item">
+                        <div class="detail-label">单价</div>
+                        <div class="detail-value">$30K-$80K</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">IRR</div>
+                        <div class="detail-value highlight">~20%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">真实部署</div>
+                        <div class="detail-value warn">100-500台</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">优势</div>
+                        <div class="detail-value highlight">7×24h</div>
+                    </div>
+                </div>
+                <div class="scenario-tags">
+                    <span class="scenario-tag">搬运替代</span>
+                    <span class="scenario-tag">ROI最高</span>
+                    <span class="scenario-tag">场景复杂度</span>
+                    <span class="scenario-tag">仓库改造</span>
+                </div>
+            </div>
+
+            <!-- 医疗康复 -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <div class="scenario-emoji">🏥</div>
+                    <div class="scenario-title-group">
+                        <div class="scenario-title">Medical & Rehabilitation</div>
+                        <div class="scenario-stage stage-clinical">临床前/临床中</div>
+                    </div>
+                </div>
+                <div class="scenario-players">
+                    <span class="player-tag cn">傅利叶</span>
+                    <span class="player-tag">Exiii</span>
+                    <span class="player-tag">Sanctuary</span>
+                </div>
+                <div class="scenario-detail">
+                    <div class="detail-item">
+                        <div class="detail-label">单价</div>
+                        <div class="detail-value">$80K-$200K</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">IRR</div>
+                        <div class="detail-value danger">~12% (长期)</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">真实部署</div>
+                        <div class="detail-value danger">&lt;20台</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">溢价</div>
+                        <div class="detail-value highlight">老龄化刚需</div>
+                    </div>
+                </div>
+                <div class="scenario-tags">
+                    <span class="scenario-tag">老龄化刚需</span>
+                    <span class="scenario-tag">监管周期长</span>
+                    <span class="scenario-tag">技术成熟度低</span>
+                    <span class="scenario-tag">溢价空间高</span>
+                </div>
+            </div>
+
+            <!-- 家庭服务 -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <div class="scenario-emoji">🏠</div>
+                    <div class="scenario-title-group">
+                        <div class="scenario-title">Home & Service</div>
+                        <div class="scenario-stage stage-vision">愿景阶段</div>
+                    </div>
+                </div>
+                <div class="scenario-players">
+                    <span class="player-tag us">1X</span>
+                    <span class="player-tag us">Figure</span>
+                    <span class="player-tag cn">小鹏</span>
+                </div>
+                <div class="scenario-detail">
+                    <div class="detail-item">
+                        <div class="detail-label">目标单价</div>
+                        <div class="detail-value">$20K</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">IRR</div>
+                        <div class="detail-value danger">不明确</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">真实部署</div>
+                        <div class="detail-value danger">0台</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">优势</div>
+                        <div class="detail-value highlight">全球最大市场</div>
+                    </div>
+                </div>
+                <div class="scenario-tags">
+                    <span class="scenario-tag">安全性要求极高</span>
+                    <span class="scenario-tag">量产成本难题</span>
+                    <span class="scenario-tag">技术成熟后爆发</span>
+                    <span class="scenario-tag">监管空白</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROI Comparison -->
+    <div class="section-card">
+        <h2 class="section-title">📈 Scenario ROI Comparison</h2>
+        <p class="section-subtitle">四大场景商业化成熟度对比 — 当前ROI vs 目标ROI</p>
+        <div class="roi-comparison">
+            <div class="roi-col">
+                <h4 style="color:#ffbe0b">🏭 工业制造</h4>
+                <div class="price" style="color:#ffbe0b">$50K-150K</div>
+                <div class="roi-stat"><span class="key">IRR</span><span class="val" style="color:#ffbe0b">~15%</span></div>
+                <div class="roi-stat"><span class="key">目标IRR</span><span class="val">&gt;25%</span></div>
+                <div class="roi-stat"><span class="key">回本周期</span><span class="val">5-7年</span></div>
+                <div class="roi-stat"><span class="key">真实部署</span><span class="val" style="color:#ff6b6b">&lt;50台</span></div>
+                <div class="roi-stat"><span class="key">壁垒</span><span class="val">改造成本</span></div>
+            </div>
+            <div class="roi-col">
+                <h4 style="color:#06d6a0">📦 仓储物流</h4>
+                <div class="price" style="color:#06d6a0">$30K-80K</div>
+                <div class="roi-stat"><span class="key">IRR</span><span class="val" style="color:#06d6a0">~20%</span></div>
+                <div class="roi-stat"><span class="key">目标IRR</span><span class="val">&gt;25%</span></div>
+                <div class="roi-stat"><span class="key">回本周期</span><span class="val">3-5年</span></div>
+                <div class="roi-stat"><span class="key">真实部署</span><span class="val" style="color:#ffbe0b">100-500台</span></div>
+                <div class="roi-stat"><span class="key">壁垒</span><span class="val">场景复杂度</span></div>
+            </div>
+            <div class="roi-col">
+                <h4 style="color:#ff6b6b">🏥 医疗康复</h4>
+                <div class="price" style="color:#ff6b6b">$80K-200K</div>
+                <div class="roi-stat"><span class="key">IRR</span><span class="val" style="color:#ff6b6b">~12%</span></div>
+                <div class="roi-stat"><span class="key">目标IRR</span><span class="val">&gt;30%</span></div>
+                <div class="roi-stat"><span class="key">回本周期</span><span class="val">5-8年</span></div>
+                <div class="roi-stat"><span class="key">真实部署</span><span class="val" style="color:#ff6b6b">&lt;20台</span></div>
+                <div class="roi-stat"><span class="key">壁垒</span><span class="val">监管审批</span></div>
+            </div>
+            <div class="roi-col">
+                <h4 style="color:#9775fa">🏠 家庭服务</h4>
+                <div class="price" style="color:#9775fa">$20K (目标)</div>
+                <div class="roi-stat"><span class="key">IRR</span><span class="val" style="color:#ff6b6b">TBD</span></div>
+                <div class="roi-stat"><span class="key">目标IRR</span><span class="val">&gt;25%</span></div>
+                <div class="roi-stat"><span class="key">回本周期</span><span class="val">未知</span></div>
+                <div class="roi-stat"><span class="key">真实部署</span><span class="val" style="color:#ff6b6b">0台</span></div>
+                <div class="roi-stat"><span class="key">壁垒</span><span class="val">安全性/成本</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="report-footer">
+        <div class="footer-logo">AMORA</div>
+        <div class="footer-text">The Humanoid Robot Index 2026 | Part O: Operations & Commercialization</div>
+    </div>
+</div>
+</body>
+</html>

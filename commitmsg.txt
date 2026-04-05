@@ -1,6 +1,8 @@
-﻿feat: subscribers page - add User column (name + subscription_tier from users table)
+﻿feat: HRI-2026 H5 chapter viewer — 5-chapter navigation + premium gating + anti-copy protection
 
-- Subscribers list API now batch-fetches users by email and returns user info per subscriber
-- Subscribers admin page shows new "User" column between Email and Source
-- User column displays name (or "—" if null) and color-coded tier badge (free/pro/enterprise)
-- "No account" shown for subscribers without a matching users record
+- New /api/hri-chapters/[chapter] route for dynamic chapter loading with auth
+- H5ReportViewer rewritten: chapter nav sidebar, cover page, per-chapter gating
+- Part M (Mapping) free; A/O/R/A2 require Pro subscription
+- Anti-copy: no-select, no-right-click, PrintScreen detection, DevTools detection, dynamic watermarking
+- chapters_json JSONB field added to reports table; 5 HTML chapters uploaded (185 KB total)
+- SEO: free chapter indexed; premium chapters X-Robots-Tag: noindex

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Humanoid Robot Index 2026 - Part R: Market Reach & Sizing</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1225 50%, #16213e 100%);
+            min-height: 100vh; color: #fff;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        .report-header {
+            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px;
+            margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
+        }
+        .report-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: linear-gradient(180deg, #ffbe0b, #ff6b6b);
+        }
+        .part-badge {
+            display: inline-block; background: linear-gradient(90deg, #ffbe0b, #ff6b6b);
+            padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+        .report-title {
+            font-size: 32px; font-weight: 800; margin-bottom: 12px;
+            background: linear-gradient(90deg, #fff, #ffbe0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .report-subtitle { font-size: 16px; color: #888; margin-bottom: 24px; }
+        .report-meta { display: flex; gap: 30px; flex-wrap: wrap; }
+        .meta-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #666; }
+        .meta-item span { color: #fff; font-weight: 600; }
+
+        .key-findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        .finding-card {
+            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease;
+        }
+        .finding-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+        .finding-number {
+            font-size: 36px; font-weight: 800; margin-bottom: 8px;
+            background: linear-gradient(90deg, #ffbe0b, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .finding-label { font-size: 13px; color: #888; line-height: 1.5; }
+
+        .section-card {
+            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 20px; font-weight: 700; margin-bottom: 8px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-subtitle { font-size: 14px; color: #888; margin-bottom: 24px; }
+
+        /* Market forecast */
+        .forecast-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+        }
+        .forecast-card {
+            border-radius: 16px; padding: 20px; border: 2px solid; transition: all 0.2s;
+        }
+        .forecast-card:hover { transform: translateY(-2px); }
+        .forecast-card.bull { background: rgba(0,255,136,0.05); border-color: rgba(0,255,136,0.3); }
+        .forecast-card.base { background: rgba(0,212,255,0.05); border-color: rgba(0,212,255,0.3); }
+        .forecast-card.bear { background: rgba(255,107,107,0.05); border-color: rgba(255,107,107,0.3); }
+        .forecast-label {
+            display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .forecast-card.bull .forecast-label { color: #00ff88; }
+        .forecast-card.base .forecast-label { color: #00d4ff; }
+        .forecast-card.bear .forecast-label { color: #ff6b6b; }
+
+        .forecast-year {
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .year-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 8px;
+        }
+        .year-label { font-size: 13px; color: #888; }
+        .year-value { font-size: 18px; font-weight: 800; }
+        .forecast-card.bull .year-value { color: #00ff88; }
+        .forecast-card.base .year-value { color: #00d4ff; }
+        .forecast-card.bear .year-value { color: #ff6b6b; }
+
+        .cagr-badge {
+            display: inline-block; padding: 6px 14px; border-radius: 10px; font-size: 14px;
+            font-weight: 800; margin-top: 12px;
+        }
+        .forecast-card.bull .cagr-badge { background: rgba(0,255,136,0.15); color: #00ff88; }
+        .forecast-card.base .cagr-badge { background: rgba(0,212,255,0.15); color: #00d4ff; }
+        .forecast-card.bear .cagr-badge { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+
+        /* Bar chart */
+        .bar-chart {
+            margin-top: 20px; display: flex; flex-direction: column; gap: 12px;
+        }
+        .bar-group { display: flex; flex-direction: column; gap: 6px; }
+        .bar-label { font-size: 12px; color: #666; }
+        .bar-track {
+            height: 32px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden;
+            display: flex;
+        }
+        .bar-segment { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; transition: width 1s ease; min-width: 20px; }
+        .bar-segment.bull { background: linear-gradient(90deg, #00ff88, #00d4ff); }
+        .bar-segment.base { background: linear-gradient(90deg, #00d4ff, #7b2cbf); }
+        .bar-segment.bear { background: linear-gradient(90deg, #ff6b6b, #ff8787); }
+        .bar-year { font-size: 13px; color: #888; margin-top: 4px; }
+
+        /* 4 Regions */
+        .regions-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+        }
+        .region-card {
+            background: rgba(255,255,255,0.03); border-radius: 16px; padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;
+        }
+        .region-card:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+        .region-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+        }
+        .region-flag { font-size: 28px; }
+        .region-title { font-size: 16px; font-weight: 700; }
+        .region-tagline { font-size: 12px; color: #888; margin-top: 2px; }
+        .region-stat-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;
+        }
+        .rstat { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 8px 10px; }
+        .rstat-label { font-size: 10px; color: #666; margin-bottom: 2px; }
+        .rstat-val { font-size: 14px; font-weight: 700; }
+        .rstat-val.highlight { color: #00ff88; }
+        .rstat-val.warn { color: #ff6b6b; }
+        .region-risk {
+            display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
+            background: rgba(255,255,255,0.05); color: #888;
+        }
+        .region-strategy { font-size: 13px; color: #aaa; margin-top: 10px; line-height: 1.5; }
+
+        .report-footer {
+            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1); text-align: center; margin-bottom: 24px;
+        }
+        .footer-logo { font-size: 18px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(90deg, #ffbe0b, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .footer-text { font-size: 13px; color: #666; }
+
+        @media (max-width: 1200px) {
+            .forecast-grid, .regions-grid { grid-template-columns: 1fr; }
+            .key-findings { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .report-title { font-size: 24px; }
+            .key-findings { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="report-header">
+        <div class="part-badge">PART R: MARKET REACH & SIZING</div>
+        <h1 class="report-title">The $100B Question: How Big, How Fast, Who Wins?</h1>
+        <p class="report-subtitle">市场容量：三情景预测 · 细分市场 · 全球化策略</p>
+        <div class="report-meta">
+            <div class="meta-item"><span>88万台</span> 2035 基准预测</div>
+            <div class="meta-item"><span>~40%</span> 基准 CAGR</div>
+            <div class="meta-item"><span>150万台</span> 2035 乐观预测</div>
+            <div class="meta-item"><span>4</span> 区域市场</div>
+        </div>
+    </div>
+
+    <div class="key-findings">
+        <div class="finding-card">
+            <div class="finding-number">2027</div>
+            <div class="finding-label">万级出货量临界点 — 成本曲线开始加速下降</div>
+        </div>
+        <div class="finding-card">
+            <div class="finding-number">~$20K</div>
+            <div class="finding-label">100K规模时中国成本 — 比美国低55%</div>
+        </div>
+        <div class="finding-card">
+            <div class="finding-number">35%</div>
+            <div class="finding-label">Baseline CAGR 2025-2035 — 10-year market expansion</div>
+        </div>
+    </div>
+
+    <!-- Market Forecast -->
+    <div class="section-card">
+        <h2 class="section-title">📊 Global Shipment Forecast 2025-2035</h2>
+        <p class="section-subtitle">全球出货量三情景预测（万台）— 基准 / 乐观 / 保守</p>
+
+        <div class="forecast-grid">
+            <div class="forecast-card bull">
+                <div class="forecast-label">
+                    <span style="font-size:18px">🚀</span>
+                    Bull Case 乐观情景
+                </div>
+                <div class="forecast-year">
+                    <div class="year-row"><span class="year-label">2025</span><span class="year-value">1.7万台</span></div>
+                    <div class="year-row"><span class="year-label">2028</span><span class="year-value">14万台</span></div>
+                    <div class="year-row"><span class="year-label">2030</span><span class="year-value">40万台</span></div>
+                    <div class="year-row"><span class="year-label">2035</span><span class="year-value">150万台</span></div>
+                </div>
+                <div class="cagr-badge">CAGR ~55%</div>
+                <div style="margin-top:12px;font-size:12px;color:#00ff88;line-height:1.5;">
+                    假设：特斯拉/Figure快速量产 + 中国政策强力补贴 + 工业场景爆发
+                </div>
+            </div>
+            <div class="forecast-card base">
+                <div class="forecast-label">
+                    <span style="font-size:18px">📊</span>
+                    Base Case 基准情景
+                </div>
+                <div class="forecast-year">
+                    <div class="year-row"><span class="year-label">2025</span><span class="year-value">1.45万台</span></div>
+                    <div class="year-row"><span class="year-label">2028</span><span class="year-value">8.5万台</span></div>
+                    <div class="year-row"><span class="year-label">2030</span><span class="year-value">22.7万台</span></div>
+                    <div class="year-row"><span class="year-label">2035</span><span class="year-value">88万台</span></div>
+                </div>
+                <div class="cagr-badge">CAGR ~40%</div>
+                <div style="margin-top:12px;font-size:12px;color:#00d4ff;line-height:1.5;">
+                    假设：宇树领跑 + 仓储物流优先落地 + 技术稳步迭代
+                </div>
+            </div>
+            <div class="forecast-card bear">
+                <div class="forecast-label">
+                    <span style="font-size:18px">🐢</span>
+                    Bear Case 保守情景
+                </div>
+                <div class="forecast-year">
+                    <div class="year-row"><span class="year-label">2025</span><span class="year-value">1.2万台</span></div>
+                    <div class="year-row"><span class="year-label">2028</span><span class="year-value">5万台</span></div>
+                    <div class="year-row"><span class="year-label">2030</span><span class="year-value">12万台</span></div>
+                    <div class="year-row"><span class="year-label">2035</span><span class="year-value">35万台</span></div>
+                </div>
+                <div class="cagr-badge">CAGR ~25%</div>
+                <div style="margin-top:12px;font-size:12px;color:#ff6b6b;line-height:1.5;">
+                    假设：技术瓶颈持续 + 工业买单意愿不足 + 地缘风险拖累
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="bar-chart">
+            <div class="bar-group">
+                <div class="bar-label">2025 全球出货量（万台）</div>
+                <div class="bar-track">
+                    <div class="bar-segment bear" style="width:70%;">1.2</div>
+                    <div class="bar-segment base" style="width:77%;">1.45</div>
+                    <div class="bar-segment bull" style="width:84%;">1.7</div>
+                </div>
+                <div style="display:flex;gap:16px;font-size:11px;color:#888;margin-top:4px;">
+                    <span style="color:#ff6b6b">🐢 保守</span>
+                    <span style="color:#00d4ff">📊 基准</span>
+                    <span style="color:#00ff88">🚀 乐观</span>
+                </div>
+            </div>
+            <div class="bar-group">
+                <div class="bar-label">2035 全球出货量（万台）</div>
+                <div class="bar-track">
+                    <div class="bar-segment bear" style="width:23%;">35</div>
+                    <div class="bar-segment base" style="width:59%;">88</div>
+                    <div class="bar-segment bull" style="width:100%;">150</div>
+                </div>
+                <div style="display:flex;gap:16px;font-size:11px;color:#888;margin-top:4px;">
+                    <span style="color:#ff6b6b">35万台</span>
+                    <span style="color:#00d4ff">88万台</span>
+                    <span style="color:#00ff88">150万台</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 Regions -->
+    <div class="section-card">
+        <h2 class="section-title">🌏 Global Strategy: 4 Regional Markets</h2>
+        <p class="section-subtitle">中国市场领跑 · 北美高端定位 · 欧洲细分切入 · 东南亚制造成本洼地</p>
+
+        <div class="regions-grid">
+            <div class="region-card">
+                <div class="region-header">
+                    <div class="region-flag">🇨🇳</div>
+                    <div>
+                        <div class="region-title">China</div>
+                        <div class="region-tagline">出货量第一 / 制造成本洼地 / 宇树 5500+ 台全球第一</div>
+                    </div>
+                </div>
+                <div class="region-stat-grid">
+                    <div class="rstat"><div class="rstat-label">市场份额</div><div class="rstat-val highlight">全球第一</div></div>
+                    <div class="rstat"><div class="rstat-label">成本优势</div><div class="rstat-val highlight">-55% vs US</div></div>
+                    <div class="rstat"><div class="rstat-label">策略</div><div class="rstat-val">规模量产</div></div>
+                    <div class="rstat"><div class="rstat-label">风险</div><div class="rstat-val warn">内卷加剧</div></div>
+                </div>
+                <div class="region-risk">最大出货量 · 完整供应链 · 政策支持强</div>
+                <div class="region-strategy">规模量产压成本 + 快速迭代，境外收入 &gt;35%，宇树 IPO 后估值重估</div>
+            </div>
+            <div class="region-card">
+                <div class="region-header">
+                    <div class="region-flag">🇺🇸</div>
+                    <div>
+                        <div class="region-title">North America</div>
+                        <div class="region-tagline">技术最前沿 / 估值最高 / VLA大模型发源地</div>
+                    </div>
+                </div>
+                <div class="region-stat-grid">
+                    <div class="rstat"><div class="rstat-label">代表玩家</div><div class="rstat-val">Tesla/Figure/Agility</div></div>
+                    <div class="rstat"><div class="rstat-label">资本密度</div><div class="rstat-val highlight">全球最高</div></div>
+                    <div class="rstat"><div class="rstat-label">策略</div><div class="rstat-val">高端定位</div></div>
+                    <div class="rstat"><div class="rstat-label">风险</div><div class="rstat-val warn">量产瓶颈</div></div>
+                </div>
+                <div class="region-risk">AI算法领先 · 制造成本高55% · 供应链空心化</div>
+                <div class="region-strategy">高端定位 + AI 算法差异化，BMW + 亚马逊试点推进中</div>
+            </div>
+            <div class="region-card">
+                <div class="region-header">
+                    <div class="region-flag">🇪🇺</div>
+                    <div>
+                        <div class="region-title">Europe</div>
+                        <div class="region-tagline">汽车产业链深度整合 / 工业自动化需求最强</div>
+                    </div>
+                </div>
+                <div class="region-stat-grid">
+                    <div class="rstat"><div class="rstat-label">代表合作</div><div class="rstat-val">BMW / Mercedes</div></div>
+                    <div class="rstat"><div class="rstat-label">切入场景</div><div class="rstat-val highlight">工厂自动化</div></div>
+                    <div class="rstat"><div class="rstat-label">策略</div><div class="rstat-val">细分切入</div></div>
+                    <div class="rstat"><div class="rstat-label">风险</div><div class="rstat-val warn">AI人才不足</div></div>
+                </div>
+                <div class="region-risk">汽车制造自动化最大机会 · EU AI Act监管趋严</div>
+                <div class="region-strategy">工业自动化场景优先落地，与ABB/KUKA生态合作</div>
+            </div>
+            <div class="region-card">
+                <div class="region-header">
+                    <div class="region-flag">🌏</div>
+                    <div>
+                        <div class="region-title">Southeast Asia</div>
+                        <div class="region-tagline">制造成本洼地 / 新兴市场 / 下一个增长极</div>
+                    </div>
+                </div>
+                <div class="region-stat-grid">
+                    <div class="rstat"><div class="rstat-label">当前状态</div><div class="rstat-val">制造业转型期</div></div>
+                    <div class="rstat"><div class="rstat-label">老龄化</div><div class="rstat-val highlight">快速加深</div></div>
+                    <div class="rstat"><div class="rstat-label">策略</div><div class="rstat-val">低成本制造</div></div>
+                    <div class="rstat"><div class="rstat-label">风险</div><div class="rstat-val warn">技术薄弱</div></div>
+                </div>
+                <div class="region-risk">下一个制造业机器人化增长极 · 人口老龄化加速需求</div>
+                <div class="region-strategy">低成本制造 + 服务业探索，承接中国产业链转移</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="report-footer">
+        <div class="footer-logo">AMORA</div>
+        <div class="footer-text">The Humanoid Robot Index 2026 | Part R: Market Reach & Sizing</div>
+    </div>
+</div>
+</body>
+</html>

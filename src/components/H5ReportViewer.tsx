@@ -1,9 +1,79 @@
 'use client';
 
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import type { Report } from '@/lib/db';
 import type { SubscriptionTier } from '@/components/ChartBlock';
-import ReadingProgress from '@/components/ReadingProgress';
+
+interface Chapter {
+  key: string;
+  label: string;
+  label_cn: string;
+  color: string;
+  bgColor: string;
+  order: number;
+  free: boolean;
+  badge: string;
+  description: string;
+}
+
+const CHAPTERS: Chapter[] = [
+  {
+    key: 'm',
+    label: 'Mapping',
+    label_cn: '产业链生态',
+    color: '#00d4ff',
+    bgColor: 'rgba(0,212,255,0.1)',
+    order: 1,
+    free: true,
+    badge: 'FREE',
+    description: '中美产业链全景图 · 卡脖子清单 · 供应链时间线',
+  },
+  {
+    key: 'a',
+    label: 'Advancement',
+    label_cn: '技术先进性',
+    color: '#ff006e',
+    bgColor: 'rgba(255,0,110,0.1)',
+    order: 2,
+    free: false,
+    badge: 'PRO',
+    description: '世界模型 · 端到端控制 · 硬件代际演进',
+  },
+  {
+    key: 'o',
+    label: 'Operations',
+    label_cn: '商业化运营',
+    color: '#06d6a0',
+    bgColor: 'rgba(6,214,160,0.1)',
+    order: 3,
+    free: false,
+    badge: 'PRO',
+    description: '四大应用场景 · 客户结构真相 · ROI 评估',
+  },
+  {
+    key: 'r',
+    label: 'Reach',
+    label_cn: '市场容量',
+    color: '#ffbe0b',
+    bgColor: 'rgba(255,190,11,0.1)',
+    order: 4,
+    free: false,
+    badge: 'PRO',
+    description: '三情景预测 · 2035 规模测算 · 全球化策略',
+  },
+  {
+    key: 'a2',
+    label: 'Assets',
+    label_cn: '资本价值',
+    color: '#9775fa',
+    bgColor: 'rgba(151,117,250,0.1)',
+    order: 5,
+    free: false,
+    badge: 'PRO',
+    description: '核心财务对比 · 估值矩阵 · AMORA 评分卡',
+  },
+];
 
 interface Props {
   report: Report;
@@ -12,225 +82,423 @@ interface Props {
   relatedReports: Report[];
 }
 
-const NAV_H = 56;
+// ── Upgrade Modal ──────────────────────────────────────────────────────────────
+function UpgradeModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-gray-900 border border-gray-700 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+        <div className="text-4xl mb-4">🔐</div>
+        <h2 className="text-xl font-bold text-white mb-2">Pro Content Locked</h2>
+        <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+          This chapter is exclusive to <strong className="text-amber-400">AMORA Pro</strong> subscribers.
+          Unlock all 5 report chapters and get priority updates.
+        </p>
+        <div className="space-y-2 mb-6">
+          {[
+            '✅ All 5 report chapters unlocked',
+            '✅ Priority report updates',
+            '✅ AMORA scoring access',
+            '✅ Export to PDF',
+          ].map((item) => (
+            <div key={item} className="text-sm text-gray-300 flex items-center gap-2">
+              <span className="text-green-400">✓</span> {item.slice(2)}
+            </div>
+          ))}
+        </div>
+        <div className="space-y-2">
+          <Link
+            href="/pricing"
+            className="block w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold py-3 rounded-xl hover:opacity-90 transition text-center"
+          >
+            Upgrade to Pro
+          </Link>
+          <button
+            onClick={onClose}
+            className="block w-full text-gray-500 hover:text-gray-300 text-sm py-1 transition"
+          >
+            Continue reading free chapter
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
+// ── Chapter Iframe ─────────────────────────────────────────────────────────────
+function ChapterIframe({
+  chapter,
+  isPro,
+  userEmail,
+}: {
+  chapter: Chapter;
+  isPro: boolean;
+  userEmail?: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  const src = `/api/hri-chapters/${chapter.key}`;
+
+  // Pro chapters are noindex to protect content
+  // Free chapters (Mapping) are indexed via the main report page
+
+  return (
+    <div className="relative w-full h-full bg-black">
+      {/* Loading skeleton */}
+      {!loaded && !error && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div
+              className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin"
+              style={{ borderColor: `${chapter.color} transparent transparent transparent` }}
+            />
+            <span className="text-gray-500 text-sm">Loading {chapter.label}...</span>
+          </div>
+        </div>
+      )}
+      {error && (
+        <div className="absolute inset-0 flex items-center justify-center text-gray-600 text-sm">
+          Failed to load chapter. <button className="text-blue-400 ml-2" onClick={() => { setError(false); setLoaded(false); }}>Retry</button>
+        </div>
+      )}
+      <iframe
+        src={src}
+        className="w-full h-full border-0"
+        style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.3s' }}
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        referrerPolicy="no-referrer"
+        loading="lazy"
+        title={`Part ${chapter.key.toUpperCase()}: ${chapter.label}`}
+      />
+    </div>
+  );
+}
+
+// ── Cover Page ────────────────────────────────────────────────────────────────
+function CoverPage({ report, isPro, onChapterSelect }: {
+  report: Report;
+  isPro: boolean;
+  onChapterSelect: (key: string) => void;
+}) {
+  const freeChapter = CHAPTERS[0]; // Mapping is always free
+
+  return (
+    <div className="flex-1 overflow-y-auto">
+      <div className="max-w-3xl mx-auto px-6 py-12">
+        {/* Report title */}
+        <div className="text-center mb-10">
+          <div className="inline-block text-xs font-bold tracking-widest text-gray-500 uppercase mb-4 border border-gray-700 rounded-full px-4 py-1">
+            AMORA Research · 2026
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 leading-tight">
+            {report.title}
+          </h1>
+          <p className="text-gray-400 text-sm leading-relaxed max-w-xl mx-auto">
+            {report.summary?.slice(0, 200)}...
+          </p>
+          <div className="flex items-center justify-center gap-3 mt-5">
+            <span className="text-xs text-gray-600">by {report.author}</span>
+            <span className="text-gray-700">·</span>
+            <span className="text-xs text-gray-600">March 2026</span>
+          </div>
+        </div>
+
+        {/* Chapter cards */}
+        <div className="space-y-3 mb-10">
+          {CHAPTERS.map((ch, i) => {
+            const unlocked = ch.free || isPro;
+            return (
+              <button
+                key={ch.key}
+                onClick={() => unlocked ? onChapterSelect(ch.key) : undefined}
+                disabled={!unlocked}
+                className={`
+                  w-full text-left rounded-xl p-4 transition-all border
+                  ${unlocked
+                    ? 'border-gray-800 hover:border-gray-600 hover:bg-gray-900/50 cursor-pointer'
+                    : 'border-gray-800/50 opacity-60 cursor-not-allowed'
+                  }
+                `}
+                style={unlocked ? { borderLeftColor: ch.color, borderLeftWidth: 3 } : {}}
+              >
+                <div className="flex items-start gap-4">
+                  {/* Chapter number */}
+                  <div
+                    className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold"
+                    style={{
+                      background: unlocked ? ch.bgColor : 'rgba(255,255,255,0.05)',
+                      color: unlocked ? ch.color : '#4b5563',
+                    }}
+                  >
+                    {ch.key.toUpperCase()}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-semibold text-white text-sm">{ch.label}</span>
+                      <span className="text-xs text-gray-500">{ch.label_cn}</span>
+                      <span
+                        className="text-xs font-bold px-1.5 py-0.5 rounded"
+                        style={{
+                          background: ch.free ? 'rgba(34,197,94,0.15)' : 'rgba(251,191,36,0.15)',
+                          color: ch.free ? '#22c55e' : '#fbbf24',
+                        }}
+                      >
+                        {ch.free ? 'FREE' : 'PRO'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 leading-relaxed">{ch.description}</p>
+                  </div>
+
+                  {/* Arrow */}
+                  <div className="shrink-0 text-gray-600 mt-0.5">
+                    {unlocked ? '→' : '🔒'}
+                  </div>
+                </div>
+
+                {/* Progress preview bar */}
+                {i === 0 && (
+                  <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: '#1f2937' }}>
+                    <div className="h-full rounded-full" style={{ width: '100%', background: ch.color }} />
+                  </div>
+                )}
+                {i > 0 && (
+                  <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: '#1f2937' }}>
+                    <div
+                      className="h-full rounded-full"
+                      style={{
+                        width: unlocked ? '0%' : '0%',
+                        background: ch.color,
+                        opacity: 0.3,
+                      }}
+                    />
+                  </div>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Stats row */}
+        <div className="grid grid-cols-3 gap-3 mb-10">
+          {[
+            { label: 'Companies Analyzed', value: '9' },
+            { label: 'AMORA Dimensions', value: '5' },
+            { label: 'Data Points', value: '200+' },
+          ].map((s) => (
+            <div key={s.label} className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
+              <div className="text-xl font-bold text-white mb-1">{s.value}</div>
+              <div className="text-xs text-gray-500">{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA for non-Pro */}
+        {!isPro && (
+          <div className="bg-gradient-to-r from-amber-900/30 to-orange-900/20 border border-amber-800/40 rounded-2xl p-6 text-center">
+            <p className="text-amber-300 font-semibold text-sm mb-1">Unlock the Full Report</p>
+            <p className="text-gray-400 text-xs mb-4">
+              Get all 5 chapters with interactive charts, scoring data, and investment insights.
+            </p>
+            <Link
+              href="/pricing"
+              className="inline-block bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold text-sm px-6 py-2.5 rounded-xl hover:opacity-90 transition"
+            >
+              Upgrade to Pro
+            </Link>
+          </div>
+        )}
+
+        {/* Start reading free chapter */}
+        <div className="text-center mt-6">
+          <button
+            onClick={() => onChapterSelect(freeChapter.key)}
+            className="text-sm text-gray-500 hover:text-gray-300 transition"
+          >
+            Start with free chapter — Part M: Mapping →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main H5ReportViewer ───────────────────────────────────────────────────────
 export default function H5ReportViewer({
   report,
   hasAccess,
   relatedReports,
 }: Props) {
-  const isPremium = report.is_premium;
+  const [activeChapter, setActiveChapter] = useState<string | null>(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [pendingChapter, setPendingChapter] = useState<string | null>(null);
+  const [navOpen, setNavOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Clean HTML: remove H5 internal nav/header that duplicates SiteNav
-  let cleanHtml = report.html_content || '';
-  
-  // Remove internal nav and fix disclaimer color
-  cleanHtml = cleanHtml
-    .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
-    .replace(/class=["']disclaimer-text["']/gi, 'class="disclaimer-text" style="color: #9ca3af;"');
+  const isPro = hasAccess;
 
-  // For premium reports without access: transform charts to static SVGs
-  const displayHtml = isPremium && !hasAccess ? transformChartsToGated(cleanHtml) : cleanHtml;
+  const handleChapterSelect = useCallback((key: string) => {
+    const chapter = CHAPTERS.find((c) => c.key === key);
+    if (!chapter) return;
+
+    if (!chapter.free && !isPro) {
+      setPendingChapter(key);
+      setShowUpgradeModal(true);
+      return;
+    }
+
+    setActiveChapter(key);
+    setNavOpen(false);
+
+    // Scroll to top
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [isPro]);
+
+  const handleBack = useCallback(() => {
+    setActiveChapter(null);
+  }, []);
+
+  const currentChapter = CHAPTERS.find((c) => c.key === activeChapter);
+
+  // Close nav on chapter change
+  useEffect(() => {
+    if (activeChapter) setNavOpen(false);
+  }, [activeChapter]);
 
   return (
-    <div className="flex flex-col flex-1">
-      <ReadingProgress />
+    <>
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <UpgradeModal onClose={() => setShowUpgradeModal(false)} />
+      )}
 
-      {/* Breadcrumb */}
-      <div className="sticky top-0 z-30 border-b border-gray-800/40 bg-gray-950/90 backdrop-blur-sm px-5 py-2 flex items-center justify-between gap-4">
-        <nav className="flex items-center gap-1.5 text-xs text-gray-600 min-w-0">
-          <Link href="/reports" className="hover:text-gray-400 transition shrink-0">Reports</Link>
-          <span>/</span>
-          <span className="text-gray-400 truncate max-w-xs md:max-w-lg">{report.title}</span>
-        </nav>
-        <div className="flex items-center gap-2 shrink-0">
-          {isPremium && (
-            hasAccess ? (
-              <span className="text-xs bg-green-900/40 text-green-400 px-2 py-0.5 rounded-full">✓ Pro</span>
+      <div className="flex flex-col flex-1 bg-black">
+        {/* ── Top Bar ────────────────────────────────────────────────────── */}
+        <div
+          className="sticky top-0 z-30 border-b border-gray-800/60 bg-gray-950/95 backdrop-blur-sm"
+          style={{ height: 52 }}
+        >
+          <div className="flex items-center h-full px-4 gap-3">
+            {/* Back / Menu */}
+            {activeChapter ? (
+              <button
+                onClick={handleBack}
+                className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition shrink-0"
+              >
+                <span>←</span>
+                <span className="hidden sm:inline">Back</span>
+              </button>
             ) : (
-              <span className="text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded-full">⭐ Premium</span>
-            )
+              <button
+                onClick={() => setNavOpen(!navOpen)}
+                className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition shrink-0"
+              >
+                <span>☰</span>
+                <span className="hidden sm:inline">Chapters</span>
+              </button>
+            )}
+
+            {/* Title */}
+            <div className="flex-1 min-w-0 text-center">
+              <span className="text-xs text-gray-500 truncate">
+                {currentChapter
+                  ? `Part ${currentChapter.key.toUpperCase()} · ${currentChapter.label}`
+                  : 'Humanoid Robotics Intelligence 2026'
+                }
+              </span>
+            </div>
+
+            {/* Badge */}
+            <div className="shrink-0">
+              {isPro ? (
+                <span className="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 rounded-full font-medium">
+                  ✓ Pro
+                </span>
+              ) : (
+                <span className="text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded-full font-medium">
+                  Free
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Chapter nav strip (always visible when not reading a chapter) */}
+          {!activeChapter && (
+            <div className="flex items-center gap-1 px-4 pb-2 overflow-x-auto scrollbar-hide">
+              {CHAPTERS.map((ch) => {
+                const unlocked = ch.free || isPro;
+                const isActive = activeChapter === ch.key;
+                return (
+                  <button
+                    key={ch.key}
+                    onClick={() => unlocked && handleChapterSelect(ch.key)}
+                    disabled={!unlocked}
+                    className={`
+                      shrink-0 text-xs px-2.5 py-1 rounded-full font-medium transition whitespace-nowrap
+                      ${isActive
+                        ? 'ring-1'
+                        : unlocked
+                        ? 'text-gray-500 hover:text-gray-300'
+                        : 'text-gray-700 cursor-not-allowed'
+                      }
+                    `}
+                    style={
+                      isActive
+                        ? { background: ch.bgColor, color: ch.color, borderColor: ch.color, ringColor: ch.color }
+                        : {}
+                    }
+                    title={ch.label_cn}
+                  >
+                    {ch.key.toUpperCase()}{!unlocked && ' 🔒'}
+                  </button>
+                );
+              })}
+            </div>
           )}
         </div>
-      </div>
 
-      {/* Content - using dangerouslySetInnerHTML instead of iframe */}
-      <div className="relative flex-1 bg-gray-950" style={{ minHeight: `calc(100vh - ${NAV_H + 37}px)` }}>
-        {displayHtml ? (
-          <div 
-            className="h5-report-content"
-            style={{ 
-              height: `calc(100vh - ${NAV_H + 37}px)`,
-              overflow: 'auto'
-            }}
-            dangerouslySetInnerHTML={{ __html: displayHtml }}
-          />
-        ) : (
-          <div className="flex items-center justify-center h-64 text-gray-500 text-sm">
-            No H5 content uploaded yet.
+        {/* ── Content Area ────────────────────────────────────────────────── */}
+        <div ref={contentRef} className="flex-1 overflow-y-auto" style={{ height: 'calc(100vh - 52px)' }}>
+          {activeChapter ? (
+            <ChapterIframe
+              chapter={CHAPTERS.find((c) => c.key === activeChapter)!}
+              isPro={isPro}
+            />
+          ) : (
+            <CoverPage
+              report={report}
+              isPro={isPro}
+              onChapterSelect={handleChapterSelect}
+            />
+          )}
+        </div>
+
+        {/* ── Bottom nav dots (mobile) ─────────────────────────────────────── */}
+        {activeChapter && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-gray-900/90 border border-gray-700 rounded-full px-3 py-1.5 shadow-xl z-20">
+            {CHAPTERS.map((ch) => {
+              const unlocked = ch.free || isPro;
+              return (
+                <button
+                  key={ch.key}
+                  onClick={() => unlocked ? handleChapterSelect(ch.key) : setShowUpgradeModal(true)}
+                  className={`w-2 h-2 rounded-full transition-all ${activeChapter === ch.key ? 'scale-150' : 'opacity-50'}`}
+                  style={{
+                    background: unlocked ? ch.color : '#4b5563',
+                    transform: activeChapter === ch.key ? 'scale(1.5)' : 'scale(1)',
+                  }}
+                  title={ch.label}
+                />
+              );
+            })}
           </div>
         )}
       </div>
-
-      {/* Related Reports */}
-      {relatedReports.length > 0 && (
-        <div className="border-t border-gray-800/60 bg-gray-900/30 px-5 py-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
-              Related Reports
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {relatedReports.map((r) => (
-                <Link
-                  key={r.id}
-                  href={`/reports/${r.slug}`}
-                  className="group bg-gray-900 border border-gray-800 hover:border-blue-600/60 rounded-xl p-5 transition"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    {r.is_premium ? (
-                      <span className="text-xs text-amber-400">⭐ Premium</span>
-                    ) : (
-                      <span className="text-xs text-green-400">Free</span>
-                    )}
-                  </div>
-                  <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition line-clamp-2">
-                    {r.title}
-                  </h3>
-                  <p className="text-xs text-gray-500 mt-2 line-clamp-2">{r.summary}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
-}
-
-/**
- * Transform interactive charts to static SVGs + paywall hints for non-premium users.
- */
-function transformChartsToGated(html: string): string {
-  // Replace chart-container divs with gated charts
-  const chartPattern = /<div class="chart-container">[\s\S]*?<div id="[^"]+" class="echarts"><\/div>[\s\S]*?<\/div>/gi;
-
-  return html.replace(chartPattern, () => {
-    return `
-<div class="gated-chart-wrapper">
-  <svg class="gated-chart-svg" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#grid)" />
-
-    <g transform="translate(200, 100)" opacity="0.4">
-      <polygon points="0,-70 60,-35 60,35 0,70 -60,35 -60,-35" fill="none" stroke="#3b82f6" stroke-width="1"/>
-      <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25" fill="none" stroke="#3b82f6" stroke-width="1"/>
-      <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="#3b82f6" stroke-width="1"/>
-      <polygon points="0,-55 50,-28 35,28 0,60 -45,20 -50,-20" fill="#3b82f6" fill-opacity="0.15" stroke="#60a5fa" stroke-width="2"/>
-      <line x1="0" y1="-70" x2="0" y2="70" stroke="#6b7280" stroke-width="0.5"/>
-      <line x1="-60" y1="-35" x2="60" y2="35" stroke="#6b7280" stroke-width="0.5"/>
-      <line x1="-60" y1="35" x2="60" y2="-35" stroke="#6b7280" stroke-width="0.5"/>
-    </g>
-
-    <circle cx="200" cy="100" r="20" fill="#1f2937" opacity="0.9"/>
-    <path d="M200,90 c-4,0 -7,3 -7,7 v2 h14 v-2 c0,-4 -3,-7 -7,-7 M196,99 v8 h8 v-8" fill="#9ca3af"/>
-
-    <text x="200" y="140" text-anchor="middle" fill="#9ca3af" font-size="11" font-family="system-ui, sans-serif">
-      Interactive AMORA Radar Chart
-    </text>
-    <text x="200" y="156" text-anchor="middle" fill="#6b7280" font-size="9" font-family="system-ui, sans-serif">
-      5-axis · 25 indicators
-    </text>
-  </svg>
-
-  <div class="gated-chart-overlay">
-    <div class="gated-chart-cta">
-      <div class="gated-chart-lock-icon">🔒</div>
-      <h3 class="gated-chart-title">Interactive Chart</h3>
-      <p class="gated-chart-desc">Hover for details · Zoom to explore · Export data</p>
-      <a href="/pricing" class="gated-chart-button">Upgrade to Pro</a>
-    </div>
-  </div>
-
-  <style>
-    .gated-chart-wrapper {
-      position: relative;
-      margin: 24px 0;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #374151;
-      background: #111827;
-    }
-
-    .gated-chart-svg {
-      display: block;
-      width: 100%;
-      height: auto;
-      min-height: 200px;
-    }
-
-    .gated-chart-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .gated-chart-wrapper:hover .gated-chart-overlay {
-      opacity: 1;
-    }
-
-    .gated-chart-cta {
-      text-align: center;
-      padding: 32px;
-      max-width: 280px;
-    }
-
-    .gated-chart-lock-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-
-    .gated-chart-title {
-      color: #fff;
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0 0 8px;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-
-    .gated-chart-desc {
-      color: #9ca3af;
-      font-size: 13px;
-      margin: 0 0 20px;
-      line-height: 1.5;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-
-    .gated-chart-button {
-      display: inline-block;
-      background: #3b82f6;
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 24px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      transition: background 0.2s;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-
-    .gated-chart-button:hover {
-      background: #2563eb;
-    }
-  </style>
-</div>`;
-  });
 }
