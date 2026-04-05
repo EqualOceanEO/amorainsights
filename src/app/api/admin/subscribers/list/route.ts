@@ -52,8 +52,30 @@ export async function GET(req: NextRequest) {
   const { data, error, count } = await query;
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
+  // Batch-lookup users by email to add user info (name, subscription_tier)
+  const emails = (data ?? []).map((r: { email: string }) => r.email);
+  let userMap: Record<string, { id: number; name: string | null; subscription_tier: string }> = {};
+  if (emails.length > 0) {
+    // Supabase supports `in` filter for up to ~100 items per batch
+    // For larger sets, we chunk but for now 30 per page is safe
+    const { data: users } = await supabase
+      .from('users')
+      .select('id, email, name, subscription_tier')
+      .in('email', emails);
+    if (users) {
+      for (const u of users) {
+        userMap[u.email] = { id: u.id, name: u.name, subscription_tier: u.subscription_tier ?? 'free' };
+      }
+    }
+  }
+
+  const enriched = (data ?? []).map((r: Record<string, unknown>) => ({
+    ...r,
+    user: userMap[(r.email as string)] ?? null,
+  }));
+
   return NextResponse.json({
-    data: data ?? [],
+    data: enriched,
     total: count ?? 0,
     page,
     pageSize,

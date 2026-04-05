@@ -1,9 +1,6 @@
-﻿feat(logo): Axis Mark — new brand identity
+﻿feat: subscribers page - add User column (name + subscription_tier from users table)
 
-New logo system:
-- Axis Mark icon: 5 bars in normal distribution (18/28/44/28/18px heights)
-  with #00d4aa → #0072ff gradient + glow dot
-- Wordmark: AMORA (bold, 17px) / insights (8px, blue-400, uppercase) — two lines, equal width
-- Applied to: SiteNav, SiteFooter, about page (nav + footer)
-- favicon.svg updated to Axis Mark SVG
-- New preview: /amora-logo-axis-mark.html
+- Subscribers list API now batch-fetches users by email and returns user info per subscriber
+- Subscribers admin page shows new "User" column between Email and Source
+- User column displays name (or "—" if null) and color-coded tier badge (free/pro/enterprise)
+- "No account" shown for subscribers without a matching users record

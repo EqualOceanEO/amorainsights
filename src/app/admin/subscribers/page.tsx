@@ -4,6 +4,12 @@ import { useEffect, useState, useCallback } from 'react';
 
 // We query Supabase directly from client — admin layout already protects this route
 
+type SubscriberUser = {
+  id: number;
+  name: string | null;
+  subscription_tier: string;
+};
+
 type Subscriber = {
   id: number;
   email: string;
@@ -15,6 +21,7 @@ type Subscriber = {
   plan: string | null;
   plan_status: string | null;
   stripe_customer_id: string | null;
+  user: SubscriberUser | null;
 };
 
 type Stats = {
@@ -63,6 +70,26 @@ function SourceBadge({ source }: { source: string | null }) {
   };
   const cls = colors[source ?? ''] ?? 'bg-gray-800 text-gray-400';
   return <span className={`text-xs px-2 py-0.5 rounded ${cls}`}>{source ?? 'direct'}</span>;
+}
+
+const TIER_COLORS: Record<string, string> = {
+  free: 'bg-gray-700/60 text-gray-300',
+  pro: 'bg-blue-900/40 text-blue-400',
+  enterprise: 'bg-amber-900/40 text-amber-400',
+};
+
+function userBadge(user: SubscriberUser | null) {
+  if (!user) {
+    return <span className="text-xs text-gray-600 italic">No account</span>;
+  }
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-white truncate max-w-[120px]">{user.name ?? '—'}</span>
+      <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${TIER_COLORS[user.subscription_tier] ?? TIER_COLORS.free}`}>
+        {user.subscription_tier}
+      </span>
+    </div>
+  );
 }
 
 function EditModal({ sub, onClose, onSave }: {
@@ -367,6 +394,7 @@ export default function AdminSubscribersPage() {
             <thead>
               <tr className="border-b border-gray-800">
                 <th className="text-left px-4 py-3 text-gray-400 font-medium text-xs uppercase tracking-wider">Email</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium text-xs uppercase tracking-wider">User</th>
                 <th className="text-left px-4 py-3 text-gray-400 font-medium text-xs uppercase tracking-wider">Source</th>
                 <th className="text-left px-4 py-3 text-gray-400 font-medium text-xs uppercase tracking-wider">Status</th>
                 <th className="text-left px-4 py-3 text-gray-400 font-medium text-xs uppercase tracking-wider">Plan</th>
@@ -376,13 +404,14 @@ export default function AdminSubscribersPage() {
             </thead>
             <tbody className="divide-y divide-gray-800/60">
               {loading ? (
-                <tr><td colSpan={6} className="text-center py-10 text-gray-500">Loading…</td></tr>
+                <tr><td colSpan={7} className="text-center py-10 text-gray-500">Loading…</td></tr>
               ) : rows.length === 0 ? (
-                <tr><td colSpan={6} className="text-center py-10 text-gray-500">No subscribers found</td></tr>
+                <tr><td colSpan={7} className="text-center py-10 text-gray-500">No subscribers found</td></tr>
               ) : (
                 rows.map((r) => (
                   <tr key={r.id} className="hover:bg-gray-800/30 transition-colors group">
                     <td className="px-4 py-3 text-white font-mono text-xs max-w-[200px] truncate">{r.email}</td>
+                    <td className="px-4 py-3">{userBadge(r.user)}</td>
                     <td className="px-4 py-3"><SourceBadge source={r.source} /></td>
                     <td className="px-4 py-3">{statusBadge(r)}</td>
                     <td className="px-4 py-3">{planBadge(r.plan, r.plan_status)}</td>
