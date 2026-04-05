@@ -101,13 +101,21 @@ function LoginForm() {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-lg transition mt-2"
-            >
-              {loading ? 'Signing in…' : 'Sign in'}
-            </button>
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-lg transition mt-2"
+              >
+                {loading ? 'Signing in…' : 'Sign in'}
+              </button>
+            </div>
+
+            <p className="text-center text-sm">
+              <Link href="/forgot-password" className="text-gray-400 hover:text-blue-400 transition">
+                Forgot your password?
+              </Link>
+            </p>
           </form>
 
           <p className="text-center text-sm text-gray-500 mt-6">
