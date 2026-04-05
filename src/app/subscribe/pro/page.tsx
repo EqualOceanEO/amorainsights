@@ -12,16 +12,18 @@ const FEATURES_FREE = [
 
 const FEATURES_PRO = [
   'Everything in Free',
-  'Full research reports (PDF + interactive)',
-  'Deep-dive analysis & data charts',
-  'Priority access to new reports',
-  'Searchable report archive',
-  'Early access to beta features',
+  'Full original analysis articles',
+  'Complete research reports with data charts',
+  'Interactive AMORA score breakdowns',
+  'Full company profiles & funding data',
+  'Supply chain & customer intelligence',
+  'Searchable report archive with export',
+  'Priority access to new research',
 ];
 
 export default function ProPage() {
   const [email, setEmail] = useState('');
-  const [plan, setPlan] = useState<'pro_monthly' | 'pro_annual'>('pro_monthly');
+  const [plan, setPlan] = useState<'pro_monthly'>('pro_monthly');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -126,27 +128,11 @@ export default function ProPage() {
               <div className="text-xs text-blue-400 tracking-widest uppercase mb-1">Pro</div>
               <div className="flex items-end gap-2">
                 <div className="text-3xl font-bold">
-                  {plan === 'pro_annual' ? '$8.3' : '$14.9'}
+                  $19.9
                 </div>
                 <div className="text-slate-400 text-sm pb-1">/month</div>
               </div>
-              {plan === 'pro_annual' && (
-                <div className="text-xs text-green-400 mt-1">$99/year · Save 44%</div>
-              )}
-            </div>
-
-            {/* Toggle */}
-            <div className="flex items-center gap-2 mb-5">
-              <button
-                onClick={() => setPlan('pro_monthly')}
-                className={`text-xs px-3 py-1 rounded-full border transition ${plan === 'pro_monthly' ? 'bg-blue-600 border-blue-600 text-white' : 'border-white/10 text-slate-500 hover:border-white/20'}`}>
-                Monthly
-              </button>
-              <button
-                onClick={() => setPlan('pro_annual')}
-                className={`text-xs px-3 py-1 rounded-full border transition ${plan === 'pro_annual' ? 'bg-blue-600 border-blue-600 text-white' : 'border-white/10 text-slate-500 hover:border-white/20'}`}>
-                Annual <span className="text-green-400">−44%</span>
-              </button>
+              <p className="text-xs text-slate-500 mt-1">Billed monthly. Cancel anytime.</p>
             </div>
 
             <ul className="space-y-2 mb-6">

@@ -5,6 +5,7 @@ import { getCompanyById, getCompanies, INDUSTRY_META, type Company } from '@/lib
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 import ShareBar from '@/components/ShareBar';
+import PremiumWall from '@/components/PremiumWall';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -289,6 +290,13 @@ export default async function CompanyDetailPage({ params }: Props) {
                 </div>
               </div>
             )}
+            
+            {/* ── Premium content gate ── */}
+            {/* Basic info above is free: name, description, AMORA Score overview, listed status */}
+            {/* Everything below requires subscription: funding, team, products, supply chain, customers */}
+            <PremiumWall variant="company" compact blurPreview={false} showNewsletter={false} />
+            
+            {/* ── Premium-only sections (hidden behind wall visually, but content exists in source) ── */}
             
             {/* Funding & Valuation */}
             {(company.funding_stage || company.funding_total_usd || company.funding_total_cny || company.valuation_usd) && (

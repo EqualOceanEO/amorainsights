@@ -76,7 +76,18 @@ def add_header(slide, label, title, sub, pn, total=27):
     add_footer(slide, pn, total)
 
 prs = Presentation(INPUT_PATH)
-blank = prs.slide_layouts[6]
+# Find a usable blank layout
+blank = None
+for i in range(len(prs.slide_layouts)-1, -1, -1):
+    try:
+        test = prs.slide_layouts[i]
+        blank = test
+        print(f"Using slide_layouts[{i}]: {test.name}")
+        break
+    except:
+        pass
+if blank is None:
+    blank = prs.slide_layouts[0]
 total_orig = len(prs.slides)
 print(f"Original slides: {total_orig}")
 
@@ -89,41 +100,56 @@ def build_m3(prs):
                "30+ Domestic Suppliers  |  Pearl River & Yangtze Delta  |  Full Actuator Ecosystem",
                9, 27)
 
-    # Left: Category cards (5 categories, 2 columns)
     cats = [
-        ("Vision System", ACCENT_CYAN, [("Hesai (合眸)", "AT128 LiDAR", "Listed"), ("RoboSense (速腾)", "M1/M2 LiDAR", "Listed"), ("Orbbec (奥比中光)", "3D Depth Camera", "Listed"), ("DJI Livox", "Horizon/Avia", "Private")]),
-        ("Compute & AI", ACCENT_PURPLE, [("Horizon Robotics (地平线)", "Journey 5/6 SoC", "Listed"), ("Black Sesame (黑芝麻)", "A1000 Chip", "Listed"), ("CATL (宁德时代)", "Robot Battery Pack", "Listed"), ("EVE Energy (亿纬)", "Cylindrical Cells", "Listed")]),
-        ("Actuators", ACCENT_GREEN, [("Leaderdrive (绿的谐波)", "Harmonic Reducer", "Listed"), ("Estun (埃斯顿)", "Servo Motors", "Listed"), ("Inovance (汇川)", "Servo Systems", "Listed"), ("Welling (威灵)", "Precision Motors", "Private")]),
-        ("Dexterous Hand", ACCENT_AMBER, [("Inspire Robots (因时)", "RH56DFX Hand", "Private"), ("Paxini (帕西米)", "Tactile Sensors", "Private"), ("DH-Robotics (大寰)", "Electric Grippers", "Private")]),
-        ("Force Sensing", ACCENT_PINK, [("Unitree (宇树)", "Proprietary F/T Sensor", "IPO 2026"), ("Tacter (坤维)", "6-Axis F/T Sensor", "Private"), ("Bio-Sensing (生科)", "Torque Sensor", "Private")]),
+        ("Vision System", ACCENT_CYAN,
+         [("Hesai (合眸)", "AT128 LiDAR", "Listed"), ("RoboSense (速腾)", "M1/M2 LiDAR", "Listed"), ("Orbbec (奥比中光)", "3D Depth Camera", "Listed"), ("DJI Livox", "Horizon/Avia LiDAR", "Private")],
+         0, 0),
+        ("Compute & AI", ACCENT_PURPLE,
+         [("Horizon Robotics (地平线)", "Journey 5/6 SoC", "Listed"), ("Black Sesame (黑芝麻)", "A1000 Chip", "Listed"), ("CATL (宁德时代)", "Robot Battery Pack", "Listed"), ("EVE Energy (亿纬)", "Cylindrical Cells", "Listed")],
+         1, 0),
+        ("Actuators", ACCENT_GREEN,
+         [("Leaderdrive (绿的谐波)", "Harmonic Reducer", "Listed"), ("Estun (埃斯顿)", "Servo Motors", "Listed"), ("Inovance (汇川)", "Servo Systems", "Listed"), ("Welling (威灵)", "Precision Motors", "Private")],
+         0, 1),
+        ("Dexterous Hand", ACCENT_AMBER,
+         [("Inspire Robots (因时)", "RH56DFX Hand", "Private"), ("Paxini (帕西米)", "Tactile Sensors", "Private"), ("DH-Robotics (大寰)", "Electric Grippers", "Private")],
+         1, 1),
+        ("Force Sensing", ACCENT_PINK,
+         [("Unitree (宇树)", "Proprietary F/T Sensor", "IPO 2026"), ("Tacter (坤维)", "6-Axis F/T Sensor", "Private")],
+         0, 2),
     ]
-    col_xs = [0.2, 5.0]
-    for ci, (cat_name, cat_color, items) in enumerate(cats):
-        col = ci % 2
-        row = ci // 2
-        if ci == 4:
-            col = 0
-            row = 2
-        cx = col_xs[col]
-        cy = 1.45 + row * 1.83
 
-        # Category header bar
-        hb = add_rect(slide, cx, cy, 4.65, 0.28, fill_rgb=RGBColor(int(cat_color[0]*0.12), int(cat_color[1]*0.12), int(cat_color[2]*0.12)), line_rgb=cat_color, line_pt=0.75)
+    # Card positions: [col_x, cy]
+    # col 0: cx=0.2; col 1: cx=5.0
+    # row 0: cy=1.45; row 1: cy=3.22; row 2: cy=4.99
+    # Force Sensing (col=0, row=2): 2 items fits within 0.63 available
+    CARD_COL_X = [0.2, 5.0]
+    CARD_CY = [1.45, 3.22, 4.99]
+
+    for cat_name, cat_color, items, col, row in cats:
+        cx = CARD_COL_X[col]
+        cy = CARD_CY[row]
+
+        # Category header
+        hb = add_rect(slide, cx, cy, 4.65, 0.28,
+                     fill_rgb=RGBColor(int(cat_color[0]*0.12), int(cat_color[1]*0.12), int(cat_color[2]*0.12)),
+                     line_rgb=cat_color, line_pt=0.75)
         add_text(slide, cat_name, cx+0.1, cy+0.04, 4.4, 0.22, size=10.5, color=cat_color, bold=True)
 
         for si, (s_name, s_prod, s_tag) in enumerate(items):
             sy = cy + 0.32 + si * 0.3
-            sb = add_rect(slide, cx, sy, 4.65, 0.27, fill_rgb=BG_CARD, line_rgb=RGBColor(0x30, 0x30, 0x48), line_pt=0.3)
+            sb = add_rect(slide, cx, sy, 4.65, 0.27, fill_rgb=BG_CARD,
+                         line_rgb=RGBColor(0x30, 0x30, 0x48), line_pt=0.3)
             add_text(slide, s_name, cx+0.1, sy+0.04, 2.5, 0.21, size=9, color=TEXT_WHITE, bold=True)
             add_text(slide, s_prod, cx+2.6, sy+0.04, 1.4, 0.21, size=8.5, color=TEXT_GRAY)
             tag_c = CHINA_RED if s_tag == "Listed" else (ACCENT_AMBER if "IPO" in s_tag else TEXT_GRAY)
-            add_text(slide, s_tag, cx+4.1, sy+0.05, 0.5, 0.2, size=7.5, color=tag_c, bold=(s_tag=="Listed"), align=PP_ALIGN.CENTER)
+            add_text(slide, s_tag, cx+4.1, sy+0.05, 0.5, 0.2, size=7.5, color=tag_c,
+                    bold=(s_tag=="Listed"), align=PP_ALIGN.CENTER)
 
     # Right: OEM list + strengths
     rx = 5.0
-    # OEM Section
     oem_y = 1.45
-    add_rect(slide, rx, oem_y, 4.65, 0.28, fill_rgb=RGBColor(0x0A, 0x28, 0x14), line_rgb=ACCENT_GREEN, line_pt=0.75)
+    add_rect(slide, rx, oem_y, 4.65, 0.28,
+             fill_rgb=RGBColor(0x0A, 0x28, 0x14), line_rgb=ACCENT_GREEN, line_pt=0.75)
     add_text(slide, "Leading OEMs", rx+0.12, oem_y+0.04, 4.4, 0.22, size=10.5, color=ACCENT_GREEN, bold=True)
 
     oems = [
@@ -136,17 +162,18 @@ def build_m3(prs):
     ]
     for oi, (name, desc, oc) in enumerate(oems):
         oy = oem_y + 0.32 + oi * 0.29
-        ob = add_rect(slide, rx, oy, 4.65, 0.27, fill_rgb=BG_CARD, line_rgb=RGBColor(0x30, 0x30, 0x48), line_pt=0.3)
+        ob = add_rect(slide, rx, oy, 4.65, 0.27, fill_rgb=BG_CARD,
+                     line_rgb=RGBColor(0x30, 0x30, 0x48), line_pt=0.3)
         add_text(slide, name, rx+0.12, oy+0.04, 2.2, 0.21, size=9, color=oc, bold=True)
         add_text(slide, desc, rx+2.32, oy+0.04, 2.22, 0.21, size=8, color=TEXT_GRAY)
 
-    # Strengths callout
     str_y = oem_y + 0.32 + len(oems)*0.29 + 0.12
-    sb2 = add_rect(slide, rx, str_y, 4.65, 1.22, fill_rgb=RGBColor(0x10, 0x10, 0x28), line_rgb=ACCENT_CYAN, line_pt=0.75)
+    sb2 = add_rect(slide, rx, str_y, 4.65, 1.22,
+                  fill_rgb=RGBColor(0x10, 0x10, 0x28), line_rgb=ACCENT_CYAN, line_pt=0.75)
     add_text(slide, "Core Advantages", rx+0.15, str_y+0.06, 4.3, 0.22, size=10.5, color=ACCENT_CYAN, bold=True)
     strengths = [
         ("Manufacturing Density:", "Full ecosystem within 100km; Pearl River + Yangtze Delta cluster"),
-        ("Cost Leadership:", "35% of US cost at 100K scale — 65% structural advantage"),
+        ("Cost Leadership:", "35% of US cost at 100K scale - 65% structural advantage"),
         ("Actuator Mastery:", "30+ domestic suppliers, most complete globally"),
         ("Speed Advantage:", "Unitree 5,500+ deployed vs Tesla Optimus <50"),
     ]

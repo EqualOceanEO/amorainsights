@@ -8,6 +8,7 @@ import ReadingProgress from '@/components/ReadingProgress';
 import SubscribeBox from '@/components/SubscribeBox';
 import ShareBar from '@/components/ShareBar';
 import ChartBlock from '@/components/ChartBlock';
+import PremiumWall from '@/components/PremiumWall';
 import type { SubscriptionTier } from '@/components/ChartBlock';
 import { EventBeacon } from '@/components/EventBeacon';
 import H5ReportViewer from '@/components/H5ReportViewer';
@@ -217,7 +218,7 @@ export default async function ReportDetailPage({
                 hasAccess ? (
                   <FreeContent report={report} />
                 ) : (
-                  <PremiumGate slug={report.slug} title={report.title} />
+                  <PremiumWall variant="report" title={`Unlock the full analysis for ${report.title}`} />
                 )
               ) : (
                 report.content ? (
@@ -302,116 +303,6 @@ function FreeContent({ report }: { report: Report }) {
           return <div key={i} className="h-3" />;
         return <p key={i} className="text-gray-300 leading-relaxed mb-3">{line}</p>;
       })}
-    </div>
-  );
-}
-
-// ─── Premium Gate (Hook Design) ───────────────────────────────────────────────
-
-function PremiumGate({ slug, title }: { slug: string; title: string }) {
-  void slug;
-  return (
-    <div className="mt-8 space-y-0">
-      {/* Teaser — first few paragraphs blurred */}
-      <div className="relative rounded-xl overflow-hidden">
-        {/* Faded preview text */}
-        <div
-          className="px-6 py-8 bg-gray-900/60 border border-gray-800 rounded-xl select-none pointer-events-none"
-          aria-hidden="true"
-          style={{
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)',
-          }}
-        >
-          <p className="text-gray-400 text-sm leading-7 mb-4">
-            This report covers market sizing, competitive dynamics, and investment signals
-            across four key dimensions. Our proprietary AMORA scoring methodology evaluates
-            each company on 25 second-order indicators...
-          </p>
-          <p className="text-gray-400 text-sm leading-7 mb-4">
-            Key findings include comparative benchmarking of leading players, supply chain
-            analysis, regulatory environment assessment, and forward-looking projections
-            for 2026–2028...
-          </p>
-          <p className="text-gray-400 text-sm leading-7">
-            Financial projections, M&A activity analysis, and strategic recommendations
-            are included in the full report. Subscriber access includes downloadable data
-            tables and quarterly update alerts...
-          </p>
-        </div>
-      </div>
-
-      {/* Upgrade CTA card */}
-      <div className="rounded-xl border border-blue-800/50 bg-gradient-to-b from-blue-950/40 to-gray-950/80 p-8 text-center -mt-0 relative z-10">
-        {/* Hook headline */}
-        <div className="inline-flex items-center gap-2 bg-blue-600/15 border border-blue-500/30 text-blue-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-5 tracking-wide">
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-          Premium Report
-        </div>
-
-        <h2 className="text-2xl font-bold text-white mb-3 leading-snug">
-          Unlock the full analysis for
-          <br />
-          <span className="text-blue-400">{title}</span>
-        </h2>
-
-        <p className="text-gray-400 text-sm mb-2 max-w-sm mx-auto leading-relaxed">
-          Get the complete report — AMORA scores, competitive matrix, supply chain map,
-          financial projections, and strategic recommendations.
-        </p>
-
-        {/* Value bullets */}
-        <ul className="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-500 mb-8 mt-4">
-          {[
-            '✓ Full 40-page report',
-            '✓ AMORA 5-axis score',
-            '✓ Quarterly updates',
-            '✓ Data export',
-          ].map((item) => (
-            <li key={item} className="text-gray-400">{item}</li>
-          ))}
-        </ul>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link
-            href="/signup?intent=premium"
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-xl transition text-sm"
-          >
-            Start Free Trial →
-          </Link>
-          <Link
-            href="/pricing"
-            className="text-sm text-gray-400 hover:text-white transition px-4 py-3"
-          >
-            View plans
-          </Link>
-        </div>
-
-        <p className="text-xs text-gray-600 mt-4">
-          Already subscribed?{' '}
-          <Link href="/login" className="text-blue-400 hover:underline">
-            Sign in
-          </Link>{' '}
-          to access your reports.
-        </p>
-      </div>
-
-      {/* Social proof strip */}
-      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-6 text-xs text-gray-600">
-        <span>🔒 Cancel anytime</span>
-        <span>📦 Instant access after signup</span>
-        <span>🌍 500+ analysts trust AMORA</span>
-      </div>
-
-      {/* Newsletter hook — low-friction alternative */}
-      <div className="mt-8 pt-8 border-t border-gray-800/60">
-        <p className="text-xs text-gray-500 text-center mb-4">
-          Not ready to subscribe? Get the weekly briefing — free.
-        </p>
-        <div className="max-w-sm mx-auto">
-          <SubscribeBox source="report_premium_gate" compact />
-        </div>
-      </div>
     </div>
   );
 }

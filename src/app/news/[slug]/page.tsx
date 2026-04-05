@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
 import ShareBar from '@/components/ShareBar';
+import PremiumWall from '@/components/PremiumWall';
 import { INDUSTRY_COLORS, INDUSTRY_DOT_COLORS } from '@/lib/industries';
 
 const SUB_SECTOR_NAMES: Record<string, string> = {
@@ -184,8 +185,18 @@ export default function NewsDetailPage() {
             <div className="flex items-center flex-wrap gap-2 mb-4">
               {/* Level 1 */}
               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${industryColor}`}>{industryLabel1}</span>
+              {/* Original vs Curated badge */}
+              {item.author ? (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  ✍️ Original
+                </span>
+              ) : item.source_name ? (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-700/50 text-gray-400 border border-gray-600/30">
+                  📰 Curated
+                </span>
+              ) : null}
               {item.is_premium && (
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Premium</span>
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">⭐ Premium</span>
               )}
               {item.tags?.map(tag => (
                 <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-gray-800 text-gray-400 border border-gray-700">{tag}</span>
@@ -248,18 +259,25 @@ export default function NewsDetailPage() {
             {item.content && (
               <div className="mb-10">
                 <SectionHeading>Full Analysis</SectionHeading>
-                <div className="space-y-6">
-                  {item.content.split(/\n\n+/).filter(Boolean).map((para, i) => (
-                    <p key={i} className="text-gray-300 leading-loose text-lg">{para.trim()}</p>
-                  ))}
-                </div>
-                {/* Content footer */}
-                <div className="mt-8 pt-6 border-t border-gray-800 flex items-center gap-3 text-sm text-gray-600">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3.75 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 3.75 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 3.75 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-3.75 1.253" />
-                  </svg>
-                  <span>{item.content.split(/\s+/).filter(Boolean).length} words · AMORA Research</span>
-                </div>
+                {/* Premium wall for original premium content */}
+                {item.is_premium && item.author ? (
+                  <PremiumWall variant="news" blurPreview />
+                ) : (
+                  <>
+                    <div className="space-y-6">
+                      {item.content.split(/\n\n+/).filter(Boolean).map((para, i) => (
+                        <p key={i} className="text-gray-300 leading-loose text-lg">{para.trim()}</p>
+                      ))}
+                    </div>
+                    {/* Content footer */}
+                    <div className="mt-8 pt-6 border-t border-gray-800 flex items-center gap-3 text-sm text-gray-600">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3.75 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 3.75 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 3.75 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-3.75 1.253" />
+                      </svg>
+                      <span>{item.content.split(/\s+/).filter(Boolean).length} words · AMORA Research</span>
+                    </div>
+                  </>
+                )}
               </div>
             )}
 

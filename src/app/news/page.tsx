@@ -110,9 +110,19 @@ function TimelineNewsCard({ item }: { item: NewsItem }) {
                 {SUB_SECTOR_NAMES[String(item.sub_sector_id)] ?? item.sub_sector_id}
               </span>
             )}
+            {item.author && (
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">
+                ✍️ Original
+              </span>
+            )}
+            {!item.author && item.source_name && (
+              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-800/60 text-gray-500 border border-gray-700/40 shrink-0">
+                📰 Curated
+              </span>
+            )}
             {item.is_premium && (
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
-                Premium
+                ⭐ Premium
               </span>
             )}
             {item.is_featured && (
