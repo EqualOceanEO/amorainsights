@@ -1,10 +1,19 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import { INDUSTRY_HIERARCHY, getLevel2Options } from '@/lib/industries';
 import { INDUSTRY_META, type IndustrySlug } from '@/lib/db';
+
+interface SessionUser {
+  id?: string;
+  email?: string | null;
+  name?: string | null;
+  subscriptionTier?: string;
+  isAdmin?: boolean;
+}
 
 interface SiteNavProps {
   activePath?: string;
@@ -15,12 +24,45 @@ export default function SiteNav({ activePath }: SiteNavProps) {
   const active = activePath ?? pathname;
   const [ddOpen, setDdOpen] = useState(false);
   const [hoverL1, setHoverL1] = useState<string | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [user, setUser] = useState<SessionUser | null>(null);
+  const [sessionLoaded, setSessionLoaded] = useState(false);
   const ddRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isLoggedIn = !!user;
+  const isPro = user?.subscriptionTier === 'pro';
+  const userName = user?.name || user?.email?.split('@')[0] || 'User';
+
+  // Fetch session on mount
+  const fetchSession = useCallback(async () => {
+    try {
+      const res = await fetch('/api/auth/session');
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+      }
+    } catch {
+      // Silent fail — stay logged out
+    } finally {
+      setSessionLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSession();
+  }, [fetchSession]);
+
+  // Re-fetch session when pathname changes (e.g., after login/signup)
+  useEffect(() => {
+    fetchSession();
+  }, [pathname, fetchSession]);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (ddRef.current && !ddRef.current.contains(e.target as Node)) setDdOpen(false);
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setUserMenuOpen(false);
     }
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
@@ -41,7 +83,6 @@ export default function SiteNav({ activePath }: SiteNavProps) {
   }
 
   const l2 = hoverL1 ? getLevel2Options(hoverL1) : [];
-  const l2Meta = hoverL1 ? INDUSTRY_META[hoverL1 as IndustrySlug] : null;
 
   const navLinks = [
     { href: '/industries', label: 'Industries', isDropdown: true },
@@ -50,6 +91,9 @@ export default function SiteNav({ activePath }: SiteNavProps) {
     { href: '/companies', label: 'Companies' },
     { href: '/about', label: 'About' },
   ];
+
+  // Don't render CTA buttons until session is loaded to prevent flash
+  const showCta = sessionLoaded;
 
   return (
     <header className="border-b border-gray-800/60 bg-gray-950/90 backdrop-blur-md sticky top-0 z-50">
@@ -163,27 +207,93 @@ export default function SiteNav({ activePath }: SiteNavProps) {
           )}
         </nav>
 
-        {/* CTA */}
+        {/* Right side */}
         <div className="flex items-center gap-2">
-          <Link
-            href="/admin/news"
-            className="hidden sm:inline text-sm text-gray-400 hover:text-white transition px-3 py-1.5 rounded-md hover:bg-gray-800/60"
-            title="Admin panel"
-          >
-            Admin
-          </Link>
-          <Link
-            href="/login"
-            className="hidden sm:inline text-sm text-gray-400 hover:text-white transition px-3 py-1.5 rounded-md hover:bg-gray-800/60"
-          >
-            Sign In
-          </Link>
-          <Link
-            href="/signup"
-            className="text-sm bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-1.5 rounded-lg transition"
-          >
-            Start Free
-          </Link>
+          {showCta && isLoggedIn ? (
+            <div ref={userMenuRef} className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-800/60 transition-colors"
+              >
+                {/* Avatar */}
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${isPro ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'bg-gray-800 text-gray-400 border border-gray-700'}`}>
+                  {userName.charAt(0).toUpperCase()}
+                </div>
+                {/* Pro badge */}
+                {isPro && (
+                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-blue-600/15 text-blue-400 border border-blue-500/20 hidden sm:inline">
+                    PRO
+                  </span>
+                )}
+                {/* Chevron */}
+                <svg className={`w-3.5 h-3.5 text-gray-500 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Dropdown menu */}
+              {userMenuOpen && (
+                <div className="absolute right-0 top-full mt-1 w-56 rounded-xl border border-gray-700/60 bg-gray-900/95 backdrop-blur-lg shadow-2xl shadow-black/40 overflow-hidden py-1">
+                  {/* User info */}
+                  <div className="px-4 py-3 border-b border-gray-800/60">
+                    <p className="text-sm font-medium text-white truncate">{userName}</p>
+                    <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                  </div>
+
+                  <div className="py-1">
+                    <Link href="/dashboard" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800/60 hover:text-white transition-colors">
+                      <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                      </svg>
+                      Dashboard
+                    </Link>
+
+                    {!isPro && (
+                      <Link href="/pricing" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-blue-400 hover:bg-blue-900/20 transition-colors">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Upgrade to Pro
+                      </Link>
+                    )}
+                  </div>
+
+                  <div className="border-t border-gray-800/60 pt-1">
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-400 hover:bg-red-900/20 hover:text-red-400 transition-colors text-left"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Sign out
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : showCta ? (
+            <>
+              <Link
+                href="/login"
+                className="hidden sm:inline text-sm text-gray-400 hover:text-white transition px-3 py-1.5 rounded-md hover:bg-gray-800/60"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                className="text-sm bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-1.5 rounded-lg transition"
+              >
+                Start Free
+              </Link>
+            </>
+          ) : (
+            // Placeholder to prevent layout shift while session loads
+            <div className="flex items-center gap-2">
+              <div className="w-16 h-8 rounded-lg bg-gray-800/40" />
+              <div className="w-20 h-8 rounded-lg bg-gray-800/40" />
+            </div>
+          )}
         </div>
       </div>
     </header>

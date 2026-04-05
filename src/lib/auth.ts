@@ -29,25 +29,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: String(user.id),
           email: user.email,
           name: user.name,
-          // Pass subscription tier into JWT so all pages can read it without a DB call
           subscriptionTier: user.subscription_tier ?? 'free',
           isAdmin: user.is_admin ?? false,
         };
       },
     }),
   ],
-  session: { strategy: 'jwt' },
+  session: { strategy: 'jwt', maxAge: 24 * 60 * 60 }, // 24 hours
   pages: {
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
-        // Persist subscription tier in JWT (Franklyn schema 2026-03-15)
         token.subscriptionTier = (user as { subscriptionTier?: string }).subscriptionTier ?? 'free';
         token.isAdmin = (user as { isAdmin?: boolean }).isAdmin ?? false;
       }
+
+      // Refresh subscription tier from DB on session activity
+      // This ensures webhook updates propagate without requiring re-login
+      if (token?.email && (!user || trigger === 'update')) {
+        try {
+          const dbUser = await getUserByEmail(token.email as string);
+          if (dbUser) {
+            token.subscriptionTier = dbUser.subscription_tier ?? 'free';
+            token.isAdmin = dbUser.is_admin ?? false;
+          }
+        } catch {
+          // DB error — keep existing token values
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
@@ -63,7 +76,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async authorized({ auth: session, request }) {
       const pathname = request.nextUrl.pathname;
       const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
-      // Block unauthenticated access to protected pages
       if (isProtected && !session) return false;
       return true;
     },

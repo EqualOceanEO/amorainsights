@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SubscribeBox from '@/components/SubscribeBox';
 
@@ -8,6 +9,11 @@ import SubscribeBox from '@/components/SubscribeBox';
  *
  * 用于 News、Reports、Companies 详情页中限制免费用户访问付费内容。
  * 统一样式、统一 CTA、统一价格：$19.9/月。
+ *
+ * 自动检测用户 session：
+ *  - Pro 用户：不渲染付费墙（返回 null），让父组件直接显示内容
+ *  - 已登录 Free 用户：显示升级提示
+ *  - 未登录用户：显示注册 + 订阅 CTA
  *
  * Props:
  *  - variant: 'news' | 'report' | 'company'
@@ -23,6 +29,15 @@ interface PremiumWallProps {
   compact?: boolean;
   blurPreview?: boolean;
   showNewsletter?: boolean;
+}
+
+interface SessionData {
+  user: {
+    id?: string;
+    email?: string | null;
+    name?: string | null;
+    subscriptionTier?: string;
+  } | null;
 }
 
 const VARIANT_CONFIG = {
@@ -68,6 +83,28 @@ export default function PremiumWall({
   blurPreview = true,
   showNewsletter = true,
 }: PremiumWallProps) {
+  const [session, setSession] = useState<SessionData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => setSession(data))
+      .catch(() => setSession(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Pro user — don't render the wall at all
+  if (!loading && session?.user?.subscriptionTier === 'pro') {
+    return null;
+  }
+
+  // Loading — show nothing (or a subtle placeholder)
+  if (loading) {
+    return null;
+  }
+
+  const isLoggedIn = !!session?.user;
   const config = VARIANT_CONFIG[variant];
   const displayTitle = title || config.headline;
 
@@ -152,7 +189,7 @@ export default function PremiumWall({
             href="/pricing"
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-xl transition text-sm"
           >
-            Subscribe Now — $19.9/mo →
+            {isLoggedIn ? 'Upgrade to Pro — $19.9/mo →' : 'Subscribe Now — $19.9/mo →'}
           </Link>
           {!compact && (
             <Link
@@ -164,13 +201,23 @@ export default function PremiumWall({
           )}
         </div>
 
-        <p className="text-xs text-gray-600 mt-4">
-          Already subscribed?{' '}
-          <Link href="/login" className="text-blue-400 hover:underline">
-            Sign in
-          </Link>{' '}
-          to access.
-        </p>
+        {/* Sign in prompt (for logged-in free users) */}
+        {isLoggedIn && (
+          <p className="text-xs text-gray-600 mt-4">
+            Signed in as <span className="text-gray-400">{session?.user?.email}</span>
+          </p>
+        )}
+
+        {/* Sign in prompt (for non-logged-in users) */}
+        {!isLoggedIn && (
+          <p className="text-xs text-gray-600 mt-4">
+            Already subscribed?{' '}
+            <Link href="/login" className="text-blue-400 hover:underline">
+              Sign in
+            </Link>{' '}
+            to access.
+          </p>
+        )}
       </div>
 
       {/* Social proof strip */}
@@ -180,8 +227,8 @@ export default function PremiumWall({
         <span>🌍 500+ analysts trust AMORA</span>
       </div>
 
-      {/* Newsletter hook */}
-      {showNewsletter && !compact && (
+      {/* Newsletter hook — only for non-logged-in users */}
+      {showNewsletter && !compact && !isLoggedIn && (
         <div className="mt-8 pt-8 border-t border-gray-800/60">
           <p className="text-xs text-gray-500 text-center mb-4">
             Not ready to subscribe? Get the weekly briefing — free.

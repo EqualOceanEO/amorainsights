@@ -9,6 +9,7 @@ const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? '';
 /**
  * POST /api/stripe/webhook
  * Handles Stripe events to update subscriber plan status in Supabase
+ * Also updates users.subscription_tier for auth session
  */
 export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
@@ -32,11 +33,35 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
         const email = session.customer_email;
         const customerId = session.customer as string;
+
         if (email) {
+          // Update subscribers table
           await supabase.from('subscribers').upsert(
             { email, stripe_customer_id: customerId, plan: 'pro', plan_status: 'active', confirmed: true },
             { onConflict: 'email' }
           );
+
+          // Update users table subscription tier
+          await supabase
+            .from('users')
+            .update({ subscription_tier: 'pro' })
+            .eq('email', email);
+        }
+
+        // Also try to update by stripe_customer_id
+        if (customerId) {
+          const { data: subscriber } = await supabase
+            .from('subscribers')
+            .select('email')
+            .eq('stripe_customer_id', customerId)
+            .maybeSingle();
+
+          if (subscriber?.email) {
+            await supabase
+              .from('users')
+              .update({ subscription_tier: 'pro' })
+              .eq('email', subscriber.email);
+          }
         }
         break;
       }
@@ -46,18 +71,49 @@ export async function POST(req: NextRequest) {
         const customerId = sub.customer as string;
         const status = sub.status; // active, past_due, canceled, etc.
         const plan = status === 'active' || status === 'trialing' ? 'pro' : 'basic';
+        const tier = plan === 'pro' ? 'pro' : 'free';
+
         await supabase.from('subscribers')
           .update({ plan, plan_status: status })
           .eq('stripe_customer_id', customerId);
+
+        // Sync to users table
+        const { data: subscriber } = await supabase
+          .from('subscribers')
+          .select('email')
+          .eq('stripe_customer_id', customerId)
+          .maybeSingle();
+
+        if (subscriber?.email) {
+          await supabase
+            .from('users')
+            .update({ subscription_tier: tier })
+            .eq('email', subscriber.email);
+        }
         break;
       }
 
       case 'customer.subscription.deleted': {
         const sub = event.data.object as Stripe.Subscription;
         const customerId = sub.customer as string;
+
         await supabase.from('subscribers')
           .update({ plan: 'basic', plan_status: 'canceled' })
           .eq('stripe_customer_id', customerId);
+
+        // Downgrade user
+        const { data: subscriber } = await supabase
+          .from('subscribers')
+          .select('email')
+          .eq('stripe_customer_id', customerId)
+          .maybeSingle();
+
+        if (subscriber?.email) {
+          await supabase
+            .from('users')
+            .update({ subscription_tier: 'free' })
+            .eq('email', subscriber.email);
+        }
         break;
       }
 
@@ -67,6 +123,8 @@ export async function POST(req: NextRequest) {
         await supabase.from('subscribers')
           .update({ plan_status: 'past_due' })
           .eq('stripe_customer_id', customerId);
+
+        // Don't immediately downgrade — let Stripe retry
         break;
       }
     }
@@ -77,4 +135,3 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ received: true });
 }
-

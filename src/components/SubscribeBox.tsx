@@ -51,8 +51,8 @@ export default function SubscribeBox({
           </svg>
         </div>
         <div>
-          <p className="text-sm font-medium text-white">You're subscribed!</p>
-          <p className="text-xs text-slate-500">Confirmation sent. First issue arrives next Friday.</p>
+          <p className="text-sm font-medium text-white">You&apos;re in!</p>
+          <p className="text-xs text-slate-500">Check your email — account created + weekly briefing confirmed.</p>
         </div>
       </div>
     );

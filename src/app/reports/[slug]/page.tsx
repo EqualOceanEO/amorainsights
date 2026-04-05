@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { auth } from '@/lib/auth';
 import { getReportBySlug, getReports, INDUSTRY_META, type Report } from '@/lib/db';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
@@ -51,6 +52,7 @@ export default async function ReportDetailPage({
 
   if (!report) notFound();
 
+  const session = await auth();
   const meta = INDUSTRY_META[report.industry_slug] ?? {
     name: report.industry_slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
     icon: '📊',
@@ -58,9 +60,10 @@ export default async function ReportDetailPage({
   };
   const isPremium = report.is_premium;
 
-  // Public visitor = free tier
-  const subscriptionTier: SubscriptionTier = 'free';
-  const hasAccess = !isPremium;
+  // Read subscription tier from session
+  const tierFromSession = (session?.user as { subscriptionTier?: string })?.subscriptionTier ?? 'free';
+  const subscriptionTier: SubscriptionTier = tierFromSession as SubscriptionTier;
+  const hasAccess = !isPremium || subscriptionTier === 'pro';
 
   const isH5Report = report.report_format === 'html' || report.report_format === 'h5_embed';
 
