@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${SITE_URL}/subscribe/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${SITE_URL}/subscribe/pro`,
+      cancel_url: `${SITE_URL}/pricing`,
       metadata: { plan, source: 'web_checkout' },
       subscription_data: {
         metadata: { plan },

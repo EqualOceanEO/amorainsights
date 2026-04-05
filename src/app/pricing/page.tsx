@@ -1,6 +1,10 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
+import { trackEvent } from '@/components/AnalyticsProvider';
 
 const FREE_FEATURES = [
   { icon: '📰', text: 'Curated news — all sourced articles, always free' },
@@ -44,7 +48,65 @@ const FAQ = [
   },
 ];
 
+interface SessionUser {
+  email: string;
+  name?: string | null;
+  subscriptionTier?: string;
+}
+
 export default function PricingPage() {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [session, setSession] = useState<SessionUser | null>(null);
+
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.user) {
+          setSession(data.user);
+          setEmail(data.user.email ?? '');
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const isPro = session?.subscriptionTier === 'pro';
+
+  async function handleCheckout() {
+    const checkoutEmail = session?.email ?? email;
+    if (!checkoutEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(checkoutEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    setError('');
+    setLoading(true);
+
+    await trackEvent('upgrade_click', {
+      category: 'billing',
+      properties: { plan: 'pro_monthly', email_domain: checkoutEmail.split('@')[1] ?? 'unknown' },
+    });
+
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: checkoutEmail, plan: 'pro_monthly' }),
+      }).then(r => r.json());
+
+      if (res.url) {
+        window.location.href = res.url;
+      } else {
+        setError(res.error ?? 'Something went wrong. Please try again.');
+        setLoading(false);
+      }
+    } catch {
+      setError('Network error. Please try again.');
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       <SiteNav />
@@ -127,12 +189,58 @@ export default function PricingPage() {
               ))}
             </ul>
 
-            <Link
-              href="/subscribe/pro"
-              className="block w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition text-center text-sm"
-            >
-              Subscribe Now →
-            </Link>
+            {/* Checkout section — inline */}
+            {isPro ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-green-600/10 border border-green-600/20">
+                  <svg className="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-medium text-green-300">You're on Pro!</p>
+                    <p className="text-xs text-green-500">{session?.email}</p>
+                  </div>
+                </div>
+                <Link
+                  href="/dashboard"
+                  className="block w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition text-center text-sm"
+                >
+                  Go to Dashboard →
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {/* Logged-in user: show email badge, no input needed */}
+                {session && !isPro && (
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                    <div className="w-6 h-6 rounded-full bg-blue-600/30 flex items-center justify-center text-xs font-bold text-blue-300">
+                      {(session.name || session.email)[0].toUpperCase()}
+                    </div>
+                    <span className="text-sm text-gray-300 truncate">{session.email}</span>
+                  </div>
+                )}
+                {/* Not logged in: email input */}
+                {!session && (
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleCheckout()}
+                    placeholder="your@email.com"
+                    className="w-full bg-gray-800/80 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition"
+                  />
+                )}
+                {error && <p className="text-xs text-red-400">{error}</p>}
+                <button
+                  onClick={handleCheckout}
+                  disabled={loading}
+                  className="block w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 px-6 rounded-xl transition text-center text-sm"
+                >
+                  {loading ? 'Redirecting to checkout...' : 'Subscribe Now →'}
+                </button>
+                <p className="text-xs text-gray-600 text-center">🔒 Secure checkout via Stripe</p>
+              </div>
+            )}
           </div>
         </div>
 
