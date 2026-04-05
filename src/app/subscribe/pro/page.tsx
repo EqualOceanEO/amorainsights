@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { trackEvent } from '@/components/AnalyticsProvider';
 
@@ -21,11 +21,34 @@ const FEATURES_PRO = [
   'Priority access to new research',
 ];
 
+interface SessionUser {
+  email: string;
+  name?: string | null;
+  subscriptionTier?: string;
+}
+
 export default function ProPage() {
   const [email, setEmail] = useState('');
   const [plan, setPlan] = useState<'pro_monthly'>('pro_monthly');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [session, setSession] = useState<SessionUser | null>(null);
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.user) {
+          setSession(data.user);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setChecking(false));
+  }, []);
+
+  // Already Pro — show message
+  const isPro = session?.subscriptionTier === 'pro';
 
   async function handleCheckout() {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -35,7 +58,6 @@ export default function ProPage() {
     setError('');
     setLoading(true);
 
-    // Track upgrade intent
     await trackEvent('upgrade_click', {
       category: 'billing',
       properties: { plan, email_domain: email.split('@')[1] ?? 'unknown' },
@@ -58,6 +80,44 @@ export default function ProPage() {
       setError('Network error. Please try again.');
       setLoading(false);
     }
+  }
+
+  // Logged-in user: redirect to checkout directly
+  async function handleDirectCheckout() {
+    if (!session?.email) return;
+    setLoading(true);
+    setError('');
+
+    await trackEvent('upgrade_click', {
+      category: 'billing',
+      properties: { plan, email_domain: session.email.split('@')[1] ?? 'unknown', auto: true },
+    });
+
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: session.email, plan }),
+      }).then(r => r.json());
+
+      if (res.url) {
+        window.location.href = res.url;
+      } else {
+        setError(res.error ?? 'Something went wrong. Please try again.');
+        setLoading(false);
+      }
+    } catch {
+      setError('Network error. Please try again.');
+      setLoading(false);
+    }
+  }
+
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
+        <div className="w-5 h-5 border-2 border-slate-600 border-t-blue-400 rounded-full animate-spin" />
+      </div>
+    );
   }
 
   return (
@@ -136,6 +196,10 @@ export default function ProPage() {
             </div>
 
             <ul className="space-y-2 mb-6">
+              <li className="flex items-start gap-2 text-sm text-blue-200 font-medium">
+                <span className="text-blue-400 mt-0.5">✓</span>
+                <span>Everything in Free, plus:</span>
+              </li>
               {FEATURES_PRO.map(f => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
                   <span className="text-blue-400 mt-0.5">✓</span> {f}
@@ -143,25 +207,64 @@ export default function ProPage() {
               ))}
             </ul>
 
-            {/* Email input */}
-            <div className="space-y-3">
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleCheckout()}
-                placeholder="your@email.com"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/50 transition"
-              />
-              {error && <p className="text-xs text-red-400">{error}</p>}
-              <button
-                onClick={handleCheckout}
-                disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-sm py-3 rounded-lg transition">
-                {loading ? 'Redirecting...' : 'Start 7-day free trial →'}
-              </button>
-              <p className="text-xs text-slate-600 text-center">No charge during trial · Cancel anytime</p>
-            </div>
+            {/* Already Pro user */}
+            {isPro ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-green-600/10 border border-green-600/20">
+                  <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-medium text-green-300">You&apos;re on Pro!</p>
+                    <p className="text-xs text-green-500">{session?.email}</p>
+                  </div>
+                </div>
+                <Link
+                  href="/dashboard"
+                  className="block w-full text-center text-sm text-slate-400 border border-white/10 rounded-lg py-2.5 hover:border-white/20 transition"
+                >
+                  Go to Dashboard →
+                </Link>
+              </div>
+            ) : session ? (
+              /* Logged-in but Free user: direct checkout, no email input */
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 mb-1">
+                  <div className="w-6 h-6 rounded-full bg-blue-600/30 flex items-center justify-center text-xs font-bold text-blue-300">
+                    {(session.name || session.email)[0].toUpperCase()}
+                  </div>
+                  <span className="text-sm text-slate-300 truncate">{session.email}</span>
+                </div>
+                {error && <p className="text-xs text-red-400">{error}</p>}
+                <button
+                  onClick={handleDirectCheckout}
+                  disabled={loading}
+                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-sm py-3 rounded-lg transition">
+                  {loading ? 'Redirecting...' : 'Start 7-day free trial →'}
+                </button>
+                <p className="text-xs text-slate-600 text-center">No charge during trial · Cancel anytime</p>
+              </div>
+            ) : (
+              /* Not logged in: show email input */
+              <div className="space-y-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleCheckout()}
+                  placeholder="your@email.com"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/50 transition"
+                />
+                {error && <p className="text-xs text-red-400">{error}</p>}
+                <button
+                  onClick={handleCheckout}
+                  disabled={loading}
+                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-sm py-3 rounded-lg transition">
+                  {loading ? 'Redirecting...' : 'Start 7-day free trial →'}
+                </button>
+                <p className="text-xs text-slate-600 text-center">No charge during trial · Cancel anytime</p>
+              </div>
+            )}
           </div>
         </div>
 
