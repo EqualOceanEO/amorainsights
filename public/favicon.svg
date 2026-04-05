@@ -1,17 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 52" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="fav-bar-grad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#00d4aa"/>
       <stop offset="100%" stop-color="#0072ff"/>
     </linearGradient>
   </defs>
-  <!-- Axis Mark: 5 bars, normal distribution -->
-  <!-- H: 18 / 28 / 44 / 28 / 18 px  |  y: 34 / 24 / 8 / 24 / 34 -->
-  <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#g)" opacity="0.40"/>
-  <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#g)" opacity="0.65"/>
-  <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#g)" opacity="1.0"/>
-  <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#g)" opacity="0.65"/>
-  <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#g)" opacity="0.40"/>
-  <!-- Glow dot -->
-  <circle cx="21.5" cy="5" r="3" fill="#00d4aa" opacity="0.85"/>
+  <!-- 5 bars: heights proportional to logo (14/22/36/22/14 out of 44) scaled to 32px height -->
+  <!-- Center bar max height ~20px, outer bars 8/14/14/8 -->
+  <rect x="1"  y="22" width="4" height="8"  rx="1" fill="url(#fav-bar-grad)" opacity="0.40"/>
+  <rect x="7"  y="17" width="4" height="13" rx="1" fill="url(#fav-bar-grad)" opacity="0.65"/>
+  <rect x="13" y="8"  width="4" height="22" rx="1" fill="url(#fav-bar-grad)" opacity="1.0"/>
+  <rect x="19" y="17" width="4" height="13" rx="1" fill="url(#fav-bar-grad)" opacity="0.65"/>
+  <rect x="25" y="22" width="4" height="8"  rx="1" fill="url(#fav-bar-grad)" opacity="0.40"/>
 </svg>
