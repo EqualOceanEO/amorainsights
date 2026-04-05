@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
+import { auth } from '@/lib/auth';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const INTERNAL_API_SECRET = process.env.INTERNAL_API_SECRET;
@@ -8,8 +9,10 @@ const SITE_URL = process.env.NEXTAUTH_URL ?? 'https://amorainsights.com';
 
 /**
  * POST /api/newsletter/send
+ *
+ * Auth: accepts either INTERNAL_API_SECRET (cron/external) or admin session (dashboard)
  * Body: {
- *   secret: string,          // INTERNAL_API_SECRET
+ *   secret?: string,         // INTERNAL_API_SECRET (alternative auth)
  *   subject: string,         // e.g. "AMORA Weekly — Mar 15, 2026"
  *   issue_number: number,    // e.g. 1
  *   date_label: string,      // e.g. "March 15, 2026"
@@ -32,9 +35,19 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // Auth check
-    if (!INTERNAL_API_SECRET || body.secret !== INTERNAL_API_SECRET) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // Auth check: accept INTERNAL_API_SECRET OR admin session
+    const isSecretValid = INTERNAL_API_SECRET && body.secret === INTERNAL_API_SECRET;
+    let isAdmin = false;
+
+    if (!isSecretValid) {
+      const session = await auth();
+      if (!session?.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      isAdmin = (session.user as { isAdmin?: boolean }).isAdmin ?? false;
+      if (!isAdmin) {
+        return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
+      }
     }
 
     const { subject, issue_number, date_label, preview_text, sections, closing, test_email } = body;

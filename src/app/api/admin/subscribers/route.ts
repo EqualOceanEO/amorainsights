@@ -1,16 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
+import { auth } from '@/lib/auth';
 
 const INTERNAL_API_SECRET = process.env.INTERNAL_API_SECRET;
 
 /**
  * GET /api/admin/subscribers?secret=xxx
  * Returns subscriber stats grouped by source
+ * Auth: INTERNAL_API_SECRET OR admin session
  */
 export async function GET(req: NextRequest) {
+  // Auth: accept secret param OR admin session
   const secret = req.nextUrl.searchParams.get('secret');
-  if (!INTERNAL_API_SECRET || secret !== INTERNAL_API_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const isSecretValid = INTERNAL_API_SECRET && secret === INTERNAL_API_SECRET;
+
+  if (!isSecretValid) {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const isAdmin = (session.user as { isAdmin?: boolean }).isAdmin ?? false;
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
+    }
   }
 
   const { data, error } = await supabase
