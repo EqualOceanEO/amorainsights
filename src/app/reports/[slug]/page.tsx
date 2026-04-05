@@ -159,15 +159,6 @@ export default async function ReportDetailPage({
                     <span>{report.view_count.toLocaleString()} views</span>
                   </>
                 )}
-                {/* ShareBar only in meta row */}
-                <div className="ml-auto">
-                  <ShareBar
-                    title={report.title}
-                    summary={report.summary ?? ''}
-                    url={`https://amorainsights.com/reports/${report.slug}`}
-                    variant="horizontal"
-                  />
-                </div>
               </div>
 
               {/* ── Executive Summary (always visible) ─────────────────── */}
