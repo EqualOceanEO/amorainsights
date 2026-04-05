@@ -12,9 +12,7 @@ const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? '';
  * Also updates users.subscription_tier for auth session
  */
 export async function POST(req: NextRequest) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
-    apiVersion: '2026-02-25.clover',
-  });
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '');
 
   const body = await req.text();
   const sig = req.headers.get('stripe-signature') ?? '';
