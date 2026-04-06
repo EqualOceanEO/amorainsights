@@ -128,12 +128,9 @@ function UpgradeModal({ onClose }: { onClose: () => void }) {
 // ── Chapter Iframe ─────────────────────────────────────────────────────────────
 function ChapterIframe({
   chapter,
-  isPro,
-  userEmail,
 }: {
   chapter: Chapter;
   isPro: boolean;
-  userEmail?: string;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
@@ -334,7 +331,6 @@ export default function H5ReportViewer({
 }: Props) {
   const [activeChapter, setActiveChapter] = useState<string | null>(null);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [pendingChapter, setPendingChapter] = useState<string | null>(null);
   const [navOpen, setNavOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -345,7 +341,6 @@ export default function H5ReportViewer({
     if (!chapter) return;
 
     if (!chapter.free && !isPro) {
-      setPendingChapter(key);
       setShowUpgradeModal(true);
       return;
     }
