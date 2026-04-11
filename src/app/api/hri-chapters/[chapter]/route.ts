@@ -68,7 +68,7 @@ function buildProtectionCSS(): string {
 </style>`;
 }
 
-function buildProtectionJS(email: string | null): string {
+function buildProtectionJS(email: string | null, isPremium: boolean): string {
   return `<script>
 (function() {
   // Disable right-click
@@ -94,8 +94,8 @@ function buildProtectionJS(email: string | null): string {
     }
   });
 
-  // DevTools detection (window resize trick)
-  var _0x1f4b=(function(){var _0x4b2d8d=arguments.length&&arguments[0]!==undefined?arguments[0]:160;setInterval(function(){var _0x3c4b=window.outerWidth-window.innerWidth>_0x4b2d8d||window.outerHeight-window.innerHeight>_0x4b2d8d;if(_0x3c4b){document.body.style.display='none';setTimeout(function(){document.body.style.display='';},50);}},500);}());
+  ${isPremium ? `// DevTools detection (window resize trick) — premium only
+  (function(){var threshold=160;setInterval(function(){var devOpen=window.outerWidth-window.innerWidth>threshold||window.outerHeight-window.innerHeight>threshold;if(devOpen){document.body.style.filter='blur(8px)';setTimeout(function(){document.body.style.filter='';},300);}},1000);}());` : ''}
 
   // Watermark
   var _email = ${email ? `'${email}'` : 'null'};
@@ -215,7 +215,7 @@ export async function GET(
 
   // Wrap with protection for premium content
   const protectionCSS = buildProtectionCSS();
-  const protectionJS = buildProtectionJS(userEmail);
+  const protectionJS = buildProtectionJS(userEmail, !meta.free);
 
   // Inject protection after </body>
   let html = chapterData.html;

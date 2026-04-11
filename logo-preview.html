@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMORA Logo Preview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    body {
+      background: #0a0a0f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 80px;
+      padding: 40px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* 修正版：无圆点 + 等宽字体 */
+    .logo-fixed .wordmark {
+      font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      line-height: 1;
+    }
+    .logo-fixed .wordmark .amora {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .logo-fixed .wordmark .insights {
+      font-size: 9px;
+      font-weight: 500;
+      color: #60a5fa;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* 原版：保留圆点 + Inter字体 */
+    .logo-original .wordmark {
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      line-height: 1;
+    }
+    .logo-original .wordmark .amora {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.025em;
+    }
+    .logo-original .wordmark .insights {
+      font-size: 8px;
+      font-weight: 500;
+      color: #60a5fa;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .label {
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      font-size: 11px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .logo-wrapper {
+      position: relative;
+    }
+
+    .compare-title {
+      position: absolute;
+      top: -28px;
+      left: 0;
+      font-size: 11px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 修正版 -->
+  <div class="logo-wrapper">
+    <div class="compare-title">修正版：去除圆点 + JetBrains Mono 等宽字体</div>
+    <div class="logo-container logo-fixed">
+      <svg width="34" height="40" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="nav-bar-grad-fixed" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00d4aa"/>
+            <stop offset="100%" stop-color="#0072ff"/>
+          </linearGradient>
+        </defs>
+        <!-- 5 bars — normal distribution heights: 18/28/44/28/18，简洁三角形，去掉顶部圆点 -->
+        <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#nav-bar-grad-fixed)" opacity="0.40"/>
+        <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#nav-bar-grad-fixed)" opacity="0.65"/>
+        <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#nav-bar-grad-fixed)" opacity="1.0"/>
+        <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#nav-bar-grad-fixed)" opacity="0.65"/>
+        <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#nav-bar-grad-fixed)" opacity="0.40"/>
+        <!-- 无圆点 -->
+      </svg>
+      <div class="wordmark">
+        <span class="amora">AMORA</span>
+        <span class="insights">insights</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 原版 -->
+  <div class="logo-wrapper">
+    <div class="compare-title">原版（有圆点 + Inter 字体）</div>
+    <div class="logo-container logo-original">
+      <svg width="34" height="40" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="nav-bar-grad-orig" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00d4aa"/>
+            <stop offset="100%" stop-color="#0072ff"/>
+          </linearGradient>
+        </defs>
+        <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#nav-bar-grad-orig)" opacity="0.40"/>
+        <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#nav-bar-grad-orig)" opacity="0.65"/>
+        <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#nav-bar-grad-orig)" opacity="1.0"/>
+        <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#nav-bar-grad-orig)" opacity="0.65"/>
+        <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#nav-bar-grad-orig)" opacity="0.40"/>
+        <!-- Glow dot — 问题所在 -->
+        <circle cx="21.5" cy="5" r="3" fill="#00d4aa" opacity="0.85"/>
+      </svg>
+      <div class="wordmark">
+        <span class="amora">AMORA</span>
+        <span class="insights">insights</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

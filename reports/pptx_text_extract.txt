@@ -1,0 +1,960 @@
+=== Slide 1 (ppt/slides/slide1.xml) ===
+INDUSTRY INTELLIGENCE REPORT
+The Humanoid
+Robot Index
+2026
+Who&apos;s Actually Winning?
+A Cross-Border Benchmarking of 25 Global Players Across the Full Value Chain
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+1 / 22
+
+=== Slide 2 (ppt/slides/slide10.xml) ===
+O — Operations  客户结构与 ROI 真相
+宇树招股书数据揭示：73.6% 为科研教育，真正工业替代极少
+宇树科技 2024 年客户结构（来自招股书）— 揭示行业真实阶段
+73.6% 科研教育 + 9.0% 企业导览 + 6.7% 肢体外骨骼 + 4.6% 自动化巡检 + 6.1% 其他 — 真正工业替代客户极少
+科研教育
+73.6%
+企业导览/展示
+9.0%
+肢体外骨骼
+6.7%
+自动化巡检
+4.6%
+其他/个人
+6.1%
+ROI 分析
+当前 IRR
+15-20%
+目标 IRR
+&gt;25%
+回本周期
+3-5年
+人工替代率
+~60%
+部署规模
+3-10台
+关键洞察：人形机器人目前本质上是一台「高价科研设备」，而非工业级自动化工具。客户结构揭示真相：73.6% 收入来自科研教育，说明真正工业替代的买单能力尚未形成。
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+10 / 22
+
+=== Slide 3 (ppt/slides/slide11.xml) ===
+R — Reach  市场容量三情景预测
+2025-2035 年出货量与规模预测 | 基准 / 乐观 / 保守
+📊 基准情景
+2025
+2025:
+1.45 万台
+2028
+8.5 万台
+2030
+22.7 万台
+2035
+88 万台
+CAGR ~40%
+🚀 乐观情景
+2025
+2025:
+1.7 万台
+2028
+14 万台
+2030
+40 万台
+2035
+150 万台
+CAGR ~55%
+🐢 保守情景
+2025
+2025:
+1.2 万台
+2028
+5 万台
+2030
+12 万台
+2035
+35 万台
+CAGR ~25%
+全球出货量预测（万台）
+2025
+2028
+2030
+2035
+乐观
+基准
+保守
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+11 / 22
+
+=== Slide 4 (ppt/slides/slide12.xml) ===
+R — Reach  全球化策略
+中国市场领跑 · 北美高端定位 · 欧洲细分切入 · 东南亚制造成本洼地
+🇨🇳 中国
+出货量第一 / 制造成本洼地
+当前状态
+宇树 5500+ 台全球第一
+策略
+规模量产压成本 + 快速迭代
+风险
+内卷加剧 / 估值泡沫
+全球人形机器人出货量第一大国
+🇺🇸 北美
+技术最前沿 / 估值最高
+当前状态
+Tesla / Figure / Agility 三大龙头
+策略
+高端定位 + AI 算法差异化
+风险
+制造成本高 / 量产瓶颈
+VLA 大模型发源地，资本密度最高
+🇪🇺 欧洲
+汽车产业链深度整合
+当前状态
+BMW / Mercedes + 机器人合作
+策略
+工业自动化场景优先落地
+风险
+AI 人才密度不足
+汽车制造自动化需求是最大机会
+🌏 东南亚
+制造成本 + 新兴市场
+当前状态
+制造业转型期 / 人口老龄化
+策略
+低成本制造 + 服务业探索
+风险
+技术积累薄弱
+下一个制造业机器人化增长极
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+12 / 22
+
+=== Slide 5 (ppt/slides/slide13.xml) ===
+A2 — Assets  核心财务数据对比
+营收 / 毛利 / 净利 / 出货量 — 宇树 vs UBTECH vs Agility vs Figure
+¥17亿
+宇树 2025E 营收  同比增长
+60.3%
+宇树毛利率  硬件毛利极高
+5500台
+宇树 2025 出货  全球第一
+¥6亿
+宇树 2025E 净利  净利率 35%
+企业
+2025营收
+毛利
+净利
+出货量
+估值/融资
+宇树科技
+¥17亿
+60.3%
+¥6亿
+5500台
+IPO 42亿
+UBTECH
+¥8亿
+42%
+亏损
+~2000台
+港股上市
+Agility
+$25M
+N/A
+亏损
+100+台
+NASDAQ
+Figure AI
+$30M
+N/A
+亏损
+&lt;50台
+26亿美元
+智元智元
+未披露
+N/A
+未披露
+千台级
+150亿估值
+关键洞察：宇树是唯一实现规模化盈利的人形机器人企业，毛利率 60.3% 远超 UBTECH 的 42%；Agility 和 Figure 均处于严重亏损状态，依赖融资维持运营。
+13 / 22
+
+=== Slide 6 (ppt/slides/slide14.xml) ===
+A2 — Assets  估值矩阵与融资动态
+PS / EV-Revenue 倍数对比 · 融资轮次 · 资本效率
+估值 vs 商业化成熟度象限
+商业化成熟度 →
+估值 ↑
+高估值·高成熟
+低估值·高成熟
+低估值·早期
+高估值·早期
+宇树科技
+UBTECH
+Agility
+Figure AI
+智元
+Boston
+融资动态（2024-2026）
+Figure AI
+2025
+$675M
+B轮
+1X Tech
+2024
+$125M
+B轮
+智元智元
+2025
+¥15亿
+A轮
+宇树科技
+2026
+¥42亿
+IPO
+傅利叶
+2024
+¥5亿
+A轮
+Agility
+2025
+$200M
+IPO+
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+14 / 22
+
+=== Slide 7 (ppt/slides/slide15.xml) ===
+AMORA Score — 12 企业综合评分卡
+A(技术壁垒) · M(人才优势) · O(商业落地) · R(全球化) · A(可持续)
+企业
+A2
+综合
+趋势
+宇树科技
+🇨🇳
+8.5
+9.2
+9.5
+8.9
+UBTECH
+🇨🇳
+8.5
+6.8
+7.5
+7.6
+Tesla Optimus
+🇺🇸
+9.5
+9.5
+8.6
+Figure AI
+🇺🇸
+8.5
+5.5
+8.5
+7.9
+智元智元
+🇨🇳
+6.5
+7.5
+7.4
+Boston Dyn.
+🇺🇸
+8.5
+5.5
+6.5
+7.5
+Agility
+🇺🇸
+7.5
+7.5
+5.5
+6.9
+傅利叶 Fourier
+🇨🇳
+7.5
+6.5
+6.5
+6.7
+1X Tech
+🇺🇸
+6.5
+6.9
+Sanctuary
+🇨🇦
+6.6
+小鹏 PXES
+🇨🇳
+6.5
+6.7
+Digit
+🇺🇸
+6.5
+6.5
+6.5
+6.3
+A(Advancement)
+M(Mastery)
+O(Operations)
+R(Reach)
+A2(Assets)
+15 / 22
+
+=== Slide 8 (ppt/slides/slide16.xml) ===
+AMORA Score — 头部企业雷达图对比
+宇树 vs Tesla Optimus vs Figure AI vs UBTECH — 五维能力可视化
+Advancement
+Mastery
+Operations
+Reach
+Assets
+宇树科技
+Tesla
+Figure AI
+UBTECH
+评分说明
+A (Advancement)
+技术壁垒：算法/硬件/专利
+M (Mastery)
+人才优势：核心团队/融资
+O (Operations)
+商业落地：出货量/客户/收入
+R (Reach)
+全球化：境外收入/合作伙伴
+A2 (Assets)
+可持续：毛利/净利/现金流
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+16 / 22
+
+=== Slide 9 (ppt/slides/slide17.xml) ===
+Investment Recommendations  投资建议
+高确信 / 期权价值 / 零部件三层逻辑 · 催化剂清单
+🥇 高确信标的
+代表标的
+宇树科技（IPO）· Figure AI（二级）· NVIDIA（生态）
+核心逻辑
+规模盈利 + 营收可见性 + 估值合理
+风险
+估值已部分反映预期
+操作建议: IPO 参与 / 二级建仓
+🥈 期权价值
+代表标的
+智元智元（IPO前）· 傅利叶 · 1X Technologies
+核心逻辑
+技术有亮点 + 估值弹性大 + 中国供应链成本优势
+风险
+亏损持续，IPO 时间不确定
+操作建议: 早期跟进，关注融资节点
+🥉 零部件阿尔法
+代表标的
+绿的谐波（减速器）· 华为昇腾（AI芯片）· 汇川（关节电机）
+核心逻辑
+不依赖单一客户 · 国产替代逻辑强 · 收入可见性好
+风险
+人形订单占比仍低
+操作建议: 左侧布局，等待规模放量
+📅 近期催化剂：宇树 IPO 定价（Q2 2026） · Figure AI 新一轮融资 · 特斯拉 Optimus 工厂部署公告 · 工信部人形机器人专项政策落地
+17 / 22
+
+=== Slide 10 (ppt/slides/slide18.xml) ===
+Risk Factors  风险因素
+技术 / 商业化 / 监管 / 地缘政治 · 完整风险矩阵
+🔬 技术风险
+风险 高
+• Sim2Real Gap 持续，泛化性能难达标
+• 触觉传感器无突破，灵巧手实用性受限
+• 大模型推理成本高，实时控制延迟问题
+💰 商业化风险
+风险 高
+• 客户以科研为主，真实工业买单能力未形成
+• 单台成本仍高于人工替代 ROI 临界点
+• 量产一致性差，故障率高影响口碑
+⚖️ 监管风险
+风险 中
+• 欧盟 AI Act 对人形机器人安全标准趋严
+• 工厂部署需新增安全认证流程
+• 数据跨境传输限制影响全球化模型训练
+🌐 地缘风险
+风险 中
+• NVIDIA H100/H200 出口管制持续收紧
+• 中国供应链面临美国实体清单风险
+• 技术人才流动受限（国籍审查趋严）
+🏭 供应链风险
+风险 中高
+• 谐波减速器 / 行星滚柱丝杠进口依赖
+• 高端轴承国产替代进度低于预期
+• 关键芯片（TI/ADI）供应波动
+💹 估值风险
+风险 高
+• Figure AI 26亿估值远超收入倍数
+• 一级市场定价与二级流动性错配
+• AI 赛道整体降温可能拖累估值
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+18 / 22
+
+=== Slide 11 (ppt/slides/slide19.xml) ===
+Key Catalysts  关键催化剂与时间节点
+2026 H1 密集事件窗口 — 影响行业估值与投资节奏
+2026 Q1
+IPO
+宇树科技通过港交所上市聆讯
+★★★★★
+2026 Q1
+产品
+Figure AI 发布 Figure 02 商业版
+★★★★
+2026 Q2
+落地
+Tesla Optimus 德国工厂部署公告
+★★★★
+2026 Q2
+政策
+工信部人形机器人专项政策出台
+★★★★★
+2026 Q2
+融资
+Figure AI / Agility 新一轮融资
+★★★
+2026 Q3
+产能
+宇树 H1 产能 7.5 万台/年扩张
+★★★
+2026 H2
+生态
+NVIDIA Thor 人形机器人 SDK 发布
+★★★★
+2026 H2
+供应链
+国产谐波减速器批量通过验证
+★★★
+⚡ 核心判断：2026 H1 是人形机器人行业最重要的催化剂窗口，宇树 IPO + 政策落地 + 特斯拉部署三重叠加，可能触发板块性行情。
+19 / 22
+
+=== Slide 12 (ppt/slides/slide2.xml) ===
+Contents
+AMORA Report Framework — 5 Dimensions | 22 Slides
+Advancement
+技术先进性 — 世界模型 · 端到端控制 · 灵巧手
+Mapping
+产业链生态位 — 供应链全景 · 卡脖子清单 · 中美对比
+Operations
+商业化运营 — 四大场景 · 客户结构 · ROI分析
+Reach
+市场容量 — 三情景预测 · 细分市场 · 全球化策略
+A2
+Assets
+资本价值 — 财务对比 · 估值矩阵 · 投资建议
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+2 / 22
+
+=== Slide 13 (ppt/slides/slide20.xml) ===
+China vs US  中美深度对比
+技术路线 / 商业模式 / 资本效率 / 供应链 — 全维度竞争格局
+🇨🇳 中国
+VS
+🇺🇸 美国
+技术路线
+快速跟随 + 本地化微创新
+原创性突破 + 平台型生态
+代表玩家
+宇树 / 智元 / 傅利叶
+Tesla / Figure / Agility
+资本效率
+¥42亿 IPO / ¥6亿净利
+$26亿估值 / 仍亏损
+制造优势
+供应链完整 / 成本低 50%
+精密制造 / 高端材料
+数据闭环
+追赶中 / 真实场景数据少
+特斯拉车队数据 / 优势明显
+政策支持
+专项政策 + 补贴预期强
+CHIPS Act + AI Initiative
+商业化
+规模出货第一 / 科研为主
+愿景驱动 / 工厂落地
+全球化
+境外收入 &gt;35%
+全球品牌影响力更强
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+20 / 22
+
+=== Slide 14 (ppt/slides/slide21.xml) ===
+The Humanoid Robot Index 2026
+结论与行动建议
+行业评分 7.2/10  |  宇树综合第一 8.9分  |  处于商业化临界点前夜
+格局未定，卡位窗口仍在
+真正工业替代客户占比不足 15%，意味着绝大多数市场尚未被任何人占据，先发优势尚未固化。
+数据闭环比技术参数更重要
+谁能更快积累真实场景运行数据，谁就掌握了训练下一代模型的主动权——这不是硬件竞赛，是数据竞赛。
+中国制造优势被低估，美国算法优势被高估
+宇树 60.3% 毛利率、5500 台出货量证明了中国制造密度的商业可行性；美国供应链空心化风险正在累积。
+2026 是关键验证年
+宇树 IPO 定价 + 特斯拉工厂部署 + 工信部政策三重催化剂叠加，将重塑行业估值基准和投资逻辑。
+21 / 22
+
+=== Slide 15 (ppt/slides/slide22.xml) ===
+Appendix  附录与免责声明
+数据来源 · 评分方法论 · 评级说明 · 免责声明
+数据来源
+• 宇树科技港交所招股书（2026年3月版）
+• UBTECH 年报（港交所披露）
+• Agility Robotics SEC 文件（10-K / 8-K）
+• IDTechEx / FutureMarkets 等第三方研究
+• 工信部、IFR 国际机器人联合会数据
+• 公开新闻与公司官方渠道披露
+• AMORA 数据库（截至 Q1 2026）
+AMORA Score 评分方法论
+• A (Advancement): 专利数 / 算法论文 / 硬件参数
+• M (Mastery): 核心团队背景 / 融资规模 / 估值倍数
+• O (Operations): 出货量 / 客户数 / 营收规模
+• R (Reach): 境外收入占比 / 国际合作伙伴
+• A2 (Assets): 毛利率 / 净利率 / 现金流
+综合评分 = 加权平均（各维度 1-10 分）
+评分截止日期：2026年3月31日
+免责声明 / Disclaimer
+本报告由 AMORA Insights 编制，仅供机构投资者参考，不构成任何投资建议。所有数据来源于公开渠道，AMORA 对数据准确性不作保证。评分为主观判断，存在固有偏差风险。投资人形机器人行业涉及技术、商业化、监管等多重不确定性，请咨询持牌投资顾问。AMORA Insights 及关联公司可能持有报告中提及标的的多头或空头头寸。
+AMORA Insights  |  www.amorainsights.com  |  research@amorainsights.com  |  Data Cut-off: Q1 2026  |  Copyright © 2026 AMORA Insights Ltd.
+22 / 22
+
+=== Slide 16 (ppt/slides/slide23.xml) ===
+M3  -  中国产业链生态
+30+ 核心供应商  |  6 类关键零部件  |  国产替代加速
+谐波减速器
+进口: 日本哈默纳科(全球70%)
+国产: 绿的谐波
+国产率 ~18%
+精度寿命差30%，高端依赖日韩
+行星滚柱丝杠
+进口: 瑞士 GSA/德国 INA
+国产: 中国华茂/南京工艺
+国产率 ~12%
+国产起步，1.5m/s行走要求超出规格
+触觉传感器
+进口: 美国 Tacter/德国 BioTac
+国产: 选代传感/敏芯微
+国产率 ~25%
+柔性阵列触觉是真正卡点
+无框力矩电机
+进口: 美国科尔摩根/瑞士
+国产: 步科/汇川技术
+国产率 ~40%
+汇川覆盖中端，高转矩&gt;20Nm/kg依赖进口
+深度视觉传感器
+进口: Intel RealSense
+国产: 奥比中光/华为
+国产率 ~50%
+消费级够用，工业级差距缩小
+AI 芯片
+进口: NVIDIA Thor/Jetson
+国产: 华为昇腾/地平线
+国产率 ~30%
+昇腾910B接近A100，工具链差距仍在
+30+
+中国核心供应商
+55%
+零部件国产替代均值
+6类
+关键卡脖子零部件
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+
+=== Slide 17 (ppt/slides/slide24.xml) ===
+M4  -  美国产业链生态
+核心零部件依赖进口  |  AI 平台全球领先  |  制造成本劣势明显
+Component Leaders
+* NVIDIA
+AI Chips, Isaac Sim, Omniverse
+* ATI Industrial
+6-Axis Force Sensors 60%+ share
+* Moog
+Servo Actuators, Motion Control
+* Harmonic Drive
+Precision Gearboxes
+* Synapticon
+Servo Drives, Motion Control
+Leading OEMs
+* Tesla (Optimus)
+&lt;50 units, NVIDIA+ATI+自研执行器
+* Boston Dynamics
+Atlas, 现代集团, 液压路线
+* Figure AI
+$675M融资, 宝马合作, OpenAI背书
+* Agility Robotics
+Digit, 物流场景, 亚马逊试点
+* 1X Technologies
+NEO, OpenAI投资, 挪威+美国
+Platform &amp; AI
+* Google DeepMind
+RT-X, Embodied AI研究
+* OpenAI
+GPT-4V, Figure AI合作伙伴
+* Microsoft
+Azure Robotics, 云基础设施
+* Meta AI
+PyTorch, Habitat仿真
+* Intrinsic (Alphabet)
+工业机器人AI, 收购Wandelbots
+供应链脆弱性: 70%+ 关键零部件依赖进口  |  地缘政治风险高  |  制造成本比中国高 55%
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+10
+
+=== Slide 18 (ppt/slides/slide25.xml) ===
+M5  -  中美产业链 7 维度对比
+制造 x AI x 部署 x 成本 x 地缘 -- 全方位竞争格局
+维度
+中国
+美国
+制造规模
+中国产能+供应链密度远超
+95
+60
+执行器生态
+中国减速器/电机全面追赶
+70
+55
+AI 平台
+CUDA生态护城河，3-5年
+40
+98
+部署规模
+宇树5500台领跑，美国&lt;200台
+85
+20
+成本优势
+10万台时中国低55%
+90
+35
+企业客户渗透
+中美均以科研教育为主
+60
+40
+地缘风险敞口
+美国面临出口管制+断供风险
+20
+85
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+11
+
+=== Slide 19 (ppt/slides/slide26.xml) ===
+M6  -  成本曲线：规模化降本路径
+China  |  US  |  Japan  --  当前小批量到 100K 大规模成本对比
+单位成本 (人民币/台)
+产量规模
+China
+US
+Japan
+当前
+$180K
+$280K
+$220K
+1K/年
+$90K
+$160K
+$120K
+10K/年
+$45K
+$95K
+$65K
+100K/年
+$20K
+$45K
+$30K
+55%
+中国成本优势
+10万台时比美国低55%
+2027
+收敛时间节点
+预计2027年成本曲线趋同
+Y35万
+宇树2025均价
+含研发摊销，出口均价$25K
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+12
+
+=== Slide 20 (ppt/slides/slide27.xml) ===
+M7  -  供应链收敛时间线
+2023 蛰伏  &gt;&gt;  2025 爆发  &gt;&gt;  2027 收敛  &gt;&gt;  2028+ 成熟
+2023-2024
+蛰伏期
+- Figure AI 成立，$675M融资
+- Boston Dynamics Atlas停产液压版
+- 宇树H1量产，500台
+- 特斯拉Optimus首亮相
+- Figure AI+OpenAI/微软合作
+2025
+爆发期
+- 宇树5500台出货量，全球第一
+- Figure 02/Optimus新进展
+- Figure AI+BMW试点启动
+- Agility+亚马逊仓库试点
+- 国产谐波减速器小批量量产
+2026-2027
+收敛期
+- 国产谐波/丝杠批量替代
+- 宇树IPO，产能扩至7.5万台/年
+- Figure/Agility规模化部署
+- 特斯拉Optimus千台部署
+- 成本曲线趋同，中国保持55%优势
+2028+
+成熟期
+- 中国完整供应链生态形成
+- 全球百万台出货临界点
+- 美国AI平台+中国制造分工
+- 人形机器人走进工业/服务业
+- 产业格局定型
+关键结论: 2027供应链收敛后，中国制造优势将转化为全球成本定价权，AI平台竞争格局决定长期利润分配
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+13
+
+=== Slide 21 (ppt/slides/slide3.xml) ===
+Executive Summary
+3 Key Findings  |  Industry Rating 7.2/10
+&quot;Only 3 of 25 tracked companies have deployed 50+ units in real-world settings. The rest are still selling demos.&quot;
+01
+中国赢在制造密度，美国赢在算法深度
+叙事已不完整：中国正快速补齐算法短板，美国制造护城河被供应链空心化侵蚀。
+02
+真正拉开差距的不是硬件参数，是数据闭环
+谁能更快积累真实场景运行数据，谁就掌握了训练下一代模型的主动权。
+03
+关键变量：商业化复制成本，而非技术迭代速度
+能否从1台原型机做到100台部署，是目前所有玩家面临的共同瓶颈。
+25
+追踪企业
+7.2
+行业评分
+应用场景
+2030
+规模节点
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+3 / 22
+
+=== Slide 22 (ppt/slides/slide4.xml) ===
+A — Advancement  世界模型
+Transformer 3D 场景表征 · Sim2Real Gap · 中美算力竞赛
+什么是世界模型？
+世界模型（World Model）是机器人感知、推理与物理交互的基础层。它让机器人理解三维空间、物理规律和因果关系，从而在未见过的场景中做出合理决策。
+• 3D 场景重建：NeRF / Gaussian Splatting
+• 物理仿真：NVIDIA Isaac Sim / Mujoco
+• 数据引擎：Tesla Dojo / Figure AI
+• Sim2Real Gap：仿真与真实的泛化差距仍是最大挑战
+🇺🇸
+Tesla Dojo
+算力最强
+🇺🇸
+NVIDIA Isaac
+仿真平台
+🇺🇸
+Figure AI
+数据闭环
+🇨🇳
+宇树 Unitree
+快速追赶
+🇨🇳
+智元 Agibot
+强化学习
+🇨🇳
+傅利叶 Fourier
+医疗场景
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+4 / 22
+
+=== Slide 23 (ppt/slides/slide5.xml) ===
+A — Advancement  端到端控制 &amp; 灵巧手
+VLA 架构 · 触觉反馈 · 23 DOF 临界点
+端到端控制 VLA 架构
+VLA = Vision-Language-Action Model
+视觉-语言-动作一体化，端到端输出关节控制信号，
+无需人工设计控制层级。
+代表进展：
+• Figure x OpenAI：Figure 01 展示多轮对话操控
+• Agility Robotics：Digit 仓库场景稳定部署
+• 智元智元：强化学习控制精度提升 40%
+• Boston Dynamics：Atlas 电动版全面转向 AI
+核心瓶颈：Sim2Real Gap 导致仿真中表现优异的
+模型在真实场景泛化性能下降 30-50%
+灵巧手 20-23 DOF
+宇树 Unitree
+20 DOF
+$2,000 | 成本最优
+Tesla Optimus
+22 DOF
+自研 | 触觉传感最深
+智元智元
+23 DOF
+自研 | 刚度调节
+傅利叶 Fourier
+19 DOF
+医疗级 | 医疗场景适配
+⚠ 触觉反馈仍是全行业最大短板
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+5 / 22
+
+=== Slide 24 (ppt/slides/slide6.xml) ===
+A — Advancement  技术演进时间轴
+关键里程碑 · 中美节点对比 · 2020-2030
+2020
+2021
+2022
+2023
+2024
+2025
+2026E
+2027E
+2028E
+Boston Dynamics
+开源 Atlas
+Tesla AI Day
+公布 Optimus
+Figure AI
+成立
+Figure-OpenAI
+战略合作
+Agility IPO
+(NASDAQ)
+L4 级别
+室内自主
+宇树四足
+批量出货
+智元成立
+(Agibot)
+傅利叶成立
+(Fourier)
+宇树 H1
+人形首发
+宇树招股书
+披露规模化数据
+国产 VLA
+密集突破
+🇺🇸 美国
+🇨🇳 中国
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+6 / 22
+
+=== Slide 25 (ppt/slides/slide7.xml) ===
+M — Mapping  人形机器人产业链图谱
+6层供应链结构 · 中美能力对比 · 卡脖子清单
+L1 终端产品
+Tesla Optimus · Boston Dynamics Atlas · 宇树 H1 · 傅利叶 GR-1 · 智元智元
+商业化早期
+L2 核心零部件
+关节模组 · 灵巧手 · 传感器融合 · 线束集成
+国产替代中
+L3 关键元器件
+无框力矩电机 · 谐波减速器 · 行星滚柱丝杠 · 轴承
+卡脖子
+L4 传感器
+视觉(深度相机) · 力矩传感 · IMU · 触觉阵列 · 嗅觉
+快速追赶
+L5 AI &amp; 芯片
+VLA 大模型 · NVIDIA Thor / Jetson · 特斯拉 FSD 芯片 · 华为昇腾
+中美分化
+L6 基础层
+云计算 · 仿真平台 · 开源框架 · 数据标注 · 算力基础设施
+全球化协作
+中美能力对比
+算力/AI
+🇨🇳 ★★★☆☆
+🇺🇸 ★★★★★
+制造/供应链
+🇨🇳 ★★★★★
+🇺🇸 ★★☆☆☆
+传感器
+🇨🇳 ★★★☆☆
+🇺🇸 ★★★★☆
+整机集成
+🇨🇳 ★★★★☆
+🇺🇸 ★★★★☆
+商业化落地
+🇨🇳 ★★☆☆☆
+🇺🇸 ★★★☆☆
+数据闭环
+🇨🇳 ★★☆☆☆
+🇺🇸 ★★★★★
+⚠ 卡脖子环节：谐波减速器（哈默纳科/绿的谐波）、行星滚柱丝杠（瑞士 GSA/中国华茂）、触觉传感器（选代/敏芯微）、高端轴承（NSK/SKF）
+7 / 22
+
+=== Slide 26 (ppt/slides/slide8.xml) ===
+M — Mapping  卡脖子清单与国产替代
+6 大核心瓶颈 · 国产化率 · 替代时间窗口
+谐波减速器
+进口: 日本哈默纳科(全球70%)
+国产: 绿的谐波(国产替代)
+国产率 ~18%
+绿的 RV + 来福谐波已量产，但精度寿命仍差 30%，高端系列依赖日韩
+行星滚柱丝杠
+进口: 瑞士 GSA / 德国 INA
+国产: 中国华茂 / 南京工艺
+国产率 ~12%
+国产刚起步，精度保持性差，人形 1.5m/s 行走要求超出现有国产规格
+触觉传感器
+进口: 美国 Tacter / 德国 Bio
+国产: 选代传感 / 敏芯微
+国产率 ~25%
+柔性阵列触觉是真正卡点，单点精度达标但面阵集成能力差距大
+无框力矩电机
+进口: 美国科尔摩根 / 瑞士
+国产: 步科 / 汇川技术
+国产率 ~40%
+国内步科、汇川已能覆盖中端需求，高转矩密度系列（&gt;20Nm/kg）依赖进口
+深度视觉传感器
+进口: Intel RealSense
+国产: 奥比中光 / 华为
+国产率 ~50%
+消费级够用，工业级（防爆、抗强光）差距缩小，但算法生态差距明显
+AI 芯片
+进口: NVIDIA Thor / Jetson
+国产: 华为昇腾 / 地平线
+国产率 ~30%
+昇腾 910B 单卡算力接近 A100，出口管制加速国产替代，但生态工具链差距仍在
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+8 / 22
+
+=== Slide 27 (ppt/slides/slide9.xml) ===
+O — Operations  四大应用场景
+工厂制造 · 仓储物流 · 医疗康复 · 家庭服务
+🏭 工业制造
+试点阶段
+核心玩家
+Tesla / 智元 / BMW 合作
+优势
+替代 3D/危险岗位 · 解决用工荒
+挑战
+精度要求高 · 改造成本大
+单价: $50K-$150K
+IRR ~15%
+部署量: 真实部署: &lt;50台
+📦 仓储物流
+早期商业化
+核心玩家
+Agility / 宇树 / 顺丰
+优势
+替代搬运工 · 7×24h 运转
+挑战
+场景复杂度高 · ROI 争议
+单价: $30K-$80K
+IRR ~20%
+部署量: 真实部署: 100-500台
+🏥 医疗康复
+临床前/临床中
+核心玩家
+傅利叶 / Exiii / Sanctuary
+优势
+老龄化刚需 · 溢价空间高
+挑战
+监管周期长 · 技术成熟度低
+单价: $80K-$200K
+IRR ~12% (长期)
+部署量: 真实部署: &lt;20台
+🏠 家庭服务
+愿景阶段
+核心玩家
+1X / Figure / 小鹏
+优势
+全球最大市场 · 技术成熟后爆发
+挑战
+安全性要求极高 · 量产成本难题
+单价: 目标 $20K
+ROI 不明确
+部署量: 真实部署: 0台
+AMORA Insights  |  Humanoid Robot Index 2026  |  Data Cut-off: Q1 2026
+9 / 22

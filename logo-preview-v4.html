@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Logo 精确对齐预览</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; gap: 40px; }
+
+.section-title {
+  color: #6b7280;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: monospace;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 3px to 0px — find the sweet spot */
+.logo-t3 .icon { transform: translateY(3px); }
+.logo-t2 .icon { transform: translateY(2px); }
+.logo-t1 .icon { transform: translateY(1px); }
+.logo-t0 .icon { transform: translateY(0px); }
+
+.color-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.color-card {
+  width: 180px;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.color-label {
+  position: absolute;
+  bottom: -24px;
+  font-size: 11px;
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.navbar {
+  width: 100%;
+  max-width: 700px;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar-nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+.navbar-nav a {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 13px;
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.navbar-nav a:hover { color: #fff; }
+
+/* Guide line — helps see alignment */
+.guide-wrap { position: relative; }
+.guide-line {
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  height: 1px;
+  background: rgba(0, 212, 170, 0.5);
+  pointer-events: none;
+}
+.guide-label {
+  position: absolute;
+  left: -44px;
+  font-size: 9px;
+  color: #00d4aa;
+  font-family: monospace;
+  top: -5px;
+}
+</style>
+</head>
+<body>
+
+<!-- 精确对齐测试：viewBox 裁到 0 8 52 36（去掉顶部空白），SVG 36x36 -->
+<div style="text-align:center;">
+  <div class="section-title">B方案 — viewBox="0 8 52 36"，SVG 36×36px，align-items:flex-end</div>
+  <p style="color:#4b5563; font-size:11px; font-family:monospace; margin-bottom:20px;">顶部空白已裁掉，柱子底部 = SVG 底部</p>
+
+  <div style="display:flex; gap:48px; justify-content:center; flex-wrap:wrap;">
+
+    <div class="guide-wrap" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="logo-wrap logo-t3" style="margin-bottom:0;">
+        <div class="icon">
+          <!-- viewBox 从 0 8 开始，柱子顶部 y=8，底部 y=44；SVG 36x36 → 柱子底部=SVG底部 -->
+          <svg width="36" height="36" viewBox="0 8 52 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gt3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gt3)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gt3)" opacity="0.65"/>
+            <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gt3)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gt3)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gt3)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+        <div class="guide-line" style="bottom:0; top:auto;"></div>
+        <span class="guide-label">B</span>
+      </div>
+      <p style="color:#6b7280; font-size:11px; font-family:monospace; margin-top:8px;">translateY(3px)</p>
+    </div>
+
+    <div class="guide-wrap" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="logo-wrap logo-t2" style="margin-bottom:0;">
+        <div class="icon">
+          <svg width="36" height="36" viewBox="0 8 52 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gt2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gt2)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gt2)" opacity="0.65"/>
+            <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gt2)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gt2)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gt2)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+        <div class="guide-line" style="bottom:0; top:auto;"></div>
+        <span class="guide-label">B</span>
+      </div>
+      <p style="color:#6b7280; font-size:11px; font-family:monospace; margin-top:8px;">translateY(2px)</p>
+    </div>
+
+    <div class="guide-wrap" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="logo-wrap logo-t1" style="margin-bottom:0;">
+        <div class="icon">
+          <svg width="36" height="36" viewBox="0 8 52 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gt1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gt1)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gt1)" opacity="0.65"/>
+            <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gt1)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gt1)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gt1)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+        <div class="guide-line" style="bottom:0; top:auto;"></div>
+        <span class="guide-label">B</span>
+      </div>
+      <p style="color:#6b7280; font-size:11px; font-family:monospace; margin-top:8px;">translateY(1px)</p>
+    </div>
+
+    <div class="guide-wrap" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="logo-wrap logo-t0" style="margin-bottom:0;">
+        <div class="icon">
+          <svg width="36" height="36" viewBox="0 8 52 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gt0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gt0)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gt0)" opacity="0.65"/>
+            <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gt0)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gt0)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gt0)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+        <div class="guide-line" style="bottom:0; top:auto;"></div>
+        <span class="guide-label">B</span>
+      </div>
+      <p style="color:#6b7280; font-size:11px; font-family:monospace; margin-top:8px;">translateY(0px)</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- 不同背景 -->
+<div>
+  <div class="section-title">不同背景色</div>
+  <div class="color-grid">
+    <div class="color-card" style="background:#111827;">
+      <div class="logo-wrap">
+        <div class="icon" style="transform:translateY(1px);">
+          <svg width="36" height="36" viewBox="0 8 52 36" fill="none">
+            <defs><linearGradient id="gbg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gbg1)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gbg1)" opacity="0.65"/>
+            <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gbg1)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gbg1)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gbg1)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+      </div>
+      <span class="color-label">深色 #111827</span>
+    </div>
+    <div class="color-card" style="background:#ffffff;">
+      <div class="logo-wrap">
+        <div class="icon" style="transform:translateY(1px);">
+          <svg width="36" height="36" viewBox="0 8 52 36" fill="none">
+            <defs><linearGradient id="gbg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gbg2)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gbg2)" opacity="0.65"/>
+            <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gbg2)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gbg2)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gbg2)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#111; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+      </div>
+      <span class="color-label">白色</span>
+    </div>
+    <div class="color-card" style="background:#1f2937;">
+      <div class="logo-wrap">
+        <div class="icon" style="transform:translateY(1px);">
+          <svg width="36" height="36" viewBox="0 8 52 36" fill="none">
+            <defs><linearGradient id="gbg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gbg3)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gbg3)" opacity="0.65"/>
+            <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gbg3)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gbg3)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gbg3)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+      </div>
+      <span class="color-label">#1f2937</span>
+    </div>
+  </div>
+</div>
+
+<!-- 导航栏模拟 -->
+<div style="width:100%;">
+  <div class="section-title">导航栏模拟</div>
+  <nav class="navbar">
+    <div class="logo-wrap">
+      <div class="icon" style="transform:translateY(1px);">
+        <svg width="36" height="36" viewBox="0 8 52 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="gnav" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+          <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gnav)" opacity="0.40"/>
+          <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gnav)" opacity="0.65"/>
+          <rect x="20" y="0"  width="8" height="44" rx="2" fill="url(#gnav)" opacity="1.0"/>
+          <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gnav)" opacity="0.65"/>
+          <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gnav)" opacity="0.40"/>
+        </svg>
+      </div>
+      <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1; font-family:'Inter',system-ui,sans-serif;">AMORA</span>
+    </div>
+    <div class="navbar-nav">
+      <a href="#">Reports</a>
+      <a href="#">News</a>
+      <a href="#">Companies</a>
+      <a href="#">About</a>
+    </div>
+  </nav>
+</div>
+
+</body>
+</html>

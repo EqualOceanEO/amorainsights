@@ -1,8 +1,8 @@
-﻿feat: HRI-2026 H5 chapter viewer — 5-chapter navigation + premium gating + anti-copy protection
+﻿feat: H5 viewer — single continuous scroll page, all 5 chapters vertically stacked
 
-- New /api/hri-chapters/[chapter] route for dynamic chapter loading with auth
-- H5ReportViewer rewritten: chapter nav sidebar, cover page, per-chapter gating
-- Part M (Mapping) free; A/O/R/A2 require Pro subscription
-- Anti-copy: no-select, no-right-click, PrintScreen detection, DevTools detection, dynamic watermarking
-- chapters_json JSONB field added to reports table; 5 HTML chapters uploaded (185 KB total)
-- SEO: free chapter indexed; premium chapters X-Robots-Tag: noindex
+- H5ReportViewer fully rewritten: no iframe, no cover page, no chapter switching
+- All 5 chapters (M/A/O/R/A2) rendered vertically in one continuous scrollable page
+- IntersectionObserver tracks current chapter and updates sticky nav badge
+- Part M (free) fully visible; A/O/R/A2 show locked overlay for non-Pro users
+- Anti-copy protection on premium chapters only
+- Top sticky nav: current chapter badge + progress dots + upgrade CTA

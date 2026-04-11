@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMORA Logo 文字调整</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+    body {
+      background: #0a0a0f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding: 40px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* 图标 - 保持原设计 */
+    .bars svg {
+      display: block;
+    }
+
+    /* 文字样式 */
+    .wordmark {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1;
+    }
+
+    /* 方案 A: Inter + 宽字距 */
+    .v-a .amora {
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .v-a .insights {
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      color: #60a5fa;
+      letter-spacing: 0.35em;
+      text-transform: lowercase;
+    }
+
+    /* 方案 B: Outfit + 宽字距 */
+    .v-b .amora {
+      font-family: 'Outfit', sans-serif;
+      font-size: 21px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .v-b .insights {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      color: #60a5fa;
+      letter-spacing: 0.32em;
+      text-transform: lowercase;
+    }
+
+    /* 方案 C: DM Mono 等宽 */
+    .v-c .amora {
+      font-family: 'DM Mono', monospace;
+      font-size: 19px;
+      font-weight: 500;
+      color: #ffffff;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .v-c .insights {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      font-weight: 400;
+      color: #60a5fa;
+      letter-spacing: 0.28em;
+      text-transform: lowercase;
+    }
+
+    .label {
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      padding: 24px 32px;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 方案 A: Inter -->
+  <div class="logo-wrapper">
+    <div class="logo-container v-a">
+      <div class="bars">
+        <svg width="40" height="44" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00d4aa"/>
+              <stop offset="100%" stop-color="#0072ff"/>
+            </linearGradient>
+          </defs>
+          <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#grad)" opacity="0.40"/>
+          <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#grad)" opacity="0.65"/>
+          <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#grad)" opacity="1.0"/>
+          <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#grad)" opacity="0.65"/>
+          <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#grad)" opacity="0.40"/>
+        </svg>
+      </div>
+      <div class="wordmark">
+        <span class="amora">AMORA</span>
+        <span class="insights">insights</span>
+      </div>
+    </div>
+    <div class="label">A. Inter 字体</div>
+  </div>
+
+  <!-- 方案 B: Outfit -->
+  <div class="logo-wrapper">
+    <div class="logo-container v-b">
+      <div class="bars">
+        <svg width="40" height="44" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00d4aa"/>
+              <stop offset="100%" stop-color="#0072ff"/>
+            </linearGradient>
+          </defs>
+          <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#grad2)" opacity="0.40"/>
+          <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#grad2)" opacity="0.65"/>
+          <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#grad2)" opacity="1.0"/>
+          <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#grad2)" opacity="0.65"/>
+          <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#grad2)" opacity="0.40"/>
+        </svg>
+      </div>
+      <div class="wordmark">
+        <span class="amora">AMORA</span>
+        <span class="insights">insights</span>
+      </div>
+    </div>
+    <div class="label">B. Outfit 字体</div>
+  </div>
+
+  <!-- 方案 C: DM Mono -->
+  <div class="logo-wrapper">
+    <div class="logo-container v-c">
+      <div class="bars">
+        <svg width="40" height="44" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00d4aa"/>
+              <stop offset="100%" stop-color="#0072ff"/>
+            </linearGradient>
+          </defs>
+          <rect x="0"  y="34" width="7" height="18" rx="2" fill="url(#grad3)" opacity="0.40"/>
+          <rect x="9"  y="24" width="7" height="28" rx="2" fill="url(#grad3)" opacity="0.65"/>
+          <rect x="18" y="8"  width="7" height="44" rx="2" fill="url(#grad3)" opacity="1.0"/>
+          <rect x="27" y="24" width="7" height="28" rx="2" fill="url(#grad3)" opacity="0.65"/>
+          <rect x="36" y="34" width="7" height="18" rx="2" fill="url(#grad3)" opacity="0.40"/>
+        </svg>
+      </div>
+      <div class="wordmark">
+        <span class="amora">AMORA</span>
+        <span class="insights">insights</span>
+      </div>
+    </div>
+    <div class="label">C. DM Mono 等宽</div>
+  </div>
+
+</body>
+</html>
