@@ -101,7 +101,6 @@ export default function SiteNav({ activePath }: SiteNavProps) {
     { href: '/news', label: 'News' },
     { href: '/reports', label: 'Reports' },
     { href: '/companies', label: 'Companies' },
-    { href: '/about', label: 'About' },
   ];
 
   // Don't render CTA buttons until session is loaded to prevent flash
