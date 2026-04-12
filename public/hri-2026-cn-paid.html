@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人形机器人智能 2026 — AMORA Insights</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c14;
+  --surface:#0d1421;
+  --surface2:#111927;
+  --border:rgba(255,255,255,0.06);
+  --text:#e2e8f0;
+  --muted:#64748b;
+  --gold:#f59e0b;
+  --gold2:#d97706;
+  --amber:#fbbf24;
+  --pro:#34d399;
+  --tag:#38bdf8;
+}
+html,body{height:100%;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+body::-webkit-scrollbar{display:none}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* ── Header ── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,12,20,0.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  display:flex;align-items:baseline;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:0.05em;
+}
+.logo span{font-family:'Noto Serif SC',serif;font-size:11px;color:var(--muted);font-weight:400;-webkit-text-fill-color:var(--muted)}
+.lang-badge{
+  font-size:10px;padding:3px 10px;border-radius:99px;
+  background:rgba(56,189,248,0.12);color:var(--tag);border:1px solid rgba(56,189,248,0.25);
+  letter-spacing:0.1em;font-weight:600;text-transform:uppercase;
+}
+.status-badge{
+  font-size:10px;padding:3px 10px;border-radius:99px;
+  background:rgba(52,211,153,0.12);color:var(--pro);border:1px solid rgba(52,211,153,0.25);
+  font-weight:600;letter-spacing:0.05em;
+}
+
+/* ── Chapter Nav ── */
+.chapter-nav{
+  position:sticky;top:60px;z-index:90;
+  background:rgba(8,12,20,0.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;height:52px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;
+}
+.chapter-nav::-webkit-scrollbar{display:none}
+.nav-item{
+  flex-shrink:0;padding:6px 16px;border-radius:8px;border:none;cursor:pointer;
+  font-size:13px;font-weight:500;color:var(--muted);
+  background:transparent;transition:all 0.15s;
+  font-family:'Noto Sans SC',sans-serif;
+}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.nav-item.active{color:var(--amber);background:rgba(245,158,11,0.1)}
+
+/* ── Chapter ── */
+.chapter{padding:72px 0 48px}
+.chapter-inner{max-width:1120px;margin:0 auto;padding:0 40px}
+.chapter-header{margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.chapter-meta{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.part-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  color:var(--bg);background:var(--amber);padding:2px 10px;border-radius:4px;letter-spacing:0.1em;
+}
+.tag-cn{
+  font-size:10px;padding:2px 10px;border-radius:99px;
+  background:rgba(56,189,248,0.1);color:var(--tag);border:1px solid rgba(56,189,248,0.2);
+  font-weight:500;
+}
+.chapter-title{
+  font-family:'Noto Serif SC',serif;font-size:clamp(24px,3.5vw,38px);font-weight:700;
+  color:#f8fafc;line-height:1.25;letter-spacing:-0.02em;margin-bottom:10px;
+}
+.chapter-subtitle{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* ── Content Grid ── */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:28px;transition:border-color 0.2s;
+}
+.card:hover{border-color:rgba(245,158,11,0.3)}
+.card-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);
+  margin-bottom:12px;font-weight:600;letter-spacing:0.05em;
+}
+.card h3{font-size:16px;font-weight:600;color:#f8fafc;margin-bottom:8px}
+.card p{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ── Stats Row ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+.stat{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px;text-align:center;
+}
+.stat-val{
+  font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;
+  color:var(--amber);display:block;margin-bottom:4px;
+}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:0.05em}
+
+/* ── Quote ── */
+.quote{
+  background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(217,119,6,0.04));
+  border:1px solid rgba(245,158,11,0.2);
+  border-radius:16px;padding:28px 32px;margin-top:20px;
+  font-family:'Noto Serif SC',serif;font-size:17px;color:#e2e8f0;
+  line-height:1.8;position:relative;
+}
+.quote::before{
+  content:'"';position:absolute;top:-8px;left:24px;
+  font-size:64px;color:rgba(245,158,11,0.3);font-family:Georgia,serif;line-height:1;
+}
+
+/* ── Footer ── */
+footer{
+  border-top:1px solid var(--border);padding:32px 40px;
+  text-align:center;margin-top:60px;
+}
+footer p{font-size:12px;color:var(--muted);letter-spacing:0.05em}
+footer a{color:var(--amber);text-decoration:none;font-weight:600}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">AMORA<span>人形机器人智能 · 2026</span></div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="lang-badge">中文</span>
+    <span class="status-badge">全部解锁</span>
+  </div>
+</header>
+
+<!-- Nav -->
+<div class="chapter-nav">
+  <button class="nav-item active" onclick="scrollToChapter('m')">Part M · 产业链</button>
+  <button class="nav-item" onclick="scrollToChapter('a')">Part A · 先进性</button>
+  <button class="nav-item" onclick="scrollToChapter('o')">Part O · 运营力</button>
+  <button class="nav-item" onclick="scrollToChapter('r')">Part R · 市场量</button>
+  <button class="nav-item" onclick="scrollToChapter('a2')">Part A₂ · 资本值</button>
+</div>
+
+<!-- Part M -->
+<div class="chapter" id="ch-m">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART M</span><span class="tag-cn">产业链</span></div>
+    <h1 class="chapter-title">产业链全景图谱</h1>
+    <p class="chapter-subtitle">从核心零部件到终端应用，359 家企业构成完整人形机器人产业生态</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · 上游 · 核心零部件</div>
+      <h3>减速器 · 电机 · 传感器</h3>
+      <p>绿的谐波、来福谐波主导谐波减速器；无框力矩电机由步科、伟景供；六维力传感器由坤维、敏宝提供。国产替代率超 60%，部分产品进入宇树、傅利叶供应链。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · 中游 · 本体制造</div>
+      <h3>整机厂商 · 产能竞赛</h3>
+      <p>宇树年产能人形 7.5 万台/年，四足累计 3 万台；傅利叶、智元各 5 万台/年；Figure 02、特斯拉 Optimus 形成国际双极格局。国产份额已超 70%。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · 下游 · 应用场景</div>
+      <h3>科研教育 · 工业替代 · 商业服务</h3>
+      <p>当前出货结构揭示真相：73.6% 流向科研教育市场，企业导览占 9%，真正工业替代客户不足 5%。市场培育期尚有 3-5 年窗口。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · 产业链瓶颈</div>
+      <h3>灵巧手 · 国产空缺</h3>
+      <p>灵巧手单价 3-8 万元，国产方案精度不足；空心杯电机被 Maxon、Faulhaber 垄断；触觉传感器阵列国内尚处实验室阶段，产业链高价值节点仍被外资掌控。</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">359</span><span class="stat-label">入编企业</span></div>
+    <div class="stat"><span class="stat-val">71%</span><span class="stat-label">国产占比</span></div>
+    <div class="stat"><span class="stat-val">73.6%</span><span class="stat-label">科研教育</span></div>
+    <div class="stat"><span class="stat-val">≤5%</span><span class="stat-label">工业替代</span></div>
+  </div>
+  <div class="quote">
+    当前人形机器人市场是「科研市场」，而非「工业市场」——看清这一点，才能理解为什么头部企业的营收数字和工业机器人类公司不可直接对比。
+  </div>
+</div>
+</div>
+
+<!-- Part A -->
+<div class="chapter" id="ch-a">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART A</span><span class="tag-cn">先进性</span></div>
+    <h1 class="chapter-title">技术先进性评估</h1>
+    <p class="chapter-subtitle">从运动控制到具身智能，AMORA Advancement Score 全面解析</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · 运动控制</div>
+      <h3>宇树 · 全球四足领导者</h3>
+      <p>宇树 H1 机器人全身运动控制算法领先国内同类 1-2 代，跑步速度 5.6m/s；自研 M107 关节电机峰值扭矩 360N·m，重量仅 1.9kg，能量密度国际前三。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · 具身智能</div>
+      <h3>Figure 01 · 端到端神经网络</h3>
+      <p>Figure 02 使用端到端多模态大模型，Vision-Language-Action 直接输出关节控制序列；智元 GO-1 借鉴同样路线。国产差距主要在训练数据量和仿真平台成熟度。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · 核心差距</div>
+      <h3>触觉感知 · 灵巧操作</h3>
+      <p>国内灵巧手自由度 6-11DOF，国际头部 18-27DOF；触觉传感器阵列密度差距 5-8 倍；小肌肉群精细控制算法国内专利量仅为美国的 1/4。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · 研发投入</div>
+      <h3>宇树 · 募资 42 亿押注研发</h3>
+      <p>宇树 IPO 募资 42 亿中 85% 投向研发；研发人员占 61.8%；近三年研发强度 18.6%/15.4%/20.3%。头部企业已建立硬件定义、软件迭代的正向循环。</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">8.9</span><span class="stat-label">宇树综合得分</span></div>
+    <div class="stat"><span class="stat-val">360N·m</span><span class="stat-label">峰值扭矩</span></div>
+    <div class="stat"><span class="stat-val">5.6m/s</span><span class="stat-label">跑步速度</span></div>
+    <div class="stat"><span class="stat-val">85%</span><span class="stat-label">研发投入占比</span></div>
+  </div>
+  <div class="quote">
+    硬件决定了人形机器人的性能上限，软件（AI）决定了能否触及这个上限。国产短板不在机械本体，在于具身智能训练数据和仿真平台的系统性差距。
+  </div>
+</div>
+</div>
+
+<!-- Part O -->
+<div class="chapter" id="ch-o">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART O</span><span class="tag-cn">运营力</span></div>
+    <h1 class="chapter-title">商业化运营能力</h1>
+    <p class="chapter-subtitle">从财务健康到产能弹性，359 家企业运营力全景比较</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · 商业化领军</div>
+      <h3>宇树 · 真正盈利的人形公司</h3>
+      <p>2025 年营收 17.08 亿（+119% YoY），净利润 6 亿（净利率 35%），毛利率 60.27%。全球四足销量第一，累计 3 万台，年产人形机器人 5500 台。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · 境外市场</div>
+      <h3>国际化能力 · 宇树境外超 35%</h3>
+      <p>宇树进入全球 50+ 国家，境外收入占比超 35%；Figure AI 服务 NASA、Boeing；Agility Robotics 深度绑定 Amazon 物流。境外收入是验证技术全球竞争力的核心指标。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · 供应链管理</div>
+      <h3>自研核心零部件 · 降本路径清晰</h3>
+      <p>宇树自研 M107 电机，成本比外采低 40%；自研控制算法降低调试工时 60%；规模化后单台成本以每年 15-20% 下降，2027 年有望实现 10 万台/年产能目标。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · 客户结构真相</div>
+      <h3>73.6% 科研 · 9% 商业导览</h3>
+      <p>宇树客户结构揭示行业阶段：科研教育占比 73.6%，企业导览 9%，医疗康复 3.6%，真正工业替代客户仅约 5%。行业渗透仍处于早期培育期。</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">17.08亿</span><span class="stat-label">营收</span></div>
+    <div class="stat"><span class="stat-val">60.3%</span><span class="stat-label">毛利率</span></div>
+    <div class="stat"><span class="stat-val">35%</span><span class="stat-label">净利率</span></div>
+    <div class="stat"><span class="stat-val">35%+</span><span class="stat-label">境外占比</span></div>
+  </div>
+  <div class="quote">
+    能盈利的人形机器人公司，全球范围内不超过 3 家。宇树是其中之一，且是中国唯一。这不是偶然——是自研硬件+软件协同+全球化三位一体的结果。
+  </div>
+</div>
+</div>
+
+<!-- Part R -->
+<div class="chapter" id="ch-r">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART R</span><span class="tag-cn">市场量</span></div>
+    <h1 class="chapter-title">全球市场容量测算</h1>
+    <p class="chapter-subtitle">2035 年人形机器人市场规模或超 3.38 万亿美元，CAGR 61.3%</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · 市场规模</div>
+      <h3>2035 年 · 3.38 万亿美元</h3>
+      <p>高盛预测 2035 年全球人形机器人市场 3.38 万亿美元；McKinsey 估计 2030 年中国市场需求 6.05 万台/年；特斯拉 Optimus 2026 年目标产量 1 万台，2027 年 10 万台。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · 中国市场</div>
+      <h3>双位数增长 · 政策红利期</h3>
+      <p>2025 年中国机器人市场规模预计 4450 亿元（+17.8% YoY），人形机器人渗透率不足 0.5%。人形机器人被列入国家重点发展领域，各地补贴政策密集出台。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · 应用场景分级</div>
+      <h3>短期科研 · 中期服务 · 长期工业</h3>
+      <p>短期（2025-2027）以科研教育为主；中期（2027-2030）商业导览、医疗康复渗透；长期（2030+）工业制造大规模替代人工。中国制造业工人缺口 3000 万+。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · 竞争格局</div>
+      <h3>国产领跑 · 国际竞争加剧</h3>
+      <p>全球入编 359 家企业，国产占 71%。宇树在全球四足市场市占率超 40%；人形领域特斯拉 Figure 领跑，国内宇树、智元、傅利叶形成第一梯队。</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">3.38万亿</span><span class="stat-label">美元·2035年市场</span></div>
+    <div class="stat"><span class="stat-val">61.3%</span><span class="stat-label">CAGR</span></div>
+    <div class="stat"><span class="stat-val">6.05万</span><span class="stat-label">台/年·中国市场</span></div>
+    <div class="stat"><span class="stat-val">3000万</span><span class="stat-label">中国用工缺口</span></div>
+  </div>
+  <div class="quote">
+    人形机器人不是一个产品赛道，是一个时代的基础设施。2035 年的 3.38 万亿美元市场只是起点，真正的变革在于重新定义「劳动」的价值分配。
+  </div>
+</div>
+</div>
+
+<!-- Part A2 -->
+<div class="chapter" id="ch-a2">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART A₂</span><span class="tag-cn">资本值</span></div>
+    <h1 class="chapter-title">企业资本价值评估</h1>
+    <p class="chapter-subtitle">AMORA Score 体系 · 5维度企业综合评分，资本配置参考</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">AMORA · Score 体系</div>
+      <h3>Advancement · Mastery · Operations · Reach · Affinity</h3>
+      <p>AMORA Score 是 AMORA Insights 自主研发的企业多维评分体系：A=技术壁垒（先进），M=人才优势（精通），O=商业落地（运营），R=全球化能力（渗透），A=可持续能力（亲和）。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">头部企业评分</div>
+      <h3>宇树科技 · AMORA Score 8.9</h3>
+      <p>技术壁垒 9.5（自研关节+算法），人才优势 8.0，运营能力 9.2（真正盈利），全球化 8.5（境外35%+），可持续 9.0。综合评分 8.9，位列 AMORA HRI 2026 榜首。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">第二梯队</div>
+      <h3>傅利叶 · 智元机器人 · Figure AI</h3>
+      <p>傅利叶 GR-1 综合评分 7.6；智元 GO-1 商业化加速，评分 7.3；Figure 02 国际影响力突出，评分 7.8。国产替代率快速提升，2026 年格局将大幅变动。</p>
+    </div>
+    <div class="card">
+      <div class="card-num">投资建议</div>
+      <h3>关注全栈自研 + 境外收入双验证</h3>
+      <p>宇树兼具两者；智元、傅利叶境外拓展中；UBTECH Operations 能力评分 6.8（下调），因商业化进度低于预期。建议关注有具身智能突破+工业场景落地双重验证的企业。</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">8.9</span><span class="stat-label">宇树综合评分</span></div>
+    <div class="stat"><span class="stat-val">7.8</span><span class="stat-label">Figure AI</span></div>
+    <div class="stat"><span class="stat-val">7.6</span><span class="stat-label">傅利叶</span></div>
+    <div class="stat"><spanspan="stat-val">7.3</span><span class="stat-label">智元</span></div>
+  </div>
+  <div class="quote">
+    AMORA Score 不是选股工具，是理解产业格局的透镜。看懂 359 家企业的多维分布，就看懂了这个赛道的真实机会与风险。
+  </div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p><a href="#">AMORA Insights</a> · 人形机器人智能 2026 · AMORA Research Framework v3.0</p>
+  <p style="margin-top:6px;font-size:11px;color:#334155">© 2026 AMORA Insights. All Rights Reserved.</p>
+</footer>
+
+<script>
+function scrollToChapter(id){
+  document.getElementById('ch-'+id).scrollIntoView({behavior:'smooth',block:'start'});
+}
+// active nav highlight
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+      const id=e.target.id.replace('ch-','');
+      document.querySelectorAll('.nav-item').forEach(n=>{
+        if(n.textContent.includes(id.toUpperCase()))n.classList.add('active');
+      });
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('[id^="ch-"]').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

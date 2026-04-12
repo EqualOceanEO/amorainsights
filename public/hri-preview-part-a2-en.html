@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Part A2 · Investment Guide</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#06060e 0%,#0a0a1a 100%);color:#fff;padding:20px;min-height:100vh}
+.header{background:rgba(255,255,255,0.05);border-radius:16px;padding:24px 28px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#ec4899,transparent)}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:4px;border:1px solid #ec4899;color:#ec4899;background:#ec489918;margin-bottom:8px}
+.h1{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.sub{font-size:13px;color:#64748b}
+.body{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px 20px}
+.card-title{font-size:13px;font-weight:700;color:#ec4899;margin-bottom:8px}
+.card-text{font-size:12px;color:#94a3b8;line-height:1.6}
+.metric{font-size:28px;font-weight:800;color:#ec4899;display:block;margin-bottom:4px}
+.metric-label{font-size:11px;color:#64748b}
+.chart-placeholder{background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.06);border-radius:12px;height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.chart-label{font-size:12px;color:#475569}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+.grid-item{background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;text-align:center}
+.grid-num{font-size:22px;font-weight:800;color:#ec4899}
+.grid-label{font-size:10px;color:#64748b;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="badge">PRO · Full Chapter Preview</div>
+  <div class="h1">Part A2 · Investment Guide</div>
+  <div class="sub">Humanoid Robotics Intelligence 2026 · AMORA Research</div>
+</div>
+
+<div class="body">
+  <div>
+    <div class="card">
+      <div class="card-title">AMORA Score Framework</div>
+      <div class="card-text">Five-dimensional scoring: Advancement (tech moat) / Mastery (talent edge) / Operations (commercialization) / Reach (global reach) / Affinity (sustainability). Composite score out of 10.</div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-title">Top 20 Highlights</div>
+      <div class="card-text">Unitree Tech leads with 8.9/10, followed by Figure AI (7.1), UBTECH (6.8). Capital-intensive vs. tech-intensive companies show clear divergence.</div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-placeholder">
+      <div class="metric">8.9</div>
+      <div class="chart-label">Unitree Tech AMORA Score</div>
+    </div>
+  </div>
+</div>
+<div class="grid-3">
+  <div class="grid-item"><span class="grid-num">8.9</span><div class="grid-label">Unitree Tech</div></div>
+  <div class="grid-item"><span class="grid-num">7.1</span><div class="grid-label">Figure AI</div></div>
+  <div class="grid-item"><span class="grid-num">6.8</span><div class="grid-label">UBTECH</div></div>
+</div>
+
+</body>
+</html>

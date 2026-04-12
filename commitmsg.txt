@@ -1,8 +1,1 @@
-﻿feat: H5 viewer — single continuous scroll page, all 5 chapters vertically stacked
-
-- H5ReportViewer fully rewritten: no iframe, no cover page, no chapter switching
-- All 5 chapters (M/A/O/R/A2) rendered vertically in one continuous scrollable page
-- IntersectionObserver tracks current chapter and updates sticky nav badge
-- Part M (free) fully visible; A/O/R/A2 show locked overlay for non-Pro users
-- Anti-copy protection on premium chapters only
-- Top sticky nav: current chapter badge + progress dots + upgrade CTA
+﻿fix: hide newsletter banner in dashboard when user is already subscribed

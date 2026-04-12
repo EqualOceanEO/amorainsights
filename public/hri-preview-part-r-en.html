@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Part R · Market Reach</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#06060e 0%,#0a0a1a 100%);color:#fff;padding:20px;min-height:100vh}
+.header{background:rgba(255,255,255,0.05);border-radius:16px;padding:24px 28px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#f97316,transparent)}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:4px;border:1px solid #f97316;color:#f97316;background:#f9731618;margin-bottom:8px}
+.h1{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.sub{font-size:13px;color:#64748b}
+.body{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px 20px}
+.card-title{font-size:13px;font-weight:700;color:#f97316;margin-bottom:8px}
+.card-text{font-size:12px;color:#94a3b8;line-height:1.6}
+.metric{font-size:28px;font-weight:800;color:#f97316;display:block;margin-bottom:4px}
+.metric-label{font-size:11px;color:#64748b}
+.chart-placeholder{background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.06);border-radius:12px;height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.chart-label{font-size:12px;color:#475569}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+.grid-item{background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;text-align:center}
+.grid-num{font-size:22px;font-weight:800;color:#f97316}
+.grid-label{font-size:10px;color:#64748b;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="badge">PRO · Full Chapter Preview</div>
+  <div class="h1">Part R · Market Reach</div>
+  <div class="sub">Humanoid Robotics Intelligence 2026 · AMORA Research</div>
+</div>
+
+<div class="body">
+  <div>
+    <div class="card">
+      <div class="card-title">Three-Scenario Market Forecast</div>
+      <div class="card-text">Base case: ~500K global humanoid robot shipments by 2030, market size ~¥3.5 trillion. Bull case could exceed ¥10 trillion.</div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-title">Penetration Rate Divergence</div>
+      <div class="card-text">Industrial penetration expected to reach 3% by 2028, breaking 10% by 2030. Consumer scenarios lag — significant scale not expected before 2035.</div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-placeholder">
+      <div class="metric">¥3.5T</div>
+      <div class="chart-label">2030 Market Size (Base Case)</div>
+    </div>
+  </div>
+</div>
+<div class="grid-3">
+  <div class="grid-item"><span class="grid-num">500K</span><div class="grid-label">2030 Shipments (units)</div></div>
+  <div class="grid-item"><span class="grid-num">¥10T</span><div class="grid-label">Bull Case 2030</div></div>
+  <div class="grid-item"><span class="grid-num">10%</span><div class="grid-label">2030 Industrial Penetration</div></div>
+</div>
+
+</body>
+</html>

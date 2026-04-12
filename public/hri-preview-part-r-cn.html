@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Part R · 市场容量</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;background:linear-gradient(135deg,#06060e 0%,#0a0a1a 100%);color:#fff;padding:20px;min-height:100vh}
+.header{background:rgba(255,255,255,0.05);border-radius:16px;padding:24px 28px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#f97316,transparent)}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:4px;border:1px solid #f97316;color:#f97316;background:#f9731618;margin-bottom:8px}
+.h1{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.sub{font-size:13px;color:#64748b}
+.body{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px 20px}
+.card-title{font-size:13px;font-weight:700;color:#f97316;margin-bottom:8px}
+.card-text{font-size:12px;color:#94a3b8;line-height:1.6}
+.metric{font-size:28px;font-weight:800;color:#f97316;display:block;margin-bottom:4px}
+.metric-label{font-size:11px;color:#64748b}
+.chart-placeholder{background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.06);border-radius:12px;height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.chart-label{font-size:12px;color:#475569}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+.grid-item{background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;text-align:center}
+.grid-num{font-size:22px;font-weight:800;color:#f97316}
+.grid-label{font-size:10px;color:#64748b;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="badge">PRO 完整章节预览</div>
+  <div class="h1">Part R · 市场容量</div>
+  <div class="sub">Humanoid Robotics Intelligence 2026 · AMORA Research</div>
+</div>
+
+<div class="body">
+  <div>
+    <div class="card">
+      <div class="card-title">三情景市场预测</div>
+      <div class="card-text">基准预测：2030年全球人形机器人出货量约50万台，市场规模约3,500亿元；乐观情景下有望突破1万亿元。</div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-title">渗透率分化</div>
+      <div class="card-text">工业场景渗透率预计2028年达3%，2030年突破10%；消费场景更慢，预计2035年后才有显著规模。</div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-placeholder">
+      <div class="metric">3,500亿</div>
+      <div class="chart-label">2030年市场规模（基准）</div>
+    </div>
+  </div>
+</div>
+<div class="grid-3">
+  <div class="grid-item"><span class="grid-num">50万</span><div class="grid-label">2030年出货量（台）</div></div>
+  <div class="grid-item"><span class="grid-num">1万亿</span><div class="grid-label">乐观情景（2030）</div></div>
+  <div class="grid-item"><span class="grid-num">10%</span><div class="grid-label">2030工业渗透率</div></div>
+</div>
+
+</body>
+</html>

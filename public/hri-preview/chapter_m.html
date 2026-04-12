@@ -1,0 +1,946 @@
+
+    <div class="container">
+        <!-- 报告头部 -->
+        <div class="report-header">
+            <div class="part-badge">PART M: SUPPLY CHAIN MAPPING</div>
+            <h1 class="report-title">The Humanoid Robot Supply Chain Atlas</h1>
+            <p class="report-subtitle">人形机器人产业链全景图谱：中美双轨竞争与供应链韧性分析</p>
+            <div class="report-meta">
+                <div class="meta-item">
+                    <span>30+</span> Chinese Suppliers
+                </div>
+                <div class="meta-item">
+                    <span>25+</span> US Suppliers
+                </div>
+                <div class="meta-item">
+                    <span>7</span> Component Categories
+                </div>
+                <div class="meta-item">
+                    <span>12</span> Leading OEMs Mapped
+                </div>
+            </div>
+        </div>
+        
+        <!-- 核心发现 -->
+        <div class="key-findings">
+            <div class="finding-card">
+                <div class="finding-number">55%</div>
+                <div class="finding-label">China's Manufacturing Cost Advantage at 100K Scale</div>
+            </div>
+            <div class="finding-card">
+                <div class="finding-number">3-5yr</div>
+                <div class="finding-label">US Platform Layer Moat (NVIDIA CUDA Lock-in)</div>
+            </div>
+            <div class="finding-card">
+                <div class="finding-number">70%</div>
+                <div class="finding-label">US OEMs' Import Dependency on Critical Components</div>
+            </div>
+            <div class="finding-card">
+                <div class="finding-number">2027</div>
+                <div class="finding-label">Projected Supply Chain Convergence Point</div>
+            </div>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 左侧分类 -->
+            <div class="category-panel">
+                <div class="panel-title">Component Categories</div>
+                <div class="category-list">
+                    <div class="category-item active" data-part="head">
+                        <div class="category-icon head">🎯</div>
+                        <div class="category-info">
+                            <div class="category-name">Vision System</div>
+                            <div class="category-count">8 suppliers</div>
+                        </div>
+                    </div>
+                    <div class="category-item" data-part="torso">
+                        <div class="category-icon torso">🧠</div>
+                        <div class="category-info">
+                            <div class="category-name">Compute & AI</div>
+                            <div class="category-count">12 suppliers</div>
+                        </div>
+                    </div>
+                    <div class="category-item" data-part="arm">
+                        <div class="category-icon arm">💪</div>
+                        <div class="category-info">
+                            <div class="category-name">Actuators</div>
+                            <div class="category-count">15 suppliers</div>
+                        </div>
+                    </div>
+                    <div class="category-item" data-part="hand">
+                        <div class="category-icon hand">✋</div>
+                        <div class="category-info">
+                            <div class="category-name">Dexterous Hand</div>
+                            <div class="category-count">10 suppliers</div>
+                        </div>
+                    </div>
+                    <div class="category-item" data-part="leg">
+                        <div class="category-icon leg">🦿</div>
+                        <div class="category-info">
+                            <div class="category-name">Powertrain</div>
+                            <div class="category-count">12 suppliers</div>
+                        </div>
+                    </div>
+                    <div class="category-item" data-part="foot">
+                        <div class="category-icon foot">👣</div>
+                        <div class="category-info">
+                            <div class="category-name">Force Sensing</div>
+                            <div class="category-count">8 suppliers</div>
+                        </div>
+                    </div>
+                    <div class="category-item" data-part="platform">
+                        <div class="category-icon platform">☁️</div>
+                        <div class="category-info">
+                            <div class="category-name">Platform Layer</div>
+                            <div class="category-count">10 suppliers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中间机器人 -->
+            <div class="robot-panel">
+                <div class="robot-title">Interactive Robot</div>
+                <svg class="robot-svg" viewBox="0 0 280 500">
+                    <!-- 头部 - 视觉系统 -->
+                    <g class="robot-part" id="part-head" data-part="head">
+                        <circle cx="140" cy="50" r="35" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                        <circle cx="140" cy="50" r="25" fill="rgba(0,212,255,0.1)" stroke="#00d4ff" stroke-width="1.5"/>
+                        <circle cx="125" cy="45" r="6" fill="#00d4ff" opacity="0.8"/>
+                        <circle cx="155" cy="45" r="6" fill="#00d4ff" opacity="0.8"/>
+                        <text x="140" y="105" text-anchor="middle" class="part-label">Vision</text>
+                    </g>
+                    
+                    <!-- 躯干 - 计算/电池 -->
+                    <g class="robot-part" id="part-torso" data-part="torso">
+                        <rect x="95" y="100" width="90" height="110" rx="15" fill="none" stroke="#7b2cbf" stroke-width="2" opacity="0.6"/>
+                        <rect x="105" y="110" width="70" height="40" rx="8" fill="rgba(123,44,191,0.1)" stroke="#7b2cbf" stroke-width="1.5"/>
+                        <rect x="105" y="160" width="70" height="40" rx="8" fill="rgba(123,44,191,0.1)" stroke="#7b2cbf" stroke-width="1.5"/>
+                        <text x="140" y="225" text-anchor="middle" class="part-label">Compute</text>
+                    </g>
+                    
+                    <!-- 手臂 - 执行器 -->
+                    <g class="robot-part" id="part-arm" data-part="arm">
+                        <!-- 左臂 -->
+                        <rect x="45" y="115" width="40" height="25" rx="8" fill="none" stroke="#ff006e" stroke-width="2" opacity="0.6"/>
+                        <rect x="25" y="150" width="35" height="20" rx="6" fill="rgba(255,0,110,0.1)" stroke="#ff006e" stroke-width="1.5"/>
+                        <rect x="20" y="185" width="30" height="18" rx="5" fill="rgba(255,0,110,0.1)" stroke="#ff006e" stroke-width="1.5"/>
+                        <!-- 右臂 -->
+                        <rect x="195" y="115" width="40" height="25" rx="8" fill="none" stroke="#ff006e" stroke-width="2" opacity="0.6"/>
+                        <rect x="220" y="150" width="35" height="20" rx="6" fill="rgba(255,0,110,0.1)" stroke="#ff006e" stroke-width="1.5"/>
+                        <rect x="230" y="185" width="30" height="18" rx="5" fill="rgba(255,0,110,0.1)" stroke="#ff006e" stroke-width="1.5"/>
+                        <text x="140" y="95" text-anchor="middle" class="part-label" style="font-size: 10px;">Actuators</text>
+                    </g>
+                    
+                    <!-- 手部 -->
+                    <g class="robot-part" id="part-hand" data-part="hand">
+                        <circle cx="35" cy="220" r="12" fill="rgba(255,190,11,0.1)" stroke="#ffbe0b" stroke-width="1.5"/>
+                        <circle cx="245" cy="220" r="12" fill="rgba(255,190,11,0.1)" stroke="#ffbe0b" stroke-width="1.5"/>
+                        <text x="35" y="245" text-anchor="middle" class="part-label" style="font-size: 9px;">Hand</text>
+                        <text x="245" y="245" text-anchor="middle" class="part-label" style="font-size: 9px;">Hand</text>
+                    </g>
+                    
+                    <!-- 腿部 -->
+                    <g class="robot-part" id="part-leg" data-part="leg">
+                        <rect x="100" y="220" width="30" height="50" rx="8" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.6"/>
+                        <rect x="150" y="220" width="30" height="50" rx="8" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.6"/>
+                        <rect x="95" y="285" width="35" height="60" rx="8" fill="rgba(0,255,136,0.1)" stroke="#00ff88" stroke-width="1.5"/>
+                        <rect x="150" y="285" width="35" height="60" rx="8" fill="rgba(0,255,136,0.1)" stroke="#00ff88" stroke-width="1.5"/>
+                        <text x="140" y="275" text-anchor="middle" class="part-label" style="font-size: 10px;">Powertrain</text>
+                    </g>
+                    
+                    <!-- 足部 - 力传感器 -->
+                    <g class="robot-part" id="part-foot" data-part="foot">
+                        <ellipse cx="112" cy="370" rx="25" ry="12" fill="rgba(255,107,107,0.1)" stroke="#ff6b6b" stroke-width="1.5"/>
+                        <ellipse cx="168" cy="370" rx="25" ry="12" fill="rgba(255,107,107,0.1)" stroke="#ff6b6b" stroke-width="1.5"/>
+                        <text x="140" y="395" text-anchor="middle" class="part-label">Force Sense</text>
+                    </g>
+                </svg>
+            </div>
+            
+            <!-- 右侧详情 -->
+            <div class="detail-panel" id="detail-panel">
+                <!-- 动态内容 -->
+            </div>
+        </div>
+        
+        <!-- 新增：美国产业链图谱 -->
+        <div class="us-supply-chain">
+            <h2 class="section-title">🇺🇸 US Supply Chain Ecosystem</h2>
+            <p class="section-subtitle">美国本土人形机器人产业链全景：从核心零部件到主机厂的完整Mapping</p>
+            
+            <div class="us-ecosystem">
+                <div class="ecosystem-card">
+                    <h4>🏭 Component Leaders</h4>
+                    <div class="ecosystem-list">
+                        <div class="ecosystem-item">
+                            <div class="company-logo">N</div>
+                            <div class="company-info">
+                                <div class="company-name">NVIDIA</div>
+                                <div class="company-desc">AI Chips, Isaac Sim, Omniverse</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">A</div>
+                            <div class="company-info">
+                                <div class="company-name">ATI Industrial</div>
+                                <div class="company-desc">6-Axis Force Sensors (60%+ share)</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">M</div>
+                            <div class="company-info">
+                                <div class="company-name">Moog</div>
+                                <div class="company-desc">Servo Actuators, Motion Control</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">H</div>
+                            <div class="company-info">
+                                <div class="company-name">Harmonic Drive LLC</div>
+                                <div class="company-desc">Precision Gearboxes</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">S</div>
+                            <div class="company-info">
+                                <div class="company-name">Synapticon</div>
+                                <div class="company-desc">Servo Drives, Motion Control</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ecosystem-card">
+                    <h4>🤖 Leading OEMs</h4>
+                    <div class="ecosystem-list">
+                        <div class="ecosystem-item">
+                            <div class="company-logo">T</div>
+                            <div class="company-info">
+                                <div class="company-name">Tesla (Optimus)</div>
+                                <div class="company-desc">Most advanced, <50 units deployed</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">B</div>
+                            <div class="company-info">
+                                <div class="company-name">Boston Dynamics</div>
+                                <div class="company-desc">Atlas, Hyundai owned, R&D focus</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">F</div>
+                            <div class="company-info">
+                                <div class="company-name">Figure AI</div>
+                                <div class="company-desc">$675M raised, BMW partnership</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">A</div>
+                            <div class="company-info">
+                                <div class="company-name">Agility Robotics</div>
+                                <div class="company-desc">Digit, logistics focus, Amazon pilot</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">1</div>
+                            <div class="company-info">
+                                <div class="company-name">1X Technologies</div>
+                                <div class="company-desc">NEO, OpenAI backed, Norway/US</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ecosystem-card">
+                    <h4>☁️ Platform & AI</h4>
+                    <div class="ecosystem-list">
+                        <div class="ecosystem-item">
+                            <div class="company-logo">G</div>
+                            <div class="company-info">
+                                <div class="company-name">Google DeepMind</div>
+                                <div class="company-desc">RT-X, Embodied AI research</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">O</div>
+                            <div class="company-info">
+                                <div class="company-name">OpenAI</div>
+                                <div class="company-desc">GPT-4V, Figure AI partnership</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">M</div>
+                            <div class="company-info">
+                                <div class="company-name">Microsoft</div>
+                                <div class="company-desc">Azure Robotics, cloud infrastructure</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">M</div>
+                            <div class="company-info">
+                                <div class="company-name">Meta AI</div>
+                                <div class="company-desc">PyTorch, Habitat simulation</div>
+                            </div>
+                        </div>
+                        <div class="ecosystem-item">
+                            <div class="company-logo">I</div>
+                            <div class="company-info">
+                                <div class="company-name">Intrinsic (Alphabet)</div>
+                                <div class="company-desc">Industrial robotics AI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 主机厂-供应商关系图 -->
+            <div class="oem-supplier-map">
+                <h4>🔗 US OEM Supplier Dependency Map</h4>
+                <div class="oem-grid">
+                    <div class="oem-card">
+                        <h5>🚗 Tesla Optimus</h5>
+                        <div class="supplier-tags">
+                            <span class="supplier-tag-small domestic">Tesla In-house (Actuators)</span>
+                            <span class="supplier-tag-small import">NVIDIA (Compute)</span>
+                            <span class="supplier-tag-small import">ATI (Force Sensors)</span>
+                            <span class="supplier-tag-small import">Harmonic Drive (Gearbox)</span>
+                            <span class="supplier-tag-small import">Intel RealSense (Vision)</span>
+                        </div>
+                    </div>
+                    <div class="oem-card">
+                        <h5>🤖 Boston Dynamics Atlas</h5>
+                        <div class="supplier-tags">
+                            <span class="supplier-tag-small domestic">BD In-house (Hydraulics)</span>
+                            <span class="supplier-tag-small import">NVIDIA (Compute)</span>
+                            <span class="supplier-tag-small domestic">Custom (Vision)</span>
+                            <span class="supplier-tag-small import">ATI (Force Sensors)</span>
+                        </div>
+                    </div>
+                    <div class="oem-card">
+                        <h5>👤 Figure AI 02</h5>
+                        <div class="supplier-tags">
+                            <span class="supplier-tag-small domestic">Figure In-house</span>
+                            <span class="supplier-tag-small import">NVIDIA (Compute)</span>
+                            <span class="supplier-tag-small import">OpenAI (AI Model)</span>
+                            <span class="supplier-tag-small import">ATI (Force Sensors)</span>
+                        </div>
+                    </div>
+                    <div class="oem-card">
+                        <h5>📦 Agility Digit</h5>
+                        <div class="supplier-tags">
+                            <span class="supplier-tag-small domestic">Agility In-house</span>
+                            <span class="supplier-tag-small import">NVIDIA (Compute)</span>
+                            <span class="supplier-tag-small import">Intel (Vision)</span>
+                            <span class="supplier-tag-small import">ATI (Force Sensors)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 中美对比 -->
+        <div class="comparison-section">
+            <h2 class="section-title">⚔️ China vs US: Supply Chain Strengths</h2>
+            <p class="section-subtitle">双轨竞争格局下的供应链优势对比分析</p>
+            
+            <div class="comparison-grid">
+                <div class="comparison-column china">
+                    <h4>🇨🇳 China's Advantages</h4>
+                    <div class="strength-item">
+                        <div class="strength-icon">🏭</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Manufacturing Density</div>
+                            <div class="strength-desc">Complete industrial ecosystem within 100km radius</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">💰</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Cost Curve Advantage</div>
+                            <div class="strength-desc">30-45% lower at current scale, 65% at 100K units</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">⚡</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Speed to Market</div>
+                            <div class="strength-desc">Unitree: 5500+ units deployed vs Tesla <50</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">🔧</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Actuator Mastery</div>
+                            <div class="strength-desc">30+ domestic suppliers, full category coverage</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">🌐</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Supply Chain Resilience</div>
+                            <div class="strength-desc">Low geopolitical risk exposure, domestic sourcing</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-column usa">
+                    <h4>🇺🇸 US Advantages</h4>
+                    <div class="strength-item">
+                        <div class="strength-icon">🧠</div>
+                        <div class="strength-content">
+                            <div class="strength-title">AI & Platform Layer</div>
+                            <div class="strength-desc">NVIDIA CUDA, DeepMind, OpenAI leadership</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">🎯</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Precision Components</div>
+                            <div class="strength-desc">ATI force sensors, high-end vision systems</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">💡</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Innovation Capital</div>
+                            <div class="strength-desc">$2B+ VC funding in 2024, top AI talent</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">🏢</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Enterprise Adoption</div>
+                            <div class="strength-desc">BMW, Amazon, Mercedes pilot programs</div>
+                        </div>
+                    </div>
+                    <div class="strength-item">
+                        <div class="strength-icon">⚠️</div>
+                        <div class="strength-content">
+                            <div class="strength-title">Critical Vulnerabilities</div>
+                            <div class="strength-desc">70% import dependency, no scale manufacturing</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 成本曲线 -->
+        <div class="cost-curve-section">
+            <h2 class="section-title">📊 Cost Curve Analysis: Scale Effects</h2>
+            <p class="section-subtitle">规模化生产下的成本优势演变（标准化到100）</p>
+            
+            <div class="cost-chart">
+                <div class="cost-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff6b6b;"></div>
+                        <span>China Suppliers</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4dabf7;"></div>
+                        <span>US Suppliers</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9775fa;"></div>
+                        <span>Japan Suppliers</span>
+                    </div>
+                </div>
+                
+                <div class="cost-bars">
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label">Current</div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill china" style="width: 65%;">65</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill usa" style="width: 100%;">100</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill japan" style="width: 95%;">95</div>
+                        </div>
+                    </div>
+                    
+                    <div style="height: 20px;"></div>
+                    
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label">1K Units</div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill china" style="width: 58%;">58</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill usa" style="width: 100%;">100</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill japan" style="width: 92%;">92</div>
+                        </div>
+                    </div>
+                    
+                    <div style="height: 20px;"></div>
+                    
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label">10K Units</div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill china" style="width: 45%;">45</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill usa" style="width: 100%;">100</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill japan" style="width: 88%;">88</div>
+                        </div>
+                    </div>
+                    
+                    <div style="height: 20px;"></div>
+                    
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label">100K Units</div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill china" style="width: 35%;">35</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill usa" style="width: 100%;">100</div>
+                        </div>
+                    </div>
+                    <div class="cost-bar-row">
+                        <div class="cost-bar-label"></div>
+                        <div class="cost-bar-track">
+                            <div class="cost-bar-fill japan" style="width: 85%;">85</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 时间线 -->
+        <div class="timeline-section">
+            <h2 class="section-title">⏱️ Supply Chain Convergence Timeline</h2>
+            <p class="section-subtitle">中美供应链能力收敛的关键时间节点预测</p>
+            
+            <div class="timeline">
+                <div class="timeline-item past">
+                    <div class="timeline-date">2023-2024</div>
+                    <div class="timeline-title">Technology Validation Phase</div>
+                    <div class="timeline-desc">Both sides demonstrate working prototypes. China focuses on hardware iteration speed, US on AI capabilities. Supply chains remain largely separate.</div>
+                </div>
+                <div class="timeline-item current">
+                    <div class="timeline-date">2025 (Current)</div>
+                    <div class="timeline-title">Pilot Deployment Phase</div>
+                    <div class="timeline-desc">Unitree deploys 5500+ units globally; Tesla <50. China's manufacturing advantage becomes evident. US OEMs struggle with scale production.</div>
+                </div>
+                <div class="timeline-item future">
+                    <div class="timeline-date">2026-2027</div>
+                    <div class="timeline-title">Critical Inflection Point</div>
+                    <div class="timeline-desc">China closes AI gap through data scale; US attempts manufacturing reshoring. Supply chain competition intensifies. Convergence begins.</div>
+                </div>
+                <div class="timeline-item future">
+                    <div class="timeline-date">2028+</div>
+                    <div class="timeline-title">Winner Takes Most</div>
+                    <div class="timeline-desc">Whoever reaches 100K units first gains insurmountable cost advantage. Supply chain regionalization solidifies. Platform layer remains US-dominated.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 洞察分析 -->
+        <div class="insights-section">
+            <div class="insight-card china">
+                <h3>🇨🇳 China's Supply Chain Resilience</h3>
+                <div class="insight-list">
+                    <div class="insight-item">
+                        <div class="insight-number">1</div>
+                        <div><strong>Manufacturing Density Moat:</strong> Complete component ecosystem within Pearl River & Yangtze River Delta regions enables rapid iteration and cost reduction.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-number">2</div>
+                        <div><strong>Actuator Dominance:</strong> 30+ domestic suppliers covering all categories from micro servos to high-torque joints, the most complete globally.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-number">3</div>
+                        <div><strong>Speed Advantage:</strong> Unitree's 5500+ unit deployment in 2024 vs Tesla's <50 demonstrates execution gap in volume manufacturing.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-number">4</div>
+                        <div><strong>Platform Gap:</strong> Still 2-3 years behind in AI training infrastructure and simulation platforms, but closing fast through data scale.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insight-card usa">
+                <h3>🇺🇸 US Supply Chain Vulnerabilities</h3>
+                <div class="insight-list">
+                    <div class="insight-item">
+                        <div class="insight-number">1</div>
+                        <div><strong>Manufacturing Gap:</strong> No domestic actuator ecosystem; 70%+ dependency on Asian suppliers for critical components.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-number">2</div>
+                        <div><strong>Platform Lock-in Risk:</strong> NVIDIA CUDA ecosystem creates 3-5 year moat but also concentration risk for US OEMs.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-number">3</div>
+                        <div><strong>Scale Challenge:</strong> All US OEMs combined <100 units deployed vs Unitree alone at 5500+; manufacturing learning curve lag.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-number">4</div>
+                        <div><strong>Geopolitical Exposure:</strong> Force sensors (ATI), precision gearboxes (Harmonic Drive) concentrated in single suppliers.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="report-footer">
+            <div class="footer-logo">AMORA Insights</div>
+            <div class="footer-text">The Humanoid Robot Index 2026 | Part M: Supply Chain Mapping</div>
+        </div>
+    </div>
+    
+    <script>
+        // 供应链数据
+        const supplyChainData = {
+            head: {
+                name: "Vision System",
+                part: "LiDAR / Depth Cameras / Visual SLAM",
+                risk: "medium",
+                riskText: "Medium Risk",
+                china: [
+                    { name: "Hesai", tag: "ipo", product: "AT128/ET25 LiDAR", clients: "Unitree, NIO, Li Auto", highlight: true },
+                    { name: "RoboSense", tag: "ipo", product: "M1/M2 LiDAR", clients: "Xpeng, Lotus, BYD" },
+                    { name: "Orbbec", tag: "ipo", product: "3D Depth Cameras", clients: "Service robots, Healthcare" },
+                    { name: "DJI Livox", tag: "leader", product: "Horizon/Avia LiDAR", clients: "Industrial, Mapping" }
+                ],
+                usa: [
+                    { name: "Luminar", tag: "ipo", product: "Iris+ LiDAR", clients: "Volvo, Mercedes, Nissan" },
+                    { name: "Velodyne", tag: "ipo", product: "Puck/Ultra LiDAR", clients: "Research, Autonomous" },
+                    { name: "Intel RealSense", tag: "giant", product: "D435/D455 Depth Cam", clients: "Most US robots", highlight: true }
+                ],
+                eu: [
+                    { name: "SICK (Germany)", tag: "leader", product: "Industrial LiDAR", clients: "Factory automation" }
+                ],
+                japan: [
+                    { name: "Hokuyo", tag: "leader", product: "2D LiDAR", clients: "Service robots, AGV" }
+                ],
+                analysis: "China dominates cost-effective LiDAR with Hesai and RoboSense capturing 70%+ global market. US relies on Intel RealSense for depth cameras. Risk level medium as alternatives exist but switching costs are non-trivial."
+            },
+            torso: {
+                name: "Compute & AI",
+                part: "AI Chips / Edge Computing / Batteries",
+                risk: "high",
+                riskText: "Critical Risk",
+                china: [
+                    { name: "Horizon Robotics", tag: "ipo", product: "Journey 5/6 Chips", clients: "BYD, VW, Li Auto", highlight: true },
+                    { name: "Black Sesame", tag: "ipo", product: "A1000 Chips", clients: "Foton, JAC" },
+                    { name: "CATL", tag: "giant", product: "Robot Battery Packs", clients: "Unitree, UBTECH" },
+                    { name: "EVE Energy", tag: "ipo", product: "Cylindrical Cells", clients: "Unitree, E-con" }
+                ],
+                usa: [
+                    { name: "NVIDIA", tag: "giant", product: "Jetson AGX Orin/Thor", clients: "Universal standard", highlight: true },
+                    { name: "Qualcomm", tag: "giant", product: "RB5/RB6 Robotics", clients: "Mid-range robots" },
+                    { name: "Intel", tag: "giant", product: "Movidius/Myriad", clients: "Vision processing" },
+                    { name: "Tesla", tag: "giant", product: "Dojo / FSD Chips", clients: "Tesla Optimus only" }
+                ],
+                eu: [
+                    { name: "STMicroelectronics", tag: "giant", product: "MEMS Sensors", clients: "Motion sensing" }
+                ],
+                japan: [
+                    { name: "Renesas", tag: "giant", product: "RA6/RA8 MCUs", clients: "Motor control" }
+                ],
+                analysis: "NVIDIA Jetson dominates high-end robotics compute with CUDA ecosystem lock-in. China has domestic alternatives (Horizon, Black Sesame) but 2-3 years behind in software ecosystem. Battery supply chain heavily China-dependent."
+            },
+            arm: {
+                name: "Actuators",
+                part: "Servo Motors / Harmonic Drive / Controllers",
+                risk: "low",
+                riskText: "Low Risk",
+                china: [
+                    { name: "Leaderdrive", tag: "ipo", product: "Harmonic Reducer", clients: "Unitree, ABB, KUKA", highlight: true },
+                    { name: "Hengli Hydraulic", tag: "ipo", product: "Hydraulic Actuators", clients: "Heavy robots" },
+                    { name: "Estun", tag: "ipo", product: "Servo Motors / Drives", clients: "Industrial robots" },
+                    { name: "Inovance", tag: "ipo", product: "Servo Systems", clients: "Automation, CNC" },
+                    { name: "Welling", tag: "leader", product: "Precision Motors", clients: "Unitree, UBTECH" }
+                ],
+                usa: [
+                    { name: "Moog", tag: "giant", product: "Servo Actuators", clients: "Aerospace, Defense" },
+                    { name: "Kollmorgen", tag: "leader", product: "Servo Motors", clients: "Industrial automation" },
+                    { name: "Harmonic Drive LLC", tag: "leader", product: "Precision Gearboxes", clients: "High-end robots" }
+                ],
+                eu: [
+                    { name: "Harmonic Drive AG (Germany)", tag: "leader", product: "CSF/SHF Series", clients: "Global leaders" }
+                ],
+                japan: [
+                    { name: "Harmonic Drive Systems", tag: "giant", product: "Component Sets", clients: "Fanuc, Yaskawa", highlight: true },
+                    { name: "Nidec", tag: "giant", product: "Servo Motors", clients: "Industrial robots" }
+                ],
+                analysis: "China has built comprehensive domestic actuator ecosystem with 30+ suppliers. Leaderdrive challenges Japanese Harmonic Drive dominance. US lacks scale manufacturing capability in this category."
+            },
+            hand: {
+                name: "Dexterous Hand",
+                part: "Multi-finger Grippers / Tactile Sensors",
+                risk: "medium",
+                riskText: "Medium Risk",
+                china: [
+                    { name: "Inspire Robots", tag: "leader", product: "RH56DFX Hand", clients: "Unitree, Research", highlight: true },
+                    { name: "Paxini", tag: "leader", product: "Tactile Sensors", clients: "Dexterous hands" },
+                    { name: "DH-Robotics", tag: "leader", product: "Electric Grippers", clients: "Industry, Logistics" }
+                ],
+                usa: [
+                    { name: "Shadow Robot", tag: "leader", product: "Dexterous Hand", clients: "Research, NASA" },
+                    { name: "Robotiq", tag: "leader", product: "2F/3F Grippers", clients: "Universal Robots" },
+                    { name: "Syntouch", tag: "leader", product: "BioTac Tactile", clients: "Research" }
+                ],
+                eu: [
+                    { name: "Schunk (Germany)", tag: "leader", product: "SVH Dexterous Hand", clients: "Industry, Research" }
+                ],
+                japan: [
+                    { name: "SMC", tag: "leader", product: "Pneumatic Grippers / Actuators", clients: "Industrial automation" }
+                ],
+                analysis: "Dexterous hands remain early-stage; gap between domestic and international players relatively small. Micro servo actuators and high-precision tactile sensors still import-dependent. Domestic Instime and Paxini rapidly catching up."
+            },
+            leg: {
+                name: "Powertrain",
+                part: "RV Gearbox / Force Sensors",
+                risk: "medium",
+                riskText: "Medium Risk",
+                china: [
+                    { name: "Shuanghuan", tag: "ipo", product: "RV Gearbox", clients: "Heavy-load robots" },
+                    { name: "ZD Motor", tag: "ipo", product: "Planetary Gearbox", clients: "Service robots" },
+                    { name: "SRI (Unitree)", tag: "leader", product: "6-Axis Force Sensors", clients: "Unitree, UBTECH, KUKA", highlight: true },
+                    { name: "Keli", tag: "ipo", product: "Force / Load Sensors", clients: "Industry, Logistics" }
+                ],
+                usa: [
+                    { name: "ATI Industrial", tag: "giant", product: "6-Axis Force Sensors", clients: "Global robot leaders", highlight: true },
+                    { name: "JR3", tag: "leader", product: "Force/Torque Sensors", clients: "Industrial, Medical" }
+                ],
+                eu: [
+                    { name: "Kistler (Switzerland)", tag: "leader", product: "Piezoelectric Force Sensors", clients: "Auto testing, Industry" }
+                ],
+                japan: [
+                    { name: "Nabtesco", tag: "giant", product: "Precision Gearbox", clients: "High-end applications" },
+                    { name: "Ono Sokki", tag: "leader", product: "Torque Sensors", clients: "Auto, Industry" }
+                ],
+                analysis: "6-axis force sensors dominated by US ATI (60%+ share). Domestic SRI making progress in select applications. RV gearboxes still dependent on Japanese Nabtesco."
+            },
+            foot: {
+                name: "Force Sensing",
+                part: "6-Axis Force/Torque Sensors",
+                risk: "high",
+                riskText: "High Risk",
+                china: [
+                    { name: "SRI (Unitree)", tag: "leader", product: "6-Axis Force Sensors", clients: "Unitree, UBTECH, ABB", highlight: true },
+                    { name: "Keli", tag: "ipo", product: "Force Sensors", clients: "Industrial automation" },
+                    { name: "Kunwei", tag: "leader", product: "6-Axis Force Sensors", clients: "Collaborative robots" },
+                    { name: "Hypersen", tag: "leader", product: "3D Vision / Force Sensors", clients: "Industrial inspection" }
+                ],
+                usa: [
+                    { name: "ATI Industrial", tag: "giant", product: "Nano/Mini Series", clients: "Most high-end robots", highlight: true },
+                    { name: "JR3", tag: "leader", product: "Force Sensors", clients: "NASA, Industry" },
+                    { name: "AMTI", tag: "leader", product: "Force Plates / Sensors", clients: "Biomechanics, Robotics" }
+                ],
+                eu: [
+                    { name: "Kistler", tag: "leader", product: "Force Sensors", clients: "Auto, Aerospace" },
+                    { name: "Bota Systems", tag: "leader", product: "6-Axis Force Sensors", clients: "Collaborative robots" }
+                ],
+                japan: [
+                    { name: "MinebeaMitsumi", tag: "leader", product: "Force Sensors", clients: "Precision equipment" }
+                ],
+                analysis: "6-axis force sensors are critical for bipedal balance; US ATI holds dominant position. Domestic SRI and Kunwei breaking through in mid-range market but still behind in precision and reliability."
+            },
+            platform: {
+                name: "Platform Layer",
+                part: "Simulation / AI Stack / Cloud",
+                risk: "high",
+                riskText: "Critical Risk",
+                china: [
+                    { name: "Huawei Ascend", tag: "leader", product: "AI Chips + MindSpore", clients: "Domestic alternative to NVIDIA", highlight: true },
+                    { name: "Baidu Paddle", tag: "leader", product: "Deep Learning Platform", clients: "Embodied AI apps" },
+                    { name: "SenseTime", tag: "leader", product: "SenseCore AI Infra", clients: "CV & Simulation" },
+                    { name: "DP Tech", tag: "leader", product: "Molecular Simulation AI", clients: "Research, Materials" }
+                ],
+                usa: [
+                    { name: "NVIDIA", tag: "giant", product: "Isaac Sim, Omniverse, Jetson", clients: "Universal standard", highlight: true },
+                    { name: "Google DeepMind", tag: "giant", product: "RT-X, Embodied AI", clients: "Research & Industry" },
+                    { name: "Microsoft", tag: "giant", product: "Azure Robotics, OpenAI", clients: "Cloud robot fleets" },
+                    { name: "Meta AI", tag: "giant", product: "PyTorch, Habitat", clients: "Research community" }
+                ],
+                eu: [
+                    { name: "Siemens", tag: "giant", product: "Process Simulate", clients: "Industrial simulation" }
+                ],
+                japan: [
+                    { name: "Mujoco", tag: "leader", product: "Physics Engine (Google)", clients: "Research, RL training" }
+                ],
+                analysis: "Platform layer represents the deepest US moat. NVIDIA's CUDA ecosystem creates 3-5 year lock-in advantage. China investing heavily in domestic alternatives but viable competition 2-3 years away at best."
+            }
+        };
+
+        // 渲染详情
+        function renderDetail(partKey) {
+            const data = supplyChainData[partKey];
+            const panel = document.getElementById('detail-panel');
+            
+            let html = `
+                <div class="detail-header">
+                    <h3>
+                        ${partKey === 'head' ? '🎯' : partKey === 'torso' ? '🧠' : partKey === 'arm' ? '💪' : partKey === 'hand' ? '✋' : partKey === 'leg' ? '🦿' : partKey === 'foot' ? '👣' : '☁️'}
+                        ${data.name}
+                        <span class="risk-badge ${data.risk}">${data.riskText}</span>
+                    </h3>
+                    <p>${data.part}</p>
+                </div>
+            `;
+            
+            // 中国供应商
+            if (data.china && data.china.length > 0) {
+                html += `
+                    <div class="supplier-section china">
+                        <h4>🇨🇳 China Suppliers</h4>
+                        <div class="supplier-list">
+                            ${data.china.map(s => `
+                                <div class="supplier-item ${s.highlight ? 'highlight' : ''}">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? 'Listed' : s.tag === 'giant' ? 'Giant' : s.tag === 'tech' ? 'Tech' : 'Leader'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">Clients: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 美国供应商
+            if (data.usa && data.usa.length > 0) {
+                html += `
+                    <div class="supplier-section usa">
+                        <h4>🇺🇸 US Suppliers</h4>
+                        <div class="supplier-list">
+                            ${data.usa.map(s => `
+                                <div class="supplier-item ${s.highlight ? 'highlight' : ''}">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? 'Listed' : s.tag === 'giant' ? 'Giant' : s.tag === 'tech' ? 'Tech' : 'Leader'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">Clients: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 欧洲供应商
+            if (data.eu && data.eu.length > 0) {
+                html += `
+                    <div class="supplier-section eu">
+                        <h4>🇪🇺 EU Suppliers</h4>
+                        <div class="supplier-list">
+                            ${data.eu.map(s => `
+                                <div class="supplier-item">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? 'Listed' : s.tag === 'giant' ? 'Giant' : s.tag === 'tech' ? 'Tech' : 'Leader'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">Clients: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 日本供应商
+            if (data.japan && data.japan.length > 0) {
+                html += `
+                    <div class="supplier-section japan">
+                        <h4>🇯🇵 Japan Suppliers</h4>
+                        <div class="supplier-list">
+                            ${data.japan.map(s => `
+                                <div class="supplier-item ${s.highlight ? 'highlight' : ''}">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? 'Listed' : s.tag === 'giant' ? 'Giant' : s.tag === 'tech' ? 'Tech' : 'Leader'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">Clients: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 风险分析
+            html += `
+                <div class="risk-analysis">
+                    <h4>⚠️ Strategic Assessment</h4>
+                    <p>${data.analysis}</p>
+                </div>
+            `;
+            
+            panel.innerHTML = html;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认选中头部
+            renderDetail('head');
+            document.querySelector('[data-part="head"]').classList.add('active');
+            document.getElementById('part-head').classList.add('active');
+            
+            // 分类列表点击
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const part = this.dataset.part;
+                    
+                    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.robot-part').forEach(p => p.classList.remove('active'));
+                    if (part !== 'platform') {
+                        document.querySelectorAll(`[data-part="${part}"]`).forEach(p => p.classList.add('active'));
+                    }
+                    
+                    renderDetail(part);
+                });
+            });
+            
+            // 机器人部位点击
+            document.querySelectorAll('.robot-part').forEach(part => {
+                part.addEventListener('click', function() {
+                    const partKey = this.dataset.part;
+                    
+                    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                    document.querySelector(`.category-item[data-part="${partKey}"]`)?.classList.add('active');
+                    
+                    document.querySelectorAll('.robot-part').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll(`[data-part="${partKey}"]`).forEach(p => p.classList.add('active'));
+                    
+                    renderDetail(partKey);
+                });
+            });
+        });
+    </script>

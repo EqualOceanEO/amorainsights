@@ -239,7 +239,11 @@ export default function SubscribeBox({
       );
     }
 
-    // Compact logged-in view
+    // Compact logged-in view — hide entirely if already subscribed
+    if (compact && newsletterSubscribed) {
+      return null;
+    }
+
     if (compact) {
       const subLabel = newsletterSubscribed ? '✓ Subscribed' : 'Subscribe';
       const subColor = newsletterSubscribed ? 'text-green-400 bg-green-600/10 border-green-600/20' : 'text-white bg-blue-600 hover:bg-blue-500';
