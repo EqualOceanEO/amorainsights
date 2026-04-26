@@ -1,715 +1,1966 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Humanoid Robot Index 2026 - Part A2: Capital Assets & Valuation</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a0a 50%, #0a1a1a 100%);
-            min-height: 100vh; color: #fff;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMORA HRI 2026 - assets</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #05080f;
+    --bg2: #0a1020;
+    --bg3: #0f1830;
+    --card: #0d1a2d;
+    --card2: #111e38;
+    --accent: #00c8ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e2eaf4;
+    --text2: #8899bb;
+    --text3: #4a5d7a;
+    --green: #10b981;
+    --red: #ef4444;
+    --border: rgba(0,200,255,0.12);
+    --glow: rgba(0,200,255,0.15);
+    --glow2: rgba(124,58,237,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
 
-        .report-header {
-            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px;
-            margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
-        }
-        .report-header::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-            background: linear-gradient(180deg, #00ff88, #00d4ff, #9775fa);
-        }
-        .part-badge {
-            display: inline-block; background: linear-gradient(90deg, #00ff88, #9775fa);
-            padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
-            letter-spacing: 1px; margin-bottom: 16px;
-        }
-        .report-title {
-            font-size: 32px; font-weight: 800; margin-bottom: 12px;
-            background: linear-gradient(90deg, #fff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .report-subtitle { font-size: 16px; color: #888; margin-bottom: 24px; }
-        .report-meta { display: flex; gap: 30px; flex-wrap: wrap; }
-        .meta-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #666; }
-        .meta-item span { color: #fff; font-weight: 600; }
+  /* ===== NAVIGATION ===== */
+  #nav {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 220px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px 0;
+    transition: transform 0.3s;
+  }
+  #nav::-webkit-scrollbar { width: 4px; }
+  #nav::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+  .nav-logo {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-align: center;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .nav-logo span { color: var(--text2); font-weight: 400; font-size: 11px; letter-spacing: 1px; display: block; margin-top: 4px; }
+  .nav-section { padding: 0 12px; margin-bottom: 6px; }
+  .nav-section-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    padding: 8px 8px 4px;
+    text-transform: uppercase;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .nav-item:hover, .nav-item.active {
+    background: var(--glow);
+    color: var(--accent);
+  }
+  .nav-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text3);
+    flex-shrink: 0;
+  }
+  .nav-item.active .dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 
-        .key-findings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        .finding-card {
-            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px;
-            border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease;
-        }
-        .finding-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
-        .finding-number {
-            font-size: 36px; font-weight: 800; margin-bottom: 8px;
-            background: linear-gradient(90deg, #00ff88, #9775fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .finding-label { font-size: 13px; color: #888; line-height: 1.5; }
+  /* ===== MAIN CONTENT ===== */
+  #main {
+    margin-left: 220px;
+    min-height: 100vh;
+  }
 
-        .section-card {
-            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px;
-        }
-        .section-title {
-            font-size: 20px; font-weight: 700; margin-bottom: 8px;
-            display: flex; align-items: center; gap: 12px;
-        }
-        .section-subtitle { font-size: 14px; color: #888; margin-bottom: 24px; }
+  /* ===== HERO ===== */
+  #hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,200,255,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(124,58,237,0.08) 0%, transparent 60%),
+      var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    background: var(--glow);
+  }
+  .hero-badge .pulse {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .hero-title {
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero-title .gradient {
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text2);
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .val {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+  }
+  .hero-stat .label {
+    font-size: 12px;
+    color: var(--text2);
+    letter-spacing: 1px;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text3);
+    font-size: 11px;
+    letter-spacing: 2px;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+  .hero-scroll-arrow {
+    width: 20px; height: 20px;
+    border-right: 2px solid var(--text3);
+    border-bottom: 2px solid var(--text3);
+    transform: rotate(45deg);
+  }
 
-        /* Financial Comparison Table */
-        .fin-table {
-            width: 100%; border-collapse: collapse;
-        }
-        .fin-table th, .fin-table td {
-            padding: 12px 14px; text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-        .fin-table th {
-            font-size: 11px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .fin-table th:first-child, .fin-table td:first-child {
-            text-align: left;
-        }
-        .fin-table td { font-size: 13px; }
-        .fin-table .company-cell {
-            display: flex; align-items: center; gap: 8px;
-        }
-        .fin-table .flag { font-size: 16px; }
-        .fin-table .company-name { font-weight: 700; font-size: 13px; }
-        .fin-table .company-tag {
-            display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700;
-        }
-        .fin-table .tag-ipo { background: rgba(0,255,136,0.15); color: #00ff88; }
-        .fin-table .tag-listed { background: rgba(0,212,255,0.15); color: #00d4ff; }
-        .fin-table .tag-pre { background: rgba(255,190,11,0.15); color: #ffbe0b; }
-        .fin-table .tag-loss { background: rgba(255,0,110,0.15); color: #ff006e; }
-        .val-green { color: #00ff88; font-weight: 700; }
-        .val-red { color: #ff6b6b; font-weight: 700; }
-        .val-amber { color: #ffbe0b; font-weight: 700; }
-        .val-blue { color: #00d4ff; font-weight: 700; }
-        .val-purple { color: #9775fa; font-weight: 700; }
-        .highlight-row { background: rgba(0,255,136,0.05); }
-        .highlight-row td { border-bottom-color: rgba(0,255,136,0.1) !important; }
+  /* ===== SECTIONS ===== */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  section:nth-child(even) {
+    background: var(--bg2);
+  }
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  h1 .highlight {
+    color: var(--accent);
+  }
+  h2 {
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    letter-spacing: 1px;
+    margin: 20px 0 10px;
+    text-transform: uppercase;
+  }
+  .section-intro {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 700px;
+    margin-bottom: 48px;
+    line-height: 1.8;
+  }
 
-        /* Valuation Matrix */
-        .valuation-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-        }
-        .quadrant {
-            background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .quadrant h4 { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #888; }
-        .quadrant-item {
-            display: flex; align-items: center; gap: 10px; padding: 8px;
-            background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 6px;
-        }
-        .quadrant-item .emoji { font-size: 18px; }
-        .quadrant-item .name { font-size: 13px; font-weight: 600; flex: 1; }
-        .quadrant-item .score { font-size: 12px; font-weight: 700; }
-        .quadrant-item .note { font-size: 11px; color: #666; }
-        .quadrant.high-early { border-color: rgba(255,0,110,0.2); }
-        .quadrant.high-early h4 { color: #ff006e; }
-        .quadrant.high-mature { border-color: rgba(0,255,136,0.2); }
-        .quadrant.high-mature h4 { color: #00ff88; }
-        .quadrant.low-early { border-color: rgba(255,190,11,0.2); }
-        .quadrant.low-early h4 { color: #ffbe0b; }
-        .quadrant.low-mature { border-color: rgba(0,212,255,0.2); }
-        .quadrant.low-mature h4 { color: #00d4ff; }
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .card-sm {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .card-sm:hover {
+    border-color: rgba(0,200,255,0.3);
+    box-shadow: 0 0 20px var(--glow);
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .card-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .tag-us { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .tag-cn { background: rgba(239,68,68,0.15); color: #f87171; }
+  .tag-eu { background: rgba(16,185,129,0.15); color: #34d399; }
+  .tag-pro { background: rgba(124,58,237,0.15); color: #a78bfa; }
+  .tag-free { background: rgba(0,200,255,0.12); color: var(--accent); }
 
-        /* Funding Timeline */
-        .funding-timeline {
-            display: flex; flex-direction: column; gap: 12px;
-        }
-        .funding-item {
-            display: flex; align-items: center; gap: 16px;
-            background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px 16px;
-            border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;
-        }
-        .funding-item:hover { background: rgba(255,255,255,0.06); }
-        .funding-company { font-size: 14px; font-weight: 700; min-width: 120px; }
-        .funding-date { font-size: 12px; color: #888; min-width: 60px; }
-        .funding-round {
-            display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
-            min-width: 50px; text-align: center;
-        }
-        .round-a { background: rgba(0,212,255,0.15); color: #00d4ff; }
-        .round-b { background: rgba(0,255,136,0.15); color: #00ff88; }
-        .round-ipo { background: rgba(255,190,11,0.15); color: #ffbe0b; }
-        .round-pre { background: rgba(161,121,255,0.15); color: #9775fa; }
-        .funding-amount { font-size: 18px; font-weight: 800; margin-left: auto; }
-        .funding-amount.cn { color: #ff6b6b; }
-        .funding-amount.us { color: #4dabf7; }
+  /* ===== TABLES ===== */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 700px;
+  }
+  thead { background: var(--bg3); }
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text2);
+    text-transform: uppercase;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(0,200,255,0.03); }
+  .num { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; }
+  .score-high { color: var(--green); font-weight: 700; }
+  .score-mid { color: var(--accent); }
+  .score-low { color: var(--red); }
+  .center { text-align: center; }
+  .caption { font-size: 12px; color: var(--text3); margin: 8px 0 16px; }
+  .note { font-size: 12px; color: var(--text3); margin: 8px 0 20px; padding: 12px 16px; background: var(--bg3); border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; }
 
-        /* Score Grid */
-        .score-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-        }
-        .score-card {
-            background: rgba(255,255,255,0.03); border-radius: 16px; padding: 16px;
-            border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;
-        }
-        .score-card:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
-        .score-card-header {
-            display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
-        }
-        .score-card .flag { font-size: 18px; }
-        .score-card .name { font-size: 14px; font-weight: 700; flex: 1; }
-        .score-card .overall { font-size: 22px; font-weight: 800; }
-        .score-bar-row {
-            display: flex; align-items: center; gap: 8px; margin-bottom: 5px;
-        }
-        .score-bar-label { font-size: 10px; color: #666; width: 20px; }
-        .score-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
-        .score-bar-fill { height: 100%; border-radius: 3px; }
-        .score-bar-val { font-size: 11px; font-weight: 700; width: 24px; text-align: right; }
+  /* ===== CALLOUT ===== */
+  .callout {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border-left: 4px solid;
+  }
+  .callout-blue { background: rgba(0,200,255,0.06); border-color: var(--accent); }
+  .callout-purple { background: rgba(124,58,237,0.06); border-color: var(--accent2); }
+  .callout-amber { background: rgba(245,158,11,0.06); border-color: var(--accent3); }
+  .callout p { font-size: 14px; color: var(--text2); margin: 6px 0; }
 
-        /* Investment recommendations */
-        .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .rec-card {
-            background: rgba(255,255,255,0.03); border-radius: 16px; padding: 20px;
-            border: 2px solid; transition: all 0.2s;
-        }
-        .rec-card:hover { background: rgba(255,255,255,0.06); }
-        .rec-card.gold { border-color: rgba(255,190,11,0.4); }
-        .rec-card.silver { border-color: rgba(0,212,255,0.4); }
-        .rec-card.bronze { border-color: rgba(255,107,107,0.4); }
-        .rec-badge { font-size: 32px; margin-bottom: 12px; }
-        .rec-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-        .rec-card.gold .rec-title { color: #ffbe0b; }
-        .rec-card.silver .rec-title { color: #00d4ff; }
-        .rec-card.bronze .rec-title { color: #ff6b6b; }
-        .rec-players { font-size: 13px; color: #aaa; margin-bottom: 12px; }
-        .rec-logic { font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .rec-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-        .rec-tag {
-            display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
-            background: rgba(255,255,255,0.05); color: #888;
-        }
-        .rec-tag.risk { background: rgba(255,0,110,0.1); color: #ff006e; }
-        .rec-tag.op { background: rgba(0,255,136,0.1); color: #00ff88; }
+  /* ===== BADGES ===== */
+  .badge-new { display: inline-block; background: var(--accent2); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  .badge-free { background: var(--accent); color: var(--bg); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
 
-        .report-footer {
-            background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1); text-align: center; margin-bottom: 24px;
-        }
-        .footer-logo { font-size: 18px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(90deg, #00ff88, #9775fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .footer-text { font-size: 13px; color: #666; }
+  /* ===== CHARTS ===== */
+  .chart-container {
+    position: relative;
+    margin: 30px 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .chart-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .chart-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .chart-desc {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+  canvas { max-width: 100%; }
 
-        @media (max-width: 1200px) {
-            .valuation-grid, .rec-grid, .score-grid { grid-template-columns: 1fr; }
-            .key-findings { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .report-title { font-size: 24px; }
-            .key-findings { grid-template-columns: 1fr; }
-        }
-    </style>
+  /* ===== MAPPING INTERACTIVE LAYOUT v2 ===== */
+  .mapping-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .mapping-kpi {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .mapping-kpi:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--glow);
+  }
+  .mapping-kpi .kpi-val {
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .mapping-kpi .kpi-label {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+  
+  .mapping-interactive {
+    display: grid;
+    grid-template-columns: 280px 1fr 360px;
+    gap: 24px;
+    margin: 24px 0;
+    min-height: 600px;
+  }
+  
+  /* Left: Components Panel */
+  .components-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 700px;
+  }
+  .components-panel h4 {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .component-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+  }
+  .component-item:hover {
+    background: var(--bg3);
+  }
+  .component-item.active {
+    background: var(--bg3);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--glow);
+  }
+  .component-item .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .component-item .info {
+    flex: 1;
+    min-width: 0;
+  }
+  .component-item .name {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .component-item .count {
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .component-item .arrow {
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: var(--accent);
+  }
+  .component-item.active .arrow {
+    opacity: 1;
+  }
+  
+  /* Center: Robot SVG */
+  .robot-center {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .robot-center::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, var(--glow2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .robot-center h4 {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .robot-svg-container {
+    position: relative;
+    z-index: 1;
+  }
+  .robot-part {
+    cursor: pointer;
+    transition: all 0.3s;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  .robot-part:hover, .robot-part.highlighted {
+    filter: drop-shadow(0 0 15px var(--accent));
+  }
+  .robot-part.highlighted path,
+  .robot-part.highlighted rect,
+  .robot-part.highlighted circle {
+    stroke: var(--accent) !important;
+    stroke-width: 2 !important;
+  }
+  .robot-hint {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Right: Details Panel */
+  .details-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 700px;
+  }
+  .details-panel h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .details-panel .subtitle {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+  .supplier-section {
+    margin-bottom: 16px;
+  }
+  .supplier-section-title {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .supplier-card {
+    background: var(--bg3);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .supplier-card:hover {
+    border-color: var(--border);
+  }
+  .supplier-card .name {
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .supplier-card .detail {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+  .supplier-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .sup-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .sup-tag.us { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .sup-tag.cn { background: rgba(239,68,68,0.15); color: #f87171; }
+  .sup-tag.eu { background: rgba(16,185,129,0.15); color: #34d399; }
+  .sup-tag.pub { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .sup-tag.risk { background: rgba(239,68,68,0.15); color: #f87171; }
+  .sup-tag.safe { background: rgba(16,185,129,0.15); color: #34d399; }
+  .sup-tag.tech { background: rgba(124,58,237,0.15); color: #a78bfa; }
+  
+  /* China vs US Comparison */
+  .cn-us-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .compare-col {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .compare-col h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .compare-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+  }
+  .compare-item:last-child { border-bottom: none; }
+  .compare-item .label { color: var(--text2); }
+  .compare-item .val { font-weight: 600; }
+  .compare-item .val.green { color: var(--green); }
+  .compare-item .val.red { color: var(--red); }
+  .compare-item .val.amber { color: var(--accent3); }
+
+  /* ===== PREMIUM PAYWALL ===== */
+  .paywall-overlay {
+    position: relative;
+    max-height: 400px;
+    overflow: hidden;
+  }
+  .paywall-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background: linear-gradient(to bottom, transparent 0%, var(--bg) 60%);
+    pointer-events: none;
+  }
+  .paywall-box {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: var(--card);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    padding: 32px 40px;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(0,200,255,0.3), 0 20px 40px rgba(0,0,0,0.5);
+    min-width: 400px;
+  }
+  .paywall-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+  .paywall-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .paywall-desc {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .paywall-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .paywall-feature {
+    background: var(--bg3);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .paywall-cta {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px 40px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(0,200,255,0.4);
+  }
+  .paywall-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,200,255,0.5);
+  }
+  .paywall-price {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text3);
+  }
+  .paywall-price strong {
+    color: var(--accent);
+    font-size: 18px;
+  }
+  .section-pro-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== SUPPLY CHAIN DIAGRAM ===== */
+  #supply-chain {
+    position: relative;
+    margin: 30px 0;
+  }
+  .sc-layer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .sc-layer-label {
+    min-width: 80px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent);
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .sc-items {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .sc-item, .roi-node, .tech-node {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .roi-node {
+    background: var(--card);
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 140px;
+    border-radius: 12px;
+  }
+  .tech-node {
+    background: var(--card2);
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 120px;
+    border-radius: 12px;
+  }
+  .sc-item { padding: 10px 16px; }
+  .sc-item:hover {
+    border-color: var(--accent);
+    background: rgba(0,200,255,0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--glow);
+  }
+  .sc-item .flag {
+    font-size: 14px;
+    margin-right: 6px;
+  }
+  .sc-item .sub {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 100;
+    color: var(--text2);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+  .sc-item:hover .sub { display: block; }
+  .sc-arrow {
+    text-align: center;
+    color: var(--text3);
+    font-size: 20px;
+    margin: 4px 0 20px 80px;
+    letter-spacing: -4px;
+  }
+
+  /* ===== WORLD MAP ===== */
+  #world-map-container {
+    position: relative;
+    margin: 30px 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    overflow: hidden;
+  }
+  .map-legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .map-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-us { background: #3b82f6; }
+  .dot-cn { background: #ef4444; }
+  .dot-eu { background: #10b981; }
+  .dot-jp { background: #f59e0b; }
+  .dot-other { background: #8b5cf6; }
+  #world-map {
+    width: 100%;
+    height: 500px;
+    background: var(--bg2);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  #world-map svg { width: 100%; height: 100%; }
+  .map-marker {
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s;
+  }
+  .map-marker:hover { transform: translate(-50%, -50%) scale(1.15); z-index: 10; }
+  .map-marker .pin {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  }
+  .map-marker .pin-us { background: #3b82f6; }
+  .map-marker .pin-cn { background: #ef4444; }
+  .map-marker .pin-eu { background: #10b981; }
+  .map-marker .pin-jp { background: #f59e0b; }
+  .map-marker .pin-other { background: #8b5cf6; }
+  .map-marker .label {
+    font-size: 11px;
+    color: #fff;
+    background: rgba(0,0,0,0.75);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .map-marker:hover .label { opacity: 1; }
+  .map-marker .tooltip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 12px;
+    color: var(--text2);
+    white-space: nowrap;
+    z-index: 200;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    line-height: 1.7;
+  }
+  .map-marker:hover .tooltip { display: block; }
+  .map-marker .tooltip strong { color: var(--text); font-size: 13px; }
+  .map-marker .tooltip .type { font-size: 10px; color: var(--accent); letter-spacing: 1px; margin-top: 2px; display: block; }
+
+  /* ===== TECH TIMELINE ===== */
+  .tech-timeline {
+    position: relative;
+    margin: 30px 0;
+    padding-left: 30px;
+  }
+  .tech-timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding-left: 30px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+    z-index: 1;
+  }
+  .timeline-item.active::before {
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .timeline-year {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .timeline-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .timeline-desc { font-size: 13px; color: var(--text2); }
+  .timeline-tag {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+  }
+
+  /* ===== TECH DIAGRAM ===== */
+  .tech-diagram {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 24px 0;
+  }
+  .tech-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 24px 0;
+  }
+  .tech-node {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 120px;
+    transition: all 0.2s;
+  }
+  .tech-node:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--glow);
+  }
+  .tech-node .icon { font-size: 28px; margin-bottom: 8px; }
+  .tech-node .name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .tech-node .desc { font-size: 11px; color: var(--text2); }
+  .tech-arrow {
+    color: var(--accent);
+    font-size: 24px;
+    padding: 0 8px;
+  }
+  .tech-node.core {
+    border-color: var(--accent2);
+    background: rgba(124,58,237,0.08);
+  }
+  .tech-node.core .name { color: var(--accent2); }
+
+  /* ===== SCENARIO CARDS ===== */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .scenario-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .scenario-card:hover {
+    border-color: rgba(0,200,255,0.3);
+    box-shadow: 0 8px 40px var(--glow);
+    transform: translateY(-4px);
+  }
+  .scenario-img {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    position: relative;
+  }
+  .scenario-img.factory { background: linear-gradient(135deg, #1a2a1a, #0d1a0d); }
+  .scenario-img.warehouse { background: linear-gradient(135deg, #1a1a2e, #0d0d1a); }
+  .scenario-img.home { background: linear-gradient(135deg, #2a1a1a, #1a0d0d); }
+  .scenario-img.outdoor { background: linear-gradient(135deg, #1a2a2a, #0d1a1a); }
+  .scenario-img.medical { background: linear-gradient(135deg, #2a1a2a, #1a0d1a); }
+  .scenario-img.mine { background: linear-gradient(135deg, #2a2a1a, #1a1a0d); }
+  .scenario-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .badge-early { background: rgba(245,158,11,0.2); color: #f59e0b; }
+  .badge-scaling { background: rgba(16,185,129,0.2); color: #34d399; }
+  .badge-future { background: rgba(124,58,237,0.2); color: #a78bfa; }
+  .scenario-body { padding: 20px; }
+  .scenario-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .scenario-stat {
+    display: flex;
+    gap: 16px;
+    margin: 10px 0;
+  }
+  .scenario-stat-item .val { font-size: 20px; font-weight: 900; color: var(--accent); }
+  .scenario-stat-item .lbl { font-size: 11px; color: var(--text3); }
+  .scenario-desc { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+  /* ===== RADAR CHART ===== */
+  .radar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .radar-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .radar-header { margin-bottom: 16px; }
+  .radar-header .tag { margin-bottom: 6px; }
+  .radar-header .title { font-size: 16px; font-weight: 700; }
+  .radar-header .score { font-size: 28px; font-weight: 900; color: var(--accent); margin-top: 4px; }
+  .radar-header .score span { font-size: 14px; color: var(--text2); font-weight: 400; }
+  .radar-wrap { position: relative; height: 280px; }
+
+  /* ===== AMORA SCORE BIG TABLE ===== */
+  .score-table-section { margin: 30px 0; }
+  .score-table-section table { min-width: 900px; }
+  .score-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .score-bar-bg { flex: 1; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 3px; transition: width 1s ease; }
+  .bar-us { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .bar-cn { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .bar-eu { background: linear-gradient(90deg, #10b981, #34d399); }
+  .bar-jp { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+  /* ===== MARKET FORECAST CHART ===== */
+  .market-chart-wrap { margin: 24px 0; }
+  #marketBarChart, #marketLineChart { height: 320px; }
+
+  /* ===== ROI CARD ===== */
+  .roi-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 24px 0;
+  }
+  .roi-node {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .roi-node .val { font-size: 22px; font-weight: 900; color: var(--accent); }
+  .roi-node .lbl { font-size: 12px; color: var(--text2); margin-top: 4px; }
+  .roi-node .sub { font-size: 11px; color: var(--text3); }
+  .roi-arrow { color: var(--accent); font-size: 20px; padding: 0 8px; }
+
+  /* ===== EDITORIAL ===== */
+  .editorial {
+    background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(0,200,255,0.05));
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 20px;
+    padding: 40px 48px;
+    margin: 60px 0;
+    position: relative;
+  }
+  .editorial::before {
+    content: '"';
+    position: absolute;
+    top: 10px; left: 24px;
+    font-size: 80px;
+    color: rgba(124,58,237,0.2);
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .editorial-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .editorial-text {
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  /* ===== SCROLL ANIMATIONS ===== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    #nav { transform: translateX(-100%); }
+    #nav.open { transform: translateX(0); }
+    #main { margin-left: 0; }
+    .chart-row, .radar-grid { grid-template-columns: 1fr; }
+    .hero-meta { gap: 20px; flex-wrap: wrap; justify-content: center; }
+    section { padding: 60px 24px; }
+  }
+
+  /* ===== MOBILE MENU ===== */
+  #menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px; left: 16px;
+    z-index: 1001;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--accent);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    #menu-toggle { display: block; }
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--text3);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ===== MARKET SIZE CHART ===== */
+  .market-split {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .market-split canvas { height: 280px !important; }
+  .market-kpi {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-content: start;
+  }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .kpi-card .val { font-size: 28px; font-weight: 900; color: var(--accent); }
+  .kpi-card .lbl { font-size: 12px; color: var(--text2); margin-top: 4px; }
+  .kpi-card .change { font-size: 12px; color: var(--green); margin-top: 4px; }
+
+</style>
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ===== NAVIGATION =====
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  if (window.innerWidth <= 900) {
+    document.getElementById('nav').classList.remove('open');
+  }
+}
+
+// Active nav on scroll
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (s.getBoundingClientRect().top <= 120) current = s.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+  });
+});
+
+// ===== COMPONENT SELECTOR FOR MAPPING =====
+const componentData = {
+  actuator: {
+    title: '⚙️ 伺服驱动系统',
+    subtitle: '人形机器人运动控制核心，国产化率约65%',
+    us: [
+      { name: '特斯拉', tags: ['us', 'pub'], detail: '自研伺服系统，Optimus专用', badges: ['tech', 'safe'] },
+      { name: 'Kollmorgen', tags: ['us'], detail: '德信可靠，工业级伺服', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '汇川技术', tags: ['cn', 'pub'], detail: '变频器龙头，伺服国内第一', badges: ['pub', 'safe'] },
+      { name: '步科', tags: ['cn', 'pub'], detail: '人形机器人主力供应商', badges: ['pub'] },
+      { name: '清能德创', tags: ['cn'], detail: '伺服驱动器，国产替代', badges: ['safe'] }
+    ],
+    barrier: '低 — 国产汇川/步科已接近国际水准',
+    barrierLevel: 'low'
+  },
+  harmonic: {
+    title: '🔄 谐波减速器',
+    subtitle: '机器人关节核心，国产化率约70%',
+    us: [
+      { name: '哈默纳科', tags: ['us'], detail: '全球主导，占60%市场份额', badges: ['tech'] },
+      { name: '花洲（Teijin）', tags: ['us'], detail: '日系替代方案', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '绿的谐波', tags: ['cn', 'pub'], detail: 'A股上市，精度达国际水准', badges: ['pub', 'safe'] },
+      { name: '来福谐波', tags: ['cn'], detail: '国产第二梯队', badges: ['safe'] },
+      { name: '大族传动', tags: ['cn'], detail: '大族激光子公司', badges: [] }
+    ],
+    barrier: '中 — 绿的谐波已量产，追赶哈默纳科',
+    barrierLevel: 'mid'
+  },
+  torque: {
+    title: '🔧 力矩电机',
+    subtitle: '无框力矩电机，国产化率约60%',
+    us: [
+      { name: 'Kollmorgen', tags: ['us'], detail: '全球领先，力矩密度高', badges: ['tech'] },
+      { name: '科尔摩根', tags: ['us'], detail: '无框电机工业级方案', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '步科', tags: ['cn', 'pub'], detail: '人形机器人主力供应商', badges: ['pub'] },
+      { name: '清能德创', tags: ['cn'], detail: '国产替代，性价比高', badges: ['safe'] },
+      { name: '雷赛智能', tags: ['cn', 'pub'], detail: 'A股上市，运动控制', badges: ['pub'] }
+    ],
+    barrier: '低 — 国产化率高，差距小',
+    barrierLevel: 'low'
+  },
+  sensor: {
+    title: '👁️ 力觉传感器',
+    subtitle: '六维力传感器，国产化率约50%',
+    us: [
+      { name: 'ATI Industrial', tags: ['us'], detail: '工业级全球主导', badges: ['tech'] },
+      { name: 'Bota Systems', tags: ['us'], detail: '协作机器人传感器', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '坤维传感', tags: ['cn'], detail: '人形机器人核心供应商', badges: ['tech'] },
+      { name: '海伯森', tags: ['cn'], detail: '六维力传感器国产', badges: ['safe'] },
+      { name: '敏芯股份', tags: ['cn', 'pub'], detail: '科创板，MEMS传感器', badges: ['pub'] }
+    ],
+    barrier: '中 — 国产追赶到中高端',
+    barrierLevel: 'mid'
+  },
+  tactile: {
+    title: '✋ 触觉传感器',
+    subtitle: '灵巧手核心，国产化率<10%（卡脖子）',
+    us: [
+      { name: 'Tactile Sensors', tags: ['us'], detail: '主导全球市场', badges: ['tech', 'risk'] },
+      { name: 'Weiss Robotics', tags: ['us'], detail: '德国工业触觉标杆', badges: ['tech', 'risk'] }
+    ],
+    cn: [
+      { name: '几乎没有', tags: ['cn'], detail: '国产极度弱势', badges: ['risk'] },
+      { name: '少量研究机构', tags: ['cn'], detail: '实验室阶段', badges: [] }
+    ],
+    barrier: '高 — 国产化率<10%，最大卡脖子环节',
+    barrierLevel: 'high'
+  },
+  ai: {
+    title: '🧠 AI芯片/计算',
+    subtitle: '人形机器人大脑，国产化率约20%',
+    us: [
+      { name: '英伟达', tags: ['us', 'pub'], detail: '人形机器人AI训练+推理垄断', badges: ['tech', 'risk'] },
+      { name: '特斯拉', tags: ['us', 'pub'], detail: '自研FSD芯片，Optimus专用', badges: ['tech'] },
+      { name: '高通/AMD', tags: ['us'], detail: '嵌入式边缘计算', badges: [] }
+    ],
+    cn: [
+      { name: '地平线', tags: ['cn', 'pub'], detail: '国产AI芯片龙头', badges: ['pub', 'risk'] },
+      { name: '华为昇腾', tags: ['cn'], detail: '昇腾910，算力追赶', badges: ['tech', 'risk'] },
+      { name: '寒武纪', tags: ['cn', 'pub'], detail: '科创板，AI芯片', badges: ['pub'] }
+    ],
+    barrier: '高 — AI芯片受制裁，国产替代艰难',
+    barrierLevel: 'high'
+  },
+  hand: {
+    title: '🤚 灵巧手/微型减速器',
+    subtitle: '灵巧手核心零部件，国产化率约30%',
+    us: [
+      { name: 'SCHUNK', tags: ['us'], detail: '德国工业灵巧手垄断', badges: ['tech', 'risk'] },
+      { name: 'Weiss Robotics', tags: ['us'], detail: '协作机器人末端专家', badges: ['tech', 'risk'] }
+    ],
+    cn: [
+      { name: '因时机器人', tags: ['cn'], detail: '国产灵巧手供应商', badges: ['safe'] },
+      { name: '兆威机电', tags: ['cn', 'pub'], detail: 'A股，微型传动', badges: ['pub'] },
+      { name: '秦川机床', tags: ['cn', 'pub'], detail: 'A股，丝杠国产化', badges: ['pub'] }
+    ],
+    barrier: '高 — 微型精密减速器差距大',
+    barrierLevel: 'high'
+  }
+};
+
+function selectComponent(part) {
+  const data = componentData[part];
+  if (!data) return;
+  
+  // Update left panel
+  document.querySelectorAll('.component-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.part === part) item.classList.add('active');
+  });
+  
+  // Update robot SVG highlight
+  document.querySelectorAll('.robot-part').forEach(partEl => {
+    partEl.classList.remove('highlighted');
+    if (partEl.dataset.part === part) partEl.classList.add('highlighted');
+  });
+  
+  // Update details panel
+  const barrierColors = { low: 'var(--green)', mid: 'var(--accent3)', high: 'var(--red)' };
+  const barrierText = { low: '低', mid: '中', high: '高' };
+  
+  let html = `
+    <h4>${data.title}</h4>
+    <p class="subtitle">${data.subtitle}</p>
+    
+    <div class="supplier-section">
+      <div class="supplier-section-title">🇺🇸 美国供应商</div>
+  `;
+  
+  data.us.forEach(sup => {
+    html += `
+      <div class="supplier-card">
+        <div class="name">${sup.name} ${sup.tags.filter(t => ['us', 'pub'].includes(t)).map(t => `<span class="sup-tag ${t}">${t === 'pub' ? '上市公司' : ''}</span>`).join('')}</div>
+        <div class="detail">${sup.detail}</div>
+        <div class="tags">${sup.badges.map(b => `<span class="sup-tag ${b}">${b === 'tech' ? '技术领先' : b === 'safe' ? '成熟稳定' : b === 'risk' ? '进口依赖' : ''}</span>`).join('')}</div>
+      </div>
+    `;
+  });
+  
+  html += `</div><div class="supplier-section"><div class="supplier-section-title">🇨🇳 中国供应商</div>`;
+  
+  data.cn.forEach(sup => {
+    html += `
+      <div class="supplier-card">
+        <div class="name">${sup.name} ${sup.tags.filter(t => ['cn', 'pub'].includes(t)).map(t => `<span class="sup-tag ${t}">${t === 'pub' ? 'A股' : ''}</span>`).join('')}</div>
+        <div class="detail">${sup.detail}</div>
+        <div class="tags">${sup.badges.map(b => `<span class="sup-tag ${b}">${b === 'tech' ? '技术领先' : b === 'safe' ? '成熟稳定' : b === 'risk' ? '受制' : ''}</span>`).join('')}</div>
+      </div>
+    `;
+  });
+  
+  html += `
+    </div>
+    <div class="callout callout-blue" style="margin-top:12px;">
+      <p style="font-size:12px;"><strong>壁垒等级：</strong><span style="color:${barrierColors[data.barrierLevel]};">${barrierText[data.barrierLevel]}</span> — ${data.barrier}</p>
+    </div>
+  `;
+  
+  document.getElementById('details-panel').innerHTML = html;
+}
+
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ===== CHART.JS DEFAULTS =====
+Chart.defaults.color = '#8899bb';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'PingFang SC','Microsoft YaHei',sans-serif";
+
+const radarOptions = {
+  plugins: { legend: { display: false }, tooltip: { enabled: true } },
+  scales: {
+    r: {
+      min: 0, max: 100,
+      ticks: { stepSize: 20, font: { size: 10 }, color: '#4a5d7a', backdropColor: 'transparent' },
+      grid: { color: 'rgba(255,255,255,0.06)' },
+      pointLabels: { font: { size: 11, weight: 'bold' }, color: '#e2eaf4' },
+      angleLines: { color: 'rgba(255,255,255,0.06)' }
+    }
+  },
+  animation: { duration: 1200, easing: 'easeOutQuart' }
+};
+
+// ===== RADAR CHARTS =====
+function buildRadar(canvasId, scores, color, bgColor) {
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Advancement', 'Mastery', 'Operations', 'Reach', 'Affinity'],
+      datasets: [{
+        data: scores,
+        backgroundColor: bgColor,
+        borderColor: color,
+        borderWidth: 2,
+        pointBackgroundColor: color,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: radarOptions
+  });
+}
+
+buildRadar('radarFigure',   [72, 58, 68, 70, 68], '#3b82f6', 'rgba(59,130,246,0.12)');
+buildRadar('radarUnitree',  [55, 68, 65, 58, 52], '#ef4444', 'rgba(239,68,68,0.12)');
+buildRadar('radarZhiyuan',  [52, 62, 52, 50, 52], '#f59e0b', 'rgba(245,158,11,0.12)');
+buildRadar('radar1X',       [65, 35, 30, 40, 60], '#10b981', 'rgba(16,185,129,0.12)');
+
+// ===== COST PIE CHART =====
+const costCtx = document.getElementById('costPieChart').getContext('2d');
+new Chart(costCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['灵巧手+微型减速器', '芯片+计算平台', '谐波减速器', '丝杠+线性执行器', '伺服驱动+电机', '传感器', '结构件', '电池+其他'],
+    datasets: [{
+      data: [17, 15, 14, 13, 12, 10, 9, 10],
+      backgroundColor: ['#ef4444','#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#64748b','#475569'],
+      borderWidth: 0,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    cutout: '55%',
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { font: { size: 11 }, padding: 8, color: '#e2eaf4', boxWidth: 12 }
+      },
+      tooltip: {
+        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` }
+      }
+    },
+    animation: { duration: 1200 }
+  }
+});
+
+// ===== BARRIER BAR CHART =====
+const barrierCtx = document.getElementById('barrierChart').getContext('2d');
+new Chart(barrierCtx, {
+  type: 'bar',
+  data: {
+    labels: ['触觉传感器', '灵巧手微减速', '丝杠', '微型谐波', '六维力传感', '无框电机', '谐波减速', '结构件'],
+    datasets: [{
+      label: '卡脖子指数（越高越依赖进口）',
+      data: [95, 85, 70, 65, 55, 40, 25, 5],
+      backgroundColor: ctx => {
+        const v = ctx.parsed.y;
+        if (v >= 80) return 'rgba(239,68,68,0.7)';
+        if (v >= 50) return 'rgba(245,158,11,0.7)';
+        return 'rgba(16,185,129,0.7)';
+      },
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { max: 100, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#e2eaf4' } }
+    },
+    animation: { duration: 1000 }
+  }
+});
+
+// ===== MARKET BAR CHART =====
 </head>
 <body>
-<div class="container">
-
-    <div class="report-header">
-        <div class="part-badge">PART A2: CAPITAL ASSETS & VALUATION</div>
-        <h1 class="report-title">The Profitability Test: Who Can Actually Make Money?</h1>
-        <p class="report-subtitle">资本价值：财务对比 · 估值矩阵 · 融资动态 · 投资建议</p>
-        <div class="report-meta">
-            <div class="meta-item"><span>¥17亿</span> Unitree 2025E Revenue</div>
-            <div class="meta-item"><span>60.3%</span> Unitree Gross Margin</div>
-            <div class="meta-item"><span>¥6亿</span> Unitree Net Profit</div>
-            <div class="meta-item"><span>26亿美元</span> Figure AI Valuation</div>
-        </div>
+<section id="assets">
+  <div class="section-tag">Part A₂ · Assets</div>
+  <h1>资本价值与投资分析 <span class="highlight">— AMORA Score五维评分</span></h1>
+  <p class="section-intro">AMORA Score从五个维度评估公司：Advancement（技术）· Mastery（运营）· Operations（商业化）· Reach（市场）· Affinity（资本与战略）。满分100分。</p>  <!-- RADAR CHARTS -->
+  <h3>🕸️ 重点公司AMORA五维雷达图对比</h3>
+  <div class="radar-grid fade-up">
+    <div class="radar-card">
+      <div class="radar-header">
+        <div class="tag"><span class="tag tag-us">🇺🇸 美国</span></div>
+        <div class="title">Figure AI</div>
+        <div class="score">67<span> / 100</span></div>
+      </div>
+      <div class="chart-label" style="margin-bottom:8px;">Advancement · Mastery · Operations · Reach · Affinity</div>
+      <div class="radar-wrap">
+        <canvas id="radarFigure"></canvas>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-top:8px;">
+        Helix VLA端到端架构技术领先，资本密度最高，BMW产线商业化最快。综合领跑全场。
+      </div>
     </div>
 
-    <div class="key-findings">
-        <div class="finding-card">
-            <div class="finding-number">¥17亿</div>
-            <div class="finding-label">Unitree 2025E revenue — only company at scale with disclosed financials</div>
-        </div>
-        <div class="finding-card">
-            <div class="finding-number">60.3%</div>
-            <div class="finding-label">Unitree gross margin — 18pp above UBTECH's 42%</div>
-        </div>
-        <div class="finding-card">
-            <div class="finding-number">¥6亿</div>
-            <div class="finding-label">Unitree net profit — the only profitable humanoid robot company globally</div>
-        </div>
-        <div class="finding-card">
-            <div class="finding-number">26亿美元</div>
-            <div class="finding-label">Figure AI valuation on ~$30M revenue — PS multiple vs US peers</div>
-        </div>
+    <div class="radar-card">
+      <div class="radar-header">
+        <div class="tag"><span class="tag tag-cn">🇨🇳 中国</span></div>
+        <div class="title">宇树/H1</div>
+        <div class="score">59<span> / 100</span></div>
+      </div>
+      <div class="chart-label" style="margin-bottom:8px;">Advancement · Mastery · Operations · Reach · Affinity</div>
+      <div class="radar-wrap">
+        <canvas id="radarUnitree"></canvas>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-top:8px;">
+        硬件性价比最优（整机成本&lt;40万），出货量全球第一，但AI大模型能力是明显短板。
+      </div>
     </div>
 
-    <!-- Financial Comparison -->
-    <div class="section-card">
-        <h2 class="section-title">💰 Core Financial Data Comparison</h2>
-        <p class="section-subtitle">营收 / 毛利 / 净利 / 出货量 — 宇树 vs UBTECH vs Agility vs Figure</p>
-
-        <div style="overflow-x:auto;">
-        <table class="fin-table">
-            <thead>
-                <tr>
-                    <th>Company</th>
-                    <th>2025 Revenue</th>
-                    <th>Gross Margin</th>
-                    <th>Net Profit</th>
-                    <th>Units Shipped</th>
-                    <th>Valuation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="highlight-row">
-                    <td>
-                        <div class="company-cell">
-                            <span class="flag">🇨🇳</span>
-                            <span class="company-name">Unitree</span>
-                            <span class="company-tag tag-ipo">IPO</span>
-                        </div>
-                    </td>
-                    <td class="val-green">¥17亿</td>
-                    <td class="val-green">60.3%</td>
-                    <td class="val-green">¥6亿</td>
-                    <td class="val-green">5,500台</td>
-                    <td class="val-amber">¥42亿 IPO</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="company-cell">
-                            <span class="flag">🇨🇳</span>
-                            <span class="company-name">UBTECH</span>
-                            <span class="company-tag tag-listed">港股</span>
-                        </div>
-                    </td>
-                    <td class="val-blue">¥8亿</td>
-                    <td class="val-amber">42%</td>
-                    <td class="val-red">亏损</td>
-                    <td>~2,000台</td>
-                    <td>港股上市</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="company-cell">
-                            <span class="flag">🇺🇸</span>
-                            <span class="company-name">Agility</span>
-                            <span class="company-tag tag-listed">NASDAQ</span>
-                        </div>
-                    </td>
-                    <td class="val-purple">$25M</td>
-                    <td>—</td>
-                    <td class="val-red">亏损</td>
-                    <td>100+台</td>
-                    <td>NASDAQ上市</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="company-cell">
-                            <span class="flag">🇺🇸</span>
-                            <span class="company-name">Figure AI</span>
-                            <span class="company-tag tag-pre">Pre-IPO</span>
-                        </div>
-                    </td>
-                    <td class="val-purple">$30M</td>
-                    <td>—</td>
-                    <td class="val-red">严重亏损</td>
-                    <td class="val-red">&lt;50台</td>
-                    <td class="val-red">$26亿估值</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="company-cell">
-                            <span class="flag">🇨🇳</span>
-                            <span class="company-name">Zhiyuan</span>
-                            <span class="company-tag tag-pre">Pre-IPO</span>
-                        </div>
-                    </td>
-                    <td>未披露</td>
-                    <td>—</td>
-                    <td>未披露</td>
-                    <td>千台级</td>
-                    <td class="val-amber">¥150亿估值</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-
-        <div style="margin-top:16px;padding:14px;background:rgba(0,255,136,0.05);border-radius:12px;border:1px solid rgba(0,255,136,0.15);font-size:13px;color:#00ff88;display:flex;align-items:center;gap:10px;">
-            <span style="font-size:20px">💡</span>
-            <span><strong>关键洞察：</strong>宇树是唯一实现规模化盈利的人形机器人企业，毛利率 60.3% 远超 UBTECH 的 42%；Agility 和 Figure 均处于严重亏损状态，依赖融资维持运营。</span>
-        </div>
+    <div class="radar-card">
+      <div class="radar-header">
+        <div class="tag"><span class="tag tag-cn">🇨🇳 中国</span></div>
+        <div class="title">智元机器人</div>
+        <div class="score">54<span> / 100</span></div>
+      </div>
+      <div class="chart-label" style="margin-bottom:8px;">Advancement · Mastery · Operations · Reach · Affinity</div>
+      <div class="radar-wrap">
+        <canvas id="radarZhiyuan"></canvas>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-top:8px;">
+        战略布局完整，量产意愿最强，2025年营收10.5亿商业化最快，但估值较高。
+      </div>
     </div>
 
-    <!-- Valuation Matrix -->
-    <div class="section-card">
-        <h2 class="section-title">📊 Valuation Matrix: Maturity vs Premium</h2>
-        <p class="section-subtitle">估值 vs 商业化成熟度象限 — 高估值 · 低估值 · 早期 · 成熟</p>
-
-        <div class="valuation-grid">
-            <div class="quadrant high-early">
-                <h4>🎯 高估值 · 早期（风险区）</h4>
-                <div class="quadrant-item">
-                    <span class="emoji">🤖</span>
-                    <span class="name">Figure AI</span>
-                    <span class="score" style="color:#ff006e">$26亿</span>
-                    <span class="note">$30M revenue · 8667x PS</span>
-                </div>
-                <div class="quadrant-item">
-                    <span class="emoji">🇨🇳</span>
-                    <span class="name">Zhiyuan</span>
-                    <span class="score" style="color:#ffbe0b">¥150亿</span>
-                    <span class="note">千台出货 · 无公开财报</span>
-                </div>
-            </div>
-            <div class="quadrant high-mature">
-                <h4>⭐ 高估值 · 成熟（核心标的）</h4>
-                <div class="quadrant-item">
-                    <span class="emoji">🐕</span>
-                    <span class="name">Unitree</span>
-                    <span class="score" style="color:#00ff88">¥42亿 IPO</span>
-                    <span class="note">¥17亿营收 · 规模化盈利</span>
-                </div>
-                <div class="quadrant-item">
-                    <span class="emoji">🇺🇸</span>
-                    <span class="name">NVIDIA</span>
-                    <span class="score" style="color:#00d4ff">生态标的</span>
-                    <span class="note">Isaac Sim · CUDA护城河</span>
-                </div>
-            </div>
-            <div class="quadrant low-early">
-                <h4>🔮 低估值 · 早期（期权价值）</h4>
-                <div class="quadrant-item">
-                    <span class="emoji">🇺🇸</span>
-                    <span class="name">1X Technologies</span>
-                    <span class="score" style="color:#9775fa">$125M B轮</span>
-                    <span class="note">OpenAI投资 · 挪威+美国</span>
-                </div>
-                <div class="quadrant-item">
-                    <span class="emoji">🇨🇳</span>
-                    <span class="name">Fourier</span>
-                    <span class="score" style="color:#ffbe0b">¥5亿 A轮</span>
-                    <span class="note">医疗场景 · 临床进度快</span>
-                </div>
-            </div>
-            <div class="quadrant low-mature">
-                <h4>📈 低估值 · 成熟（价值洼地）</h4>
-                <div class="quadrant-item">
-                    <span class="emoji">🇨🇳</span>
-                    <span class="name">UBTECH</span>
-                    <span class="score" style="color:#00d4ff">港股上市</span>
-                    <span class="note">¥8亿营收 · 持续亏损</span>
-                </div>
-                <div class="quadrant-item">
-                    <span class="emoji">🇺🇸</span>
-                    <span class="name">Agility</span>
-                    <span class="score" style="color:#9775fa">NASDAQ</span>
-                    <span class="note">物流场景 · 亚马逊试点</span>
-                </div>
-            </div>
-        </div>
+    <div class="radar-card">
+      <div class="radar-header">
+        <div class="tag"><span class="tag tag-eu">🇳🇴 挪威</span></div>
+        <div class="title">1X Technologies</div>
+        <div class="score">41<span> / 100</span></div>
+      </div>
+      <div class="chart-label" style="margin-bottom:8px;">Advancement · Mastery · Operations · Reach · Affinity</div>
+      <div class="radar-wrap">
+        <canvas id="radar1X"></canvas>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-top:8px;">
+        OpenAI加持软件能力最强，但硬件制造极弱，家庭场景商业化路径漫长。
+      </div>
     </div>
+  </div>
 
-    <!-- Funding Timeline -->
-    <div class="section-card">
-        <h2 class="section-title">💸 Funding Dynamics 2024-2026</h2>
-        <p class="section-subtitle">融资轮次 · 资本效率 · 关键节点</p>
+  <!-- FULL SCORE TABLE -->
+  <h3 style="margin-top:48px;">📊 全体公司AMORA Score一览</h3>
+  <div class="table-wrap fade-up">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>国家</th><th>总分</th><th>Advancement</th><th>Mastery</th><th>Operations</th><th>Reach</th><th>Affinity</th><th>风险</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Figure AI</strong></td>
+          <td><span class="tag tag-us">🇺🇸 美国</span></td>
+          <td class="num score-high" style="font-size:16px;"><strong>67</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-us" style="width:72%"></div></div><span class="num">72</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-us" style="width:58%"></div></div><span class="num">58</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-us" style="width:68%"></div></div><span class="num">68</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-us" style="width:70%"></div></div><span class="num">70</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-us" style="width:68%"></div></div><span class="num">68</span></div></td>
+          <td class="score-low">估值过高（P/S约130x）</td>
+        </tr>
+        <tr>
+          <td><strong>宇树/H1</strong></td>
+          <td><span class="tag tag-cn">🇨🇳 中国</span></td>
+          <td class="num score-mid" style="font-size:16px;"><strong>59</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:55%"></div></div><span class="num">55</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:68%"></div></div><span class="num">68</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:65%"></div></div><span class="num">65</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:58%"></div></div><span class="num">58</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:52%"></div></div><span class="num">52</span></div></td>
+          <td class="score-mid">AI大模型能力弱</td>
+        </tr>
+        <tr>
+          <td><strong>智元机器人</strong></td>
+          <td><span class="tag tag-cn">🇨🇳 中国</span></td>
+          <td class="num score-mid" style="font-size:16px;"><strong>54</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:52%"></div></div><span class="num">52</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:62%"></div></div><span class="num">62</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:52%"></div></div><span class="num">52</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:50%"></div></div><span class="num">50</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-cn" style="width:52%"></div></div><span class="num">52</span></div></td>
+          <td class="score-mid">2026量产生死线</td>
+        </tr>
+        <tr>
+          <td><strong>1X Technologies</strong></td>
+          <td><span class="tag tag-eu">🇳🇴 挪威</span></td>
+          <td class="num score-mid" style="font-size:16px;"><strong>41</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-eu" style="width:65%"></div></div><span class="num">65</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-eu" style="width:35%"></div></div><span class="num">35</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-eu" style="width:30%"></div></div><span class="num">30</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-eu" style="width:40%"></div></div><span class="num">40</span></div></td>
+          <td><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bar-eu" style="width:60%"></div></div><span class="num">60</span></div></td>
+          <td class="score-low">硬件制造能力极弱</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-        <div class="funding-timeline">
-            <div class="funding-item">
-                <div class="funding-company">🤖 Figure AI</div>
-                <div class="funding-date">2025</div>
-                <div class="funding-round round-b">B轮</div>
-                <div class="funding-amount us">$675M</div>
-            </div>
-            <div class="funding-item">
-                <div class="funding-company">🐕 Unitree</div>
-                <div class="funding-date">2026</div>
-                <div class="funding-round round-ipo">IPO</div>
-                <div class="funding-amount cn">¥42亿</div>
-            </div>
-            <div class="funding-item">
-                <div class="funding-company">🇺🇸 Agility</div>
-                <div class="funding-date">2025</div>
-                <div class="funding-round round-ipo">IPO+</div>
-                <div class="funding-amount us">$200M</div>
-            </div>
-            <div class="funding-item">
-                <div class="funding-company">🇨🇳 Zhiyuan</div>
-                <div class="funding-date">2025</div>
-                <div class="funding-round round-a">A轮</div>
-                <div class="funding-amount cn">¥15亿</div>
-            </div>
-            <div class="funding-item">
-                <div class="funding-company">🇺🇸 1X Tech</div>
-                <div class="funding-date">2024</div>
-                <div class="funding-round round-b">B轮</div>
-                <div class="funding-amount us">$125M</div>
-            </div>
-            <div class="funding-item">
-                <div class="funding-company">🇨🇳 Fourier</div>
-                <div class="funding-date">2024</div>
-                <div class="funding-round round-a">A轮</div>
-                <div class="funding-amount cn">¥5亿</div>
-            </div>
-        </div>
+  <!-- INVESTMENT TABLES -->
+  <h3 style="margin-top:48px;">💰 整机厂商投融资总览（全球）</h3>
+  <h4>国外整机厂商</h4>
+  <div class="table-wrap fade-up">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>最近融资轮次</th><th>融资时间</th><th>本轮金额</th><th>累计融资</th><th>最新估值</th><th>关键投资方</th><th>商业化阶段</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Figure AI</strong></td>
+          <td>C轮</td><td>2025年9月</td>
+          <td class="num score-high">$1B+</td>
+          <td class="num">~$8.2亿</td>
+          <td class="num score-high"><strong>~$39.5亿</strong></td>
+          <td>微软/OpenAI/英伟达/贝佐斯</td>
+          <td>小批量（BMW产线）</td>
+        </tr>
+        <tr>
+          <td><strong>Physical Intelligence</strong></td>
+          <td>B轮</td><td>2025年11月</td>
+          <td class="num">$4亿</td>
+          <td class="num">~$6亿</td>
+          <td class="num score-high"><strong>~$40亿</strong></td>
+          <td>贝佐斯/Thrive/Lightspeed</td>
+          <td>软件授权（非整机）</td>
+        </tr>
+        <tr>
+          <td><strong>1X Technologies</strong></td>
+          <td>B轮（进行中）</td><td>2025年9月</td>
+          <td class="num">~$10亿（目标）</td>
+          <td class="num">~$1.25亿</td>
+          <td class="num"><strong>~$100亿（目标）</strong></td>
+          <td>OpenAI/三星</td>
+          <td>预售（2025Q4发售）</td>
+        </tr>
+        <tr>
+          <td><strong>Apptronik</strong></td>
+          <td>Series A延轮</td><td>2026年2月</td>
+          <td class="num">$5.2亿</td>
+          <td class="num score-high"><strong>~$9.35亿</strong></td>
+          <td class="num score-high"><strong>~$50亿</strong></td>
+          <td>Google DeepMind/梅赛德斯/B Capital</td>
+          <td>工业测试</td>
+        </tr>
+        <tr>
+          <td><strong>Agility Robotics</strong></td>
+          <td>融资轮</td><td>2025年3月</td>
+          <td class="num">$4亿</td>
+          <td class="num">~$1.8亿</td>
+          <td class="num score-high"><strong>~$17.5亿</strong></td>
+          <td>DCVC/Sony/亚马逊/Fidelity</td>
+          <td>已商业部署（全球最大规模）</td>
+        </tr>
+        <tr>
+          <td><strong>Sanctuary AI</strong></td>
+          <td>A轮</td><td>2022年3月</td>
+          <td class="num">~$5500万</td>
+          <td class="num">~$1.4亿</td>
+          <td class="num"><strong>~$5亿</strong></td>
+          <td>Bell/Qualcomm/DMG</td>
+          <td>工业概念验证</td>
+        </tr>
+        <tr>
+          <td><strong>Tesla/Optimus</strong></td>
+          <td>内部</td><td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td class="score-low">未单独披露</td>
+          <td>母公司自持</td>
+          <td>内测（比亚迪已交付2台）</td>
+        </tr>
+        <tr>
+          <td><strong>Boston Dynamics</strong></td>
+          <td>战略融资</td><td>2024年</td>
+          <td class="num">~$3.84亿</td>
+          <td class="num">~$7亿</td>
+          <td class="num score-mid"><strong>~$21亿</strong></td>
+          <td>现代汽车/软银</td>
+          <td>研发中（Atlas电驱版）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 style="margin-top:24px;">中国整机厂商</h4>
+  <div class="table-wrap fade-up">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>最近融资轮次</th><th>融资时间</th><th>本轮金额</th><th>累计融资</th><th>最新估值</th><th>关键投资方</th><th>商业化阶段</th><th>资本背景</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>宇树科技</strong></td>
+          <td>科创板IPO（已受理）</td><td>2026年3月</td>
+          <td class="num">拟募42亿</td><td>—</td>
+          <td class="num score-high"><strong>投前~420亿</strong></td>
+          <td>上交所受理（公众公司）</td>
+          <td>全球出货量最大（5,500台）</td>
+          <td>A股上市在即</td>
+        </tr>
+        <tr>
+          <td><strong>智元机器人</strong></td>
+          <td>A++轮</td><td>2025年</td>
+          <td class="num">规模极大</td>
+          <td class="num">~20亿元+</td>
+          <td class="num score-high"><strong>~130亿元</strong></td>
+          <td>比亚迪/上汽/小米/红杉/高瓴</td>
+          <td>规模化进厂（3C产线）</td>
+          <td>最豪华产业资本</td>
+        </tr>
+        <tr>
+          <td><strong>银河通用</strong></td>
+          <td>B+轮</td><td>2025年12月</td>
+          <td class="num">超3亿美元（~21亿）</td>
+          <td class="num">~8亿美元（~57亿）</td>
+          <td>—</td>
+          <td>中国移动/宁德时代/中金资本</td>
+          <td>2025年融资冠军</td>
+          <td>产业资本密集</td>
+        </tr>
+        <tr>
+          <td><strong>自变量机器人</strong></td>
+          <td>B轮</td><td>2026年Q1</td>
+          <td class="num">~20亿元</td>
+          <td class="num">超30亿元</td>
+          <td>—</td>
+          <td>小米战投/红杉中国（领投）</td>
+          <td>具身智能量产</td>
+          <td>小米+红杉双背书</td>
+        </tr>
+        <tr>
+          <td><strong>星动纪元</strong></td>
+          <td>战略轮</td><td>2026年3月</td>
+          <td class="num">10亿元</td>
+          <td class="num">超过20亿元</td>
+          <td class="num score-high"><strong>破百亿</strong></td>
+          <td>多家头部机构</td>
+          <td>科研+工业</td>
+          <td>2026年新晋百亿</td>
+        </tr>
+        <tr>
+          <td><strong>傅利叶智能</strong></td>
+          <td>Pre-C轮</td><td>2025年</td>
+          <td>未披露</td>
+          <td class="num">数亿元</td>
+          <td>独角兽级</td>
+          <td>蔚来/多家头部</td>
+          <td>已商业部署（康复+工业）</td>
+          <td>新能源资本</td>
+        </tr>
+        <tr>
+          <td><strong>优必选</strong></td>
+          <td>港股上市</td><td>2023年12月</td>
+          <td>—</td><td>—</td>
+          <td>9880.HK</td>
+          <td>公众公司</td>
+          <td>商业化最久</td>
+          <td>港股人形机器人第一股</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:48px;">🏭 供应链投融资总览</h3>
+  <h4>核心零部件 — A股上市公司</h4>
+  <div class="table-wrap fade-up">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>股票代码</th><th>主营</th><th>机器人业务占比</th><th>最新市值</th><th>2025年营收</th><th>净利润</th><th>毛利率</th><th>人形机器人定点</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>汇川技术</strong></td><td>300124.SZ</td><td>伺服电机/驱动器</td><td>~20%</td>
+          <td class="num score-high"><strong>~1800亿</strong></td>
+          <td class="num">310亿+</td><td class="num">35亿+</td><td class="num">32%+</td>
+          <td>Tesla候选/已送样</td>
+        </tr>
+        <tr>
+          <td><strong>三花智控</strong></td><td>002050.SZ</td><td>热管理/阀件</td><td>~10%</td>
+          <td class="num score-high"><strong>~700亿</strong></td>
+          <td class="num">230亿+</td><td class="num">22亿+</td><td class="num">27%+</td>
+          <td>已进入Tesla Optimus供应链</td>
+        </tr>
+        <tr>
+          <td><strong>兆威机电</strong></td><td>003021.SZ</td><td>微型传动</td><td>~30%</td>
+          <td class="num score-mid"><strong>~350亿</strong></td>
+          <td class="num">18亿+</td><td class="num">2.5亿+</td><td class="num">38%+</td>
+          <td>灵巧手核心供应商</td>
+        </tr>
+        <tr>
+          <td><strong>秦川机床</strong></td><td>000837.SZ</td><td>行星滚柱丝杠</td><td>~15%</td>
+          <td class="num score-mid"><strong>~150亿</strong></td>
+          <td class="num">30亿+</td><td class="num">1.5亿+</td><td class="num">20%+</td>
+          <td>人形机器人丝杠供应商</td>
+        </tr>
+        <tr>
+          <td><strong>绿的谐波</strong></td><td>688017.SH</td><td>谐波减速器</td><td>~55%</td>
+          <td class="num score-mid"><strong>~240亿</strong></td>
+          <td class="num">5.71亿</td><td class="num">1.24亿</td><td class="num score-high">36%+</td>
+          <td>头部人形厂商全覆盖</td>
+        </tr>
+        <tr>
+          <td><strong>柯力传感</strong></td><td>603662.SH</td><td>力传感器/IoT</td><td>~15%</td>
+          <td class="num score-mid"><strong>~120亿</strong></td>
+          <td class="num">15亿+</td><td class="num">3亿+</td><td class="num">42%+</td>
+          <td>传感器平台布局</td>
+        </tr>
+        <tr>
+          <td><strong>步科股份</strong></td><td>688160.SH</td><td>步进/伺服电机</td><td>~40%</td>
+          <td class="num"><strong>~50亿</strong></td>
+          <td class="num">8亿+</td><td class="num">0.8亿+</td><td class="num">35%+</td>
+          <td>傅利叶/宇树供应商</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-blue" style="margin-top:24px;">
+    <p><strong>投资结论：</strong>当前人形机器人投资有三条主线：<strong>①整机</strong>（Figure AI / 智元 / 宇树IPO）——高风险高赔率；<strong>②核心零部件</strong>（绿的谐波 / 汇川技术）——确定性最高；<strong>③具身AI软件</strong>（Physical Intelligence）——平台型机会。</p>
+    <p>估值风险提示：Figure AI P/S约130x，智元机器人估值130亿但出货量仍处于爬坡期，2027年是验证商业模型的关键节点。</p>
+  </div>
+</section>
+
+<!-- ===== EDITORIAL ===== -->
+<div style="max-width:1100px;margin:0 auto;padding:0 48px;">
+  <div class="editorial fade-up">
+    <div class="editorial-label">Editorial View · 编辑观点</div>
+    <div class="editorial-text">
+      2026年的人形机器人赛道，不是科技竞赛，是叙事战争。宇树招股书是整场叙事战争里最诚实的一份文件——17亿营收、6亿净利告诉市场：机器人可以赚钱。但73.6%卖给高校，真正的工业替代浪潮还在路上。美国公司在用融资买时间，中国公司在用出货量买未来。真正的拐点：谁的<strong>数据闭环</strong>先跑起来。AMORA判断：出货量收敛成数据，比算法收敛成产品，在时间上领先12-18个月。
     </div>
-
-    <!-- AMORA Score Top -->
-    <div class="section-card">
-        <h2 class="section-title">🏆 AMORA Score: Top 6 Companies</h2>
-        <p class="section-subtitle">AMORA Score 综合评分卡：A(技术) · M(人才) · O(运营) · R(全球) · A2(资产)</p>
-
-        <div class="score-grid">
-            <div class="score-card">
-                <div class="score-card-header">
-                    <span class="flag">🇨🇳</span>
-                    <span class="name">Unitree</span>
-                    <span class="overall" style="color:#00ff88">8.9</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:#ff006e"></div></div>
-                    <span class="score-bar-val" style="color:#ff006e">8.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">M</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:92%;background:#00d4ff"></div></div>
-                    <span class="score-bar-val" style="color:#00d4ff">9.2</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">O</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:95%;background:#00ff88"></div></div>
-                    <span class="score-bar-val" style="color:#00ff88">9.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">R</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:89%;background:#9775fa"></div></div>
-                    <span class="score-bar-val" style="color:#9775fa">8.9</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A2</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:90%;background:#ffbe0b"></div></div>
-                    <span class="score-bar-val" style="color:#ffbe0b">9.0</span>
-                </div>
-            </div>
-
-            <div class="score-card">
-                <div class="score-card-header">
-                    <span class="flag">🇺🇸</span>
-                    <span class="name">Tesla Optimus</span>
-                    <span class="overall" style="color:#ffbe0b">8.4</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:95%;background:#ff006e"></div></div>
-                    <span class="score-bar-val" style="color:#ff006e">9.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">M</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:95%;background:#00d4ff"></div></div>
-                    <span class="score-bar-val" style="color:#00d4ff">9.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">O</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:86%;background:#00ff88"></div></div>
-                    <span class="score-bar-val" style="color:#00ff88">8.6</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">R</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:#9775fa"></div></div>
-                    <span class="score-bar-val" style="color:#9775fa">8.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A2</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:65%;background:#ffbe0b"></div></div>
-                    <span class="score-bar-val" style="color:#ffbe0b">6.5</span>
-                </div>
-            </div>
-
-            <div class="score-card">
-                <div class="score-card-header">
-                    <span class="flag">🇨🇳</span>
-                    <span class="name">UBTECH</span>
-                    <span class="overall" style="color:#00d4ff">7.8</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:#ff006e"></div></div>
-                    <span class="score-bar-val" style="color:#ff006e">8.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">M</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:68%;background:#00d4ff"></div></div>
-                    <span class="score-bar-val" style="color:#00d4ff">6.8</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">O</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:75%;background:#00ff88"></div></div>
-                    <span class="score-bar-val" style="color:#00ff88">7.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">R</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:76%;background:#9775fa"></div></div>
-                    <span class="score-bar-val" style="color:#9775fa">7.6</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A2</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:68%;background:#ffbe0b"></div></div>
-                    <span class="score-bar-val" style="color:#ffbe0b">6.8</span>
-                </div>
-            </div>
-
-            <div class="score-card">
-                <div class="score-card-header">
-                    <span class="flag">🇺🇸</span>
-                    <span class="name">Figure AI</span>
-                    <span class="overall" style="color:#9775fa">7.4</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:#ff006e"></div></div>
-                    <span class="score-bar-val" style="color:#ff006e">8.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">M</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:#00d4ff"></div></div>
-                    <span class="score-bar-val" style="color:#00d4ff">8.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">O</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:55%;background:#00ff88"></div></div>
-                    <span class="score-bar-val" style="color:#00ff88">5.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">R</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:#9775fa"></div></div>
-                    <span class="score-bar-val" style="color:#9775fa">8.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A2</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:45%;background:#ffbe0b"></div></div>
-                    <span class="score-bar-val" style="color:#ffbe0b">4.5</span>
-                </div>
-            </div>
-
-            <div class="score-card">
-                <div class="score-card-header">
-                    <span class="flag">🇨🇳</span>
-                    <span class="name">Zhiyuan</span>
-                    <span class="overall" style="color:#ffbe0b">7.4</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:65%;background:#ff006e"></div></div>
-                    <span class="score-bar-val" style="color:#ff006e">6.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">M</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:75%;background:#00d4ff"></div></div>
-                    <span class="score-bar-val" style="color:#00d4ff">7.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">O</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:75%;background:#00ff88"></div></div>
-                    <span class="score-bar-val" style="color:#00ff88">7.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">R</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:74%;background:#9775fa"></div></div>
-                    <span class="score-bar-val" style="color:#9775fa">7.4</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A2</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:50%;background:#ffbe0b"></div></div>
-                    <span class="score-bar-val" style="color:#ffbe0b">5.0</span>
-                </div>
-            </div>
-
-            <div class="score-card">
-                <div class="score-card-header">
-                    <span class="flag">🇺🇸</span>
-                    <span class="name">Agility</span>
-                    <span class="overall" style="color:#ffbe0b">6.9</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:75%;background:#ff006e"></div></div>
-                    <span class="score-bar-val" style="color:#ff006e">7.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">M</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:75%;background:#00d4ff"></div></div>
-                    <span class="score-bar-val" style="color:#00d4ff">7.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">O</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:55%;background:#00ff88"></div></div>
-                    <span class="score-bar-val" style="color:#00ff88">5.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">R</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:65%;background:#9775fa"></div></div>
-                    <span class="score-bar-val" style="color:#9775fa">6.5</span>
-                </div>
-                <div class="score-bar-row">
-                    <span class="score-bar-label">A2</span>
-                    <div class="score-bar-track"><div class="score-bar-fill" style="width:40%;background:#ffbe0b"></div></div>
-                    <span class="score-bar-val" style="color:#ffbe0b">4.0</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Investment Recommendations -->
-    <div class="section-card">
-        <h2 class="section-title">💡 Investment Recommendations</h2>
-        <p class="section-subtitle">高确信 / 期权价值 / 零部件三层逻辑</p>
-
-        <div class="rec-grid">
-            <div class="rec-card gold">
-                <div class="rec-badge">🥇</div>
-                <div class="rec-title">High Conviction</div>
-                <div class="rec-players">Unitree (IPO) · Figure AI (二级) · NVIDIA (生态)</div>
-                <div class="rec-logic">规模盈利 + 营收可见性 + 估值合理。宇树是唯一有真实财务数据支撑的人形机器人标的，IPO参与窗口期。</div>
-                <div class="rec-tags">
-                    <span class="rec-tag">规模盈利</span>
-                    <span class="rec-tag">营收可见</span>
-                    <span class="rec-tag op">建议: IPO参与</span>
-                </div>
-            </div>
-            <div class="rec-card silver">
-                <div class="rec-badge">🥈</div>
-                <div class="rec-title">Option Value</div>
-                <div class="rec-players">Zhiyuan (IPO前) · Fourier · 1X Technologies</div>
-                <div class="rec-logic">技术有亮点 + 估值弹性大 + 中国供应链成本优势。关注融资节点，早期跟进高赔率标的。</div>
-                <div class="rec-tags">
-                    <span class="rec-tag">估值弹性</span>
-                    <span class="rec-tag">高赔率</span>
-                    <span class="rec-tag op">建议: 早期跟进</span>
-                </div>
-            </div>
-            <div class="rec-card bronze">
-                <div class="rec-badge">🥉</div>
-                <div class="rec-title">Component Alpha</div>
-                <div class="rec-players">Leaderdrive (谐波) · Huawei Ascend (AI) · Inovance (关节)</div>
-                <div class="rec-logic">不依赖单一客户 · 国产替代逻辑强 · 收入可见性好。零部件阿尔法独立于人形机器人行业Beta。</div>
-                <div class="rec-tags">
-                    <span class="rec-tag">收入可见</span>
-                    <span class="rec-tag risk">人形订单占比低</span>
-                    <span class="rec-tag op">建议: 左侧布局</span>
-                </div>
-            </div>
-        </div>
-
-        <div style="margin-top:16px;padding:14px;background:rgba(255,190,11,0.05);border-radius:12px;border:1px solid rgba(255,190,11,0.15);font-size:13px;color:#ffbe0b;display:flex;align-items:center;gap:10px;">
-            <span style="font-size:20px">📅</span>
-            <span><strong>近期催化剂：</strong>宇树 IPO 定价（Q2 2026） · Figure AI 新一轮融资 · Tesla Optimus 德国工厂部署公告 · 工信部人形机器人专项政策落地</span>
-        </div>
-    </div>
-
-    <div class="report-footer">
-        <div class="footer-logo">AMORA</div>
-        <div class="footer-text">The Humanoid Robot Index 2026 | Part A2: Capital Assets & Valuation</div>
-    </div>
+  </div>
+  
 </div>
+
+<!-- ===== APPENDIX ===== -->
 </body>
 </html>

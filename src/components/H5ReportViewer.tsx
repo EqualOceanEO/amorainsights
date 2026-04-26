@@ -36,7 +36,7 @@ const CHAPTERS: ChapterMeta[] = [
     free: true,
     badge: 'FREE',
     tagline: '中美产业链全景 · 卡脖子清单 · 供应链时间线',
-    src: '/hri-report-part-m-mapping-v3.html',
+    src: '/hri-report-part-m-mapping-v1.html',
     previewHeight: 520,
   },
   {

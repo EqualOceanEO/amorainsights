@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMORA HRI 2026 - reach</title>
+<title>AMORA HRI 2026 - advancement</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMORA Report · Humanoid Robotics Industry Deep Dive 2026 v5.0</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --bg: #05080f;
@@ -29,7 +38,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;
+    font-family: 'Inter','Segoe UI',Helvetica,Arial,sans-serif;
     font-size: 15px;
     line-height: 1.7;
     overflow-x: hidden;
@@ -1291,453 +1300,151 @@
   .kpi-card .val { font-size: 28px; font-weight: 900; color: var(--accent); }
   .kpi-card .lbl { font-size: 12px; color: var(--text2); margin-top: 4px; }
   .kpi-card .change { font-size: 12px; color: var(--green); margin-top: 4px; }
+</style>
 
 </style>
-// ===== CHART.JS DEFAULTS =====
-Chart.defaults.color = '#8899bb';
-Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
-Chart.defaults.font.family = "'PingFang SC','Microsoft YaHei',sans-serif";
 
-const radarOptions = {
-  plugins: { legend: { display: false }, tooltip: { enabled: true } },
-  scales: {
-    r: {
-      min: 0, max: 100,
-      ticks: { stepSize: 20, font: { size: 10 }, color: '#4a5d7a', backdropColor: 'transparent' },
-      grid: { color: 'rgba(255,255,255,0.06)' },
-      pointLabels: { font: { size: 11, weight: 'bold' }, color: '#e2eaf4' },
-      angleLines: { color: 'rgba(255,255,255,0.06)' }
-    }
-  },
-  animation: { duration: 1200, easing: 'easeOutQuart' }
-};
-
-// ===== RADAR CHARTS =====
-function buildRadar(canvasId, scores, color, bgColor) {
-  const ctx = document.getElementById(canvasId).getContext('2d');
-  new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: ['Advancement', 'Mastery', 'Operations', 'Reach', 'Affinity'],
-      datasets: [{
-        data: scores,
-        backgroundColor: bgColor,
-        borderColor: color,
-        borderWidth: 2,
-        pointBackgroundColor: color,
-        pointRadius: 4,
-        pointHoverRadius: 6
-      }]
-    },
-    options: radarOptions
-  });
-}
-
-buildRadar('radarFigure',   [72, 58, 68, 70, 68], '#3b82f6', 'rgba(59,130,246,0.12)');
-buildRadar('radarUnitree',  [55, 68, 65, 58, 52], '#ef4444', 'rgba(239,68,68,0.12)');
-buildRadar('radarZhiyuan',  [52, 62, 52, 50, 52], '#f59e0b', 'rgba(245,158,11,0.12)');
-buildRadar('radar1X',       [65, 35, 30, 40, 60], '#10b981', 'rgba(16,185,129,0.12)');
-
-// ===== COST PIE CHART =====
-const costCtx = document.getElementById('costPieChart').getContext('2d');
-new Chart(costCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['灵巧手+微型减速器', '芯片+计算平台', '谐波减速器', '丝杠+线性执行器', '伺服驱动+电机', '传感器', '结构件', '电池+其他'],
-    datasets: [{
-      data: [17, 15, 14, 13, 12, 10, 9, 10],
-      backgroundColor: ['#ef4444','#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#64748b','#475569'],
-      borderWidth: 0,
-      hoverOffset: 8
-    }]
-  },
-  options: {
-    cutout: '55%',
-    plugins: {
-      legend: {
-        position: 'right',
-        labels: { font: { size: 11 }, padding: 8, color: '#e2eaf4', boxWidth: 12 }
-      },
-      tooltip: {
-        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` }
-      }
-    },
-    animation: { duration: 1200 }
-  }
-});
-
-// ===== BARRIER BAR CHART =====
-const barrierCtx = document.getElementById('barrierChart').getContext('2d');
-new Chart(barrierCtx, {
-  type: 'bar',
-  data: {
-    labels: ['触觉传感器', '灵巧手微减速', '丝杠', '微型谐波', '六维力传感', '无框电机', '谐波减速', '结构件'],
-    datasets: [{
-      label: '卡脖子指数（越高越依赖进口）',
-      data: [95, 85, 70, 65, 55, 40, 25, 5],
-      backgroundColor: ctx => {
-        const v = ctx.parsed.y;
-        if (v >= 80) return 'rgba(239,68,68,0.7)';
-        if (v >= 50) return 'rgba(245,158,11,0.7)';
-        return 'rgba(16,185,129,0.7)';
-      },
-      borderRadius: 4
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { max: 100, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 10 } } },
-      y: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#e2eaf4' } }
-    },
-    animation: { duration: 1000 }
-  }
-});
-
-// ===== MARKET BAR CHART =====
-const mktCtx = document.getElementById('marketBarChart').getContext('2d');
-new Chart(mktCtx, {
-  type: 'bar',
-  data: {
-    labels: ['2025', '2026', '2027', '2028', '2030', '2033', '2035'],
-    datasets: [
-      {
-        label: '工业制造（亿美元）',
-        data: [4.2, 12, 35, 80, 180, 350, 500],
-        backgroundColor: 'rgba(59,130,246,0.7)',
-        borderRadius: 4
-      },
-      {
-        label: '仓储物流（亿美元）',
-        data: [2.8, 7, 18, 42, 95, 180, 280],
-        backgroundColor: 'rgba(16,185,129,0.7)',
-        borderRadius: 4
-      },
-      {
-        label: '家庭服务（亿美元）',
-        data: [0.3, 0.8, 2.5, 6, 25, 80, 200],
-        backgroundColor: 'rgba(245,158,11,0.7)',
-        borderRadius: 4
-      }
-    ]
-  },
-  options: {
-    plugins: {
-      legend: { labels: { font: { size: 12 }, color: '#e2eaf4', boxWidth: 12 } },
-      tooltip: { mode: 'index' }
-    },
-    scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#8899bb' } },
-      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 10 }, color: '#8899bb' } }
-    },
-    animation: { duration: 1200 }
-  }
-});
-
-// ===== CN VS US PIE =====
-const pieCtx = document.getElementById('cnUsPieChart').getContext('2d');
-new Chart(pieCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['美国市场（140亿）', '中国市场（110亿）', '欧洲市场（30亿）', '其他（20亿）'],
-    datasets: [{
-      data: [47, 37, 10, 6],
-      backgroundColor: ['#3b82f6','#ef4444','#10b981','#64748b'],
-      borderWidth: 0,
-      hoverOffset: 6
-    }]
-  },
-  options: {
-    cutout: '55%',
-    plugins: {
-      legend: {
-        position: 'bottom',
-        labels: { font: { size: 11 }, padding: 10, color: '#e2eaf4', boxWidth: 12 }
-      },
-      tooltip: {
-        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` }
-      }
-    },
-    animation: { duration: 1200 }
-  }
-});
-</script>
 </head>
 <body>
-<section id="reach">
-  <div class="section-tag">Part R · Reach</div>
-  <h1>市场容量 <span class="highlight">— 三大战场的规模测算</span></h1>
-  <p class="section-intro">人形机器人不是单一战场，而是制造业、仓储物流、家庭服务三条渗透路径的叠加。市场规模取决于AI能力突破速度与供应链降本节奏。</p>  <!-- INTERACTIVE WORLD MAP -->
-  <h3>🌍 全球人形机器人主机厂地理分布</h3>
-  <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">悬停标记点查看公司详情，中国是全球整机厂商数量最多的国家（17家），美国则在资本密度上领先。</p>
-  <div id="world-map-container" class="fade-up">
-    <div class="map-legend">
-      <div class="map-legend-item"><div class="map-dot dot-us"></div>美国/加拿大（7家）</div>
-      <div class="map-legend-item"><div class="map-dot dot-cn"></div>中国（16家）</div>
-      <div class="map-legend-item"><div class="map-dot dot-eu"></div>欧洲（4家）</div>
-      <div class="map-legend-item"><div class="map-dot dot-jp"></div>日本（2家）</div>
-      <div class="map-legend-item"><div class="map-dot dot-other"></div>韩国（1家）</div>
+<section id="advancement">
+  <div class="section-tag">Part A · Advancement</div>
+  <h1>技术先进性 <span class="highlight">— Enabling Technologies & Breakthroughs</span></h1>
+  <p class="section-intro">Humanoid robotics is a deep fusion of mechanical engineering, materials science, sensor technology, and AI foundation models. After 2023, Embodied AI has moved from academic concept to commercial validation, with four major technology pathways evolving in parallel.</p>  <h2>1. 具身大模型：感知-决策-执行闭环</h2>
+  <p style="color:var(--text2);margin-bottom:24px;">World models represent the ultimate form of the robot brain, with the core challenge being unified modeling of vision, language, and motion.</p>
+
+  <!-- TECH DIAGRAM: VLA Architecture -->
+  <div class="tech-diagram fade-up">
+    <h3 style="margin-bottom:16px;">🔮 VLA End-to-End Architecture</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;">VLA将视觉感知、自然语言指令和动作输出统一建模为一个端到端神经网络，实现"看到→理解→执行"的闭环。</p>
+    <div class="tech-flow">
+      <div class="tech-node">
+        <div class="icon">👁️</div>
+        <div class="name">视觉编码器</div>
+        <div class="desc">RGB-D摄像头输入</div>
+      </div>
+      <div class="tech-arrow">→</div>
+      <div class="tech-node core">
+        <div class="icon">🧠</div>
+        <div class="name">LLM Backbone</div>
+        <div class="desc">语言+动作token联合</div>
+      </div>
+      <div class="tech-arrow">→</div>
+      <div class="tech-node">
+        <div class="icon">🦾</div>
+        <div class="name">动作解码器</div>
+        <div class="desc">关节角度/力矩输出</div>
+      </div>
     </div>
-    <div id="world-map">
-      <!-- Realistic world map SVG (equirectangular projection) -->
-      <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-        <rect width="1000" height="500" fill="#080e1c"/>
-
-        <!-- Equator + Prime Meridian reference lines -->
-        <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="4,8"/>
-        <line x1="500" y1="0" x2="500" y2="500" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="4,8"/>
-
-        <!-- === NORTH AMERICA (USA + Canada) === -->
-        <!-- Alaska -->
-        <path d="M60,65 L130,55 L165,72 L160,105 L120,118 L70,110 Z" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.25)" stroke-width="0.5"/>
-        <!-- Hawaii -->
-        <path d="M145,155 L165,150 L170,162 L155,168 Z" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
-        <!-- Main US + Canada -->
-        <path d="M70,110 L175,88 L235,82 L280,95 L320,110 L340,130 L345,165 L328,195 L305,215 L275,228 L245,238 L220,248 L195,252 L165,248 L130,235 L100,218 L78,195 L62,170 Z" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="0.5"/>
-        <!-- Canada highlight -->
-        <path d="M62,170 L100,160 L140,155 L180,148 L210,138 L235,82 L175,88 L130,105 L90,120 Z" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
-
-        <!-- Mexico / Central America -->
-        <path d="M100,218 L130,235 L148,248 L158,268 L145,285 L118,298 L95,290 L82,270 L75,248 Z" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
-        <!-- Caribbean (small) -->
-        <path d="M200,238 L230,235 L238,245 L225,250 L205,248 Z" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
-
-        <!-- === SOUTH AMERICA === -->
-        <path d="M195,252 L235,248 L268,260 L288,290 L278,330 L260,368 L235,395 L200,412 L165,405 L140,375 L130,330 L140,295 L155,268 L175,255 Z" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
-
-        <!-- === EUROPE === -->
-        <!-- Iceland -->
-        <path d="M385,78 L415,75 L425,88 L408,95 L388,90 Z" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="0.5"/>
-        <!-- Scandinavia -->
-        <path d="M455,55 L488,52 L500,68 L492,88 L472,92 L455,85 Z" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.25)" stroke-width="0.5"/>
-        <!-- British Isles -->
-        <path d="M430,88 L450,84 L456,98 L448,112 L432,108 Z" fill="rgba(16,185,129,0.09)" stroke="rgba(16,185,129,0.22)" stroke-width="0.5"/>
-        <!-- Main Europe -->
-        <path d="M448,112 L488,88 L520,95 L558,100 L572,120 L558,142 L528,150 L495,148 L462,152 L445,140 Z" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="0.5"/>
-        <!-- Iberian Peninsula (Spain/Portugal) -->
-        <path d="M430,115 L448,112 L445,140 L438,152 L422,148 L415,130 Z" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="0.5"/>
-        <!-- Italy -->
-        <path d="M488,120 L500,118 L508,132 L502,150 L490,155 L485,142 Z" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="0.5"/>
-        <!-- Eastern Europe -->
-        <path d="M520,95 L572,120 L595,115 L610,98 L628,105 L618,125 L595,140 L565,142 L545,135 L530,118 Z" fill="rgba(16,185,129,0.07)" stroke="rgba(16,185,129,0.2)" stroke-width="0.5"/>
-
-        <!-- === AFRICA === -->
-        <path d="M445,140 L462,152 L495,148 L528,150 L558,142 L572,158 L580,188 L575,218 L562,248 L545,278 L520,302 L492,322 L462,332 L432,328 L408,308 L388,282 L375,252 L378,218 L388,188 L405,162 L425,148 Z" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.18)" stroke-width="0.5"/>
-        <!-- Madagascar -->
-        <path d="M570,300 L580,295 L585,318 L578,328 L570,320 Z" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.15)" stroke-width="0.5"/>
-
-        <!-- === ASIA === -->
-        <!-- Russia (European part) -->
-        <path d="M558,52 L620,48 L680,52 L720,58 L740,72 L720,82 L668,78 L618,72 L578,68 Z" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.15)" stroke-width="0.5"/>
-        <!-- Middle East -->
-        <path d="M558,100 L595,115 L610,130 L605,155 L578,162 L558,155 L545,135 Z" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.18)" stroke-width="0.5"/>
-        <!-- Indian Subcontinent -->
-        <path d="M640,120 L678,115 L695,140 L690,178 L670,205 L645,215 L622,198 L618,165 L625,138 Z" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.18)" stroke-width="0.5"/>
-        <!-- Southeast Asia -->
-        <path d="M710,138 L748,130 L770,150 L768,188 L750,212 L728,220 L710,205 L705,175 L708,148 Z" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.18)" stroke-width="0.5"/>
-        <!-- China + Mongolia -->
-        <path d="M680,72 L740,72 L790,78 L840,88 L870,105 L868,132 L840,145 L810,148 L780,142 L745,138 L718,130 L695,125 L680,108 L670,85 Z" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.35)" stroke-width="0.8"/>
-        <!-- Korea + Japan -->
-        <path d="M838,108 L855,105 L862,115 L858,130 L845,135 L835,128 Z" fill="rgba(239,68,68,0.09)" stroke="rgba(239,68,68,0.22)" stroke-width="0.5"/>
-        <!-- Taiwan -->
-        <path d="M832,142 L840,140 L842,152 L836,156 L830,150 Z" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.2)" stroke-width="0.5"/>
-
-        <!-- === AUSTRALIA === -->
-        <path d="M790,282 L848,272 L882,285 L895,308 L888,338 L862,358 L832,362 L808,348 L792,318 Z" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="0.5"/>
-        <!-- New Zealand -->
-        <path d="M935,358 L948,352 L952,368 L942,378 L932,370 Z" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.2)" stroke-width="0.5"/>
-      </svg>
-
-      <!-- MARKERS — positioned to match real city coordinates on equirectangular projection -->
-      <!-- Reference: lon→x = lon*10/36, lat→y = 250 - lat*10/3.6 -->
-
-      <!-- ===== USA / North America ===== -->
-      <!-- Figure AI — San Jose, CA (37.38°N, 121.97°W) → x=11.4%, y=22.3% -->
-      <div class="map-marker" style="left:11.4%;top:22.3%;" onclick="void(0)">
-        <div class="pin pin-us"></div>
-        <div class="label">Figure AI</div>
-        <div class="tooltip"><strong>Figure AI</strong><span class="type">🇺🇸 美国加州·圣何塞</span>估值：$39.5亿<br>Helix VLA · 累计150台<br>BMW汽车装配</div>
-      </div>
-      <!-- Physical Intelligence — San Francisco, CA (37.77°N, 122.42°W) → x=11%, y=22% -->
-      <div class="map-marker" style="left:11%;top:22%;" onclick="void(0)">
-        <div class="pin pin-us"></div>
-        <div class="label">Physical Intelligence</div>
-        <div class="tooltip"><strong>Physical Intelligence</strong><span class="type">🇺🇸 美国加州·旧金山</span>估值：~$40亿<br>π0模型 · 软件授权</div>
-      </div>
-      <!-- Tesla Optimus — Austin, TX (30.27°N, 97.74°W) → x=18.6%, y=26.5% -->
-      <div class="map-marker" style="left:18.6%;top:26.5%;" onclick="void(0)">
-        <div class="pin pin-us"></div>
-        <div class="label">Tesla Optimus</div>
-        <div class="tooltip"><strong>Tesla Optimus</strong><span class="type">🇺🇸 美国德州·奥斯汀</span>未单独披露估值<br>FSD复用 · 内部5,000台目标<br>2025年6月交付比亚迪2台</div>
-      </div>
-      <!-- Sanctuary AI — Vancouver, BC (49.28°N, 123.12°W) → x=10.5%, y=16% -->
-      <div class="map-marker" style="left:10.5%;top:16%;" onclick="void(0)">
-        <div class="pin pin-us"></div>
-        <div class="label">Sanctuary AI</div>
-        <div class="tooltip"><strong>Sanctuary AI</strong><span class="type">🇨🇦 加拿大·温哥华</span>估值：~$5亿<br>通用人形 · 工业概念验证</div>
-      </div>
-      <!-- Agility Robotics — Albany, OR (44.62°N, 123.1°W) → x=10.5%, y=18.5% -->
-      <div class="map-marker" style="left:10.5%;top:18.5%;" onclick="void(0)">
-        <div class="pin pin-us"></div>
-        <div class="label">Agility Robotics</div>
-        <div class="tooltip"><strong>Agility Robotics</strong><span class="type">🇺🇸 美国俄勒冈州·阿尔巴尼</span>估值：~$17.5亿<br>Amazon战略投资<br>全球商业部署最多</div>
-      </div>
-      <!-- Boston Dynamics — Waltham, MA (42.37°N, 71.24°W) → x=25.5%, y=19.6% -->
-      <div class="map-marker" style="left:25.5%;top:19.6%;" onclick="void(0)">
-        <div class="pin pin-us"></div>
-        <div class="label">Boston Dynamics</div>
-        <div class="tooltip"><strong>Boston Dynamics</strong><span class="type">🇺🇸 美国马萨诸塞州·沃尔瑟姆（波士顿都市区）</span>估值：~$21亿 · 累计$7亿<br>Atlas电驱版 · 30年积淀</div>
-      </div>
-      <!-- Apptronik — Austin, TX (30.27°N, 97.74°W) → x=18.6%, top slightly offset from Tesla -->
-      <div class="map-marker" style="left:18.6%;top:28%;" onclick="void(0)">
-        <div class="pin pin-us"></div>
-        <div class="label">Apptronik</div>
-        <div class="tooltip"><strong>Apptronik</strong><span class="type">🇺🇸 美国德州·奥斯汀</span>估值：~$50亿 · 累计$9.35亿<br>Google DeepMind合作<br>Mercedes战略测试</div>
-      </div>
-
-      <!-- ===== China ===== -->
-      <!-- 北京 (39.9°N, 116.4°E) → x=82.3%, y=23.2% -->
-      <div class="map-marker" style="left:82.3%;top:23.2%;" onclick="void(0)">
-        <div class="pin pin-cn"></div>
-        <div class="label">北京</div>
-        <div class="tooltip"><strong>星动纪元</strong><span class="type">🇨🇳 北京</span>估值：破百亿 · 2026年新晋<br><strong>小米/CyberOne</strong><br>内部研发 · 未单独披露<br><strong>魔法原子</strong><br>家庭场景人形机器人<br><strong>加速进化</strong><br>小米系人形机器人</div>
-      </div>
-      <!-- 上海 (31.23°N, 121.47°E) → x=83.7%, y=28.1% -->
-      <div class="map-marker" style="left:83.7%;top:28.1%;" onclick="void(0)">
-        <div class="pin pin-cn"></div>
-        <div class="label">上海</div>
-        <div class="tooltip"><strong>智元机器人</strong><span class="type">🇨🇳 上海</span>估值：~130亿 · 累计20亿+<br>远征A2/G2 · 出货4,000台<br>2025年营收10.5亿，商业最快<br><strong>傅利叶智能</strong><br>GR-1 · 58 DOF行业最高<br><strong>达闼</strong><br>云端机器人<br><strong>开普勒</strong><br>人形机器人</div>
-      </div>
-      <!-- 杭州 (30.27°N, 120.15°E) → x=83.4%, y=28.6% -->
-      <div class="map-marker" style="left:83.4%;top:28.6%;" onclick="void(0)">
-        <div class="pin pin-cn"></div>
-        <div class="label">宇树科技</div>
-        <div class="tooltip"><strong>宇树科技</strong><span class="type">🇨🇳 浙江杭州</span>估值：投前~420亿<br>H1/G1 · 出货5,500台全球第一<br>科创板IPO受理中</div>
-      </div>
-      <!-- 深圳 (22.54°N, 114.06°E) → x=81.7%, y=32.3% -->
-      <div class="map-marker" style="left:81.7%;top:32.3%;" onclick="void(0)">
-        <div class="pin pin-cn"></div>
-        <div class="label">深圳</div>
-        <div class="tooltip"><strong>银河通用</strong><span class="type">🇨🇳 广东深圳</span>估值：~57亿（$8亿美元）<br>B+轮单笔21亿创纪录<br>中国移动/宁德时代投资<br><strong>优必选</strong><br>港股9880.HK上市<br><strong>乐聚</strong><br>人形双足机器人<br><strong>众擎</strong><br>人形机器人<br><strong>逐际动力</strong><br>人形+四足机器人</div>
-      </div>
-      <!-- 苏州 (31.3°N, 120.6°E) → x=83.5%, y=28% -->
-      <div class="map-marker" style="left:83.5%;top:28%;" onclick="void(0)">
-        <div class="pin pin-cn"></div>
-        <div class="label">追觅</div>
-        <div class="tooltip"><strong>追觅科技</strong><span class="type">🇨🇳 江苏苏州</span>扫地机器人龙头切入人形<br>清洁+通用人形双线</div>
-      </div>
-
-      <!-- ===== Europe ===== -->
-      <!-- 伦敦, UK (51.5°N, 0.12°W) → x=50%, y=14% -->
-      <div class="map-marker" style="left:50%;top:14%;" onclick="void(0)">
-        <div class="pin pin-eu"></div>
-        <div class="label">英国</div>
-        <div class="tooltip"><strong>Shadow Robot</strong><span class="type">🇬🇧 英国伦敦</span>灵巧手全球领先<br><strong>Engineered Arts</strong><br>英国法尔茅斯 · Ameca机器人</div>
-      </div>
-      <!-- 奥斯陆, Norway (59.9°N, 10.8°E) → x=53%, y=10% -->
-      <div class="map-marker" style="left:53%;top:10%;" onclick="void(0)">
-        <div class="pin pin-eu"></div>
-        <div class="label">1X Technologies</div>
-        <div class="tooltip"><strong>1X Technologies</strong><span class="type">🇳🇴 挪威奥斯陆</span>估值：~$100亿（目标）<br>NEO Beta · 家庭场景<br>OpenAI投资 · 预售$2万/台</div>
-      </div>
-      <!-- 巴塞罗那, Spain (41.4°N, 2.17°E) → x=50.6%, y=20.2% -->
-      <div class="map-marker" style="left:50.6%;top:20.2%;" onclick="void(0)">
-        <div class="pin pin-eu"></div>
-        <div class="label">PAL Robotics</div>
-        <div class="tooltip"><strong>PAL Robotics</strong><span class="type">🇪🇸 西班牙巴塞罗那</span>REEM系列 · 欧洲最早人形<br>REEM-C已商业化部署</div>
-      </div>
-
-      <!-- ===== Japan ===== -->
-      <!-- 东京, Japan (35.68°N, 139.65°E) → x=88.8%, y=25% -->
-      <div class="map-marker" style="left:88.8%;top:25%;" onclick="void(0)">
-        <div class="pin pin-jp"></div>
-        <div class="label">日本</div>
-        <div class="tooltip"><strong>丰田 / 本田</strong><span class="type">🇯🇵 日本·东京都市圈</span>ASIMO遗产 · Punyo家务臂<br>技术保留但停止独立人形研发<br><strong>川崎重工</strong><br>机械臂→人形duAro</div>
-      </div>
-
-      <!-- ===== Korea ===== -->
-      <!-- 首尔, Korea (37.57°N, 126.98°E) → x=85.3%, y=23.8% -->
-      <div class="map-marker" style="left:85.3%;top:23.8%;" onclick="void(0)">
-        <div class="pin pin-other"></div>
-        <div class="label">Rainbow Robotics</div>
-        <div class="tooltip"><strong>Rainbow Robotics</strong><span class="type">🇰🇷 韩国首尔</span>KAIST嫡系 · RB-Y1人形</div>
-      </div>
+    <div class="callout callout-purple" style="margin-top:16px;">
+      <p><strong>Representing:</strong>Figure Helix（Figure AI）| RT-2/Octo（Google）| π0（Physical Intelligence）</p>
+      <p><strong>Core Advantage:</strong>跨任务泛化能力强，无需针对每个新任务重新训练</p>
+      <p><strong>Core Bottleneck:</strong>算力消耗大（需GPU集群），实时性挑战（端侧推理延迟>100ms）</p>
     </div>
   </div>
 
-  <!-- MARKET FORECAST -->
-  <h3 style="margin-top:48px;">📈 全球市场规模测算（2025-2035）</h3>
-  <div class="market-split fade-up">
-    <div class="chart-container">
-      <div class="chart-label">分场景市场规模（亿美元）</div>
-      <div class="chart-title">三大应用场景渗透路径</div>
-      <canvas id="marketBarChart"></canvas>
+  <!-- TECH TABLE -->
+  <h3 style="margin-top:32px;">Technology Roadmap Comparison</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>技术路线</th><th>代表方案</th><th>核心机制</th><th>TRL</th><th>优势</th><th>瓶颈</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>VLA</strong></td>
+          <td>RT-2 / Octo / Helix</td>
+          <td>动作token化，类LLM训练</td>
+          <td class="num score-mid">5-6</td>
+          <td>泛化能力最强</td>
+          <td>算力消耗极大</td>
+        </tr>
+        <tr>
+          <td><strong>世界模型+控制</strong></td>
+          <td>RSSM / JEPA</td>
+          <td>预测环境未来状态</td>
+          <td class="num score-low">4-5</td>
+          <td>降低真实数据依赖</td>
+          <td>sim-to-real gap大</td>
+        </tr>
+        <tr>
+          <td><strong>模仿+强化学习</strong></td>
+          <td>ACT / Diffusion Policy</td>
+          <td>人类演示+扩散生成轨迹</td>
+          <td class="num score-mid">6-7</td>
+          <td>灵巧手任务表现优异</td>
+          <td>数据采集成本高</td>
+        </tr>
+        <tr>
+          <td><strong>多模态基础模型</strong></td>
+          <td>GPT-4o / RoboGPT</td>
+          <td>通用多模态+控制层</td>
+          <td class="num score-low">4-5</td>
+          <td>可扩展性强</td>
+          <td>垂直场景精度不足</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TECH EVOLUTION TIMELINE -->
+  <h3 style="margin-top:40px;">🕐 Technology Evolution Timeline (2018-2026)</h3>
+  <div class="tech-timeline fade-up">
+    <div class="timeline-item">
+      <div class="timeline-year">2018</div>
+      <div class="timeline-title">BC (Behavioral Cloning) Scaled Application</div>
+      <div class="timeline-desc">UC Berkeley and Stanford applied imitation learning to robot control, enabling robots to replicate human demonstrations.</div>
+      <span class="timeline-tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;">学术期</span>
     </div>
-    <div>
-      <div class="market-kpi">
-        <div class="kpi-card">
-          <div class="val">$7.3B</div>
-          <div class="lbl">2025年全球市场</div>
-          <div class="change">↑ YoY +120%</div>
-        </div>
-        <div class="kpi-card">
-          <div class="val">$300B</div>
-          <div class="lbl">2030年预测</div>
-          <div class="change">↑ CAGR 110%</div>
-        </div>
-        <div class="kpi-card">
-          <div class="val">$980B</div>
-          <div class="lbl">2035年预测（保守）</div>
-          <div class="change">↑ 乐观情景 $1.5T</div>
-        </div>
-        <div class="kpi-card">
-          <div class="val">75万台</div>
-          <div class="lbl">2035年出货量</div>
-          <div class="change">↑ 2025年2,500台的300倍</div>
-        </div>
-      </div>
-      <div class="callout callout-amber" style="margin-top:16px;">
-        <p><strong>注：</strong>2035年预测基于保守假设（制造业渗透率&lt;5%，家庭&lt;0.1%）。若具身大模型出现GPT-5级突破，乐观情景下市场规模可达<strong>1,500亿美元</strong>以上。</p>
-      </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2021</div>
+      <div class="timeline-title">RT-1：Tokenized Robot Learning</div>
+      <div class="timeline-desc">Google Robotics发布RT-1，首次将NLP的token化方法应用于机器人控制，实现跨任务泛化。</div>
+      <span class="timeline-tag" style="background:rgba(0,200,255,0.12);color:var(--accent);">Paradigm Breakthrough</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2023</div>
+      <div class="timeline-title">RT-2 / VLAPoC</div>
+      <div class="timeline-desc">RT-2将VLM直接用于机器人控制，无需特定机器人训练数据即可泛化到新任务，引发产业资本涌入。</div>
+      <span class="timeline-tag" style="background:rgba(124,58,237,0.15);color:#a78bfa;">Industrialization Launch</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2024</div>
+      <div class="timeline-title">Figure AI Helix · 具身智能商业化</div>
+      <div class="timeline-desc">Figure AI发布Helix，端到端VLA控制整机，双手协同装配汽车零件，具身智能进入Industrial Validation。</div>
+      <span class="timeline-tag" style="background:rgba(16,185,129,0.15);color:#34d399;">Industrial Validation</span>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-year">2025-2026</div>
+      <div class="timeline-title">Mass Production Year - Multiple Paths in Parallel</div>
+      <div class="timeline-desc">Figure/Tesla/宇树/智元同时推进量产；Physical Intelligence开源π0；1X NEO进入家庭测试。技术路线收敛与分化并存。</div>
+      <span class="timeline-tag" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Mass Production Year</span>
     </div>
   </div>
 
-  <!-- MARKET SHARE PIE -->
-  <div class="chart-row" style="margin-top:24px;">
-    <div class="chart-container fade-up">
-      <div class="chart-label">中美市场对比</div>
-      <div class="chart-title">2030年全球市场分布</div>
-      <p class="chart-desc">中国凭借供应链成本优势追赶美国，但AI大模型代差是主要短板。</p>
-      <canvas id="cnUsPieChart" height="240"></canvas>
+  <h2>2. Hardware Evolution: From Mobile to Working</h2>
+  <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card-sm">
+      <div class="card-tag tag-cn">Most Mature Domestic Alternative</div>
+      <div class="card-title">Harmonic Reducer</div>
+      <div class="card-desc">绿的谐波打破哈默纳科Monopoly，精度背隙&lt;1弧分，寿命20000小时+，国产化率约75%。</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--green);">Barrier: Medium | China Strong</div>
     </div>
-    <div class="chart-container fade-up">
-      <div class="chart-label">四大催化剂</div>
-      <div class="chart-title">18个月关键窗口（2026-2027）</div>
-      <p class="chart-desc">以下四个信号将决定人形机器人规模化拐点的出现时间。</p>
-      <div style="margin-top:8px;">
-        <div style="padding:12px;background:var(--card2);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--green);">
-          <div style="font-size:13px;font-weight:700;">⭐⭐⭐⭐⭐ Figure AI量产1,000台</div>
-          <div style="font-size:12px;color:var(--text2);">2026年Q2 · 商业可行性证明</div>
-        </div>
-        <div style="padding:12px;background:var(--card2);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--accent);">
-          <div style="font-size:13px;font-weight:700;">⭐⭐⭐⭐ 国产谐波+丝杠双量产</div>
-          <div style="font-size:12px;color:var(--text2);">2026年Q3 · 供应链降本关键</div>
-        </div>
-        <div style="padding:12px;background:var(--card2);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--accent);">
-          <div style="font-size:13px;font-weight:700;">⭐⭐⭐⭐ Tesla Optimus进德/墨工厂</div>
-          <div style="font-size:12px;color:var(--text2);">2026年Q4 · 标杆客户示范</div>
-        </div>
-        <div style="padding:12px;background:var(--card2);border-radius:8px;border-left:3px solid var(--accent2);">
-          <div style="font-size:13px;font-weight:700;">⭐⭐⭐⭐⭐ 具身大模型GPT-5级突破</div>
-          <div style="font-size:12px;color:var(--text2);">2026-2027 · 技术奇点</div>
-        </div>
-      </div>
+    <div class="card-sm">
+      <div class="card-tag tag-us">⚠️ Largest Gap</div>
+      <div class="card-title">Planetary Roller Screw</div>
+      <div class="card-desc">精度C3级，负载&gt;15kN，国产化率约35%。南京工艺、济宁博特仍在产能爬坡。</div>
+      <div style="margin-top:10px;font-size:12px;color:#f87171;">Barrier: High | Capacity TBD</div>
+    </div>
+    <div class="card-sm">
+      <div class="card-tag tag-eu">⚠️ Very High Barrier</div>
+      <div class="card-title">Dexterous Hand Micro Reducer</div>
+      <div class="card-desc">直径&lt;16mm，扭矩&gt;0.5Nm，国产化率&lt;20%。SCHUNK/Weiss（德国）Leading。</div>
+      <div style="margin-top:10px;font-size:12px;color:#f87171;">Barrier: Very High | Import Dependent</div>
     </div>
   </div>
   
 </section>
 
-<!-- ===== PART A2: ASSETS ===== -->
+<!-- ===== PART M: MAPPING ===== -->
 </body>
 </html>

@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMORA HRI 2026 - operations</title>
+<title>AMORA HRI 2026 - mapping</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMORA Report · Humanoid Robotics Industry Deep Dive 2026 v5.0</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --bg: #05080f;
@@ -29,7 +38,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;
+    font-family: 'Inter','Segoe UI',Helvetica,Arial,sans-serif;
     font-size: 15px;
     line-height: 1.7;
     overflow-x: hidden;
@@ -1291,207 +1300,730 @@
   .kpi-card .val { font-size: 28px; font-weight: 900; color: var(--accent); }
   .kpi-card .lbl { font-size: 12px; color: var(--text2); margin-top: 4px; }
   .kpi-card .change { font-size: 12px; color: var(--green); margin-top: 4px; }
+</style>
 
 </style>
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ===== NAVIGATION =====
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  if (window.innerWidth <= 900) {
+    document.getElementById('nav').classList.remove('open');
+  }
+}
+
+// Active nav on scroll
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (s.getBoundingClientRect().top <= 120) current = s.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+  });
+});
+
+// ===== COMPONENT SELECTOR FOR MAPPING =====
+const componentData = {
+  actuator: {
+    title: '⚙️ Servo Drive系统',
+    subtitle: 'Core of robot motion control, ~65% localization',
+    us: [
+      { name: '特斯拉', tags: ['us', 'pub'], detail: '自研伺服系统，Optimus专用', badges: ['tech', 'safe'] },
+      { name: 'Kollmorgen', tags: ['us'], detail: '德信可靠，工业级伺服', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '汇川技术', tags: ['cn', 'pub'], detail: '变频器龙头，伺服国内第一', badges: ['pub', 'safe'] },
+      { name: '步科', tags: ['cn', 'pub'], detail: '人形机器人主力供应商', badges: ['pub'] },
+      { name: '清能德创', tags: ['cn'], detail: 'Servo Drive器，Domestic Alternative', badges: ['safe'] }
+    ],
+    barrier: '低 — 国产汇川/步科已接近国际水准',
+    barrierLevel: 'low'
+  },
+  harmonic: {
+    title: '🔄 Harmonic Reducer',
+    subtitle: '机器人关节核心，国产化率约70%',
+    us: [
+      { name: '哈默纳科', tags: ['us'], detail: '全球Leading，占60%市场份额', badges: ['tech'] },
+      { name: '花洲（Teijin）', tags: ['us'], detail: '日系Replace方案', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '绿的谐波', tags: ['cn', 'pub'], detail: 'A股上市，精度达国际水准', badges: ['pub', 'safe'] },
+      { name: '来福谐波', tags: ['cn'], detail: '国产第二梯队', badges: ['safe'] },
+      { name: '大族传动', tags: ['cn'], detail: '大族激光子公司', badges: [] }
+    ],
+    barrier: '中 — 绿的谐波已量产，追赶哈默纳科',
+    barrierLevel: 'mid'
+  },
+  torque: {
+    title: '🔧 Torque Motor',
+    subtitle: '无框Torque Motor，国产化率约60%',
+    us: [
+      { name: 'Kollmorgen', tags: ['us'], detail: '全球Leading，力矩密度高', badges: ['tech'] },
+      { name: '科尔摩根', tags: ['us'], detail: '无框电机工业级方案', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '步科', tags: ['cn', 'pub'], detail: '人形机器人主力供应商', badges: ['pub'] },
+      { name: '清能德创', tags: ['cn'], detail: 'Domestic Alternative，性价比高', badges: ['safe'] },
+      { name: '雷赛智能', tags: ['cn', 'pub'], detail: 'A股上市，运动控制', badges: ['pub'] }
+    ],
+    barrier: '低 — 国产化率高，差距小',
+    barrierLevel: 'low'
+  },
+  sensor: {
+    title: '👁️ Force Sensor',
+    subtitle: '六维力传感器，国产化率约50%',
+    us: [
+      { name: 'ATI Industrial', tags: ['us'], detail: '工业级全球Leading', badges: ['tech'] },
+      { name: 'Bota Systems', tags: ['us'], detail: '协作机器人传感器', badges: ['tech'] }
+    ],
+    cn: [
+      { name: '坤维传感', tags: ['cn'], detail: '人形机器人核心供应商', badges: ['tech'] },
+      { name: '海伯森', tags: ['cn'], detail: '六维力传感器国产', badges: ['safe'] },
+      { name: '敏芯股份', tags: ['cn', 'pub'], detail: '科创板，MEMS传感器', badges: ['pub'] }
+    ],
+    barrier: '中 — 国产追赶到中高端',
+    barrierLevel: 'mid'
+  },
+  tactile: {
+    title: '✋ Tactile Sensor',
+    subtitle: '灵巧手核心，国产化率<10%（卡脖子）',
+    us: [
+      { name: 'Tactile Sensors', tags: ['us'], detail: 'Leading全球市场', badges: ['tech', 'risk'] },
+      { name: 'Weiss Robotics', tags: ['us'], detail: '德国工业触觉标杆', badges: ['tech', 'risk'] }
+    ],
+    cn: [
+      { name: '几乎没有', tags: ['cn'], detail: '国产极度弱势', badges: ['risk'] },
+      { name: '少量研究机构', tags: ['cn'], detail: '实验室阶段', badges: [] }
+    ],
+    barrier: '高 — 国产化率<10%，最大卡脖子环节',
+    barrierLevel: 'high'
+  },
+  ai: {
+    title: '🧠 AI Chip/Compute',
+    subtitle: '人形机器人大脑，国产化率约20%',
+    us: [
+      { name: '英伟达', tags: ['us', 'pub'], detail: '人形机器人AI训练+推理Monopoly', badges: ['tech', 'risk'] },
+      { name: '特斯拉', tags: ['us', 'pub'], detail: '自研FSD芯片，Optimus专用', badges: ['tech'] },
+      { name: '高通/AMD', tags: ['us'], detail: '嵌入式边缘计算', badges: [] }
+    ],
+    cn: [
+      { name: '地平线', tags: ['cn', 'pub'], detail: '国产AI芯片龙头', badges: ['pub', 'risk'] },
+      { name: '华为昇腾', tags: ['cn'], detail: '昇腾910，算力追赶', badges: ['tech', 'risk'] },
+      { name: '寒武纪', tags: ['cn', 'pub'], detail: '科创板，AI芯片', badges: ['pub'] }
+    ],
+    barrier: '高 — AI芯片Constrained裁，Domestic Alternative艰难',
+    barrierLevel: 'high'
+  },
+  hand: {
+    title: '🤚 灵巧手/微型减速器',
+    subtitle: '灵巧手核心零部件，国产化率约30%',
+    us: [
+      { name: 'SCHUNK', tags: ['us'], detail: '德国工业灵巧手Monopoly', badges: ['tech', 'risk'] },
+      { name: 'Weiss Robotics', tags: ['us'], detail: '协作机器人末端专家', badges: ['tech', 'risk'] }
+    ],
+    cn: [
+      { name: '因时机器人', tags: ['cn'], detail: '国产灵巧手供应商', badges: ['safe'] },
+      { name: '兆威机电', tags: ['cn', 'pub'], detail: 'A股，微型传动', badges: ['pub'] },
+      { name: '秦川机床', tags: ['cn', 'pub'], detail: 'A股，丝杠国产化', badges: ['pub'] }
+    ],
+    barrier: '高 — 微型精密减速器差距大',
+    barrierLevel: 'high'
+  }
+};
+
+function selectComponent(part) {
+  const data = componentData[part];
+  if (!data) return;
+  
+  // Update left panel
+  document.querySelectorAll('.component-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.part === part) item.classList.add('active');
+  });
+  
+  // Update robot SVG highlight
+  document.querySelectorAll('.robot-part').forEach(partEl => {
+    partEl.classList.remove('highlighted');
+    if (partEl.dataset.part === part) partEl.classList.add('highlighted');
+  });
+  
+  // Update details panel
+  const barrierColors = { low: 'var(--green)', mid: 'var(--accent3)', high: 'var(--red)' };
+  const barrierText = { low: '低', mid: '中', high: '高' };
+  
+  let html = `
+    <h4>${data.title}</h4>
+    <p class="subtitle">${data.subtitle}</p>
+    
+    <div class="supplier-section">
+      <div class="supplier-section-title">🇺🇸 US Suppliers</div>
+  `;
+  
+  data.us.forEach(sup => {
+    html += `
+      <div class="supplier-card">
+        <div class="name">${sup.name} ${sup.tags.filter(t => ['us', 'pub'].includes(t)).map(t => `<span class="sup-tag ${t}">${t === 'pub' ? '上市公司' : ''}</span>`).join('')}</div>
+        <div class="detail">${sup.detail}</div>
+        <div class="tags">${sup.badges.map(b => `<span class="sup-tag ${b}">${b === 'tech' ? '技术Leading' : b === 'safe' ? '成熟稳定' : b === 'risk' ? '进口依赖' : ''}</span>`).join('')}</div>
+      </div>
+    `;
+  });
+  
+  html += `</div><div class="supplier-section"><div class="supplier-section-title">🇨🇳 China Suppliers</div>`;
+  
+  data.cn.forEach(sup => {
+    html += `
+      <div class="supplier-card">
+        <div class="name">${sup.name} ${sup.tags.filter(t => ['cn', 'pub'].includes(t)).map(t => `<span class="sup-tag ${t}">${t === 'pub' ? 'A股' : ''}</span>`).join('')}</div>
+        <div class="detail">${sup.detail}</div>
+        <div class="tags">${sup.badges.map(b => `<span class="sup-tag ${b}">${b === 'tech' ? '技术Leading' : b === 'safe' ? '成熟稳定' : b === 'risk' ? 'Constrained' : ''}</span>`).join('')}</div>
+      </div>
+    `;
+  });
+  
+  html += `
+    </div>
+    <div class="callout callout-blue" style="margin-top:12px;">
+      <p style="font-size:12px;"><strong>Barrier Level:</strong><span style="color:${barrierColors[data.barrierLevel]};">${barrierText[data.barrierLevel]}</span> — ${data.barrier}</p>
+    </div>
+  `;
+  
+  document.getElementById('details-panel').innerHTML = html;
+}
+
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
 </head>
 <body>
-<section id="operations">
-  <div class="section-tag">Part O · Operations</div>
-  <h1>商业化运营 <span class="highlight">— 从试点到规模化的跨越</span></h1>
-  <p class="section-intro">2026年是人形机器人量产的真正起点。制造业ROI模型已经跑通，但规模化仍需跨越三道坎：成本、可靠性和数据闭环。</p>  <!-- ROI FLOW -->
-  <h3>💰 制造业ROI测算（以汽车焊装线为例）</h3>
-  <div class="roi-flow fade-up">
-    <div class="roi-node">
-      <div class="val">60-150万</div>
-      <div class="lbl">整机售价（2025年）</div>
+<section id="mapping">
+  <div class="section-tag">Part M · Mapping</div>
+  <h1>Supply Chain Ecosystem <span class="highlight">— Core Component Supply Chain</span></h1>
+  <p class="section-intro">人形机器人由7大核心零部件构成，Click categories on the left or robot parts to view major China-US suppliers and barrier levels.</p>
+
+  <!-- KPI ROW -->
+  <div class="mapping-kpi-row fade-up">
+    <div class="mapping-kpi">
+      <div class="kpi-val">55%</div>
+      <div class="kpi-label">Component Localization Rate</div>
     </div>
-    <div class="roi-arrow">+</div>
-    <div class="roi-node">
-      <div class="val">15-30万</div>
-      <div class="lbl">部署实施费</div>
+    <div class="mapping-kpi">
+      <div class="kpi-val">3-5yr</div>
+      <div class="kpi-label">Expected Time to Catch Up</div>
     </div>
-    <div class="roi-arrow">+</div>
-    <div class="roi-node">
-      <div class="val">8-12万/年</div>
-      <div class="lbl">年运维成本</div>
+    <div class="mapping-kpi">
+      <div class="kpi-val">70%</div>
+      <div class="kpi-label">Harmonic Reducer国产率</div>
     </div>
-    <div class="roi-arrow">=</div>
-    <div class="roi-node" style="border-color:var(--accent);">
-      <div class="val" style="color:var(--accent);">3.5-5年</div>
-      <div class="lbl">静态回收期</div>
-      <div class="sub">替代1.5-2人</div>
-    </div>
-    <div class="roi-arrow">→</div>
-    <div class="roi-node" style="border-color:var(--green);">
-      <div class="val" style="color:var(--green);">1.5-2年</div>
-      <div class="lbl">2028年目标回收期</div>
-      <div class="sub">量产50,000台时</div>
+    <div class="mapping-kpi">
+      <div class="kpi-val">&lt;10%</div>
+      <div class="kpi-label">Tactile Sensor Localization</div>
     </div>
   </div>
 
-  <!-- SCENARIO CARDS -->
-  <h3 style="margin-top:48px;">🏭 应用场景渗透路径</h3>
-  <div class="scenario-grid">
-    <div class="scenario-card fade-up" style="cursor:pointer;" onclick="document.getElementById('operations').scrollIntoView({behavior:'smooth'})">
-      <div class="scenario-img factory">
-        🏭
-        <span class="scenario-badge badge-scaling">早期商业化</span>
-      </div>
-      <div class="scenario-body">
-        <div class="scenario-title">汽车制造业</div>
-        <div class="scenario-stat">
-          <div class="scenario-stat-item"><div class="val">35%</div><div class="lbl">当前渗透</div></div>
-          <div class="scenario-stat-item"><div class="val">2030E</div><div class="lbl">15%替代</div></div>
+  <!-- INTERACTIVE MAPPING -->
+  <div class="mapping-interactive fade-up">
+    <!-- LEFT: Components Panel -->
+    <div class="components-panel">
+      <h4>🤖 Component Categories</h4>
+      
+      <div class="component-item active" data-part="actuator" onclick="selectComponent('actuator')">
+        <div class="icon" style="background:rgba(0,200,255,0.15);">⚙️</div>
+        <div class="info">
+          <div class="name">Servo Drive</div>
+          <div class="count">12家供应商</div>
         </div>
-        <div class="scenario-desc">BMW/比亚迪/特斯拉推动整车装配线人形机器人部署，ROI已算通。Figure AI已在BMW产线运行，Tesla Optimus交付2台给比亚迪。</div>
-        <div style="margin-top:12px;font-size:12px;color:var(--green);">驱动：主机厂自动化升级需求 | 买单方：大型车企</div>
+        <div class="arrow">→</div>
+      </div>
+      
+      <div class="component-item" data-part="harmonic" onclick="selectComponent('harmonic')">
+        <div class="icon" style="background:rgba(124,58,237,0.15);">🔄</div>
+        <div class="info">
+          <div class="name">Harmonic Reducer</div>
+          <div class="count">6家供应商</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+      
+      <div class="component-item" data-part="torque" onclick="selectComponent('torque')">
+        <div class="icon" style="background:rgba(245,158,11,0.15);">🔧</div>
+        <div class="info">
+          <div class="name">Torque Motor</div>
+          <div class="count">8家供应商</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+      
+      <div class="component-item" data-part="sensor" onclick="selectComponent('sensor')">
+        <div class="icon" style="background:rgba(16,185,129,0.15);">👁️</div>
+        <div class="info">
+          <div class="name">Force Sensor</div>
+          <div class="count">10家供应商</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+      
+      <div class="component-item" data-part="tactile" onclick="selectComponent('tactile')">
+        <div class="icon" style="background:rgba(239,68,68,0.15);">✋</div>
+        <div class="info">
+          <div class="name">Tactile Sensor</div>
+          <div class="count">5家供应商</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+      
+      <div class="component-item" data-part="ai" onclick="selectComponent('ai')">
+        <div class="icon" style="background:rgba(168,85,247,0.15);">🧠</div>
+        <div class="info">
+          <div class="name">AI Chip/Compute</div>
+          <div class="count">8家供应商</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+      
+      <div class="component-item" data-part="hand" onclick="selectComponent('hand')">
+        <div class="icon" style="background:rgba(251,191,36,0.15);">🤚</div>
+        <div class="info">
+          <div class="name">Dexterous Hand/Screw</div>
+          <div class="count">7家供应商</div>
+        </div>
+        <div class="arrow">→</div>
       </div>
     </div>
 
-    <div class="scenario-card fade-up" style="cursor:pointer;" onclick="document.getElementById('operations').scrollIntoView({behavior:'smooth'})">
-      <div class="scenario-img warehouse">
-        📦
-        <span class="scenario-badge badge-scaling">早期商业化</span>
+    <!-- CENTER: Robot SVG -->
+    <div class="robot-center">
+      <h4>👆 Click Components to View Details</h4>
+      <div class="robot-svg-container">
+        <svg viewBox="0 0 300 450" width="280" height="420">
+          <!-- Head -->
+          <g id="robot-ai" class="robot-part" data-part="ai" onclick="selectComponent('ai')">
+            <ellipse cx="150" cy="50" rx="45" ry="50" fill="var(--card2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <circle cx="135" cy="40" r="8" fill="var(--accent)" opacity="0.8"/>
+            <circle cx="165" cy="40" r="8" fill="var(--accent)" opacity="0.8"/>
+            <path d="M135 60 Q150 70 165 60" stroke="var(--accent)" stroke-width="2" fill="none"/>
+          </g>
+          
+          <!-- Torso -->
+          <g id="robot-actuator" class="robot-part" data-part="actuator" onclick="selectComponent('actuator')">
+            <rect x="110" y="100" width="80" height="100" rx="15" fill="var(--card2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <circle cx="150" cy="130" r="15" fill="var(--accent)" opacity="0.3"/>
+            <circle cx="150" cy="160" r="15" fill="var(--accent)" opacity="0.3"/>
+          </g>
+          
+          <!-- Left Arm -->
+          <g id="robot-torque-left" class="robot-part" data-part="torque" onclick="selectComponent('torque')">
+            <rect x="55" y="105" width="50" height="20" rx="8" fill="var(--card2)" stroke="var(--accent3)" stroke-width="1.5"/>
+            <rect x="35" y="130" width="20" height="60" rx="8" fill="var(--card2)" stroke="var(--accent3)" stroke-width="1.5"/>
+          </g>
+          
+          <!-- Right Arm -->
+          <g id="robot-torque-right" class="robot-part" data-part="torque" onclick="selectComponent('torque')">
+            <rect x="195" y="105" width="50" height="20" rx="8" fill="var(--card2)" stroke="var(--accent3)" stroke-width="1.5"/>
+            <rect x="245" y="130" width="20" height="60" rx="8" fill="var(--card2)" stroke="var(--accent3)" stroke-width="1.5"/>
+          </g>
+          
+          <!-- Left Hand -->
+          <g id="robot-hand-left" class="robot-part" data-part="hand" onclick="selectComponent('hand')">
+            <rect x="30" y="195" width="30" height="50" rx="8" fill="var(--card2)" stroke="#fbbf24" stroke-width="1.5"/>
+            <circle cx="35" cy="250" r="5" fill="#fbbf24" opacity="0.6"/>
+            <circle cx="45" cy="250" r="5" fill="#fbbf24" opacity="0.6"/>
+            <circle cx="55" cy="250" r="5" fill="#fbbf24" opacity="0.6"/>
+          </g>
+          
+          <!-- Right Hand -->
+          <g id="robot-hand-right" class="robot-part" data-part="hand" onclick="selectComponent('hand')">
+            <rect x="240" y="195" width="30" height="50" rx="8" fill="var(--card2)" stroke="#fbbf24" stroke-width="1.5"/>
+            <circle cx="245" cy="250" r="5" fill="#fbbf24" opacity="0.6"/>
+            <circle cx="255" cy="250" r="5" fill="#fbbf24" opacity="0.6"/>
+            <circle cx="265" cy="250" r="5" fill="#fbbf24" opacity="0.6"/>
+          </g>
+          
+          <!-- Left Leg -->
+          <g id="robot-harmonic-left" class="robot-part" data-part="harmonic" onclick="selectComponent('harmonic')">
+            <rect x="115" y="205" width="25" height="80" rx="10" fill="var(--card2)" stroke="var(--accent2)" stroke-width="1.5"/>
+            <circle cx="127" cy="240" r="12" fill="var(--accent2)" opacity="0.3"/>
+            <rect x="112" y="290" width="30" height="80" rx="10" fill="var(--card2)" stroke="var(--accent2)" stroke-width="1.5"/>
+          </g>
+          
+          <!-- Right Leg -->
+          <g id="robot-harmonic-right" class="robot-part" data-part="harmonic" onclick="selectComponent('harmonic')">
+            <rect x="160" y="205" width="25" height="80" rx="10" fill="var(--card2)" stroke="var(--accent2)" stroke-width="1.5"/>
+            <circle cx="173" cy="240" r="12" fill="var(--accent2)" opacity="0.3"/>
+            <rect x="158" y="290" width="30" height="80" rx="10" fill="var(--card2)" stroke="var(--accent2)" stroke-width="1.5"/>
+          </g>
+          
+          <!-- Feet -->
+          <g id="robot-sensor-feet" class="robot-part" data-part="sensor" onclick="selectComponent('sensor')">
+            <rect x="105" y="375" width="40" height="20" rx="6" fill="var(--card2)" stroke="var(--green)" stroke-width="1.5"/>
+            <rect x="155" y="375" width="40" height="20" rx="6" fill="var(--card2)" stroke="var(--green)" stroke-width="1.5"/>
+          </g>
+          
+          <!-- Tactile overlay -->
+          <g id="robot-tactile" class="robot-part" data-part="tactile" onclick="selectComponent('tactile')">
+            <ellipse cx="45" cy="260" rx="20" ry="25" fill="var(--red)" opacity="0.15" stroke="var(--red)" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <ellipse cx="255" cy="260" rx="20" ry="25" fill="var(--red)" opacity="0.15" stroke="var(--red)" stroke-width="0.5" stroke-dasharray="3,3"/>
+          </g>
+        </svg>
       </div>
-      <div class="scenario-body">
-        <div class="scenario-title">仓储物流</div>
-        <div class="scenario-stat">
-          <div class="scenario-stat-item"><div class="val">25%</div><div class="lbl">当前渗透</div></div>
-          <div class="scenario-stat-item"><div class="val">2030E</div><div class="lbl">10%替代</div></div>
-        </div>
-        <div class="scenario-desc">Amazon持有Agility Robotics大量股份，GXO物流/Maersk测试人形机器人分拣。仓储场景相对结构化，是人形机器人商业化最快的场景之一。</div>
-        <div style="margin-top:12px;font-size:12px;color:var(--green);">驱动：劳动力短缺+AMR升级 | 买单方：物流巨头</div>
-      </div>
+      <p class="robot-hint">💡 Click different robot parts to view component suppliers</p>
     </div>
 
-    <div class="scenario-card fade-up" style="cursor:pointer;" onclick="document.getElementById('reach').scrollIntoView({behavior:'smooth'})">
-      <div class="scenario-img home">
-        🏠
-        <span class="scenario-badge badge-future">10年+</span>
-      </div>
-      <div class="scenario-body">
-        <div class="scenario-title">家庭服务</div>
-        <div class="scenario-stat">
-          <div class="scenario-stat-item"><div class="val">&lt;1%</div><div class="lbl">当前渗透</div></div>
-          <div class="scenario-stat-item"><div class="val">2035E</div><div class="lbl">&lt;0.5%</div></div>
+    <!-- RIGHT: Details Panel -->
+    <div class="details-panel" id="details-panel">
+      <h4 id="detail-title">⚙️ Servo Drive系统</h4>
+      <p class="subtitle" id="detail-subtitle">Core of robot motion control, ~65% localization</p>
+      
+      <div class="supplier-section">
+        <div class="supplier-section-title">🇺🇸 US Suppliers</div>
+        <div class="supplier-card">
+          <div class="name">特斯拉 <span class="sup-tag us">上市公司</span></div>
+          <div class="detail">自研伺服系统，Optimus专用</div>
+          <div class="tags">
+            <span class="sup-tag tech">技术Leading</span>
+            <span class="sup-tag safe">成熟稳定</span>
+          </div>
         </div>
-        <div class="scenario-desc">1X NEO 2025Q4开始预售（$2万/台），但技术不成熟（精细家务能力不足）、隐私/安全法规未就绪。家庭场景是长期愿景，非近期商业化方向。</div>
-        <div style="margin-top:12px;font-size:12px;color:#a78bfa;">驱动：老龄化+消费升级 | 买单方：高端C端</div>
-      </div>
-    </div>
-
-    <div class="scenario-card fade-up" style="cursor:pointer;" onclick="document.getElementById('operations').scrollIntoView({behavior:'smooth'})">
-      <div class="scenario-img outdoor">
-        ⚡
-        <span class="scenario-badge badge-early">小批量</span>
-      </div>
-      <div class="scenario-body">
-        <div class="scenario-title">电力巡检</div>
-        <div class="scenario-stat">
-          <div class="scenario-stat-item"><div class="val">10%</div><div class="lbl">当前渗透</div></div>
-          <div class="scenario-stat-item"><div class="val">2030E</div><div class="lbl">8%替代</div></div>
+        <div class="supplier-card">
+          <div class="name">Kollmorgen <span class="sup-tag us">上市公司</span></div>
+          <div class="detail">德信可靠，工业级伺服</div>
+          <div class="tags">
+            <span class="sup-tag tech">技术Leading</span>
+          </div>
         </div>
-        <div class="scenario-desc">国家电网/南方电网已在部分变电站部署人形机器人巡检，替代高危人工巡检场景。政策强制推动，安监合规买单。</div>
-        <div style="margin-top:12px;font-size:12px;color:#f59e0b;">驱动：危险场景替代+政策 | 买单方：国网/南网</div>
       </div>
-    </div>
-
-    <div class="scenario-card fade-up" style="cursor:pointer;" onclick="document.getElementById('operations').scrollIntoView({behavior:'smooth'})">
-      <div class="scenario-img medical">
-        🏥
-        <span class="scenario-badge badge-early">小批量</span>
-      </div>
-      <div class="scenario-body">
-        <div class="scenario-title">医疗康复</div>
-        <div class="scenario-stat">
-          <div class="scenario-stat-item"><div class="val">5%</div><div class="lbl">当前渗透</div></div>
-          <div class="scenario-stat-item"><div class="val">2030E</div><div class="lbl">3%替代</div></div>
+      
+      <div class="supplier-section">
+        <div class="supplier-section-title">🇨🇳 China Suppliers</div>
+        <div class="supplier-card">
+          <div class="name">汇川技术 <span class="sup-tag cn pub">A股</span></div>
+          <div class="detail">变频器龙头，伺服国内第一</div>
+          <div class="tags">
+            <span class="sup-tag pub">龙头</span>
+            <span class="sup-tag safe">成熟稳定</span>
+          </div>
         </div>
-        <div class="scenario-desc">傅利叶GR-1已在康复中心部署，辅助患者行走训练。精度要求高但场景可控，是人形机器人与医疗结合的早期方向。</div>
-        <div style="margin-top:12px;font-size:12px;color:#f59e0b;">驱动：康复需求+老龄化 | 买单方：医院/康复中心</div>
-      </div>
-    </div>
-
-    <div class="scenario-card fade-up" style="cursor:pointer;" onclick="document.getElementById('reach').scrollIntoView({behavior:'smooth'})">
-      <div class="scenario-img mine">
-        ⚠️
-        <span class="scenario-badge badge-future">概念验证</span>
-      </div>
-      <div class="scenario-body">
-        <div class="scenario-title">危险作业（矿山/化工）</div>
-        <div class="scenario-stat">
-          <div class="scenario-stat-item"><div class="val">&lt;1%</div><div class="lbl">当前渗透</div></div>
-          <div class="scenario-stat-item"><div class="val">2030E</div><div class="lbl">2%替代</div></div>
+        <div class="supplier-card">
+          <div class="name">步科 <span class="sup-tag cn pub">科创板</span></div>
+          <div class="detail">人形机器人主力供应商</div>
+          <div class="tags">
+            <span class="sup-tag pub">人形专供</span>
+          </div>
         </div>
-        <div class="scenario-desc">矿山井下、化工危险环境是长期高价值场景，但防爆/防腐蚀/抗干扰等技术要求极高，目前处于概念验证阶段。</div>
-        <div style="margin-top:12px;font-size:12px;color:#a78bfa;">驱动：安监合规+生命安全 | 买单方：矿山/化工企业</div>
+        <div class="supplier-card">
+          <div class="name">清能德创 <span class="sup-tag cn">未上市</span></div>
+          <div class="detail">Servo Drive器，Domestic Alternative</div>
+          <div class="tags">
+            <span class="sup-tag safe">性价比</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <p style="font-size:12px;"><strong>Barrier Level:</strong><span style="color:var(--green);">低</span> — 国产汇川/步科已接近国际水准</p>
       </div>
     </div>
   </div>
 
-  <!-- DEPLOYMENT STATUS -->
-  <h3 style="margin-top:48px;">📊 量产爬坡进展（2025年实际部署数据）</h3>
+  <!-- CHINA vs US COMPARISON -->
+  <div class="cn-us-comparison fade-up">
+    <div class="compare-col">
+      <h4>🇺🇸 US Supply Chain Advantages</h4>
+      <div class="compare-item">
+        <span class="label">AI Chip/Compute</span>
+        <span class="val green">Monopoly</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Tactile Sensor</span>
+        <span class="val green">Leading</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Dexterous Hand Micro Reducer</span>
+        <span class="val green">Leading</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Robot Integration</span>
+        <span class="val green">Leading</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Harmonic Reducer</span>
+        <span class="val amber">Dependent on Japan</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Torque Motor</span>
+        <span class="val amber">Import Dependent</span>
+      </div>
+    </div>
+    <div class="compare-col">
+      <h4>🇨🇳 China Supply Chain Advantages</h4>
+      <div class="compare-item">
+        <span class="label">Harmonic Reducer</span>
+        <span class="val green">Catching Up</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Servo Drive</span>
+        <span class="val green">Domestic Alternative</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">RE/NdFeB</span>
+        <span class="val green">Monopoly</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Aluminum/Body</span>
+        <span class="val green">充足</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">AI芯片</span>
+        <span class="val red">Constrained</span>
+      </div>
+      <div class="compare-item">
+        <span class="label">Tactile Sensor</span>
+        <span class="val red">Very Weak</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY INSIGHTS -->
+  <div class="callout callout-amber fade-up" style="margin-top:24px;">
+    <p><strong>💡 Key Insight：</strong>人形机器人供应链最大<strong style="color:var(--green);">机会</strong>在<strong>Harmonic Reducer（绿的谐波）</strong>和<strong>Servo Drive（汇川技术）</strong>的Domestic Alternative；最大<strong style="color:var(--red);">风险</strong>在<strong>Tactile Sensor</strong>和<strong>AI芯片</strong>的进口依赖（&lt;10%国产化率）。</p>
+  </div>
+
+  <!-- GLOBAL PLAYERS TABLE -->
+  <h3 style="margin-top:40px;">🏭 Global Robot Manufacturers Distribution</h3>
   <div class="table-wrap fade-up">
     <table>
       <thead>
-        <tr><th>公司</th><th>累计交付</th><th>主要场景</th><th>量产能力</th><th>2026年目标</th><th>关键里程碑</th></tr>
+        <tr><th>公司</th><th>国家</th><th>Cumulative Delivery</th><th>Cumulative Funding</th><th>Commercial Scenario</th><th>Tech Advantage</th></tr>
       </thead>
       <tbody>
         <tr>
+          <td><strong>Figure AI</strong></td>
+          <td><span class="tag tag-us">🇺🇸 美国</span></td>
+          <td class="num">~150台</td>
+          <td class="num">~$8.2亿</td>
+          <td>BMWAuto assembly</td>
+          <td>Helix VLA，端到端AI</td>
+        </tr>
+        <tr>
           <td><strong>宇树/H1</strong></td>
-          <td class="num score-high">~5,500台</td>
-          <td>科研+少量工业</td>
-          <td>月产100台（已实现）</td>
-          <td>月产500台</td>
-          <td>2025年出货量全球第一</td>
+          <td><span class="tag tag-cn">🇨🇳 中国</span></td>
+          <td class="num">~5,500台</td>
+          <td class="num">IPO拟募42亿</td>
+          <td>科研+工业</td>
+          <td>成本&lt;40万，运动控制强</td>
         </tr>
         <tr>
           <td><strong>智元机器人</strong></td>
-          <td class="num score-mid">~4,000台</td>
-          <td>3C/柔性制造</td>
-          <td>临港工厂（已启用）</td>
-          <td>年产能5,000台</td>
-          <td>精灵G2已进龙旗科技3C产线</td>
-        </tr>
-        <tr>
-          <td><strong>Figure AI</strong></td>
-          <td class="num">~150台</td>
-          <td>汽车装配</td>
-          <td>产能建设中</td>
-          <td>年产能1,000台</td>
-          <td>BMW合作商业化最快</td>
+          <td><span class="tag tag-cn">🇨🇳 中国</span></td>
+          <td class="num">~4000台</td>
+          <td class="num">~20亿元+</td>
+          <td>3C产线已规模化</td>
+          <td>量产最快，华为合作</td>
         </tr>
         <tr>
           <td><strong>Agility Robotics</strong></td>
+          <td><span class="tag tag-us">🇺🇸 美国</span></td>
           <td class="num">~150台</td>
-          <td>仓储物流</td>
-          <td>月产20台</td>
-          <td>月产100台</td>
-          <td>Amazon战略合作，全球商业部署最多</td>
+          <td class="num">~$1.8亿</td>
+          <td>Amazon仓储（最大规模）</td>
+          <td>仓储商业部署最多</td>
         </tr>
         <tr>
           <td><strong>Tesla Optimus</strong></td>
+          <td><span class="tag tag-us">🇺🇸 美国</span></td>
           <td class="num">~100台</td>
-          <td>工厂内测</td>
-          <td>内部制造</td>
-          <td>内部5,000台</td>
-          <td>2025年6月交付比亚迪2台</td>
+          <td class="num">未单独披露</td>
+          <td>Tesla工厂（内测）</td>
+          <td>FSD复用，马斯克背书</td>
         </tr>
         <tr>
           <td><strong>傅利叶智能</strong></td>
+          <td><span class="tag tag-cn">🇨🇳 中国</span></td>
           <td class="num">~100台</td>
-          <td>康复+工业</td>
-          <td>月产50台</td>
-          <td>年产能600台</td>
-          <td>已商业部署（康复场景）</td>
+          <td class="num">数亿元</td>
+          <td>Rehab + industrial</td>
+          <td>GR-1，58 DOF行业最高</td>
+        </tr>
+        <tr>
+          <td><strong>1X Technologies</strong></td>
+          <td><span class="tag tag-eu">🇳🇴 挪威</span></td>
+          <td class="num">&lt;30台</td>
+          <td class="num">~$1.25亿</td>
+          <td>家庭（预售2025Q4）</td>
+          <td>OpenAI加持，家庭场景</td>
+        </tr>
+        <tr>
+          <td><strong>Apptronik</strong></td>
+          <td><span class="tag tag-us">🇺🇸 美国</span></td>
+          <td class="num">&lt;20台</td>
+          <td class="num"><strong>~$9.35亿</strong></td>
+          <td>Mercedes测试</td>
+          <td>Google DeepMind合作</td>
+        </tr>
+        <tr>
+          <td><strong>Boston Dynamics</strong></td>
+          <td><span class="tag tag-us">🇺🇸 美国</span></td>
+          <td class="num">~1,000台（含Spot）</td>
+          <td class="num">~$7亿</td>
+          <td>Atlas电驱版研发</td>
+          <td>30年技术积淀</td>
+        </tr>
+        <tr>
+          <td><strong>银河通用</strong></td>
+          <td><span class="tag tag-cn">🇨🇳 中国</span></td>
+          <td class="num">Small Batch</td>
+          <td class="num"><strong>~$8亿美元</strong></td>
+          <td>商业测试</td>
+          <td>成立2年融资冠军</td>
         </tr>
       </tbody>
     </table>
   </div>
-  
+
+  <!-- COST BREAKDOWN PIE -->
+  <div class="chart-row" style="margin-top:32px;">
+    <div class="chart-container fade-up">
+      <div class="chart-label">Robot BOM Cost Structure</div>
+      <div class="chart-title">China Humanoid Total Cost (~¥380K/unit)</div>
+      <p class="chart-desc">2025年单台成本Down 56% from 2023，主要由国产Harmonic Reducer和Servo Drive降本驱动。</p>
+      <canvas id="costPieChart" height="240"></canvas>
+    </div>
+    <div class="chart-container fade-up">
+      <div class="chart-label">Bottleneck Severity Ranking</div>
+      <div class="chart-title">Component Localization Barrier Analysis</div>
+      <p class="chart-desc">Tactile Sensor和Dexterous Hand Micro Reducer是国产化率最低的环节，也是未来最大投资机会。</p>
+      <canvas id="barrierChart" height="240"></canvas>
+    </div>
+  </div>
+
+  <!-- ORIGINAL SUPPLY CHAIN DIAGRAM (保留) -->
+  <h3 style="margin-top:48px;">🔗 Supply Chain Overview (Traditional View)</h3>
+  <div class="card fade-up">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:24px;">人形机器人产业链分为上游（零部件）、中游（整机）、下游（应用）三大环节。鼠标悬停零部件可查看主要供应商。</p>
+
+    <div id="supply-chain">
+      <!-- Layer: Raw Materials -->
+      <div class="sc-layer">
+        <div class="sc-layer-label">原材料</div>
+        <div class="sc-items">
+          <div class="sc-item">
+            <span class="flag">🇨🇳</span>铝合金
+            <div class="sub"><strong>铝合金/碳纤维</strong><br>国产充足，无壁垒</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">🇯🇵</span>特种钢材
+            <div class="sub"><strong>日本/德国</strong><br>高端机身结构用</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">🇨🇳</span>RE/NdFeB
+            <div class="sub"><strong>中国大陆</strong><br>永磁电机核心材料<br>全球主要产地</div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-arrow">⭡ ⭡ ⭡</div>
+
+      <!-- Layer: Core Components -->
+      <div class="sc-layer">
+        <div class="sc-layer-label">核心零部件</div>
+        <div class="sc-items">
+          <div class="sc-item">
+            <span class="flag">🇨🇳🇯🇵</span>Harmonic Reducer
+            <div class="sub"><strong>绿的谐波（国产）</strong><br>精度达国际水准<br><strong>哈默纳科（日本）</strong><br>全球Leading地位</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">⚠️🇨🇳</span>Planetary Roller Screw
+            <div class="sub"><strong>秦川机床（A股）</strong><br>产能建设中<br><strong>TBI（意大利）</strong><br>全球标杆</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">🇨🇳</span>无框Torque Motor
+            <div class="sub"><strong>步科/清能德创</strong><br>国产化率~60%<br>差距：低壁垒</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">🇩🇪</span>Dexterous Hand Micro Reducer
+            <div class="sub"><strong>SCHUNK（德国）</strong><br>全球工业灵巧手Monopoly<br><strong>Weiss Robotics（德国）</strong><br>协作机器人末端</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">⚠️🇨🇳</span>Tactile Sensor
+            <div class="sub"><strong>Tactile/Weiss（德美）</strong><br>Leading全球市场<br><strong>国产极度弱势</strong><br>国产化率&lt;10%</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">🇨🇳🇺🇸</span>六维力传感器
+            <div class="sub"><strong>坤维传感（国产）</strong><br>人形机器人核心供应商<br><strong>ATI（美国）</strong><br>工业级全球Leading</div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-arrow">⭡ ⭡ ⭡</div>
+
+      <!-- Layer: Compute -->
+      <div class="sc-layer">
+        <div class="sc-layer-label">计算平台</div>
+        <div class="sc-items">
+          <div class="sc-item">
+            <span class="flag">🇺🇸</span>GPU/AI芯片
+            <div class="sub"><strong>英伟达（美国）</strong><br>人形机器人AI训练+推理<br>Monopoly地位</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">🇨🇳</span>国产AI芯片
+            <div class="sub"><strong>地平线/华为昇腾</strong><br>人形机器人Domestic Alternative<br>算力差距缩小中</div>
+          </div>
+          <div class="sc-item">
+            <span class="flag">🇺🇸</span>嵌入式控制器
+            <div class="sub"><strong>Tesla FSD芯片</strong><br>自研算力芯片<br><strong>高通/AMD</strong><br>行业通用方案</div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-arrow">⭡ ⭡ ⭡</div>
+
+      <!-- Layer: Integrator -->
+      <div class="sc-layer">
+        <div class="sc-layer-label">Robot Integration</div>
+        <div class="sc-items">
+          <div class="sc-item"><span class="flag">🇺🇸</span>Figure AI</div>
+          <div class="sc-item"><span class="flag">🇺🇸</span>Tesla Optimus</div>
+          <div class="sc-item"><span class="flag">🇺🇸</span>Agility Robotics</div>
+          <div class="sc-item"><span class="flag">🇺🇸</span>Apptronik</div>
+          <div class="sc-item"><span class="flag">🇨🇳</span>宇树科技</div>
+          <div class="sc-item"><span class="flag">🇨🇳</span>智元机器人</div>
+          <div class="sc-item"><span class="flag">🇨🇳</span>傅利叶智能</div>
+          <div class="sc-item"><span class="flag">🇨🇳</span>银河通用</div>
+          <div class="sc-item"><span class="flag">🇨🇳</span>星动纪元</div>
+          <div class="sc-item"><span class="flag">🇯🇵</span>本田ASIMO遗产</div>
+          <div class="sc-item"><span class="flag">🇳🇴</span>1X Technologies</div>
+          <div class="sc-item"><span class="flag">🇩🇪</span>PAL Robotics</div>
+        </div>
+      </div>
+      <div class="sc-arrow">⭡ ⭡ ⭡</div>
+
+      <!-- Layer: Application -->
+      <div class="sc-layer">
+        <div class="sc-layer-label">应用场景</div>
+        <div class="sc-items">
+          <div class="sc-item" style="border-color:var(--green);color:var(--green);">🏭 汽车焊装（已商业化）</div>
+          <div class="sc-item" style="border-color:var(--green);color:var(--green);">📦 Warehouse Logistics（Early Commercial）</div>
+          <div class="sc-item" style="border-color:#f59e0b;color:#f59e0b;">⚡ Power Inspection（Small Batch）</div>
+          <div class="sc-item" style="border-color:#f59e0b;color:#f59e0b;">📱 3C电子组装（验证中）</div>
+          <div class="sc-item" style="border-color:#a78bfa;color:#a78bfa;">🏠 Home Services（10+ Years）</div>
+          <div class="sc-item" style="border-color:#a78bfa;color:#a78bfa;">⚠️ 危险作业（PoC）</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ===== PART R: REACH ===== -->
+<!-- ===== PART O: OPERATIONS ===== -->
 </body>
 </html>
