@@ -1,1 +1,17 @@
-﻿fix: hide newsletter banner in dashboard when user is already subscribed
+﻿feat(HRI-2026): add v5.0 report, English version, interactive maps, and DB fix scripts
+
+- HRI-2026-AMORA-Report-v5.0.html: full PRO report with all paywall removed
+- HRI-2026-AMORA-Report-v5.0-en.html: English translation of v5.0 report
+- HRI-2026-Free-Preview-v2.0.html / v2.0-en.html: SVG blur free preview
+- HRI-2026-AMORA-Report-v4.0.md/html: v4.0 intermediate versions
+- HRI-2026-AMORA-Skeleton-v2.0.md: v2.0 skeleton with tech details + supply chain mapping
+- public/hri-china-humanoid-map.html: China humanoid company distribution
+- public/hri-us-humanoid-map.html: US humanoid company distribution
+- public/hri-report-part-m-mapping-v4.html: supply chain map v4
+- translate_en.py: clean translation script for HTML reports
+- run_translate2.ps1: PowerShell wrapper for translate_en.py
+- scripts/fix-humanoid-companies.sql: DB fix - delete duplicate entries, update scores, add Sanctuary AI
+- scripts/fix_v5_paywall.py / fix_v5_paywall2.py: paywall removal scripts
+- scripts/analyze_v5.py / debug_v5.py: v5 analysis scripts
+- docs/AGENTS/: agent configuration files
+- Updated: HRI-2026-Report-Chinese-v3.0.md, MEMORY.md

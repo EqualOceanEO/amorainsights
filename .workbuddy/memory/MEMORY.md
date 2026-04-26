@@ -8,9 +8,22 @@
 | **AMORA Score**（企业评分） | 单家公司评分 | Advancement | Mastery | Operations | Reach | Affinity |
 
 **HRI-2026 报告文件：**
-- 整合文件 → `HRI-2026-Outline-COMPLETE.md`（4291行，180KB，v3.0）
+- **v4.0主文件：HRI-2026-AMORA-Report-v4.0.md + .html（按AMORA五章完整重建）**
+- 骨架版：HRI-2026-AMORA-Skeleton-v2.0.md（含Advancement技术细节+供应链Mapping）
+- 内容版：HRI-2026-Report-Chinese-v3.0.md（旧，杂志风五段式，可废弃）
+- 完整大纲：HRI-2026-Outline-COMPLETE.md（含各章详细outline）
+- Mapping章：HRI-2026-Report-Mapping-Chinese-v1.0.md（供应链独立文件，v4.0 M章已整合）
+- HTML版：HRI-2026-AMORA-Report-v4.0.html（已完成，基于五章AMORA框架）
 - 合并脚本 → `scripts/merge_outlines.py`
 - H5 五章节：Mapping(free) / Advancement / Operations / Reach / Assets(均为 PRO)
+- **互动图**：
+  - `public/hri-china-humanoid-map.html` — 中国人形机器人企业分布图
+  - `public/hri-us-humanoid-map.html` — 美国人形机器人企业分布图
+  - `public/hri-report-part-m-mapping-v3.html` — 供应链全景图（基于机器人3D模型）
+  - `public/hri-report-part-m-mapping-v4.html` — 现代化供应链图谱（新设计）
+- **HRI-2026-AMORA-Report-v5.0.html**：最新版PRO报告，2026-04-26去除所有paywall遮罩层，付费用户可完整阅读
+- **HRI-2026-Free-Preview-v2.0.html**：新版免费预览版（61KB），采用SVG真实高斯模糊（feGaussianBlur）遮蔽关键数据，章节展示部分框架+模糊数据块+升级CTA，非CSS blur（无法通过简单移除CSS还原）
+- **HRI-2026-Free-Preview-v1.0.html**：旧版免费预览（CSS blur，已废弃）
 - H5 Viewer：`src/components/H5ReportViewer.tsx` + API `src/app/api/hri-chapters/[chapter]/route.ts`
 - 章节内容存储：Supabase `reports` 表 id=44 的 `chapters_json` JSONB 字段（185KB）
 - **关键**：API route 必须有 `export const dynamic = 'force-dynamic'`，否则 Vercel 返回 404
