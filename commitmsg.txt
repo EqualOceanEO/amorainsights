@@ -1,7 +1,6 @@
-﻿refactor(H5ReportViewer): replace iframe-per-chapter with full-page H5 embed
+﻿fix: add HRI-2026 report HTML files to public/ for iframe embedding
 
-- Free users: full-page embed of HRI-2026-Free-Preview-v2.0.html (SVG blur paywall)
-- PRO users: full-page embed of HRI-2026-AMORA-Report-v5.0.html (complete report)
-- Minimal top banner with AMORA branding + upgrade/back CTA
-- Removes chunky chapter dividers and stacked iframes
-- Matches the polished v5.0 standalone HTML experience
+- Copy HRI-2026-Free-Preview-v2.0.html to public/ (free user view)
+- Copy HRI-2026-AMORA-Report-v5.0.html to public/ (PRO user view)
+- These files were referenced by H5ReportViewer but missing from public/
+- Fixes 404 error on /reports/humanoid-robotics-intelligence-2026
