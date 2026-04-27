@@ -1,6 +1,1 @@
-﻿fix: suppress iframe's internal top banner via CSS injection
-
-- H5ReportViewer: inject <style> into iframe onLoad to hide #preview-banner
-  and any fixed top nav inside the HTML source
-- Eliminates triple-AMORA duplication (outer UpgradeBanner + inner HTML banner
-  + HTML content header) — now only the outer fixed banner shows
+﻿fix: clean iframe's internal CSS — kill banner gaps, remove black bar artifacts
