@@ -1,5 +1,7 @@
-﻿feat(api): add sql parameter support to migrate API
+﻿refactor(H5ReportViewer): replace iframe-per-chapter with full-page H5 embed
 
-- migrate/route.ts: accept ?sql= param to execute arbitrary SQL via run_migration RPC
-- Add fix scripts: run_fix_humanoid.cjs, verify_fix.cjs, retry_deletes.cjs
-- Execute DB fix: delete duplicate companies (185,186), update Unitree/Tesla scores, insert Sanctuary AI
+- Free users: full-page embed of HRI-2026-Free-Preview-v2.0.html (SVG blur paywall)
+- PRO users: full-page embed of HRI-2026-AMORA-Report-v5.0.html (complete report)
+- Minimal top banner with AMORA branding + upgrade/back CTA
+- Removes chunky chapter dividers and stacked iframes
+- Matches the polished v5.0 standalone HTML experience
