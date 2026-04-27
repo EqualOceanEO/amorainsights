@@ -106,10 +106,10 @@ export default async function ReportDetailPage({
       {/* Reading progress bar — only for Markdown (long-form scroll) */}
       {!isH5Report && <ReadingProgress />}
 
-      {/* ── Shared Nav ─────────────────────────────────────────────────────── */}
-      <SiteNav activePath="/reports" />
+      {/* ── Shared Nav — hidden in H5 immersive mode ───────────────────────── */}
+      {!isH5Report && <SiteNav activePath="/reports" />}
 
-      {/* ── H5 Report: immersive full-height layout ──────────────────────── */}
+      {/* ── H5 Report: immersive full-height layout (no SiteNav/SiteFooter) ── */}
       {isH5Report ? (
         <>
           <H5ReportViewer
@@ -119,7 +119,6 @@ export default async function ReportDetailPage({
             relatedReports={relatedReports}
             demoMode={isDemoMode}
           />
-          <SiteFooter />
         </>
       ) : (
         <>

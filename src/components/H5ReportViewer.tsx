@@ -31,62 +31,88 @@ interface Props {
 
 // ── Upgrade Banner (shown above the iframe for free users) ────────────────────
 
-function UpgradeBanner() {
+function UpgradeBanner({ title }: { title?: string }) {
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-4 py-2.5"
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-5"
       style={{
-        background: 'linear-gradient(90deg, rgba(6,7,14,0.98) 0%, rgba(15,15,30,0.98) 100%)',
-        borderBottom: '1px solid rgba(251,191,36,0.25)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
+        height: 44,
+        background: 'linear-gradient(90deg, #06070e 0%, #0f0f1e 100%)',
+        borderBottom: '1px solid rgba(251,191,36,0.2)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
       }}
     >
+      {/* Left: logo + breadcrumb */}
       <div className="flex items-center gap-2.5 min-w-0">
-        <span className="text-sm font-black tracking-tight text-white shrink-0">AMORA</span>
-        <div className="w-px h-4 bg-gray-700 shrink-0" />
-        <span className="text-xs text-gray-400 truncate hidden sm:block">
-          Humanoid Robotics Intelligence 2026
+        <Link href="/reports" className="text-sm font-black tracking-tight text-white shrink-0 hover:opacity-80 transition">
+          AMORA
+        </Link>
+        <span className="text-gray-700 text-sm shrink-0">/</span>
+        <span className="text-xs text-gray-500 truncate hidden sm:block max-w-xs">
+          {title ?? 'Humanoid Robotics Intelligence 2026'}
         </span>
-        <span className="shrink-0 text-xs font-semibold bg-green-900/50 text-green-400 px-2 py-0.5 rounded-full">
-          FREE Preview
+        <span className="shrink-0 text-[10px] font-semibold bg-green-950 text-green-400 border border-green-800/50 px-2 py-0.5 rounded-full tracking-wide">
+          免费预览版
         </span>
       </div>
-      <Link
-        href="/pricing"
-        className="shrink-0 text-xs font-bold px-4 py-1.5 rounded-lg text-white transition hover:opacity-90"
-        style={{
-          background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-          boxShadow: '0 0 16px rgba(245,158,11,0.35)',
-        }}
-      >
-        升级 Pro · 解锁全部
-      </Link>
+
+      {/* Right: actions */}
+      <div className="flex items-center gap-3 shrink-0">
+        <Link
+          href="#chapters"
+          className="hidden sm:block text-xs text-gray-500 hover:text-gray-300 transition"
+        >
+          免费章节
+        </Link>
+        <Link
+          href="/pricing"
+          className="text-xs text-gray-400 hover:text-gray-200 transition"
+        >
+          订阅 PRO
+        </Link>
+        <Link
+          href="/pricing"
+          className="text-xs font-bold px-3.5 py-1.5 rounded-md text-white transition hover:opacity-90"
+          style={{
+            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+            boxShadow: '0 0 12px rgba(245,158,11,0.3)',
+          }}
+        >
+          查看完整版 →
+        </Link>
+      </div>
     </div>
   );
 }
 
-function ProBanner() {
+function ProBanner({ title }: { title?: string }) {
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-4 py-2.5"
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-5"
       style={{
-        background: 'linear-gradient(90deg, rgba(6,7,14,0.98) 0%, rgba(15,15,30,0.98) 100%)',
-        borderBottom: '1px solid rgba(168,85,247,0.25)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
+        height: 44,
+        background: 'linear-gradient(90deg, #06070e 0%, #0f0f1e 100%)',
+        borderBottom: '1px solid rgba(168,85,247,0.2)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
       }}
     >
+      {/* Left: logo + breadcrumb */}
       <div className="flex items-center gap-2.5 min-w-0">
-        <span className="text-sm font-black tracking-tight text-white shrink-0">AMORA</span>
-        <div className="w-px h-4 bg-gray-700 shrink-0" />
-        <span className="text-xs text-gray-400 truncate hidden sm:block">
-          Humanoid Robotics Intelligence 2026
+        <Link href="/reports" className="text-sm font-black tracking-tight text-white shrink-0 hover:opacity-80 transition">
+          AMORA
+        </Link>
+        <span className="text-gray-700 text-sm shrink-0">/</span>
+        <span className="text-xs text-gray-500 truncate hidden sm:block max-w-xs">
+          {title ?? 'Humanoid Robotics Intelligence 2026'}
         </span>
-        <span className="shrink-0 text-xs font-semibold bg-purple-900/50 text-purple-400 px-2 py-0.5 rounded-full">
+        <span className="shrink-0 text-[10px] font-semibold bg-purple-950 text-purple-400 border border-purple-800/50 px-2 py-0.5 rounded-full tracking-wide">
           PRO
         </span>
       </div>
+
+      {/* Right */}
       <Link
         href="/reports"
         className="shrink-0 text-xs text-gray-500 hover:text-gray-300 transition"
@@ -114,8 +140,8 @@ export default function H5ReportViewer({ report, hasAccess, demoMode }: Props) {
 
   const htmlSrc = isPro ? paths.pro : paths.free;
 
-  // Height: full viewport minus the top banner bar (40px)
-  const BANNER_H = 40;
+  // Height: full viewport minus the top banner bar (44px)
+  const BANNER_H = 44;
 
   if (!isMounted) {
     return (
@@ -143,7 +169,7 @@ export default function H5ReportViewer({ report, hasAccess, demoMode }: Props) {
       `}</style>
 
       {/* Top banner */}
-      {isPro ? <ProBanner /> : <UpgradeBanner />}
+      {isPro ? <ProBanner title={report.title} /> : <UpgradeBanner title={report.title} />}
 
       {/* Full-page iframe */}
       <div

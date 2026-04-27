@@ -1,6 +1,5 @@
-﻿fix: add HRI-2026 report HTML files to public/ for iframe embedding
+﻿fix: remove duplicate SiteNav in H5 report immersive mode, redesign banner
 
-- Copy HRI-2026-Free-Preview-v2.0.html to public/ (free user view)
-- Copy HRI-2026-AMORA-Report-v5.0.html to public/ (PRO user view)
-- These files were referenced by H5ReportViewer but missing from public/
-- Fixes 404 error on /reports/humanoid-robotics-intelligence-2026
+- page.tsx: hide SiteNav/SiteFooter when isH5Report, pure immersive layout
+- H5ReportViewer: redesign UpgradeBanner/ProBanner - logo as link, breadcrumb style,
+  tighter 44px height, free/pro tier actions, dynamic report title prop
