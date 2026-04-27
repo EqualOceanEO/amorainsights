@@ -129,6 +129,31 @@ export default function H5ReportViewer({ report, hasAccess, demoMode }: Props) {
   const isPro = hasAccess || demoMode === true;
   const [isMounted, setIsMounted] = useState(false);
 
+  // Inject CSS into the iframe to suppress its internal top navigation
+  // (the outer UpgradeBanner/ProBanner already handles branding)
+  const handleIframeLoad = (iframe: HTMLIFrameElement | null) => {
+    if (!iframe) return;
+    try {
+      const doc = iframe.contentDocument ?? iframe.contentWindow?.document;
+      if (!doc) return;
+      const style = doc.createElement('style');
+      style.textContent = `
+        /* Hide iframe's own top banner — outer banner handles it */
+        #preview-banner, #top-banner, .preview-banner, .top-banner { display: none !important; }
+        /* Also suppress any fixed top nav bars inside the report */
+        header[style*="fixed"], nav[style*="fixed"] { display: none !important; }
+        /* Push content up by the banner height that no longer shows */
+        body > *:first-child:not(#preview-banner):not(#top-banner) {
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+        }
+      `;
+      doc.head.appendChild(style);
+    } catch {
+      // Cross-origin iframe — skip injection
+    }
+  };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -189,6 +214,7 @@ export default function H5ReportViewer({ report, hasAccess, demoMode }: Props) {
           title={report.title}
           sandbox="allow-scripts allow-same-origin allow-popups"
           style={{ display: 'block', width: '100%', height: '100%' }}
+          onLoad={(e) => handleIframeLoad(e.currentTarget)}
         />
       </div>
     </>
