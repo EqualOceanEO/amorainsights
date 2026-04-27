@@ -1,11 +1,5 @@
-﻿feat(HRI-2026): split v5.0 into 5 individual chapter files for H5ReportViewer
+﻿feat(api): add sql parameter support to migrate API
 
-- Split HRI-2026-AMORA-Report-v5.0.html into 5 chapters:
-  - hri-report-part-m-mapping-v1.html (FREE)
-  - hri-report-part-a-advancement-v1.html (PRO)
-  - hri-report-part-o-operations-v1.html (PRO)
-  - hri-report-part-r-reach-v1.html (PRO)
-  - hri-report-part-a2-assets-v1.html (PRO)
-- Generated corresponding -en.html English versions
-- Updated H5ReportViewer.tsx src paths to point to v1 chapter files
-- Scripts: split_v5.cjs (Node.js), build_chapters.py, split_chapters.py, etc.
+- migrate/route.ts: accept ?sql= param to execute arbitrary SQL via run_migration RPC
+- Add fix scripts: run_fix_humanoid.cjs, verify_fix.cjs, retry_deletes.cjs
+- Execute DB fix: delete duplicate companies (185,186), update Unitree/Tesla scores, insert Sanctuary AI

@@ -18,11 +18,19 @@ export async function GET(request: Request) {
     auth: { persistSession: false },
   });
 
-  // Step 1: Check what columns we have
+  // If sql param provided, execute it directly via RPC
+  const sqlParam = searchParams.get('sql');
+  if (sqlParam) {
+    const { data, error } = await supabase.rpc('run_migration', { sql_text: sqlParam });
+    if (error) {
+      return NextResponse.json({ ok: false, error: error.message, sql: sqlParam }, { status: 200 });
+    }
+    return NextResponse.json({ ok: true, result: data, sql: sqlParam.substring(0, 100) });
+  }
+
+  // Original logic: check/apply news_items migrations
   const { data: sample } = await supabase.from('news_items').select('*').limit(1);
   const existingCols = sample && sample[0] ? Object.keys(sample[0]) : [];
-
-  // Columns we need
   const needed = ['slug', 'content', 'cover_image_url', 'author', 'tags', 'is_premium', 'is_published', 'company_id', 'industry_id', 'sub_sector_id', 'updated_at'];
   const missing = needed.filter(c => !existingCols.includes(c));
 
@@ -30,11 +38,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: 'All columns already exist!', existingCols });
   }
 
-  // Step 2: Try to call run_migration RPC
   const { data: rpcTest, error: rpcErr } = await supabase.rpc('run_migration', { sql_text: 'SELECT 1' });
 
   if (!rpcErr) {
-    // RPC exists! Run all migrations
     const results = [];
     const migrations = [
       `ALTER TABLE news_items ADD COLUMN IF NOT EXISTS slug TEXT`,
@@ -58,7 +64,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ results, missing, done: true });
   }
 
-  // Step 3: RPC doesn't exist. Return instructions.
   return NextResponse.json({
     message: 'run_migration function not found in database. Please run this SQL in Supabase SQL Editor first:',
     create_function_sql: `CREATE OR REPLACE FUNCTION public.run_migration(sql_text TEXT) RETURNS TEXT LANGUAGE plpgsql SECURITY DEFINER AS $$ BEGIN EXECUTE sql_text; RETURN 'ok'; EXCEPTION WHEN OTHERS THEN RETURN SQLERRM; END; $$;`,
