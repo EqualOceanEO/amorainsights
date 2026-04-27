@@ -138,18 +138,10 @@ export default function H5ReportViewer({ report, hasAccess, demoMode }: Props) {
       if (!doc) return;
       const style = doc.createElement('style');
       style.textContent = `
-        /* ── Core reset — kill all margins/padding and ensure full-bleed ─── */
-        *, *::before, *::after { margin: 0 !important; padding: 0 !important; box-sizing: border-box; }
-        html, body {
-          background: #05080f !important;
-          overflow-x: hidden !important;
-        }
-        /* ── Suppress all internal top banners/nav bars ────────────────────── */
-        #preview-banner, #top-banner, .preview-banner, .top-banner,
-        header[style*="fixed"], header[class*="fixed"], nav[style*="fixed"], nav[class*="fixed"],
-        header[style*="sticky"], header[class*="sticky"] { display: none !important; }
-        /* ── Make first content element start at top — no gap where banner was */
-        body > *:first-child { margin-top: 0 !important; padding-top: 0 !important; }
+        /* ── Only hide the duplicate top banner, don't touch layout ───────── */
+        #preview-banner, #top-banner, .preview-banner, .top-banner { display: none !important; }
+        /* ── Remove body top padding that was reserved for the hidden banner */
+        body { padding-top: 0 !important; margin-top: 0 !important; }
       `;
       doc.head.appendChild(style);
     } catch {

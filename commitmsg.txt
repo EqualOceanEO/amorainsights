@@ -1,1 +1,5 @@
-﻿fix: clean iframe's internal CSS — kill banner gaps, remove black bar artifacts
+﻿fix: remove aggressive CSS reset that broke report layout
+
+- Reverted *, *::before, *::after { margin: 0; padding: 0; } which destroyed
+  all spacing in the report content
+- Now only targeting #preview-banner display:none + body padding reset
