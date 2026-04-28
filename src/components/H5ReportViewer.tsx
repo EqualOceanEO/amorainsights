@@ -138,10 +138,11 @@ export default function H5ReportViewer({ report, hasAccess, demoMode }: Props) {
       if (!doc) return;
       const style = doc.createElement('style');
       style.textContent = `
-        /* ── Only hide the duplicate top banner, don't touch layout ───────── */
+        /* ── Hide duplicate top banner ─────────────────────────────────────── */
         #preview-banner, #top-banner, .preview-banner, .top-banner { display: none !important; }
-        /* ── Remove body top padding that was reserved for the hidden banner */
-        body { padding-top: 0 !important; margin-top: 0 !important; }
+        /* ── Remove the 48px offset reserved for the hidden banner ─────────── */
+        #nav { top: 0 !important; }
+        #main { margin-top: 0 !important; }
       `;
       doc.head.appendChild(style);
     } catch {
