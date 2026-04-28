@@ -1,4 +1,4 @@
-﻿fix: remove 48px black bar by adjusting #nav top and #main margin-top
+﻿feat: add homepage link to H5 report banner
 
-- #nav had top:48px and #main had margin-top:48px to avoid #preview-banner
-- Now that banner is hidden, reset these to 0 to eliminate the empty black space
+- UpgradeBanner/ProBanner: add "首页" link on the right side
+- Makes it easy to navigate back from any report page

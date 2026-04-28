@@ -60,6 +60,12 @@ function UpgradeBanner({ title }: { title?: string }) {
       {/* Right: actions */}
       <div className="flex items-center gap-3 shrink-0">
         <Link
+          href="/"
+          className="text-xs text-gray-500 hover:text-gray-300 transition"
+        >
+          首页
+        </Link>
+        <Link
           href="#chapters"
           className="hidden sm:block text-xs text-gray-500 hover:text-gray-300 transition"
         >
@@ -114,10 +120,16 @@ function ProBanner({ title }: { title?: string }) {
 
       {/* Right */}
       <Link
+        href="/"
+        className="shrink-0 text-xs text-gray-500 hover:text-gray-300 transition"
+      >
+        首页
+      </Link>
+      <Link
         href="/reports"
         className="shrink-0 text-xs text-gray-500 hover:text-gray-300 transition"
       >
-        ← 所有报告
+        所有报告
       </Link>
     </div>
   );
