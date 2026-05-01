@@ -10,14 +10,14 @@ import type { SubscriptionTier } from '@/components/ChartBlock';
 
 const REPORT_HTML: Record<string, { free: string; pro: string }> = {
   'humanoid-robotics-intelligence-2026': {
-    free: '/HRI-2026-Free-Preview-v2.0.html',
-    pro: '/HRI-2026-AMORA-Report-v5.0.html',
+    free: '/HRI-2026-Free-Preview-v2.0-en.html',
+    pro: '/HRI-2026-AMORA-Report-v5.0-en.html',
   },
 };
 
 // Default fallback paths
-const DEFAULT_FREE = '/HRI-2026-Free-Preview-v2.0.html';
-const DEFAULT_PRO = '/HRI-2026-AMORA-Report-v5.0.html';
+const DEFAULT_FREE = '/HRI-2026-Free-Preview-v2.0-en.html';
+const DEFAULT_PRO = '/HRI-2026-AMORA-Report-v5.0-en.html';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -53,7 +53,7 @@ function UpgradeBanner({ title }: { title?: string }) {
           {title ?? 'Humanoid Robotics Intelligence 2026'}
         </span>
         <span className="shrink-0 text-[10px] font-semibold bg-green-950 text-green-400 border border-green-800/50 px-2 py-0.5 rounded-full tracking-wide">
-          免费预览版
+          FREE PREVIEW
         </span>
       </div>
 
@@ -63,19 +63,19 @@ function UpgradeBanner({ title }: { title?: string }) {
           href="/"
           className="text-xs text-gray-500 hover:text-gray-300 transition"
         >
-          首页
+          Home
         </Link>
         <Link
           href="#chapters"
           className="hidden sm:block text-xs text-gray-500 hover:text-gray-300 transition"
         >
-          免费章节
+          Free Chapters
         </Link>
         <Link
           href="/pricing"
           className="text-xs text-gray-400 hover:text-gray-200 transition"
         >
-          订阅 PRO
+          Subscribe PRO
         </Link>
         <Link
           href="/pricing"
@@ -85,7 +85,7 @@ function UpgradeBanner({ title }: { title?: string }) {
             boxShadow: '0 0 12px rgba(245,158,11,0.3)',
           }}
         >
-          查看完整版 →
+          View Full Report →
         </Link>
       </div>
     </div>
@@ -123,13 +123,13 @@ function ProBanner({ title }: { title?: string }) {
         href="/"
         className="shrink-0 text-xs text-gray-500 hover:text-gray-300 transition"
       >
-        首页
+        Home
       </Link>
       <Link
         href="/reports"
         className="shrink-0 text-xs text-gray-500 hover:text-gray-300 transition"
       >
-        所有报告
+        All Reports
       </Link>
     </div>
   );
