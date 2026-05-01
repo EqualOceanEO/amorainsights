@@ -5,19 +5,9 @@ import Link from 'next/link';
 import type { Report } from '@/lib/db';
 import type { SubscriptionTier } from '@/components/ChartBlock';
 
-// ── Report Source Map ─────────────────────────────────────────────────────────
-// Maps report slug → { free: string, pro: string } HTML file paths under /public
-
-const REPORT_HTML: Record<string, { free: string; pro: string }> = {
-  'humanoid-robotics-intelligence-2026': {
-    free: '/HRI-2026-Free-Preview-v2.0-en.html',
-    pro: '/HRI-2026-AMORA-Report-v5.0-en.html',
-  },
-};
-
-// Default fallback paths
-const DEFAULT_FREE = '/HRI-2026-Free-Preview-v2.0-en.html';
-const DEFAULT_PRO = '/HRI-2026-AMORA-Report-v5.0-en.html';
+// ── Dynamic API-based Report Source ───────────────────────────────────────────
+// Fetches report HTML from the database via /api/reports/html/[slug]
+// Falls back to static public/ files for backward compatibility
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -166,12 +156,9 @@ export default function H5ReportViewer({ report, hasAccess, demoMode }: Props) {
     setIsMounted(true);
   }, []);
 
-  const paths = REPORT_HTML[report.slug ?? ''] ?? {
-    free: DEFAULT_FREE,
-    pro: DEFAULT_PRO,
-  };
-
-  const htmlSrc = isPro ? paths.pro : paths.free;
+  // Build the iframe source from the API
+  // The API handles auth/tier logic and returns appropriate content
+  const htmlSrc = `/api/reports/html/${report.slug}`;
 
   // Height: full viewport minus the top banner bar (44px)
   const BANNER_H = 44;
