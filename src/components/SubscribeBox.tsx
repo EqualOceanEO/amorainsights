@@ -146,6 +146,8 @@ export default function SubscribeBox({
 
   // ── Loading state ──
   if (checking || !profileLoaded) {
+    // compact: show nothing while loading (avoids layout shift)
+    if (compact) return null;
     return (
       <div className={`rounded-xl border border-blue-900/40 bg-gradient-to-b from-[#0a1628] to-[#060d1c] p-6 ${className}`}>
         <div className="flex items-center gap-3 text-slate-500 text-sm">
@@ -209,37 +211,9 @@ export default function SubscribeBox({
       );
     }
 
-    // Compact logged-in view — hide entirely if already subscribed
-    if (compact && newsletterSubscribed) {
-      return null;
-    }
-
+    // Compact logged-in view — hide entirely (nav already shows login state)
     if (compact) {
-      const subLabel = newsletterSubscribed ? '✓ Subscribed' : 'Subscribe';
-      const subColor = newsletterSubscribed ? 'text-green-400 bg-green-600/10 border-green-600/20' : 'text-white bg-blue-600 hover:bg-blue-500';
-      return (
-        <div className={`flex items-center gap-3 ${className}`}>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
-            <div className="w-6 h-6 rounded-full bg-blue-600/30 flex items-center justify-center text-xs font-bold text-blue-300">
-              {(displayName || '?')[0].toUpperCase()}
-            </div>
-            <span className="text-sm text-slate-300 truncate max-w-[160px]" title={session.email}>
-              {session.email}
-            </span>
-            {tier === 'pro' && (
-              <span className="text-[10px] font-bold text-blue-400 bg-blue-600/20 px-1.5 py-0.5 rounded">PRO</span>
-            )}
-          </div>
-          <button
-            onClick={toggleNewsletter}
-            disabled={status === 'loading'}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition ${newsletterSubscribed ? 'text-slate-400 border-slate-700 hover:text-slate-300 hover:border-slate-600' : 'text-blue-400 border-blue-600/40 hover:bg-blue-600/10'}`}
-          >
-            {status === 'loading' ? '...' : newsletterSubscribed ? 'Unsubscribe' : 'Subscribe'}
-          </button>
-          <a href="/dashboard" className="text-xs text-slate-500 hover:text-slate-400 transition">Dashboard →</a>
-        </div>
-      );
+      return null;
     }
 
     // Full card logged-in view
