@@ -320,26 +320,29 @@ export default function SubscribeBox({
   // ── Compact non-logged-in view ──
   if (compact) {
     return (
-      <form onSubmit={handleSubmit} className={`flex gap-2 ${className}`}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="your@email.com"
-          required
-          className="flex-1 min-w-0 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition"
-        />
-        <button
-          type="submit"
-          disabled={status === 'loading'}
-          className="px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-lg transition whitespace-nowrap"
-        >
-          {status === 'loading' ? '...' : 'Subscribe'}
-        </button>
+      <div className={className}>
+        <form onSubmit={handleSubmit} className="flex gap-2">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            required
+            className="flex-1 min-w-0 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition"
+          />
+          <button
+            type="submit"
+            disabled={status === 'loading'}
+            className="px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-lg transition whitespace-nowrap"
+          >
+            {status === 'loading' ? '...' : 'Subscribe'}
+          </button>
+        </form>
         {status === 'error' && (
-          <p className="absolute top-full mt-1 text-xs text-red-400">{errorMsg}</p>
+          <p className="mt-1 text-xs text-red-400">{errorMsg}</p>
         )}
-      </form>
+        <div className="border-t border-gray-800/60 mt-4" />
+      </div>
     );
   }
 

@@ -122,7 +122,6 @@ export default async function Home() {
             <div className="flex flex-col gap-4 md:items-end shrink-0 w-full md:w-72">
               <div className="w-full rounded-xl border border-gray-700/40 bg-gray-900/60 backdrop-blur-sm p-5 flex flex-col gap-4">
                 <SubscribeBox source="homepage" compact />
-                <div className="border-t border-gray-800/60" />
                 <div className="flex flex-col gap-2">
                   <StatPill icon="📊" label="Reports" value={reportsCount} href="/reports" />
                   <StatPill icon="🏢" label="Companies" value={companiesCount} href="/companies" />
