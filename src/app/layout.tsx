@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { AnalyticsProvider } from "@/components/AnalyticsProvider";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -48,9 +49,11 @@ export default function RootLayout({
       <body className="bg-gray-950 text-white antialiased font-sans">
         {/* Suspense required because AnalyticsProvider uses useSearchParams */}
         <Suspense fallback={null}>
-          <AnalyticsProvider>
-            {children}
-          </AnalyticsProvider>
+          <AuthProvider>
+            <AnalyticsProvider>
+              {children}
+            </AnalyticsProvider>
+          </AuthProvider>
         </Suspense>
       </body>
     </html>

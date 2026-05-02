@@ -1,17 +1,12 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 interface SubscribeBoxProps {
   source?: string;
   compact?: boolean; // true = single-line inline, false = stacked card
   className?: string;
-}
-
-interface SessionUser {
-  email: string;
-  name?: string | null;
-  subscriptionTier?: string;
 }
 
 export default function SubscribeBox({
@@ -23,36 +18,12 @@ export default function SubscribeBox({
   const [status, setStatus] = useState<'idle' | 'loading' | 'subscribed' | 'already' | 'auto-logged-in' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Auth state
-  const [session, setSession] = useState<SessionUser | null>(null);
+  // Use global auth context — single source of truth
+  const { user: session, loading: checking } = useAuth();
   const [newsletterSubscribed, setNewsletterSubscribed] = useState<boolean | null>(null);
-  const [checking, setChecking] = useState(true);
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
-  const fetchSession = useCallback(async () => {
-    try {
-      const res = await fetch('/api/auth/session');
-      if (res.ok) {
-        const data = await res.json();
-        if (data?.user) {
-          // Cross-check tier directly from DB to avoid stale JWT cache
-          try {
-            const tierRes = await fetch('/api/user/tier');
-            if (tierRes.ok) {
-              const { tier } = await tierRes.json();
-              data.user.subscriptionTier = tier;
-            }
-          } catch { /* non-critical */ }
-          setSession(data.user);
-          return data.user;
-        }
-      }
-      return null;
-    } catch {
-      return null;
-    }
-  }, []);
-
-  const fetchNewsletterStatus = useCallback(async (userEmail: string) => {
+  const fetchNewsletterStatus = useCallback(async () => {
     try {
       const res = await fetch('/api/user/profile');
       if (res.ok) {
@@ -61,18 +32,18 @@ export default function SubscribeBox({
       }
     } catch {
       setNewsletterSubscribed(false);
+    } finally {
+      setProfileLoaded(true);
     }
   }, []);
 
   useEffect(() => {
-    (async () => {
-      const user = await fetchSession();
-      if (user?.email) {
-        await fetchNewsletterStatus(user.email);
-      }
-      setChecking(false);
-    })();
-  }, [fetchSession, fetchNewsletterStatus]);
+    if (!checking && session?.email) {
+      fetchNewsletterStatus();
+    } else if (!checking) {
+      setProfileLoaded(true);
+    }
+  }, [checking, session, fetchNewsletterStatus]);
 
   // Subscribe / unsubscribe toggle for logged-in users
   async function toggleNewsletter() {
@@ -135,8 +106,7 @@ export default function SubscribeBox({
       const loginData = await loginRes.json();
 
       if (loginData.exists) {
-        // Auto-logged in! Check if already subscribed
-        setSession(loginData.user);
+        // Auto-logged in! Refresh auth context and check subscription
         const subRes = await fetch('/api/user/profile');
         if (subRes.ok) {
           const subData = await subRes.json();
@@ -175,7 +145,7 @@ export default function SubscribeBox({
   }
 
   // ── Loading state ──
-  if (checking) {
+  if (checking || !profileLoaded) {
     return (
       <div className={`rounded-xl border border-blue-900/40 bg-gradient-to-b from-[#0a1628] to-[#060d1c] p-6 ${className}`}>
         <div className="flex items-center gap-3 text-slate-500 text-sm">

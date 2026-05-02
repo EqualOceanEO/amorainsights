@@ -1,19 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 import { INDUSTRY_HIERARCHY, getLevel2Options } from '@/lib/industries';
 import { INDUSTRY_META, type IndustrySlug } from '@/lib/db';
-
-interface SessionUser {
-  id?: string;
-  email?: string | null;
-  name?: string | null;
-  subscriptionTier?: string;
-  isAdmin?: boolean;
-}
 
 interface SiteNavProps {
   activePath?: string;
@@ -25,51 +18,20 @@ export default function SiteNav({ activePath }: SiteNavProps) {
   const [ddOpen, setDdOpen] = useState(false);
   const [hoverL1, setHoverL1] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [user, setUser] = useState<SessionUser | null>(null);
-  const [sessionLoaded, setSessionLoaded] = useState(false);
   const ddRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const { user, loading: sessionLoaded, refresh } = useAuth();
 
   const isLoggedIn = !!user;
   const isPro = user?.subscriptionTier === 'pro';
   const userName = user?.name || user?.email?.split('@')[0] || 'User';
 
-  // Fetch session on mount, then cross-check tier from DB directly
-  // (JWT may cache stale subscriptionTier; DB is always authoritative)
-  const fetchSession = useCallback(async () => {
-    try {
-      const res = await fetch('/api/auth/session');
-      if (res.ok) {
-        const data = await res.json();
-        const user = data.user;
-        // If logged in, fetch tier directly from DB to avoid stale JWT cache
-        if (user?.email) {
-          try {
-            const tierRes = await fetch('/api/user/tier');
-            if (tierRes.ok) {
-              const { tier } = await tierRes.json();
-              user.subscriptionTier = tier;
-            }
-          } catch { /* non-critical, keep session value */ }
-        }
-        setUser(user);
-      }
-    } catch {
-      // Silent fail — stay logged out
-    } finally {
-      setSessionLoaded(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchSession();
-  }, [fetchSession]);
-
   // Re-fetch session when pathname changes (e.g., after login/signup)
   useEffect(() => {
-    fetchSession();
-  }, [pathname, fetchSession]);
+    refresh();
+  }, [pathname, refresh]);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -104,7 +66,7 @@ export default function SiteNav({ activePath }: SiteNavProps) {
   ];
 
   // Don't render CTA buttons until session is loaded to prevent flash
-  const showCta = sessionLoaded;
+  const showCta = !sessionLoaded;
 
   return (
     <header className="border-b border-gray-800/60 bg-gray-950/90 backdrop-blur-md sticky top-0 z-50">
