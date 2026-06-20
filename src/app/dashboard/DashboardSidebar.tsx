@@ -9,7 +9,15 @@ interface DashboardSidebarProps {
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Overview', icon: '📊', exact: true },
-  { href: '/dashboard/account', label: 'My Account', icon: '👤' },
+  { href: '/dashboard/my-companies', label: 'My Companies', icon: '🏢' },
+  { href: '/dashboard/industry-mapping', label: 'Industry Mapping', icon: '🗺️' },
+  { href: '/dashboard/scoring', label: 'Scoring', icon: '📈' },
+  { href: '/dashboard/benchmark', label: 'Benchmark', icon: '⚖️' },
+  { href: '/dashboard/alerts', label: 'Alerts', icon: '🔔' },
+  { href: '/dashboard/market', label: 'Market', icon: '📡' },
+  { href: '/dashboard/research', label: 'Research', icon: '🔬' },
+  { href: '/dashboard/capital', label: 'Capital', icon: '💰' },
+  { href: '/dashboard/account', label: 'Account', icon: '👤' },
 ];
 
 const ADMIN_ITEMS = [
@@ -26,7 +34,7 @@ export default function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
   }
 
   return (
-    <aside className="w-56 shrink-0 bg-gray-900 border-r border-gray-800 flex-col hidden lg:flex">
+    <aside className="w-60 shrink-0 bg-gray-900 border-r border-gray-800 flex-col hidden lg:flex">
       {/* Brand */}
       <div className="px-5 py-4 border-b border-gray-800">
         <Link href="/" className="flex items-center gap-2">

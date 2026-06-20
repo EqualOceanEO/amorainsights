@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
-import { getReportBySlug, getReports, INDUSTRY_META, type Report } from '@/lib/db';
+import { getReportBySlug, getReports, INDUSTRY_META, type Report, type ReportFormat, type IndustrySlug, type ComplianceTier, type ComplianceStatus, type SensitivityTagRecord, type GeoRiskTier } from '@/lib/db';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 import ReadingProgress from '@/components/ReadingProgress';
@@ -42,18 +42,40 @@ export default async function ReportDetailPage({
   let relatedReports: Report[] = [];
 
   // Fallback data for HRI-2026 report (used when Supabase is unreachable)
-  const HRI_2026_FALLBACK: Report = {
+  const HRI_2026_FALLBACK = {
     id: 44,
     title: 'Humanoid Robotics Intelligence 2026',
     summary:
       'AMORA 发布《人形机器人智能产业报告 2026》，覆盖中美日韩欧 9 家核心企业，涵盖产业链全景、技术代际、商业化进程、市场容量与资本估值五大维度，基于 AMORA Model v3.0 构建评级体系。',
-    industry_slug: 'humanoid-robotics',
+    industry_slug: 'humanoid-robotics' as IndustrySlug,
     author: 'AMORA Research Team',
     is_premium: true,
     slug: 'humanoid-robotics-intelligence-2026',
-    report_format: 'h5_embed',
+    report_format: 'h5_embed' as ReportFormat,
+    content: null,
+    cover_image_url: null,
+    tags: [] as string[],
+    view_count: 0,
+    published_at: '2026-03-01T00:00:00Z',
     created_at: '2026-03-01T00:00:00Z',
     updated_at: '2026-04-01T00:00:00Z',
+    html_content: null,
+    compliance_tier: 'STANDARD' as ComplianceTier,
+    compliance_status: 'APPROVED' as ComplianceStatus,
+    sensitivity_tags: [] as SensitivityTagRecord[],
+    tech_domain: null,
+    geo_risk_tier: 'G0' as GeoRiskTier,
+    effective_tier: 'STANDARD' as ComplianceTier,
+    compliance_reviewer_id: null,
+    compliance_reviewed_at: null,
+    compliance_dual_sign_id: null,
+    entity_list_checked_at: null,
+    entity_list_version: null,
+    compliance_notes: null,
+    downgrade_authorized_by: [] as string[],
+    downgrade_reason: null,
+    flagged_at: null,
+    flagged_by_list_update: null,
   } as Report;
 
   try {

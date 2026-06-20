@@ -5,6 +5,8 @@ import {
   getDashboardStats,
   getReportCountByIndustry,
   getRecentNewsItems,
+  getUserCompanies,
+  getUserWatchlist,
   INDUSTRY_META,
   ALL_INDUSTRY_SLUGS,
   type IndustrySlug,
@@ -24,18 +26,28 @@ export default async function DashboardPage() {
   if (!session?.user) redirect('/login');
 
   const userName = session.user.name || session.user.email?.split('@')[0] || 'Researcher';
+  const userId = parseInt((session.user as any).id ?? '0');
 
   // Fetch real data — gracefully degrade to zeros if DB not ready
   let stats = { reportsCount: 0, companiesCount: 0, newsTodayCount: 0 };
   let reportsByIndustry: Record<string, number> = {};
   let recentNews: Awaited<ReturnType<typeof getRecentNewsItems>> = [];
+  let userCompaniesCount = 0;
+  let watchlistCount = 0;
 
   try {
-    [stats, reportsByIndustry, recentNews] = await Promise.all([
+    const [s, rbi, rn, uc, wl] = await Promise.all([
       getDashboardStats(),
       getReportCountByIndustry(),
       getRecentNewsItems(5),
+      getUserCompanies(userId),
+      getUserWatchlist(userId),
     ]);
+    stats = s;
+    reportsByIndustry = rbi;
+    recentNews = rn;
+    userCompaniesCount = uc.length;
+    watchlistCount = wl.length;
   } catch {
     // DB not yet available — show zeros rather than crash
   }
@@ -60,15 +72,17 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
         {[
-          { label: 'Reports Available',  value: stats.reportsCount.toLocaleString() },
-          { label: 'Companies Tracked',  value: stats.companiesCount.toLocaleString() },
-          { label: 'Industries Covered', value: '6' },
-          { label: 'News Today',         value: stats.newsTodayCount.toLocaleString() },
+          { label: 'Reports Available',  value: stats.reportsCount.toLocaleString(), color: 'text-blue-400' },
+          { label: 'Companies Tracked',  value: stats.companiesCount.toLocaleString(), color: 'text-green-400' },
+          { label: 'Industries Covered', value: '6', color: 'text-purple-400' },
+          { label: 'News Today',         value: stats.newsTodayCount.toLocaleString(), color: 'text-amber-400' },
+          { label: 'My Companies',       value: userCompaniesCount.toLocaleString(), color: 'text-cyan-400' },
+          { label: 'Watching',           value: watchlistCount.toLocaleString(), color: 'text-pink-400' },
         ].map((stat) => (
           <div key={stat.label} className="bg-gray-900 border border-gray-800 rounded-xl p-5">
-            <div className="text-2xl font-bold text-blue-400">{stat.value}</div>
+            <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
             <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
           </div>
         ))}

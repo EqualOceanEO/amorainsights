@@ -670,6 +670,235 @@ export async function getCompanyById(id: number): Promise<Company | null> {
   return (data as Company) ?? null;
 }
 
+// ─── User Company (Dashboard v2) types ──────────────────────────────────────────
+
+export interface UserCompany {
+  id: number;
+  user_id: number;
+  name: string;
+  name_cn: string | null;
+  industry_slug: IndustrySlug;
+  sub_sector: string | null;
+  description: string | null;
+  founded_year: number | null;
+  country: string;
+  hq_city: string | null;
+  hq_province: string | null;
+  website: string | null;
+  employee_count: number | null;
+  funding_stage: string | null;
+  funding_total_usd: number | null;
+  valuation_usd: number | null;
+  revenue_range: string | null;
+  business_model: string | null;
+  core_products: string | null;
+  tech_route: string | null;
+  key_partners: string | null;
+  primary_use_cases: string | null;
+  competitors: string | null;
+  logo_url: string | null;
+  data_source: string;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserWatchlistItem {
+  id: number;
+  user_id: number;
+  company_id: number | null;
+  user_company_id: number | null;
+  added_at: string;
+  notes: string | null;
+  alert_enabled: boolean;
+  // joined
+  company?: Company | null;
+  user_company?: UserCompany | null;
+}
+
+export interface UserBenchmarkGroup {
+  id: number;
+  user_id: number;
+  name: string;
+  description: string | null;
+  company_ids: number[];
+  user_company_ids: number[];
+  created_at: string;
+  updated_at: string;
+}
+
+// ─── User Company CRUD ──────────────────────────────────────────────────────────
+
+export async function getUserCompanies(userId: number): Promise<UserCompany[]> {
+  const { data, error } = await supabase
+    .from('user_companies')
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false });
+
+  if (error) throw new Error(`getUserCompanies failed: ${error.message}`);
+  return (data ?? []) as UserCompany[];
+}
+
+export async function getUserCompanyById(id: number, userId: number): Promise<UserCompany | null> {
+  const { data, error } = await supabase
+    .from('user_companies')
+    .select('*')
+    .eq('id', id)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error) throw new Error(`getUserCompanyById failed: ${error.message}`);
+  return (data as UserCompany) ?? null;
+}
+
+export async function createUserCompany(
+  userId: number,
+  input: Partial<Omit<UserCompany, 'id' | 'user_id' | 'created_at' | 'updated_at'>>
+): Promise<UserCompany> {
+  const { data, error } = await supabase
+    .from('user_companies')
+    .insert({ ...input, user_id: userId })
+    .select()
+    .single();
+
+  if (error) throw new Error(`createUserCompany failed: ${error.message}`);
+  if (!data) throw new Error('createUserCompany: no data returned');
+  return data as UserCompany;
+}
+
+export async function updateUserCompany(
+  id: number,
+  userId: number,
+  input: Partial<Omit<UserCompany, 'id' | 'user_id' | 'created_at' | 'updated_at'>>
+): Promise<UserCompany> {
+  const { data, error } = await supabase
+    .from('user_companies')
+    .update({ ...input, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .select()
+    .single();
+
+  if (error) throw new Error(`updateUserCompany failed: ${error.message}`);
+  if (!data) throw new Error('updateUserCompany: no data returned');
+  return data as UserCompany;
+}
+
+export async function deleteUserCompany(id: number, userId: number): Promise<void> {
+  const { error } = await supabase
+    .from('user_companies')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', userId);
+
+  if (error) throw new Error(`deleteUserCompany failed: ${error.message}`);
+}
+
+// ─── Watchlist CRUD ─────────────────────────────────────────────────────────────
+
+export async function getUserWatchlist(userId: number): Promise<UserWatchlistItem[]> {
+  const { data, error } = await supabase
+    .from('user_watchlist')
+    .select(`
+      *,
+      company:companies(*),
+      user_company:user_companies(*)
+    `)
+    .eq('user_id', userId)
+    .order('added_at', { ascending: false });
+
+  if (error) throw new Error(`getUserWatchlist failed: ${error.message}`);
+  return (data ?? []) as unknown as UserWatchlistItem[];
+}
+
+export async function addToWatchlist(
+  userId: number,
+  input: { company_id?: number; user_company_id?: number; notes?: string }
+): Promise<UserWatchlistItem> {
+  const { data, error } = await supabase
+    .from('user_watchlist')
+    .insert({ user_id: userId, ...input })
+    .select()
+    .single();
+
+  if (error) throw new Error(`addToWatchlist failed: ${error.message}`);
+  if (!data) throw new Error('addToWatchlist: no data returned');
+  return data as UserWatchlistItem;
+}
+
+export async function removeFromWatchlist(id: number, userId: number): Promise<void> {
+  const { error } = await supabase
+    .from('user_watchlist')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', userId);
+
+  if (error) throw new Error(`removeFromWatchlist failed: ${error.message}`);
+}
+
+// ─── Benchmark Groups CRUD ──────────────────────────────────────────────────────
+
+export async function getUserBenchmarkGroups(userId: number): Promise<UserBenchmarkGroup[]> {
+  const { data, error } = await supabase
+    .from('user_benchmark_groups')
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false });
+
+  if (error) throw new Error(`getUserBenchmarkGroups failed: ${error.message}`);
+  return (data ?? []) as UserBenchmarkGroup[];
+}
+
+export async function createBenchmarkGroup(
+  userId: number,
+  input: { name: string; description?: string; company_ids?: number[]; user_company_ids?: number[] }
+): Promise<UserBenchmarkGroup> {
+  const { data, error } = await supabase
+    .from('user_benchmark_groups')
+    .insert({
+      user_id: userId,
+      name: input.name,
+      description: input.description ?? null,
+      company_ids: input.company_ids ?? [],
+      user_company_ids: input.user_company_ids ?? [],
+    })
+    .select()
+    .single();
+
+  if (error) throw new Error(`createBenchmarkGroup failed: ${error.message}`);
+  if (!data) throw new Error('createBenchmarkGroup: no data returned');
+  return data as UserBenchmarkGroup;
+}
+
+export async function updateBenchmarkGroup(
+  id: number,
+  userId: number,
+  input: Partial<Pick<UserBenchmarkGroup, 'name' | 'description' | 'company_ids' | 'user_company_ids'>>
+): Promise<UserBenchmarkGroup> {
+  const { data, error } = await supabase
+    .from('user_benchmark_groups')
+    .update({ ...input, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .select()
+    .single();
+
+  if (error) throw new Error(`updateBenchmarkGroup failed: ${error.message}`);
+  if (!data) throw new Error('updateBenchmarkGroup: no data returned');
+  return data as UserBenchmarkGroup;
+}
+
+export async function deleteBenchmarkGroup(id: number, userId: number): Promise<void> {
+  const { error } = await supabase
+    .from('user_benchmark_groups')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', userId);
+
+  if (error) throw new Error(`deleteBenchmarkGroup failed: ${error.message}`);
+}
+
 // ─── Dashboard aggregates ─────────────────────────────────────────────────────
 
 export async function getDashboardStats(): Promise<{
