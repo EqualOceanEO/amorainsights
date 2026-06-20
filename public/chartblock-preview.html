@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ChartBlock Preview — AMORA</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #060D1C;
+    color: #F3F4F6;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    padding: 40px 24px;
+    min-height: 100vh;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #4B5563; margin-bottom: 8px; }
+  h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: #6B7280; margin-bottom: 40px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: #0F172A; border: 1px solid #1F2937; border-radius: 12px; overflow: hidden; }
+  .card-label {
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #1F2937;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .badge-free { background: #1D4ED8/20; color: #60A5FA; background-color: rgba(29,78,216,.15); padding: 2px 8px; border-radius: 4px; }
+  .badge-pro  { background: rgba(16,185,129,.15); color: #34D399; padding: 2px 8px; border-radius: 4px; }
+
+  /* ── Chart container ── */
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* ── Ghost SVG bars ── */
+  .ghost-bars { width: 100%; height: 100%; }
+
+  /* ── Free overlay ── */
+  .overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    backdrop-filter: blur(6px);
+    background: rgba(6,13,28,.72);
+    border-radius: 0;
+  }
+  .lock-icon {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(29,78,216,.2);
+    border: 1px solid rgba(29,78,216,.4);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+  }
+  .overlay h3 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .overlay p  { font-size: 12px; color: #9CA3AF; margin-bottom: 16px; text-align: center; max-width: 200px; line-height: 1.5; }
+  .cta {
+    display: inline-block;
+    background: #1D4ED8; color: #fff;
+    font-size: 12px; font-weight: 600;
+    padding: 8px 20px; border-radius: 8px;
+    text-decoration: none;
+    transition: background .15s;
+  }
+  .cta:hover { background: #2563EB; }
+
+  /* ── Hover tooltip ── */
+  .hover-tip {
+    position: absolute; top: 12px; right: 12px;
+    background: #1D4ED8; color: #fff;
+    font-size: 11px; font-weight: 500;
+    padding: 6px 12px; border-radius: 6px;
+    white-space: nowrap;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .chart-wrap:hover .hover-tip { opacity: 1; }
+
+  /* ── ECharts live ── */
+  #echarts-container { width: 100%; height: 280px; }
+
+  .caption { font-size: 11px; color: #4B5563; text-align: center; padding: 8px 16px 12px; font-style: italic; }
+  .section-title {
+    font-size: 10px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: #6B7280;
+    padding: 12px 16px 0;
+  }
+
+  /* full width demo below */
+  .full { grid-column: 1 / -1; }
+  .divider { border: none; border-top: 1px solid #1F2937; margin: 40px 0; }
+  .note { font-size: 12px; color: #4B5563; margin-top: 32px; line-height: 1.6; }
+  .note strong { color: #6B7280; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>AMORA · ChartBlock Component</h1>
+  <h2>Subscription-Gated Interactive Charts</h2>
+  <p class="sub">Free users see locked SVG preview · Pro/Enterprise users see full ECharts interactive</p>
+
+  <div class="grid">
+
+    <!-- FREE STATE -->
+    <div class="card">
+      <div class="card-label">
+        <span>Free User View</span>
+        <span class="badge-free">free tier</span>
+      </div>
+      <p class="section-title">Market Growth Trend</p>
+      <div class="chart-wrap">
+        <!-- Ghost SVG -->
+        <svg class="ghost-bars" viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="280" fill="#0F172A"/>
+          <rect x="43" y="182" width="38" height="58" rx="3" fill="rgba(29,78,216,0.30)"/>
+          <rect x="98" y="152" width="38" height="88" rx="3" fill="rgba(29,78,216,0.37)"/>
+          <rect x="153" y="122" width="38" height="118" rx="3" fill="rgba(29,78,216,0.44)"/>
+          <rect x="208" y="97"  width="38" height="143" rx="3" fill="rgba(29,78,216,0.51)"/>
+          <rect x="263" y="72"  width="38" height="168" rx="3" fill="rgba(29,78,216,0.58)"/>
+          <rect x="318" y="52"  width="38" height="188" rx="3" fill="rgba(29,78,216,0.65)"/>
+          <rect x="373" y="32"  width="38" height="208" rx="3" fill="rgba(29,78,216,0.72)"/>
+          <rect x="428" y="17"  width="38" height="223" rx="3" fill="rgba(29,78,216,0.80)"/>
+          <line x1="40" y1="240" x2="472" y2="240" stroke="#374151" stroke-width="1"/>
+        </svg>
+        <!-- Hover tooltip -->
+        <div class="hover-tip">📊 Interactive for Pro &amp; Enterprise members</div>
+        <!-- Lock overlay -->
+        <div class="overlay">
+          <div class="lock-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <rect x="5" y="11" width="14" height="10" rx="2" stroke="#60A5FA" stroke-width="1.8"/>
+              <path d="M8 11V7a4 4 0 018 0v4" stroke="#60A5FA" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Unlock Interactive Charts</h3>
+          <p>Join AMORA to explore the full data behind this report.</p>
+          <a href="#" class="cta">Start Free →</a>
+        </div>
+      </div>
+      <p class="caption">Source: AMORA Research · Q1 2026</p>
+    </div>
+
+    <!-- PRO STATE -->
+    <div class="card">
+      <div class="card-label">
+        <span>Pro User View</span>
+        <span class="badge-pro">pro tier</span>
+      </div>
+      <p class="section-title">Market Growth Trend</p>
+      <div id="echarts-container"></div>
+      <p class="caption">Source: AMORA Research · Q1 2026 · Hover to explore · Export via toolbar</p>
+    </div>
+
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- Component spec summary -->
+  <div class="grid">
+    <div class="card full" style="padding: 20px 24px;">
+      <p style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#4B5563;margin-bottom:12px;">Component Spec</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+        <div>
+          <p style="font-size:12px;color:#9CA3AF;margin-bottom:4px;">File</p>
+          <p style="font-size:12px;color:#E5E7EB;font-family:monospace;">src/components/ChartBlock.tsx</p>
+        </div>
+        <div>
+          <p style="font-size:12px;color:#9CA3AF;margin-bottom:4px;">Theme</p>
+          <p style="font-size:12px;color:#E5E7EB;font-family:monospace;">src/lib/echarts-theme.ts</p>
+        </div>
+        <div>
+          <p style="font-size:12px;color:#9CA3AF;margin-bottom:4px;">Brand Blue</p>
+          <p style="font-size:12px;color:#E5E7EB;font-family:monospace;">#1D4ED8</p>
+        </div>
+        <div>
+          <p style="font-size:12px;color:#9CA3AF;margin-bottom:4px;">Tiers</p>
+          <p style="font-size:12px;color:#E5E7EB;font-family:monospace;">'free' | 'pro' | 'enterprise'</p>
+        </div>
+        <div>
+          <p style="font-size:12px;color:#9CA3AF;margin-bottom:4px;">Renderer</p>
+          <p style="font-size:12px;color:#E5E7EB;font-family:monospace;">SVG (ECharts) — screenshot-safe</p>
+        </div>
+        <div>
+          <p style="font-size:12px;color:#9CA3AF;margin-bottom:4px;">Copy</p>
+          <p style="font-size:12px;color:#E5E7EB;">Celine spec 2026-03-15</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">
+    <strong>George → Franklyn:</strong> 已推送至 master，Vercel 构建中。
+    subscription_tier 字段已加入 User 类型 + JWT session，Franklyn DB 侧执行 ALTER TABLE 后即可端到端生效。
+    ECharts 使用 SVG 渲染器，截图质量高，直接用于汇报。
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script>
+const AMORA_THEME = {
+  color: ['#1D4ED8','#3B82F6','#60A5FA','#93C5FD'],
+  backgroundColor: 'transparent',
+  textStyle: { color: '#9CA3AF', fontFamily: 'Inter, sans-serif' },
+  tooltip: {
+    backgroundColor: '#111827', borderColor: '#1D4ED8', borderWidth: 1,
+    textStyle: { color: '#F3F4F6', fontSize: 13 },
+    extraCssText: 'border-radius:8px;box-shadow:0 4px 16px rgba(29,78,216,.25);'
+  },
+  axisLine: { lineStyle: { color: '#374151' } },
+  axisTick: { lineStyle: { color: '#374151' } },
+  axisLabel: { color: '#6B7280' },
+  splitLine: { lineStyle: { color: '#1F2937', type: 'dashed' } },
+};
+echarts.registerTheme('amora-dark', AMORA_THEME);
+
+const chart = echarts.init(document.getElementById('echarts-container'), 'amora-dark', { renderer: 'svg' });
+chart.setOption({
+  grid: { left: 48, right: 40, top: 32, bottom: 32 },
+  tooltip: { trigger: 'axis' },
+  xAxis: { type: 'category', data: ['Q1 24','Q2 24','Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25'] },
+  yAxis: { type: 'value', name: 'Index' },
+  series: [{
+    type: 'line',
+    data: [42, 55, 61, 68, 74, 82, 89, 97],
+    name: 'Growth Index',
+    smooth: true,
+    symbol: 'circle', symbolSize: 7,
+    lineStyle: { width: 2.5, color: '#1D4ED8' },
+    itemStyle: { color: '#1D4ED8', borderColor: '#fff', borderWidth: 2 },
+    areaStyle: { color: { type: 'linear', x:0,y:0,x2:0,y2:1, colorStops:[{offset:0,color:'rgba(29,78,216,.25)'},{offset:1,color:'rgba(29,78,216,.02)'}] } },
+  }],
+  toolbox: {
+    show: true, right: 12, top: 8,
+    feature: { saveAsImage: { title: 'Export PNG', pixelRatio: 2 } },
+    iconStyle: { color: '#6B7280', borderColor: 'transparent' },
+    emphasis: { iconStyle: { color: '#3B82F6' } }
+  }
+});
+window.addEventListener('resize', () => chart.resize());
+</script>
+</body>
+</html>

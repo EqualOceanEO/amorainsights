@@ -1,0 +1,83 @@
+import NextAuth from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
+import { getUserByEmail } from '@/lib/db';
+
+const PROTECTED_PATHS = ['/dashboard'];
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [
+    Credentials({
+      name: 'credentials',
+      credentials: {
+        email:    { label: 'Email',    type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const user = await getUserByEmail(credentials.email as string);
+        if (!user) return null;
+
+        const valid = await bcrypt.compare(
+          credentials.password as string,
+          user.password
+        );
+        if (!valid) return null;
+
+        return {
+          id: String(user.id),
+          email: user.email,
+          name: user.name,
+          subscriptionTier: user.subscription_tier ?? 'free',
+          isAdmin: user.is_admin ?? false,
+        };
+      },
+    }),
+  ],
+  session: { strategy: 'jwt', maxAge: 24 * 60 * 60 }, // 24 hours
+  pages: {
+    signIn: '/login',
+  },
+  callbacks: {
+    async jwt({ token, user, trigger }) {
+      if (user) {
+        token.id = user.id;
+        token.subscriptionTier = (user as { subscriptionTier?: string }).subscriptionTier ?? 'free';
+        token.isAdmin = (user as { isAdmin?: boolean }).isAdmin ?? false;
+      }
+
+      // Refresh subscription tier from DB on session activity
+      // This ensures webhook updates propagate without requiring re-login
+      if (token?.email && (!user || trigger === 'update')) {
+        try {
+          const dbUser = await getUserByEmail(token.email as string);
+          if (dbUser) {
+            token.subscriptionTier = dbUser.subscription_tier ?? 'free';
+            token.isAdmin = dbUser.is_admin ?? false;
+          }
+        } catch {
+          // DB error — keep existing token values
+        }
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (token?.id) session.user.id = token.id as string;
+      if (token?.subscriptionTier) {
+        (session.user as { subscriptionTier?: string }).subscriptionTier = token.subscriptionTier as string;
+      }
+      if (token?.isAdmin !== undefined) {
+        (session.user as { isAdmin?: boolean }).isAdmin = token.isAdmin as boolean;
+      }
+      return session;
+    },
+    async authorized({ auth: session, request }) {
+      const pathname = request.nextUrl.pathname;
+      const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
+      if (isProtected && !session) return false;
+      return true;
+    },
+  },
+});

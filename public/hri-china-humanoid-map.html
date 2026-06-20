@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国人形机器人企业分布图 · AMORA Insights 2026</title>
+<style>
+  :root {
+    --bg: #05080f;
+    --bg2: #0a1020;
+    --card: #0d1a2d;
+    --accent: #ef4444;
+    --accent2: #f59e0b;
+    --accent3: #10b981;
+    --text: #e2eaf4;
+    --text2: #8899bb;
+    --text3: #4a5d7a;
+    --glow: rgba(239,68,68,0.15);
+    --cn-red: #ff4d4d;
+    --cn-gold: #ffd700;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(245,158,11,0.1) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(239,68,68,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cn-red), var(--cn-gold), var(--cn-red));
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(239,68,68,0.2);
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--cn-red);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, var(--cn-red), var(--cn-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .subtitle {
+    color: var(--text2);
+    font-size: 15px;
+  }
+  
+  /* Stats Row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .stat-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  
+  .stat-card:hover {
+    border-color: rgba(239,68,68,0.3);
+    transform: translateY(-2px);
+  }
+  
+  .stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--cn-red);
+    margin-bottom: 4px;
+  }
+  
+  .stat-label {
+    font-size: 13px;
+    color: var(--text2);
+  }
+  
+  /* Map Container */
+  .map-section {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .map-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .map-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--cn-red);
+    border-radius: 2px;
+  }
+  
+  /* China Map SVG */
+  .china-map-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: linear-gradient(180deg, #0a1428 0%, #0d1a2d 100%);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .china-map-container svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Map Markers */
+  .map-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    cursor: pointer;
+  }
+  
+  .marker-pin {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--cn-red);
+    border: 3px solid #fff;
+    box-shadow: 0 0 15px rgba(239,68,68,0.6);
+    animation: pulse 2s infinite;
+    position: relative;
+  }
+  
+  .marker-pin::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--cn-red);
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(239,68,68,0.6); }
+    50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(239,68,68,0.8); }
+  }
+  
+  .marker-label {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 12px;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    background: rgba(13,26,45,0.95);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(239,68,68,0.3);
+  }
+  
+  /* Tooltip */
+  .marker-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+    min-width: 280px;
+    max-width: 320px;
+    background: rgba(13,26,45,0.98);
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 12px;
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 100;
+  }
+  
+  .map-marker:hover .marker-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .tooltip-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--cn-red);
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+  }
+  
+  .tooltip-type {
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 10px;
+  }
+  
+  .tooltip-info {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  
+  .tooltip-info strong {
+    color: var(--cn-gold);
+  }
+  
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+  
+  .legend-dot.tier1 { background: #ef4444; }
+  .legend-dot.tier2 { background: #f59e0b; }
+  .legend-dot.tier3 { background: #10b981; }
+  
+  /* Company Grid */
+  .company-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 30px;
+  }
+  
+  .company-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s;
+  }
+  
+  .company-card:hover {
+    border-color: rgba(239,68,68,0.3);
+    background: rgba(239,68,68,0.05);
+  }
+  
+  .company-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  
+  .company-location {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 8px;
+  }
+  
+  .company-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(239,68,68,0.15);
+    color: var(--cn-red);
+  }
+  
+  .tag.gold { background: rgba(245,158,11,0.15); color: var(--cn-gold); }
+  .tag.green { background: rgba(16,185,129,0.15); color: #10b981; }
+  
+  /* Grid Background */
+  .china-map-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(239,68,68,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(239,68,68,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text3);
+    font-size: 12px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 22px; }
+    .china-map-container { aspect-ratio: 4/3; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">🇨🇳 中国 · 人形机器人</div>
+    <h1>中国人形机器人企业分布图</h1>
+    <p class="subtitle">中国已形成全球最大人形机器人产业集群，覆盖长三角、珠三角、京津冀、成渝四大核心区域</p>
+  </div>
+  
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">36+</div>
+      <div class="stat-label">入局企业数量</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">¥420亿</div>
+      <div class="stat-label">最高估值（宇树）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">5,500台</div>
+      <div class="stat-label">年出货量（宇树）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">60%</div>
+      <div class="stat-label">毛利率（宇树）</div>
+    </div>
+  </div>
+  
+  <!-- Map Section -->
+  <div class="map-section">
+    <div class="map-title">全国产业分布</div>
+    
+    <div class="china-map-container">
+      <!-- Simplified China Map SVG -->
+      <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="chinaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a2a4a;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0d1a2d;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Background -->
+        <rect width="800" height="500" fill="url(#chinaGrad)"/>
+        
+        <!-- Grid lines -->
+        <line x1="0" y1="100" x2="800" y2="100" stroke="rgba(239,68,68,0.05)" stroke-width="0.5"/>
+        <line x1="0" y1="200" x2="800" y2="200" stroke="rgba(239,68,68,0.05)" stroke-width="0.5"/>
+        <line x1="0" y1="300" x2="800" y2="300" stroke="rgba(239,68,68,0.05)" stroke-width="0.5"/>
+        <line x1="0" y1="400" x2="800" y2="400" stroke="rgba(239,68,68,0.05)" stroke-width="0.5"/>
+        <line x1="200" y1="0" x2="200" y2="500" stroke="rgba(239,68,68,0.05)" stroke-width="0.5"/>
+        <line x1="400" y1="0" x2="400" y2="500" stroke="rgba(239,68,68,0.05)" stroke-width="0.5"/>
+        <line x1="600" y1="0" x2="600" y2="500" stroke="rgba(239,68,68,0.05)" stroke-width="0.5"/>
+        
+        <!-- China outline (simplified, not to scale) -->
+        <!-- Northeast -->
+        <path d="M580,60 L620,45 L680,50 L720,70 L700,100 L660,110 L620,100 L580,90 Z" 
+              fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+        
+        <!-- Beijing-Tianjin region -->
+        <ellipse cx="550" cy="145" rx="25" ry="18" 
+                 fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5"/>
+        
+        <!-- Shandong peninsula -->
+        <path d="M580,130 L620,125 L630,160 L600,175 L570,160 Z" 
+              fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.25)" stroke-width="0.8"/>
+        
+        <!-- Main body -->
+        <path d="M480,100 L550,90 L580,110 L600,175 L620,200 L600,250 L570,280 L520,300 L480,290 L450,260 L440,220 L460,160 Z" 
+              fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.2)" stroke-width="0.8"/>
+        
+        <!-- Shanghai-Hangzhou region -->
+        <ellipse cx="610" cy="260" rx="35" ry="25" 
+                 fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5"/>
+        
+        <!-- Pearl River Delta -->
+        <ellipse cx="540" cy="340" rx="40" ry="25" 
+                 fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5"/>
+        
+        <!-- Southwest -->
+        <path d="M350,200 L450,180 L480,220 L490,280 L470,330 L420,360 L360,340 L320,290 L330,240 Z" 
+              fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.2)" stroke-width="0.8"/>
+        
+        <!-- Taiwan -->
+        <path d="M630,310 L640,300 L645,330 L638,350 L628,340 Z" 
+              fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+        
+        <!-- Hainan -->
+        <ellipse cx="540" cy="395" rx="12" ry="15" 
+                 fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.25)" stroke-width="0.8"/>
+        
+        <!-- Hong Kong marker -->
+        <circle cx="548" cy="345" r="4" fill="#ffd700" opacity="0.8"/>
+        
+        <!-- Region Labels -->
+        <text x="550" y="55" fill="rgba(239,68,68,0.6)" font-size="10" text-anchor="middle">东北</text>
+        <text x="550" y="145" fill="rgba(239,68,68,0.6)" font-size="10" text-anchor="middle">京津冀</text>
+        <text x="610" y="265" fill="rgba(239,68,68,0.6)" font-size="10" text-anchor="middle">长三角</text>
+        <text x="540" y="345" fill="rgba(239,68,68,0.6)" font-size="10" text-anchor="middle">珠三角</text>
+        <text x="400" y="280" fill="rgba(239,68,68,0.6)" font-size="10" text-anchor="middle">成渝</text>
+      </svg>
+      
+      <!-- Map Markers with company data -->
+      
+      <!-- Beijing -->
+      <div class="map-marker" style="left:68.5%;top:29%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">北京</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">北京 · 京津冀</div>
+          <div class="tooltip-type">📍 39.9°N, 116.4°E · 北方总部经济核心</div>
+          <div class="tooltip-info">
+            <strong>星动纪元</strong> · 估值破百亿，2026年新晋独角兽<br>
+            <strong>小米 / CyberOne</strong> · 内部研发，传感器自研<br>
+            <strong>魔法原子</strong> · 家庭场景人形<br>
+            <strong>加速进化</strong> · 小米系人形机器人
+          </div>
+        </div>
+      </div>
+      
+      <!-- Shanghai -->
+      <div class="map-marker" style="left:76%;top:52%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">上海</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">上海 · 长三角</div>
+          <div class="tooltip-type">📍 31.2°N, 121.5°E · 中国金融与科技双中心</div>
+          <div class="tooltip-info">
+            <strong>智元机器人</strong> · 估值130亿，营收10.5亿，商业化最快<br>
+            <strong>傅利叶智能</strong> · GR-1，58 DOF行业最高自由度<br>
+            <strong>达闼科技</strong> · 云端机器人，海睿操作系统<br>
+            <strong>开普勒机器人</strong> · 人形机器人整机
+          </div>
+        </div>
+      </div>
+      
+      <!-- Hangzhou -->
+      <div class="map-marker" style="left:74.5%;top:55%;">
+        <div class="marker-pin" style="background:#ffd700;"></div>
+        <div class="marker-label" style="color:#ffd700;">杭州 · 宇树</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">宇树科技 ⭐</div>
+          <div class="tooltip-type">📍 30.3°N, 120.2°E · 全球四足机器人之王</div>
+          <div class="tooltip-info">
+            <strong>估值</strong>：投前420亿，科创板IPO受理中<br>
+            <strong>2025年营收</strong>：17.08亿，净利润6亿<br>
+            <strong>毛利率</strong>：60.27%<br>
+            <strong>出货量</strong>：H1/H1.5共5,500台，累计3万台四足<br>
+            <strong>境外收入</strong>：>35%
+          </div>
+        </div>
+      </div>
+      
+      <!-- Suzhou -->
+      <div class="map-marker" style="left:74%;top:53%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">苏州</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">追觅科技</div>
+          <div class="tooltip-type">📍 31.3°N, 120.6°E · 智能清洁龙头切入人形</div>
+          <div class="tooltip-info">
+            <strong>背景</strong>：扫地机器人全球前三，切入人形<br>
+            <strong>优势</strong>：电机/算法积累，可复用<br>
+            <strong>产品</strong>：清洁+通用人形双线并行<br>
+            <strong>优势</strong>：供应链成本控制能力
+          </div>
+        </div>
+      </div>
+      
+      <!-- Shenzhen -->
+      <div class="map-marker" style="left:67.5%;top:68%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">深圳</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">深圳 · 珠三角</div>
+          <div class="tooltip-type">📍 22.5°N, 114.1°E · 全球电子制造中心</div>
+          <div class="tooltip-info">
+            <strong>银河通用</strong> · 估值57亿，B+轮单笔21亿创纪录<br>
+            <strong>优必选</strong> · 港股9880.HK，Walker系列<br>
+            <strong>乐聚机器人</strong> · 人形双足机器人<br>
+            <strong>众擎机器人</strong> · 人形机器人<br>
+            <strong>逐际动力</strong> · 人形+四足机器人
+          </div>
+        </div>
+      </div>
+      
+      <!-- Guangzhou -->
+      <div class="map-marker" style="left:65%;top:70%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">广州</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">广州 · 珠三角</div>
+          <div class="tooltip-type">📍 23.1°N, 113.3°E · 粤港澳大湾区核心</div>
+          <div class="tooltip-info">
+            <strong>途灵</strong> · 智昌机器人旗下<br>
+            <strong>非夕科技</strong> · 自适应机器人<br>
+            <strong>小鹏</strong> · 鹏行智能，人形机器人
+          </div>
+        </div>
+      </div>
+      
+      <!-- Chongqing/Chengdu -->
+      <div class="map-marker" style="left:43%;top:52%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">成都</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">成都/重庆 · 成渝</div>
+          <div class="tooltip-type">📍 30.7°N, 104.1°E · 西部科技创新高地</div>
+          <div class="tooltip-info">
+            <strong>成都人形机器人</strong> · 四川省重点项目<br>
+            <strong>重庆相关企业</strong> · 汽车产业工人替代
+          </div>
+        </div>
+      </div>
+      
+      <!-- Wuhan -->
+      <div class="map-marker" style="left:59%;top:46%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">武汉</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">武汉</div>
+          <div class="tooltip-type">📍 30.6°N, 114.3°E · 中部光谷</div>
+          <div class="tooltip-info">
+            <strong>华工科技</strong> · 传感器/激光切割切入机器人<br>
+            <strong>奋进机器人</strong> · 工业机器人
+          </div>
+        </div>
+      </div>
+      
+      <!-- Qingdao -->
+      <div class="map-marker" style="left:72%;top:38%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">青岛</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">青岛</div>
+          <div class="tooltip-type">📍 36.1°N, 120.4°E · 家电与机器人结合</div>
+          <div class="tooltip-info">
+            <strong>海尔</strong> · 智能家居+机器人<br>
+            <strong>澳柯玛</strong> · 特种机器人
+          </div>
+        </div>
+      </div>
+      
+      <!-- Xi'an -->
+      <div class="map-marker" style="left:52%;top:32%;">
+        <div class="marker-pin"></div>
+        <div class="marker-label">西安</div>
+        <div class="marker-tooltip">
+          <div class="tooltip-title">西安</div>
+          <div class="tooltip-type">📍 34.3°N, 108.9°E · 航空航天与机器人</div>
+          <div class="tooltip-info">
+            <strong>西安交通大学机器人</strong> · 学术研究<br>
+            <strong>航天科技</strong> · 军工机器人
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot tier1"></div>
+        <span>第一梯队（独角兽/上市公司）</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot tier2"></div>
+        <span>第二梯队（知名创业公司）</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot tier3"></div>
+        <span>第三梯队（新兴/垂直领域）</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Company List -->
+  <div class="company-grid">
+    <div class="company-card">
+      <div class="company-name">⭐ 宇树科技</div>
+      <div class="company-location">📍 杭州 | 估值: ¥420亿</div>
+      <div class="company-tags">
+        <span class="tag gold">IPO受理</span>
+        <span class="tag">H1/H1.5</span>
+        <span class="tag green">全球第一</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">⭐ 智元机器人</div>
+      <div class="company-location">📍 上海 | 估值: ¥130亿</div>
+      <div class="company-tags">
+        <span class="tag gold">商业最快</span>
+        <span class="tag">远征A2</span>
+        <span class="tag">营收10.5亿</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">银河通用</div>
+      <div class="company-location">📍 深圳 | 估值: ¥57亿</div>
+      <div class="company-tags">
+        <span class="tag">B+轮21亿</span>
+        <span class="tag">中国移动投资</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">星动纪元</div>
+      <div class="company-location">📍 北京 | 估值: ¥100亿+</div>
+      <div class="company-tags">
+        <span class="tag gold">新晋独角兽</span>
+        <span class="tag">全尺寸人形</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">傅利叶智能</div>
+      <div class="company-location">📍 上海 | 58 DOF</div>
+      <div class="company-tags">
+        <span class="tag">GR-1</span>
+        <span class="tag">医疗康复</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">优必选</div>
+      <div class="company-location">📍 深圳 | 港股9880.HK</div>
+      <div class="company-tags">
+        <span class="tag green">上市</span>
+        <span class="tag">Walker</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">追觅科技</div>
+      <div class="company-location">📍 苏州 | 扫地机器人龙头</div>
+      <div class="company-tags">
+        <span class="tag">切入人形</span>
+        <span class="tag">电机优势</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">小鹏 / 鹏行智能</div>
+      <div class="company-location">📍 广州 | 估值待披露</div>
+      <div class="company-tags">
+        <span class="tag">汽车+机器人</span>
+        <span class="tag">PX5</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">小米 / CyberOne</div>
+      <div class="company-location">📍 北京 | 内部研发</div>
+      <div class="company-tags">
+        <span class="tag">传感器自研</span>
+        <span class="tag">传感器优势</span>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-name">达闼科技</div>
+      <div class="company-location">📍 上海 | 云端机器人</div>
+      <div class="company-tags">
+        <span class="tag">海睿OS</span>
+        <span class="tag">云端架构</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <div class="footer">
+    数据来源：AMORA Insights HRI-2026 Report · 更新至2026年Q1
+  </div>
+</div>
+
+</body>
+</html>

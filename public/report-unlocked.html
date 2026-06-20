@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AMORA · 2026 Q1 未来材料赛道旗舰报告（完整版）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap');
+
+
+  :root {
+    --brand-black: #060D1C;
+    --brand-blue: #1D4ED8;
+    --mid-blue: #3B82F6;
+    --light-blue: #60A5FA;
+    --surface: #0A1628;
+    --surface-2: #0F1E35;
+    --surface-3: #162540;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #475569;
+    --border: rgba(29, 78, 216, 0.15);
+    --border-bright: rgba(96, 165, 250, 0.25);
+    --green: #34d399;
+    --amber: #f59e0b;
+    --red: #f87171;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--brand-black);
+    color: var(--text-primary);
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ─── LAYOUT WRAPPERS ─── */
+  .page-layout { display: block; }
+  .page-main { display: block; }
+  .page-sidebar {
+    display: none;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+  }
+  .sidebar-section-label {
+    font-size: 9px; letter-spacing: 2px; color: var(--mid-blue);
+    text-transform: uppercase; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-section-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(59,130,246,0.3), transparent);
+  }
+
+  /* ─── RESPONSIVE: TABLET ─── */
+  @media (min-width: 768px) {
+    body { max-width: 720px; font-size: 16px; }
+    .cover { padding: 0 48px 64px; min-height: 80vh; }
+    .cover-title { font-size: 42px; }
+    .section, .content-section, .key-data-panel,
+    .cco-section, .related-section { padding: 48px 48px; }
+    .section-title { font-size: 26px; }
+    .content-title { font-size: 24px; }
+    .stat-value { font-size: 28px; }
+  }
+
+  /* ─── RESPONSIVE: DESKTOP ─── */
+  @media (min-width: 1200px) {
+    body { max-width: 1100px; font-size: 16px; }
+
+    .page-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 0;
+      align-items: start;
+    }
+    .page-main { min-width: 0; }
+    .page-sidebar {
+      display: block !important;
+      position: sticky;
+      top: 64px;
+      padding: 0;
+      border-left: 1px solid var(--border);
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+
+    .cover { padding: 0 72px 80px; min-height: 75vh; }
+    .cover-title { font-size: 52px; letter-spacing: -1px; }
+    .cover-subtitle { font-size: 16px; max-width: 580px; }
+    .cover-stats { max-width: 480px; grid-template-columns: repeat(3,1fr); }
+    .stat-value { font-size: 30px; }
+
+    .section, .content-section, .key-data-panel,
+    .cco-section, .related-section { padding: 56px 72px; }
+    .section-title { font-size: 28px; }
+    .content-title { font-size: 26px; }
+    .content-body { font-size: 15px; }
+    .top-nav { padding: 14px 72px; }
+    .unlocked-banner { padding: 10px 72px; }
+
+    .summary-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .big-num-grid { gap: 16px; }
+    .small-stat-grid { gap: 16px; }
+
+    .float-toc-btn { right: 32px; bottom: 32px; }
+    .toc-panel { right: 32px; bottom: 92px; width: 260px; }
+
+    .page-sidebar { display: block !important; }
+    .sidebar-toc-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      cursor: pointer; text-decoration: none; transition: all 0.15s;
+    }
+    .sidebar-toc-item:hover .sidebar-toc-text { color: var(--light-blue); }
+    .sidebar-toc-item:last-child { border-bottom: none; }
+    .sidebar-toc-num { font-size: 10px; color: var(--mid-blue); width: 18px; flex-shrink: 0; }
+    .sidebar-toc-text { font-size: 12px; color: var(--text-secondary); line-height: 1.4; transition: color 0.15s; }
+    .sidebar-stat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 12px;
+    }
+    .sidebar-stat-row:last-child { border-bottom: none; }
+    .sidebar-stat-label { color: var(--text-muted); }
+    .sidebar-stat-val { color: var(--light-blue); font-weight: 500; }
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ─── TOP NAV ─── */
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(6,13,28,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; }
+  .nav-logo-text {
+    font-family: 'Georgia', serif; font-weight: 700; font-size: 16px;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg,#fff,#cbd5e1);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-badge {
+    font-size: 9px; letter-spacing: 1.5px; color: var(--light-blue);
+    text-transform: uppercase;
+    background: rgba(29,78,216,0.15); border: 1px solid rgba(96,165,250,0.2);
+    padding: 3px 8px; border-radius: 20px;
+  }
+  .pro-badge {
+    font-size: 9px; letter-spacing: 1px; color: #fbbf24;
+    background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
+    padding: 3px 8px; border-radius: 20px;
+  }
+
+  /* ─── UNLOCKED BANNER ─── */
+  .unlocked-banner {
+    background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.05));
+    border-bottom: 1px solid rgba(52,211,153,0.2);
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 10px;
+    position: relative; z-index: 1;
+  }
+  .unlocked-banner-text { font-size: 12px; color: #34d399; }
+  .unlocked-banner-sub { font-size: 10px; color: var(--text-muted); }
+
+  /* ─── COVER ─── */
+  .cover {
+    position: relative; min-height: 88vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 24px 48px; overflow: hidden;
+  }
+  .cover-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(29,78,216,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 100% 80%, rgba(96,165,250,0.08) 0%, transparent 60%),
+      var(--brand-black);
+    z-index: 0;
+  }
+  .cover-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(29,78,216,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29,78,216,0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  }
+  .cover-content { position: relative; z-index: 1; }
+  .cover-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tag { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; font-weight: 500; }
+  .tag-track { background: rgba(29,78,216,0.2); border: 1px solid rgba(29,78,216,0.4); color: var(--light-blue); }
+  .tag-grade { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: #93c5fd; }
+  .tag-quarter { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); }
+  .cover-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 32px; font-weight: 900; line-height: 1.2; letter-spacing: -0.5px;
+    margin-bottom: 16px;
+    background: linear-gradient(160deg, #ffffff 0%, #cbd5e1 60%, #93c5fd 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .cover-subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; }
+  .cover-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 32px;
+  }
+  .stat-item { background: rgba(10,22,40,0.8); backdrop-filter: blur(10px); padding: 16px 12px; text-align: center; }
+  .stat-value {
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+    background: linear-gradient(90deg,var(--mid-blue),var(--light-blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1; margin-bottom: 4px;
+  }
+  .stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+  .cover-footer { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+  .cover-footer-left { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--mid-blue); }
+  .read-time { display: flex; align-items: center; gap: 4px; color: var(--text-muted); font-size: 11px; }
+  .scroll-hint { position: relative; z-index: 1; text-align: center; margin-top: 24px; animation: bounce 2s ease-in-out infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+  .scroll-arrow { width: 20px; height: 20px; margin: 0 auto; opacity: 0.3; }
+
+  /* ─── SECTIONS ─── */
+  .section { padding: 40px 24px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+  .section-label {
+    font-size: 9px; letter-spacing: 3px; color: var(--mid-blue);
+    text-transform: uppercase; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(59,130,246,0.3),transparent); }
+  .section-title { font-family:'Playfair Display',Georgia,serif; font-size:22px; font-weight:700; line-height:1.3; margin-bottom:16px; }
+
+  /* ─── SUMMARY ─── */
+  .summary-list { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+  .summary-item {
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:14px 16px; transition:border-color 0.2s;
+  }
+  .summary-item:hover { border-color:var(--border-bright); }
+  .summary-num { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:rgba(59,130,246,0.3); line-height:1; min-width:24px; margin-top:2px; }
+  .summary-text { font-size:13px; color:var(--text-secondary); line-height:1.65; }
+  .summary-text strong { color:var(--text-primary); font-weight:500; }
+
+  /* ─── KEY DATA PANEL ─── */
+  .key-data-panel { padding: 36px 24px; border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+  .big-num-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+  .big-num-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:18px 14px; position:relative; overflow:hidden;
+  }
+  .big-num-card .top-bar { position:absolute; top:0; left:0; right:0; height:2px; }
+  .big-num-label { font-size:9px; letter-spacing:1.5px; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; }
+  .big-num-val {
+    font-family:'Playfair Display',serif; font-size:30px; font-weight:700;
+    background:linear-gradient(90deg,var(--mid-blue),var(--light-blue));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1;
+  }
+  .big-num-val.green { background:linear-gradient(90deg,#10b981,#34d399); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .big-num-change { font-size:11px; margin-top:4px; }
+  .up { color:#34d399; }
+  .down { color:#f87171; }
+  .amber-c { color:#f59e0b; }
+  .small-stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px; }
+  .small-stat {
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:14px 12px; text-align:center;
+  }
+  .small-stat-val {
+    font-family:'Playfair Display',serif; font-size:22px; font-weight:700;
+    background:linear-gradient(90deg,var(--mid-blue),var(--light-blue));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1;
+  }
+  .small-stat-label { font-size:10px; color:var(--text-muted); margin-top:4px; }
+
+  /* ─── CONTENT SECTION ─── */
+  .content-section { padding:40px 24px; border-bottom:1px solid var(--border); position:relative; z-index:1; }
+  .chapter-label {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(29,78,216,0.1); border:1px solid rgba(29,78,216,0.2);
+    border-radius:20px; padding:3px 10px; margin-bottom:12px;
+    font-size:9px; letter-spacing:2px; color:var(--light-blue); text-transform:uppercase;
+  }
+  .content-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:16px; line-height:1.3; }
+  .content-body { font-size:14px; color:var(--text-secondary); line-height:1.85; margin-bottom:20px; }
+  .content-body p { margin-bottom:16px; }
+  .content-body p:last-child { margin-bottom:0; }
+
+  /* ─── HIGHLIGHT BOX ─── */
+  .highlight-box {
+    background:rgba(29,78,216,0.08); border-left:3px solid var(--brand-blue);
+    border-radius:0 8px 8px 0; padding:16px 18px; margin:20px 0;
+  }
+  .highlight-box p { font-size:13px; color:#93c5fd; line-height:1.7; margin:0; font-style:italic; }
+  .highlight-source { font-size:11px; color:var(--text-muted); margin-top:8px; font-style:normal; }
+
+  /* ─── CHART ─── */
+  .chart-container {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:20px; margin:20px 0;
+  }
+  .chart-title { font-size:11px; letter-spacing:1px; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; }
+  .chart-subtitle { font-size:12px; color:var(--text-secondary); margin-bottom:16px; }
+  .chart-source { font-size:10px; color:var(--text-muted); margin-top:12px; }
+  .chart-canvas-wrap { position:relative; width:100%; }
+  .chart-legend { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+  .chart-legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-muted); }
+  .chart-legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+  /* ─── DATA GRID ─── */
+  .data-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0; }
+  .data-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 14px; }
+  .data-card-val {
+    font-family:'Playfair Display',serif; font-size:26px; font-weight:700;
+    background:linear-gradient(90deg,var(--mid-blue),var(--light-blue));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    line-height:1; margin-bottom:6px;
+  }
+  .data-card-label { font-size:11px; color:var(--text-muted); line-height:1.4; }
+  .data-card-change { font-size:11px; margin-top:6px; }
+
+  /* ─── RADAR (legacy, unused — kept for safety) ─── */
+  .radar-wrap { display:flex; flex-direction:column; align-items:center; margin:20px 0; }
+  .radar-legend { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-muted); }
+  .legend-dot { width:8px; height:8px; border-radius:50%; }
+
+  /* ─── EXPERT QUOTE ─── */
+  .expert-quote {
+    background:linear-gradient(135deg,var(--surface) 0%,rgba(29,78,216,0.05) 100%);
+    border:1px solid var(--border-bright); border-radius:12px;
+    padding:20px; margin:20px 0; position:relative;
+  }
+  .expert-quote::before {
+    content:'"'; position:absolute; top:-8px; left:16px;
+    font-family:'Playfair Display',serif; font-size:60px; color:var(--brand-blue);
+    opacity:0.3; line-height:1;
+  }
+  .quote-text { font-size:14px; color:var(--text-secondary); line-height:1.75; font-style:italic; margin-top:8px; margin-bottom:16px; }
+  .quote-author { display:flex; align-items:center; gap:10px; }
+  .author-avatar {
+    width:32px; height:32px; border-radius:50%;
+    background:linear-gradient(135deg,var(--brand-blue),var(--light-blue));
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:700; color:white; flex-shrink:0;
+  }
+  .author-name { font-size:12px; color:var(--text-primary); font-weight:500; }
+  .author-title { font-size:10px; color:var(--text-muted); }
+
+  /* ─── RISK MATRIX ─── */
+  .risk-matrix {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:20px; margin:20px 0;
+  }
+  .risk-row {
+    display:flex; align-items:flex-start; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--border);
+  }
+  .risk-row:last-child { border-bottom:none; padding-bottom:0; }
+  .risk-tag {
+    font-size:9px; letter-spacing:1px; text-transform:uppercase;
+    padding:3px 8px; border-radius:20px; flex-shrink:0; margin-top:2px; font-weight:500;
+  }
+  .risk-high { background:rgba(248,113,113,0.12); border:1px solid rgba(248,113,113,0.3); color:#f87171; }
+  .risk-med  { background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); color:#f59e0b; }
+  .risk-low  { background:rgba(52,211,153,0.12); border:1px solid rgba(52,211,153,0.3); color:#34d399; }
+  .risk-content { flex:1; }
+  .risk-title { font-size:13px; color:var(--text-primary); font-weight:500; margin-bottom:3px; }
+  .risk-desc { font-size:12px; color:var(--text-muted); line-height:1.5; }
+
+  /* ─── INVESTMENT ACTION TABLE ─── */
+  .action-table { margin:20px 0; display:flex; flex-direction:column; gap:10px; }
+  .action-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; position:relative; overflow:hidden;
+    transition:border-color 0.2s;
+  }
+  .action-card:hover { border-color:var(--border-bright); }
+  .action-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; border-radius:3px 0 0 3px; }
+  .action-card.buy::before { background:var(--green); }
+  .action-card.watch::before { background:var(--amber); }
+  .action-card.avoid::before { background:var(--red); }
+  .action-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .action-company { font-size:14px; color:var(--text-primary); font-weight:500; }
+  .action-signal {
+    font-size:9px; letter-spacing:1px; text-transform:uppercase;
+    padding:3px 8px; border-radius:20px; font-weight:600;
+  }
+  .signal-buy { background:rgba(52,211,153,0.12); border:1px solid rgba(52,211,153,0.3); color:#34d399; }
+  .signal-watch { background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); color:#f59e0b; }
+  .signal-avoid { background:rgba(248,113,113,0.12); border:1px solid rgba(248,113,113,0.3); color:#f87171; }
+  .action-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+  .action-track { font-size:10px; color:var(--mid-blue); }
+  .action-stage { font-size:10px; color:var(--text-muted); }
+  .action-reason { font-size:12px; color:var(--text-secondary); line-height:1.55; }
+  .action-valuation {
+    display:flex; align-items:center; gap:6px;
+    margin-top:10px; padding-top:10px; border-top:1px solid var(--border);
+    font-size:11px; color:var(--text-muted);
+  }
+  .action-val-num { font-size:13px; color:var(--light-blue); font-weight:500; }
+
+  /* ─── DIVIDER ─── */
+  .divider { height:1px; background:linear-gradient(90deg,transparent,var(--border-bright),transparent); margin:20px 0; }
+
+  /* ─── CCO SECTION ─── */
+  .cco-section { padding:32px 24px; border-bottom:1px solid var(--border); position:relative; z-index:1; }
+  .cco-card {
+    background:linear-gradient(135deg,rgba(29,78,216,0.08) 0%,rgba(10,22,40,0.6) 100%);
+    border:1px solid rgba(29,78,216,0.25); border-radius:14px; padding:22px;
+    position:relative; overflow:hidden;
+  }
+  .cco-card::after {
+    content:''; position:absolute; top:0; right:0; width:120px; height:120px;
+    background:radial-gradient(circle,rgba(96,165,250,0.05),transparent); pointer-events:none;
+  }
+  .cco-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .cco-badge {
+    background:rgba(29,78,216,0.2); border:1px solid rgba(29,78,216,0.4);
+    border-radius:20px; padding:3px 10px; font-size:9px; letter-spacing:1.5px;
+    color:var(--light-blue); text-transform:uppercase;
+  }
+  .cco-title-label { font-size:10px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; }
+  .cco-text { font-size:14px; color:var(--text-secondary); line-height:1.8; }
+  .cco-text strong { color:var(--light-blue); font-weight:500; }
+  .cco-signature {
+    display:flex; align-items:center; gap:8px; margin-top:16px;
+    padding-top:14px; border-top:1px solid var(--border);
+  }
+  .cco-avatar {
+    width:28px; height:28px; border-radius:50%;
+    background:linear-gradient(135deg,#1d4ed8,#60a5fa);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; color:white;
+  }
+  .cco-name { font-size:11px; color:var(--text-secondary); }
+  .cco-name span { color:var(--text-muted); }
+
+  /* ─── RELATED REPORTS ─── */
+  .related-section { padding:32px 24px 80px; position:relative; z-index:1; }
+  .related-grid { display:flex; flex-direction:column; gap:12px; margin-top:20px; }
+  .related-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:16px; display:flex; gap:14px; align-items:flex-start;
+    transition:border-color 0.2s; cursor:pointer; text-decoration:none;
+  }
+  .related-card:hover { border-color:var(--border-bright); }
+  .related-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:18px; }
+  .related-content { flex:1; }
+  .related-track { font-size:9px; letter-spacing:1.5px; color:var(--mid-blue); text-transform:uppercase; margin-bottom:4px; }
+  .related-title { font-size:13px; color:var(--text-primary); line-height:1.4; margin-bottom:6px; font-weight:500; }
+  .related-meta { display:flex; align-items:center; gap:8px; }
+  .related-grade { font-size:9px; padding:2px 7px; border-radius:10px; letter-spacing:1px; }
+  .grade-a { background:rgba(29,78,216,0.15); border:1px solid rgba(29,78,216,0.3); color:var(--light-blue); }
+  .grade-b { background:rgba(15,30,53,0.8); border:1px solid rgba(255,255,255,0.08); color:var(--text-muted); }
+  .related-date { font-size:10px; color:var(--text-muted); }
+
+  /* ─── FLOAT TOC ─── */
+  .float-toc-btn {
+    position:fixed; bottom:24px; right:20px;
+    width:44px; height:44px;
+    background:rgba(10,22,40,0.9); backdrop-filter:blur(12px);
+    border:1px solid var(--border-bright); border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; z-index:200; transition:all 0.2s;
+    box-shadow:0 4px 24px rgba(0,0,0,0.4);
+  }
+  .float-toc-btn:hover { border-color:rgba(96,165,250,0.5); }
+  .toc-panel {
+    position:fixed; bottom:80px; right:20px; width:240px;
+    background:rgba(10,22,40,0.96); backdrop-filter:blur(20px);
+    border:1px solid var(--border-bright); border-radius:14px; padding:16px;
+    z-index:200; box-shadow:0 8px 40px rgba(0,0,0,0.6); display:none;
+  }
+  .toc-panel.open { display:block; }
+  .toc-panel-title { font-size:9px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px; }
+  .toc-panel-item {
+    display:flex; align-items:center; gap:8px; padding:7px 0;
+    border-bottom:1px solid rgba(255,255,255,0.04); cursor:pointer; text-decoration:none;
+  }
+  .toc-panel-item:last-child { border-bottom:none; }
+  .toc-panel-num { font-size:10px; color:var(--mid-blue); width:16px; flex-shrink:0; }
+  .toc-panel-text { font-size:12px; color:var(--text-secondary); line-height:1.4; }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar {
+    position:fixed; top:0; left:0; height:2px;
+    background:linear-gradient(90deg,var(--brand-blue),var(--light-blue));
+    z-index:999; transition:width 0.1s; width:0%;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .fade-up { animation:fadeUp 0.6s ease forwards; opacity:0; }
+  .delay-1 { animation-delay:0.1s; }
+  .delay-2 { animation-delay:0.2s; }
+  .delay-3 { animation-delay:0.3s; }
+  .delay-4 { animation-delay:0.4s; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progress-bar"></div>
+
+<div class="page-layout">
+<!-- ── MAIN CONTENT ── -->
+<div class="page-main">
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+      <defs>
+        <linearGradient id="nav-g" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1D4ED8"/>
+          <stop offset="100%" stop-color="#60A5FA"/>
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="7" fill="#060d1c"/>
+      <rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#nav-g)"/>
+      <rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#nav-g)" opacity="0.7"/>
+      <rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#nav-g)" opacity="0.4"/>
+    </svg>
+    <span class="nav-logo-text">AMORA</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span class="nav-badge">未来材料</span>
+    <span class="pro-badge">PRO</span>
+  </div>
+</nav>
+
+<!-- Unlocked Banner -->
+<div class="unlocked-banner">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2">
+    <path d="M17 11H7V7a5 5 0 0 1 9.9-1"/><rect x="3" y="11" width="18" height="11" rx="2"/>
+  </svg>
+  <div>
+    <div class="unlocked-banner-text">已解锁完整报告 · Pro 会员专属</div>
+    <div class="unlocked-banner-sub">12,400+ 字 · 18 张图表 · 147 家企业数据</div>
+  </div>
+</div>
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-content">
+    <div class="cover-meta fade-up">
+      <span class="tag tag-track">未来材料</span>
+      <span class="tag tag-grade">A级 · 旗舰</span>
+      <span class="tag tag-quarter">2026 Q1</span>
+    </div>
+    <h1 class="cover-title fade-up delay-1">新型二维材料的<br>工业化转折点</h1>
+    <p class="cover-subtitle fade-up delay-2">从实验室到量产线的关键路径分析：石墨烯、MoS₂ 与钙钛矿的商业成熟度评估及投资机会图谱</p>
+    <div class="cover-stats fade-up delay-3">
+      <div class="stat-item">
+        <div class="stat-value">$1.4T</div>
+        <div class="stat-label">2030年市场规模</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">23%</div>
+        <div class="stat-label">年复合增长率</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">147</div>
+        <div class="stat-label">全球追踪企业</div>
+      </div>
+    </div>
+    <div class="cover-footer fade-up delay-4">
+      <div class="cover-footer-left">
+        <div class="dot"></div>
+        <span>AMORA Research Team</span>
+        <div class="dot"></div>
+        <span>专家审校</span>
+      </div>
+      <div class="read-time">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        约 14 分钟
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <svg class="scroll-arrow" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.5">
+        <path d="M10 4v12M4 10l6 6 6-6"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- EXECUTIVE SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-label">Executive Summary</div>
+  <h2 class="section-title">核心结论</h2>
+  <div class="summary-list">
+    <div class="summary-item">
+      <div class="summary-num">01</div>
+      <div class="summary-text"><strong>石墨烯进入工业化拐点</strong>——2025年全球石墨烯规模化产能突破 1,200 吨/年，CVD 制备成本较 2022 年下降 67%，半导体级薄膜已进入晶圆厂供应链验证阶段。</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">02</div>
+      <div class="summary-text"><strong>钙钛矿光伏实现效率-稳定性双突破</strong>——单结转换效率达 26.1%（NREL 认证），商业组件 25 年衰减 &lt;15% 首次被第三方验证，量产窗口开启。</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">03</div>
+      <div class="summary-text"><strong>中国企业占据 MoS₂ 全球产能 58%</strong>——但在高端电子级产品上仍落后于韩国三星和美国 Applied Materials，差距主要体现在层数精度控制。</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">04</div>
+      <div class="summary-text"><strong>投资热度 2025 Q4 显著升温</strong>——二维材料赛道全球融资额较上年同期增长 142%，VC 轮次集中在 B/C 轮（量产前扩张期）。</div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY DATA PANEL -->
+<section class="key-data-panel" id="key-data">
+  <div class="section-label">核心数据</div>
+  <h2 class="section-title" style="margin-bottom:20px;">赛道关键指标速览</h2>
+
+  <div class="big-num-grid">
+    <div class="big-num-card">
+      <div class="top-bar" style="background:linear-gradient(90deg,var(--brand-blue),var(--mid-blue));"></div>
+      <div class="big-num-label">2030年市场规模</div>
+      <div class="big-num-val">$1.4T</div>
+      <div class="big-num-change up">↑ CAGR 23%</div>
+    </div>
+    <div class="big-num-card">
+      <div class="top-bar" style="background:linear-gradient(90deg,#10b981,#34d399);"></div>
+      <div class="big-num-label">2025年融资总额</div>
+      <div class="big-num-val green">$8.7B</div>
+      <div class="big-num-change up">↑ 142% YoY</div>
+    </div>
+  </div>
+
+  <div class="small-stat-grid">
+    <div class="small-stat">
+      <div class="small-stat-val">147</div>
+      <div class="small-stat-label">追踪企业</div>
+    </div>
+    <div class="small-stat">
+      <div class="small-stat-val">34</div>
+      <div class="small-stat-label">融资事件</div>
+    </div>
+    <div class="small-stat">
+      <div class="small-stat-val">TRL7</div>
+      <div class="small-stat-label">石墨烯成熟度</div>
+    </div>
+  </div>
+
+  <!-- Interactive cost drop chart -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;">
+    <div style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted);text-transform:uppercase;margin-bottom:12px;">Graphene Production Cost Reduction (2022→2025)</div>
+    <div style="max-height:100px;">
+      <canvas id="costDropChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Competitive snapshot -->
+  <div style="background:rgba(29,78,216,0.06);border:1px solid rgba(29,78,216,0.2);border-radius:12px;padding:14px 16px;">
+    <div style="font-size:10px;letter-spacing:1.5px;color:var(--mid-blue);text-transform:uppercase;margin-bottom:10px;">竞争格局快照</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:var(--text-secondary);">中国大陆 MoS₂ 产能占比</span>
+        <span style="font-size:13px;font-weight:500;color:var(--light-blue);">58%</span>
+      </div>
+      <div style="height:1px;background:var(--border);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:var(--text-secondary);">战投参与融资比例</span>
+        <span style="font-size:13px;font-weight:500;color:var(--light-blue);">41% <span style="font-size:10px;color:#34d399;">↑23pp</span></span>
+      </div>
+      <div style="height:1px;background:var(--border);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:var(--text-secondary);">B/C轮融资占比（量产前）</span>
+        <span style="font-size:13px;font-weight:500;color:var(--light-blue);">67%</span>
+      </div>
+      <div style="height:1px;background:var(--border);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:var(--text-secondary);">中国单笔融资中位数</span>
+        <span style="font-size:13px;font-weight:500;color:var(--light-blue);">$1,200万</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 1 -->
+<section class="content-section" id="ch1">
+  <div class="chapter-label">第一章</div>
+  <h2 class="content-title">技术成熟度评估：TRL 评分模型</h2>
+  <div class="content-body">
+    <p>基于 NASA 技术成熟度等级（TRL 1-9）框架，AMORA 研究团队对三类核心二维材料的当前技术状态进行了系统评估，融合供应商调研、专利分析与样品测试数据，构建了首个深科技材料量产可行性综合评分模型。</p>
+    <p>本模型覆盖六个评估维度：制备成本、批次良率、可扩展性、性能稳定性、供应链完整度、认证进度。加权方式依据下游应用场景（半导体、能源、柔性电子）分别设计，避免"单一TRL数字"掩盖分领域差异化的误判风险。</p>
+  </div>
+
+  <!-- Radar Chart (Chart.js) -->
+  <div class="chart-container">
+    <div class="chart-title">TRL COMPREHENSIVE SCORING MATRIX</div>
+    <div class="chart-subtitle">Three Materials × Six Dimensions — Technology Readiness Assessment (2026 Q1)</div>
+    <div class="chart-canvas-wrap" style="max-height:300px;">
+      <canvas id="radarChart"></canvas>
+    </div>
+    <div class="chart-legend">
+      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#3b82f6"></div>Graphene</div>
+      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#34d399"></div>MoS₂</div>
+      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#f59e0b"></div>Perovskite</div>
+    </div>
+    <div class="chart-source">Source: AMORA Research Composite Assessment Model · Feb 2026</div>
+  </div>
+
+  <!-- TRL Score Table -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:20px 0;">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;">TRL 综合评分一览</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);">
+      <div style="padding:10px 12px;font-size:10px;color:var(--text-muted);">材料</div>
+      <div style="padding:10px 12px;font-size:10px;color:var(--text-muted);text-align:center;">TRL</div>
+      <div style="padding:10px 12px;font-size:10px;color:var(--text-muted);text-align:center;">综合评分</div>
+      <div style="padding:10px 12px;font-size:10px;color:var(--text-muted);text-align:center;">变化</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);">
+      <div style="padding:10px 12px;font-size:12px;color:var(--text-secondary);">石墨烯</div>
+      <div style="padding:10px 12px;font-size:13px;color:var(--light-blue);text-align:center;font-weight:500;">7</div>
+      <div style="padding:10px 12px;font-size:13px;color:var(--light-blue);text-align:center;font-weight:500;">78/100</div>
+      <div style="padding:10px 12px;font-size:11px;color:#34d399;text-align:center;">↑6</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);">
+      <div style="padding:10px 12px;font-size:12px;color:var(--text-secondary);">MoS₂</div>
+      <div style="padding:10px 12px;font-size:13px;color:var(--light-blue);text-align:center;font-weight:500;">6</div>
+      <div style="padding:10px 12px;font-size:13px;color:var(--light-blue);text-align:center;font-weight:500;">65/100</div>
+      <div style="padding:10px 12px;font-size:11px;color:#34d399;text-align:center;">↑4</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;">
+      <div style="padding:10px 12px;font-size:12px;color:var(--text-secondary);">钙钛矿</div>
+      <div style="padding:10px 12px;font-size:13px;color:var(--light-blue);text-align:center;font-weight:500;">5</div>
+      <div style="padding:10px 12px;font-size:13px;color:var(--light-blue);text-align:center;font-weight:500;">58/100</div>
+      <div style="padding:10px 12px;font-size:11px;color:#f59e0b;text-align:center;">↑9</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>"当前制约石墨烯进入晶圆厂供应链的核心障碍，不是材料本身的物理性能，而是跨批次的一致性指标——这是工艺成熟度问题，而非材料科学问题。"</p>
+    <div class="highlight-source">— 来源：SEMI 2025年度材料工作组报告</div>
+  </div>
+
+  <div class="content-body">
+    <p>钙钛矿评分增幅最大（+9 分），但绝对值最低，核心瓶颈在于稳定性指标：铅基钙钛矿在湿热环境下的加速衰减测试结果仍不稳定，非铅路线效率损失约 3-5 个百分点。预计 2027 年前后会出现首批量产组件的实际寿命数据，届时是评估变化的关键节点。</p>
+  </div>
+</section>
+
+<!-- CHAPTER 2 -->
+<section class="content-section" id="ch2">
+  <div class="chapter-label">第二章</div>
+  <h2 class="content-title">供应链格局：产能分布与竞争结构</h2>
+  <div class="content-body">
+    <p>2025年，全球二维材料产能分布已呈现明显的区域极化态势。中国大陆凭借原材料优势和规模化生产能力，在 MoS₂ 和碳化硅前驱体领域形成绝对主导，但高端电子级产品仍由少数技术领先企业垄断。</p>
+  </div>
+
+  <!-- Bar Chart: Capacity (Chart.js) -->
+  <div class="chart-container">
+    <div class="chart-title">GLOBAL GRAPHENE PRODUCTION CAPACITY</div>
+    <div class="chart-subtitle">By Region (tonnes/year, 2025)</div>
+    <div class="chart-canvas-wrap" style="max-height:220px;">
+      <canvas id="capacityBarChart"></canvas>
+    </div>
+    <div class="chart-source">Source: Graphene Council Global Industry Census · 2025</div>
+  </div>
+
+  <!-- Data Cards -->
+  <div class="data-grid">
+    <div class="data-card">
+      <div class="data-card-val">$0.8/g</div>
+      <div class="data-card-label">工业级石墨烯均价（2025）</div>
+      <div class="data-card-change up">↓ 67% vs 2022</div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-val">$420/g</div>
+      <div class="data-card-label">半导体级石墨烯均价（2025）</div>
+      <div class="data-card-change down">↓ 12% vs 2024</div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-val">58%</div>
+      <div class="data-card-label">中国 MoS₂ 全球产能占比</div>
+      <div class="data-card-change up">↑ 8pp vs 2023</div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-val">23家</div>
+      <div class="data-card-label">全球 CVD 设备供应商</div>
+      <div class="data-card-change up">↑ 5 vs 2024</div>
+    </div>
+  </div>
+
+  <!-- Line Chart: Cost Trend (Chart.js) -->
+  <div class="chart-container">
+    <div class="chart-title">GRAPHENE PRODUCTION COST TREND</div>
+    <div class="chart-subtitle">Industrial-grade average price ($/g, 2020–2026E)</div>
+    <div class="chart-canvas-wrap" style="max-height:200px;">
+      <canvas id="costLineChart"></canvas>
+    </div>
+    <div class="chart-source">Source: AMORA Database · Market Price Tracker (n=23 suppliers)</div>
+  </div>
+
+  <div class="content-body">
+    <p>韩国企业（三星、LG 化学）的竞争优势不在于产能，而在于<strong style="color:var(--text-primary)">层数精度控制技术</strong>——单层/双层 MoS₂ 的精确制备是下游器件性能的决定性因素，这也是中国企业目前最难逾越的技术壁垒。美国 Applied Materials 的策略更为独特：不直接销售材料，而是以设备+工艺包的捆绑模式锁定客户，毛利率显著高于纯材料商。</p>
+  </div>
+
+  <div class="expert-quote">
+    <div class="quote-text">产能是可以快速复制的；但让材料"可靠地工作在具体器件里"——这种Know-How，需要与终端客户共同开发三到五年才能积累出来。这才是真正的壁垒。</div>
+    <div class="quote-author">
+      <div class="author-avatar">MK</div>
+      <div>
+        <div class="author-name">Min-jun Kim</div>
+        <div class="author-title">三星材料研究院 · 前主任研究员，AMORA 专家顾问</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 3 -->
+<section class="content-section" id="ch3">
+  <div class="chapter-label">第三章</div>
+  <h2 class="content-title">投资图谱：147 家企业估值与融资动态</h2>
+  <div class="content-body">
+    <p>2025年第四季度，二维材料赛道全球融资事件共 34 起，总金额达 $8.7 亿，较上年同期增长 142%。增长主要来自量产前期的 B/C 轮企业，投资人逻辑从"技术验证"转向"商业化执行力验证"。</p>
+  </div>
+
+  <!-- Donut Chart (Chart.js) -->
+  <div class="chart-container">
+    <div class="chart-title">FUNDING ROUND DISTRIBUTION (2025 Q4 · 34 DEALS)</div>
+    <div class="chart-subtitle">By round stage</div>
+    <div style="display:flex;align-items:center;gap:24px;padding:10px 0;flex-wrap:wrap;">
+      <div class="chart-canvas-wrap" style="width:130px;height:130px;flex-shrink:0;">
+        <canvas id="donutChart"></canvas>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;flex:1;min-width:120px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:2px;background:#1d4ed8;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:var(--text-secondary);">Series B <strong style="color:var(--text-primary)">38%</strong></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:2px;background:#3b82f6;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:var(--text-secondary);">Series C <strong style="color:var(--text-primary)">29%</strong></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:2px;background:#60a5fa;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:var(--text-secondary);">Series A <strong style="color:var(--text-primary)">20%</strong></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:2px;background:#93c5fd;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:var(--text-secondary);">Strategic <strong style="color:var(--text-primary)">13%</strong></span>
+        </div>
+      </div>
+    </div>
+    <div class="chart-source">Source: AMORA Corporate Database · 2025 Q4 Funding Tracker</div>
+  </div>
+
+  <!-- Data row: regional -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:20px 0;">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:1.5px;color:var(--text-muted);text-transform:uppercase;">融资事件地区分布</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border);">
+      <div style="padding:12px;text-align:center;border-right:1px solid var(--border);">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--mid-blue),var(--light-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">39%</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">中国大陆</div>
+        <div style="font-size:10px;color:var(--text-muted);">$1,200万/笔</div>
+      </div>
+      <div style="padding:12px;text-align:center;border-right:1px solid var(--border);">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--mid-blue),var(--light-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">27%</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">美国</div>
+        <div style="font-size:10px;color:var(--text-muted);">$3,800万/笔</div>
+      </div>
+      <div style="padding:12px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--mid-blue),var(--light-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">18%</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">韩国</div>
+        <div style="font-size:10px;color:var(--text-muted);">$2,200万/笔</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="expert-quote">
+    <div class="quote-text">二维材料的投资逻辑在 2025 年发生了根本性转变。早期投资人押注技术路线，现在的资本在押注哪家公司能率先建立规模化的客户验证管线——这是完全不同的评估维度。</div>
+    <div class="quote-author">
+      <div class="author-avatar">WR</div>
+      <div>
+        <div class="author-name">William Ren</div>
+        <div class="author-title">深科技材料基金合伙人 · AMORA 专家审校顾问</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-body">
+    <p>从地理分布看，中国企业占据本轮融资事件总数的 39%，但单笔融资规模中位数（$1,200万）低于美国企业（$3,800万）和韩国企业（$2,200万），反映出中国市场以国内量产为主要目标、而非全球市场渗透的战略导向。</p>
+    <p>战略投资者（含半导体大厂、新能源企业）参与比例从 2023 年的 18% 跃升至 2025 年的 41%，显示产业链下游对材料端的掌控欲望显著增强。这一趋势将深刻影响头部材料企业的估值逻辑——战略融资意味着潜在并购溢价，但也意味着客户与股东绑定后的独立性受限。</p>
+  </div>
+</section>
+
+<!-- CHAPTER 4: Risk Matrix -->
+<section class="content-section" id="ch4">
+  <div class="chapter-label">第四章</div>
+  <h2 class="content-title">风险矩阵与监管环境分析</h2>
+  <div class="content-body">
+    <p>本章综合技术、市场、监管三个维度，对二维材料赛道主要风险进行系统识别与量化评估。</p>
+  </div>
+
+  <div class="risk-matrix">
+    <div style="padding:0 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px;font-size:10px;letter-spacing:1.5px;color:var(--text-muted);text-transform:uppercase;">风险等级矩阵</div>
+    <div class="risk-row">
+      <span class="risk-tag risk-high">高</span>
+      <div class="risk-content">
+        <div class="risk-title">技术标准碎片化</div>
+        <div class="risk-desc">全球无统一 CVD 石墨烯质量标准，导致供应链认证成本高企，拖慢晶圆厂导入速度</div>
+      </div>
+    </div>
+    <div class="risk-row">
+      <span class="risk-tag risk-high">高</span>
+      <div class="risk-content">
+        <div class="risk-title">铅基钙钛矿环保法规</div>
+        <div class="risk-desc">欧盟 RoHS 修订版拟将铅基钙钛矿纳入管控范围，若 2027 年立法通过，将迫使大量 Series A 企业重构技术路线</div>
+      </div>
+    </div>
+    <div class="risk-row">
+      <span class="risk-tag risk-med">中</span>
+      <div class="risk-content">
+        <div class="risk-title">CVD 设备供应集中度</div>
+        <div class="risk-desc">全球 70% 高端 CVD 设备由 3 家企业供应，扩产周期受限，头部客户优先级排序不透明</div>
+      </div>
+    </div>
+    <div class="risk-row">
+      <span class="risk-tag risk-med">中</span>
+      <div class="risk-content">
+        <div class="risk-title">替代材料竞争压力</div>
+        <div class="risk-desc">碳化硅（SiC）在功率器件领域与 MoS₂ 存在应用重叠，SiC 产能扩张可能压缩 MoS₂ 市场空间</div>
+      </div>
+    </div>
+    <div class="risk-row">
+      <span class="risk-tag risk-low">低</span>
+      <div class="risk-content">
+        <div class="risk-title">原材料供应稳定性</div>
+        <div class="risk-desc">天然石墨和碳源供应充足，中国大陆对主要原材料把控力强，短期供应中断概率低</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-body" style="margin-top:20px;">
+    <p>监管层面，中国工信部于 2025年12月发布《新型二维材料发展指导意见（征求意见稿）》，明确将石墨烯和钙钛矿列入"未来材料"重点支持方向，预期配套补贴政策于 2026 年 Q2 落地。这对国内头部企业是正向催化，但可能加速产能过剩风险的前置。</p>
+  </div>
+</section>
+
+<!-- CHAPTER 5: Investment Action -->
+<section class="content-section" id="ch5">
+  <div class="chapter-label">第五章</div>
+  <h2 class="content-title">18 个月投资行动建议</h2>
+  <div class="content-body">
+    <p>基于前述技术、供应链与融资分析，AMORA 研究团队遴选出在 18 个月投资窗口内，具备明确行动信号的代表性标的（注：以下为研究性样本，不构成投资建议）。</p>
+  </div>
+
+  <div class="action-table">
+    <div class="action-card buy">
+      <div class="action-header">
+        <span class="action-company">Graphene Platform Corp.</span>
+        <span class="action-signal signal-buy">积极跟踪</span>
+      </div>
+      <div class="action-meta">
+        <span class="action-track">未来材料 · 石墨烯</span>
+        <span class="action-stage">B轮</span>
+      </div>
+      <div class="action-reason">CVD 薄膜批次一致性领先行业 18 个月，与三家晶圆厂进入正式供应商认证阶段，是目前最接近"半导体级量产"门槛的企业之一。</div>
+      <div class="action-valuation">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        估值：<span class="action-val-num">$2.4亿</span>
+        <span style="margin-left:auto;color:#34d399;font-size:10px;">建议关注窗口：Q2 2026</span>
+      </div>
+    </div>
+
+    <div class="action-card buy">
+      <div class="action-header">
+        <span class="action-company">KoreMat Technologies</span>
+        <span class="action-signal signal-buy">积极跟踪</span>
+      </div>
+      <div class="action-meta">
+        <span class="action-track">未来材料 · MoS₂</span>
+        <span class="action-stage">C轮</span>
+      </div>
+      <div class="action-reason">韩国企业，层数精度控制专利全球第二，三星战略持股 12%，2026年 H1 计划量产双层 MoS₂ 电子级产品，是目前中国体量以外最具规模化潜力的标的。</div>
+      <div class="action-valuation">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        估值：<span class="action-val-num">$6.1亿</span>
+        <span style="margin-left:auto;color:#34d399;font-size:10px;">建议关注窗口：Q1-Q2 2026</span>
+      </div>
+    </div>
+
+    <div class="action-card watch">
+      <div class="action-header">
+        <span class="action-company">Novavolt Solar</span>
+        <span class="action-signal signal-watch">观察</span>
+      </div>
+      <div class="action-meta">
+        <span class="action-track">未来能源 · 钙钛矿</span>
+        <span class="action-stage">A轮</span>
+      </div>
+      <div class="action-reason">钙钛矿-硅叠层路线，效率 32.8%（实验室），正在进行第三方 25年寿命测试。等待 Q3 2026 测试结果，届时是升级评级或出局的决策节点。</div>
+      <div class="action-valuation">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        估值：<span class="action-val-num">$8,500万</span>
+        <span style="margin-left:auto;color:#f59e0b;font-size:10px;">Q3 2026 结果后重评</span>
+      </div>
+    </div>
+
+    <div class="action-card avoid">
+      <div class="action-header">
+        <span class="action-company">纯工业级石墨烯制造商（通用）</span>
+        <span class="action-signal signal-avoid">规避</span>
+      </div>
+      <div class="action-meta">
+        <span class="action-track">未来材料 · 石墨烯</span>
+        <span class="action-stage">B轮前</span>
+      </div>
+      <div class="action-reason">工业级石墨烯价格从 $2.4/g（2022）跌至 $0.8/g（2025），继续下行趋势明显。纯工业级产品无品牌溢价，竞争已进入价格战阶段，ROI 空间压缩严重。</div>
+      <div class="action-valuation">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        价格趋势：<span style="color:#f87171;font-size:13px;font-weight:500;">持续下行</span>
+        <span style="margin-left:auto;color:#f87171;font-size:10px;">避免纯价格驱动标的</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:20px;">
+    <p>核心策略：在"材料+器件"一体化能力的企业中寻找机会，而非纯材料制备商。掌握器件集成Know-How的企业，在下游客户导入后将形成真正的护城河，估值重定价空间显著大于纯材料供应商。</p>
+    <div class="highlight-source">— AMORA 研究团队 · 2026年3月</div>
+  </div>
+</section>
+
+<!-- CCO OPINION -->
+<section class="cco-section" id="cco">
+  <div class="cco-card">
+    <div class="cco-header">
+      <span class="cco-badge">CCO 观点</span>
+      <span class="cco-title-label">编辑判断</span>
+    </div>
+    <div class="cco-text">
+      本报告的核心结论让我感到乐观，但有一点值得警惕：<strong>技术成熟度的快速提升正在压缩"窗口期"</strong>。对于创投机构而言，2026 年是布局二维材料赛道的最后高性价比窗口——一旦头部企业完成量产验证并进入主流供应链，估值将快速重定价。<br><br>
+      <strong>我们建议重点关注具备"材料+器件"一体化能力的企业</strong>，而非纯材料制备商——后者的壁垒正在因成本下降而快速消融。这个判断在接下来 12 个月内的验证事件，是 Graphene Platform Corp. 的晶圆厂认证结果和 KoreMat 的量产发布，两者任何一个落地，都会成为整个赛道的估值锚点。<br><br>
+      如果说这份报告有一个最核心的信息，那就是：<strong>2026 年不是观望年，是决策年。</strong>
+    </div>
+    <div class="cco-signature">
+      <div class="cco-avatar">C</div>
+      <div class="cco-name">Cole · CCO <span>| AMORA Insights · 2026年3月</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED REPORTS -->
+<section class="related-section" id="related">
+  <div class="section-label">相关报告</div>
+  <div class="related-grid">
+    <a class="related-card" href="#">
+      <div class="related-icon" style="background:rgba(29,78,216,0.1)">⚡</div>
+      <div class="related-content">
+        <div class="related-track">未来能源</div>
+        <div class="related-title">钙钛矿光伏 2026：效率突破后的量产竞赛</div>
+        <div class="related-meta">
+          <span class="related-grade grade-a">A级</span>
+          <span class="related-date">2026年2月</span>
+        </div>
+      </div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-icon" style="background:rgba(16,185,129,0.1)">🔬</div>
+      <div class="related-content">
+        <div class="related-track">未来信息</div>
+        <div class="related-title">半导体材料供应链重组：中国替代路径评估</div>
+        <div class="related-meta">
+          <span class="related-grade grade-b">B级</span>
+          <span class="related-date">2026年1月</span>
+        </div>
+      </div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-icon" style="background:rgba(245,158,11,0.1)">🏭</div>
+      <div class="related-content">
+        <div class="related-track">未来制造</div>
+        <div class="related-title">先进材料量产工艺：CVD 设备供应商竞争格局</div>
+        <div class="related-meta">
+          <span class="related-grade grade-b">B级</span>
+          <span class="related-date">2026年3月</span>
+        </div>
+      </div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-icon" style="background:rgba(139,92,246,0.1)">🧬</div>
+      <div class="related-content">
+        <div class="related-track">未来健康</div>
+        <div class="related-title">生物传感器中的二维材料应用：医疗器械市场机会</div>
+        <div class="related-meta">
+          <span class="related-grade grade-a">A级</span>
+          <span class="related-date">2026年3月</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+</div><!-- /page-main -->
+
+<!-- ── DESKTOP SIDEBAR ── -->
+<aside class="page-sidebar">
+  <div style="padding: 28px 20px;">
+    <div class="sidebar-section-label">Contents</div>
+    <nav>
+      <a href="#summary" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">—</span>
+        <span class="sidebar-toc-text">Executive Summary</span>
+      </a>
+      <a href="#key-data" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">◆</span>
+        <span class="sidebar-toc-text">Key Data</span>
+      </a>
+      <a href="#ch1" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">01</span>
+        <span class="sidebar-toc-text">TRL Assessment</span>
+      </a>
+      <a href="#ch2" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">02</span>
+        <span class="sidebar-toc-text">Supply Chain</span>
+      </a>
+      <a href="#ch3" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">03</span>
+        <span class="sidebar-toc-text">Investment Map</span>
+      </a>
+      <a href="#ch4" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">04</span>
+        <span class="sidebar-toc-text">Risk Matrix</span>
+      </a>
+      <a href="#ch5" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">05</span>
+        <span class="sidebar-toc-text">Investment Actions</span>
+      </a>
+      <a href="#cco" class="sidebar-toc-item">
+        <span class="sidebar-toc-num">◆</span>
+        <span class="sidebar-toc-text">CCO Perspective</span>
+      </a>
+    </nav>
+
+    <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <div class="sidebar-section-label">Key Metrics</div>
+      <div class="sidebar-stat-row">
+        <span class="sidebar-stat-label">Market Size 2030</span>
+        <span class="sidebar-stat-val">$1.4T</span>
+      </div>
+      <div class="sidebar-stat-row">
+        <span class="sidebar-stat-label">CAGR</span>
+        <span class="sidebar-stat-val">23%</span>
+      </div>
+      <div class="sidebar-stat-row">
+        <span class="sidebar-stat-label">2025 Funding</span>
+        <span class="sidebar-stat-val">$8.7B</span>
+      </div>
+      <div class="sidebar-stat-row">
+        <span class="sidebar-stat-label">YoY Growth</span>
+        <span class="sidebar-stat-val" style="color:#34d399;">↑142%</span>
+      </div>
+      <div class="sidebar-stat-row">
+        <span class="sidebar-stat-label">Companies Tracked</span>
+        <span class="sidebar-stat-val">147</span>
+      </div>
+      <div class="sidebar-stat-row">
+        <span class="sidebar-stat-label">Funding Events</span>
+        <span class="sidebar-stat-val">34</span>
+      </div>
+      <div class="sidebar-stat-row">
+        <span class="sidebar-stat-label">Graphene TRL</span>
+        <span class="sidebar-stat-val">7 / 9</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <div style="background: rgba(16,185,129,0.06); border: 1px solid rgba(52,211,153,0.2); border-radius: 12px; padding: 14px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2">
+            <path d="M17 11H7V7a5 5 0 0 1 9.9-1"/><rect x="3" y="11" width="18" height="11" rx="2"/>
+          </svg>
+          <span style="font-size:10px;letter-spacing:1px;color:#34d399;text-transform:uppercase;">Pro · Full Access</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">12,400+ words · 18 charts · Full database unlocked</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+</div><!-- /page-layout -->
+
+<!-- Floating TOC (mobile/tablet) -->
+<div class="float-toc-btn" onclick="toggleToc()" id="toc-btn">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="12" x2="15" y2="12"/>
+    <line x1="3" y1="18" x2="18" y2="18"/>
+  </svg>
+</div>
+
+<div class="toc-panel" id="toc-panel">
+  <div class="toc-panel-title">报告目录</div>
+  <a href="#summary" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">—</span><span class="toc-panel-text">核心结论</span>
+  </a>
+  <a href="#key-data" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">◆</span><span class="toc-panel-text">核心数据</span>
+  </a>
+  <a href="#ch1" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">01</span><span class="toc-panel-text">技术成熟度评估</span>
+  </a>
+  <a href="#ch2" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">02</span><span class="toc-panel-text">供应链格局分析</span>
+  </a>
+  <a href="#ch3" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">03</span><span class="toc-panel-text">投资图谱</span>
+  </a>
+  <a href="#ch4" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">04</span><span class="toc-panel-text">风险矩阵</span>
+  </a>
+  <a href="#ch5" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">05</span><span class="toc-panel-text">投资行动建议</span>
+  </a>
+  <a href="#cco" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">◆</span><span class="toc-panel-text">CCO 观点</span>
+  </a>
+  <a href="#related" class="toc-panel-item" onclick="closeToc()">
+    <span class="toc-panel-num">→</span><span class="toc-panel-text">相关报告</span>
+  </a>
+</div>
+
+<script>
+  // ─── PROGRESS BAR ───
+  window.addEventListener('scroll', function() {
+    const doc = document.documentElement;
+    const scrollTop = window.scrollY || doc.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  function toggleToc() {
+    document.getElementById('toc-panel').classList.toggle('open');
+  }
+  function closeToc() {
+    document.getElementById('toc-panel').classList.remove('open');
+  }
+  document.addEventListener('click', function(e) {
+    const btn = document.getElementById('toc-btn');
+    const panel = document.getElementById('toc-panel');
+    if (!btn.contains(e.target) && !panel.contains(e.target)) {
+      panel.classList.remove('open');
+    }
+  });
+
+  // ─── CHART.JS GLOBAL DEFAULTS ───
+  Chart.defaults.color = '#64748b';
+  Chart.defaults.font.family = "'DM Sans', -apple-system, sans-serif";
+  Chart.defaults.font.size = 11;
+
+  // ─── RADAR CHART ─── TRL Multi-Dimension
+  (function() {
+    const ctx = document.getElementById('radarChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Fab Cost', 'Yield Rate', 'Scalability', 'Stability', 'Supply Chain', 'Certification'],
+        datasets: [
+          {
+            label: 'Graphene',
+            data: [82, 75, 78, 72, 80, 70],
+            backgroundColor: 'rgba(59,130,246,0.18)',
+            borderColor: '#3b82f6',
+            borderWidth: 2,
+            pointBackgroundColor: '#3b82f6',
+            pointRadius: 3,
+            pointHoverRadius: 5
+          },
+          {
+            label: 'MoS₂',
+            data: [65, 68, 62, 65, 58, 55],
+            backgroundColor: 'rgba(52,211,153,0.15)',
+            borderColor: '#34d399',
+            borderWidth: 2,
+            pointBackgroundColor: '#34d399',
+            pointRadius: 3,
+            pointHoverRadius: 5
+          },
+          {
+            label: 'Perovskite',
+            data: [55, 50, 58, 45, 48, 40],
+            backgroundColor: 'rgba(245,158,11,0.12)',
+            borderColor: '#f59e0b',
+            borderWidth: 1.5,
+            borderDash: [4, 3],
+            pointBackgroundColor: '#f59e0b',
+            pointRadius: 3,
+            pointHoverRadius: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(6,13,28,0.95)',
+            borderColor: 'rgba(96,165,250,0.3)',
+            borderWidth: 1,
+            titleColor: '#f1f5f9',
+            bodyColor: '#94a3b8',
+            padding: 10,
+            callbacks: {
+              label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}/100`
+            }
+          }
+        },
+        scales: {
+          r: {
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 25,
+              color: '#334155',
+              backdropColor: 'transparent',
+              font: { size: 9 }
+            },
+            grid: { color: 'rgba(30,58,95,0.6)' },
+            angleLines: { color: 'rgba(30,58,95,0.5)' },
+            pointLabels: {
+              color: '#64748b',
+              font: { size: 10 }
+            }
+          }
+        }
+      }
+    });
+  })();
+
+  // ─── HORIZONTAL BAR: Capacity ───
+  (function() {
+    const ctx = document.getElementById('capacityBarChart');
+    if (!ctx) return;
+    const gradient = ctx.getContext('2d').createLinearGradient(0, 0, ctx.parentElement.offsetWidth || 300, 0);
+    gradient.addColorStop(0, '#1d4ed8');
+    gradient.addColorStop(1, '#60a5fa');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Mainland China', 'South Korea', 'EU', 'United States', 'Others'],
+        datasets: [{
+          label: 'Capacity (t/yr)',
+          data: [780, 152, 98, 82, 88],
+          backgroundColor: [
+            'rgba(29,78,216,0.85)',
+            'rgba(59,130,246,0.75)',
+            'rgba(96,165,250,0.65)',
+            'rgba(147,197,253,0.6)',
+            'rgba(186,230,253,0.5)'
+          ],
+          borderColor: [
+            '#3b82f6','#60a5fa','#93c5fd','#bae6fd','#e0f2fe'
+          ],
+          borderWidth: 1,
+          borderRadius: 5
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(6,13,28,0.95)',
+            borderColor: 'rgba(96,165,250,0.3)',
+            borderWidth: 1,
+            titleColor: '#f1f5f9',
+            bodyColor: '#94a3b8',
+            padding: 10,
+            callbacks: {
+              label: ctx => ` ${ctx.raw} tonnes/year`
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(15,30,53,0.8)' },
+            ticks: { color: '#475569', font: { size: 10 } }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: '#94a3b8', font: { size: 11 } }
+          }
+        }
+      }
+    });
+  })();
+
+  // ─── LINE CHART: Cost Trend ───
+  (function() {
+    const ctx = document.getElementById('costLineChart');
+    if (!ctx) return;
+    const chart = ctx.getContext('2d');
+    const gradFill = chart.createLinearGradient(0, 0, 0, 180);
+    gradFill.addColorStop(0, 'rgba(59,130,246,0.35)');
+    gradFill.addColorStop(1, 'rgba(59,130,246,0.0)');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026E'],
+        datasets: [{
+          label: 'Industrial Grade ($/g)',
+          data: [3.8, 3.2, 2.4, 1.8, 1.2, 0.8, 0.55],
+          borderColor: '#3b82f6',
+          borderWidth: 2.5,
+          backgroundColor: gradFill,
+          fill: true,
+          tension: 0.4,
+          pointRadius: [3,3,3,3,3,4,5],
+          pointBackgroundColor: ['#1d4ed8','#1d4ed8','#1d4ed8','#3b82f6','#60a5fa','#60a5fa','#93c5fd'],
+          pointBorderColor: ['transparent','transparent','transparent','transparent','transparent','#3b82f6','#3b82f6'],
+          pointBorderWidth: [0,0,0,0,0,1.5,1.5],
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(6,13,28,0.95)',
+            borderColor: 'rgba(96,165,250,0.3)',
+            borderWidth: 1,
+            titleColor: '#f1f5f9',
+            bodyColor: '#94a3b8',
+            padding: 10,
+            callbacks: {
+              label: ctx => ` $${ctx.raw}/g`
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(15,30,53,0.8)' },
+            ticks: { color: '#475569', font: { size: 10 } }
+          },
+          y: {
+            grid: { color: 'rgba(15,30,53,0.8)' },
+            ticks: {
+              color: '#475569',
+              font: { size: 10 },
+              callback: v => '$' + v
+            }
+          }
+        }
+      }
+    });
+  })();
+
+  // ─── DOUGHNUT: Funding Rounds ───
+  (function() {
+    const ctx = document.getElementById('donutChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Series B', 'Series C', 'Series A', 'Strategic'],
+        datasets: [{
+          data: [38, 29, 20, 13],
+          backgroundColor: ['#1d4ed8','#3b82f6','#60a5fa','#93c5fd'],
+          borderColor: '#060d1c',
+          borderWidth: 2,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        cutout: '68%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(6,13,28,0.95)',
+            borderColor: 'rgba(96,165,250,0.3)',
+            borderWidth: 1,
+            titleColor: '#f1f5f9',
+            bodyColor: '#94a3b8',
+            padding: 10,
+            callbacks: {
+              label: ctx => ` ${ctx.label}: ${ctx.raw}%`
+            }
+          }
+        }
+      },
+      plugins: [{
+        id: 'centerText',
+        beforeDraw(chart) {
+          const { width, height, ctx } = chart;
+          ctx.save();
+          ctx.font = 'bold 13px DM Sans, sans-serif';
+          ctx.fillStyle = '#f1f5f9';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('34', width / 2, height / 2 - 7);
+          ctx.font = '9px DM Sans, sans-serif';
+          ctx.fillStyle = '#64748b';
+          ctx.fillText('Deals', width / 2, height / 2 + 8);
+          ctx.restore();
+        }
+      }]
+    });
+  })();
+
+  // ─── BAR: Cost Drop (Key Data Panel) ───
+  (function() {
+    const ctx = document.getElementById('costDropChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Industrial Grade', 'Semiconductor Grade'],
+        datasets: [{
+          label: 'Cost Reduction (%)',
+          data: [67, 12],
+          backgroundColor: ['rgba(52,211,153,0.7)', 'rgba(245,158,11,0.65)'],
+          borderColor: ['#34d399', '#f59e0b'],
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(6,13,28,0.95)',
+            borderColor: 'rgba(96,165,250,0.3)',
+            borderWidth: 1,
+            titleColor: '#f1f5f9',
+            bodyColor: '#94a3b8',
+            padding: 10,
+            callbacks: {
+              label: ctx => ` ↓${ctx.raw}% reduction`
+            }
+          }
+        },
+        scales: {
+          x: {
+            max: 100,
+            grid: { color: 'rgba(15,30,53,0.8)' },
+            ticks: {
+              color: '#475569',
+              font: { size: 9 },
+              callback: v => v + '%'
+            }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: '#94a3b8', font: { size: 10 } }
+          }
+        }
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMORA Logo Preview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    body {
+      background: #0a0f1e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 24px;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    h1 { color: #9ca3af; font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .row { display: flex; gap: 60px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .item { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .label { color: #6b7280; font-size: 12px; font-family: monospace; }
+
+    .logo-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+
+    /* ====== Option A: 文字居中，小一号 ====== */
+    .logo-a .icon svg { width: 32px; height: 30px; }
+    .logo-a .text { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+    .logo-a .text .main { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: 0.12em; }
+    .logo-a .text .sub  { color: #3b82f6; font-size: 9px; font-weight: 500; letter-spacing: 0.55em; display: none; }
+
+    /* ====== Option B: 文字略大，与图标视觉平衡 ====== */
+    .logo-b .icon svg { width: 32px; height: 30px; }
+    .logo-b .text { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+    .logo-b .text .main { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 0.10em; }
+    .logo-b .text .sub  { display: none; }
+
+    /* ====== Option C: 文字中等，gap稍大 ====== */
+    .logo-c .icon svg { width: 34px; height: 32px; }
+    .logo-c .text { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+    .logo-c .text .main { color: #fff; font-size: 20px; font-weight: 600; letter-spacing: 0.10em; }
+    .logo-c .text .sub  { display: none; }
+
+    /* ====== Option D: 文字稍小，图标居右 ====== */
+    .logo-d .icon svg { width: 30px; height: 28px; }
+    .logo-d .text { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+    .logo-d .text .main { color: #fff; font-size: 16px; font-weight: 700; letter-spacing: 0.15em; }
+    .logo-d .text .sub  { display: none; }
+
+    /* ====== Option E: 大字，图标小 ====== */
+    .logo-e .icon svg { width: 28px; height: 26px; }
+    .logo-e .text { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+    .logo-e .text .main { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: 0.08em; }
+    .logo-e .text .sub  { display: none; }
+
+    .nav-bar {
+      background: #111827;
+      border-top: 1px solid #1f2937;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      width: 100%;
+      max-width: 700px;
+      border-radius: 8px;
+    }
+    .nav-link { color: #9ca3af; font-size: 13px; text-decoration: none; font-family: sans-serif; }
+    .nav-link:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <h1>AMORA Logo — Single Word Options</h1>
+
+  <!-- 单行展示 -->
+  <div class="row">
+
+    <!-- A: 小字，均衡型 -->
+    <div class="item">
+      <div class="logo-wrap logo-a">
+        <div class="icon">
+          <svg width="32" height="30" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fa" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa"/>
+                <stop offset="100%" stop-color="#0072ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#fa)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#fa)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#fa)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#fa)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#fa)" opacity="0.40"/>
+          </svg>
+        </div>
+        <div class="text"><span class="main">AMORA</span></div>
+      </div>
+      <span class="label">A — 小字，均衡</span>
+    </div>
+
+    <!-- B: 中大字，强视觉 -->
+    <div class="item">
+      <div class="logo-wrap logo-b">
+        <div class="icon">
+          <svg width="32" height="30" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fb" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa"/>
+                <stop offset="100%" stop-color="#0072ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#fb)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#fb)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#fb)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#fb)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#fb)" opacity="0.40"/>
+          </svg>
+        </div>
+        <div class="text"><span class="main">AMORA</span></div>
+      </div>
+      <span class="label">B — 中大字，强势</span>
+    </div>
+
+    <!-- C: 中等，gap稍大 -->
+    <div class="item">
+      <div class="logo-wrap logo-c">
+        <div class="icon">
+          <svg width="34" height="32" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fc" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa"/>
+                <stop offset="100%" stop-color="#0072ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#fc)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#fc)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#fc)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#fc)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#fc)" opacity="0.40"/>
+          </svg>
+        </div>
+        <div class="text"><span class="main">AMORA</span></div>
+      </div>
+      <span class="label">C — 中等，宽松间距</span>
+    </div>
+
+    <!-- D: 小字，图标右 -->
+    <div class="item">
+      <div class="logo-wrap logo-d">
+        <div class="icon">
+          <svg width="30" height="28" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fd" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa"/>
+                <stop offset="100%" stop-color="#0072ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#fd)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#fd)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#fd)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#fd)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#fd)" opacity="0.40"/>
+          </svg>
+        </div>
+        <div class="text"><span class="main">AMORA</span></div>
+      </div>
+      <span class="label">D — 小字，灵巧</span>
+    </div>
+
+    <!-- E: 大字压图标 -->
+    <div class="item">
+      <div class="logo-wrap logo-e">
+        <div class="icon">
+          <svg width="28" height="26" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fe" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa"/>
+                <stop offset="100%" stop-color="#0072ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#fe)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#fe)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#fe)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#fe)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#fe)" opacity="0.40"/>
+          </svg>
+        </div>
+        <div class="text"><span class="main">AMORA</span></div>
+      </div>
+      <span class="label">E — 大字压图，文字优先</span>
+    </div>
+
+  </div>
+
+  <!-- 模拟导航栏 -->
+  <div style="width:100%; max-width:700px;">
+    <h1 style="margin-top:20px;">Navigation Bar Mockup</h1>
+    <div class="nav-bar">
+      <div class="logo-wrap logo-a">
+        <div class="icon">
+          <svg width="32" height="30" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fna" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa"/>
+                <stop offset="100%" stop-color="#0072ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#fna)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#fna)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#fna)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#fna)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#fna)" opacity="0.40"/>
+          </svg>
+        </div>
+        <div class="text"><span class="main">AMORA</span></div>
+      </div>
+      <a href="#" class="nav-link">News</a>
+      <a href="#" class="nav-link">Reports</a>
+      <a href="#" class="nav-link">Companies</a>
+      <a href="#" class="nav-link">Industries</a>
+      <a href="#" class="nav-link" style="margin-left:auto; color:#3b82f6;">Sign In</a>
+    </div>
+  </div>
+
+</body>
+</html>

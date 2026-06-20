@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Alignment Preview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { background: #0a0f1e; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 32px; font-family: 'Inter', system-ui, sans-serif; }
+    h1 { color: #9ca3af; font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+    .section-title { color: #6b7280; font-size: 12px; font-family: monospace; margin-bottom: 8px; }
+    .row { display: flex; gap: 60px; align-items: flex-end; flex-wrap: wrap; justify-content: center; }
+    .item { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .label { color: #6b7280; font-size: 12px; font-family: monospace; }
+
+    /* Icon pushed up 2px so visual bottom = text baseline */
+    .logo-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .logo-wrap .icon { transform: translateY(-2px); }
+
+    /* ====== A: icon 32x30, text 22px bold ====== */
+    .logo-a .icon svg { width: 32px; height: 30px; }
+    .logo-a .text { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 0.10em; line-height: 1; }
+
+    /* ====== B: icon 36x34, text 22px bold ====== */
+    .logo-b .icon svg { width: 36px; height: 34px; }
+    .logo-b .text { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 0.10em; line-height: 1; }
+
+    /* ====== C: icon 30x28, text 22px bold ====== */
+    .logo-c .icon svg { width: 30px; height: 28px; }
+    .logo-c .text { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 0.10em; line-height: 1; }
+
+    /* ====== D: icon 32x30, text 20px bold ====== */
+    .logo-d .icon svg { width: 32px; height: 30px; }
+    .logo-d .text { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 0.12em; line-height: 1; }
+
+    /* ====== E: icon 38x36, text 22px bold ====== */
+    .logo-e .icon svg { width: 38px; height: 36px; }
+    .logo-e .text { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 0.10em; line-height: 1; }
+
+    /* ====== F: icon 32x30, text 24px bold ====== */
+    .logo-f .icon svg { width: 32px; height: 30px; }
+    .logo-f .text { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: 0.08em; line-height: 1; }
+
+    .nav-bar { background: #111827; border-top: 1px solid #1f2937; padding: 14px 24px; display: flex; align-items: center; gap: 32px; width: 100%; max-width: 700px; border-radius: 8px; }
+    .nav-link { color: #9ca3af; font-size: 13px; text-decoration: none; font-family: sans-serif; }
+    .nav-link:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <h1>AMORA Logo — 底端对齐版本</h1>
+  <p style="color:#4b5563; font-size:12px; font-family:monospace;">align-items: center + icon translateY(-2px) — 视觉底部与文字基线精确对齐</p>
+
+  <div class="row">
+
+    <!-- A: 图标32 文字22 -->
+    <div class="item">
+      <div class="logo-wrap logo-a">
+        <div class="icon">
+          <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#ga)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#ga)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#ga)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#ga)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#ga)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span class="text">AMORA</span>
+      </div>
+      <span class="label">A — 图标32 / 文字22</span>
+    </div>
+
+    <!-- B: 图标36 文字22 -->
+    <div class="item">
+      <div class="logo-wrap logo-b">
+        <div class="icon">
+          <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gb)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gb)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#gb)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gb)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gb)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span class="text">AMORA</span>
+      </div>
+      <span class="label">B — 图标36 / 文字22</span>
+    </div>
+
+    <!-- C: 图标30 文字22 -->
+    <div class="item">
+      <div class="logo-wrap logo-c">
+        <div class="icon">
+          <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gc)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gc)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#gc)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gc)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gc)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span class="text">AMORA</span>
+      </div>
+      <span class="label">C — 图标30 / 文字22</span>
+    </div>
+
+    <!-- D: 图标32 文字20 -->
+    <div class="item">
+      <div class="logo-wrap logo-d">
+        <div class="icon">
+          <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gd)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gd)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#gd)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gd)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gd)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span class="text">AMORA</span>
+      </div>
+      <span class="label">D — 图标32 / 文字20</span>
+    </div>
+
+    <!-- E: 图标38 文字22 -->
+    <div class="item">
+      <div class="logo-wrap logo-e">
+        <div class="icon">
+          <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="ge" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#ge)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#ge)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#ge)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#ge)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#ge)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span class="text">AMORA</span>
+      </div>
+      <span class="label">E — 图标38 / 文字22</span>
+    </div>
+
+    <!-- F: 图标32 文字24 -->
+    <div class="item">
+      <div class="logo-wrap logo-f">
+        <div class="icon">
+          <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gf)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gf)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#gf)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gf)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gf)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span class="text">AMORA</span>
+      </div>
+      <span class="label">F — 图标32 / 文字24</span>
+    </div>
+
+  </div>
+
+  <!-- 导航栏模拟 -->
+  <div style="width:100%; max-width:700px;">
+    <div class="section-title" style="margin-top:20px;">导航栏模拟（align-items: baseline）</div>
+    <div class="nav-bar">
+      <div class="logo-wrap" style="align-items:center;">
+        <div class="icon" style="transform:translateY(-2px);">
+          <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="34">
+            <defs><linearGradient id="gnav" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#0072ff"/></linearGradient></defs>
+            <rect x="0"  y="30" width="8" height="14" rx="2" fill="url(#gnav)" opacity="0.40"/>
+            <rect x="10" y="22" width="8" height="22" rx="2" fill="url(#gnav)" opacity="0.65"/>
+            <rect x="20" y="8"  width="8" height="36" rx="2" fill="url(#gnav)" opacity="1.0"/>
+            <rect x="30" y="22" width="8" height="22" rx="2" fill="url(#gnav)" opacity="0.65"/>
+            <rect x="40" y="30" width="8" height="14" rx="2" fill="url(#gnav)" opacity="0.40"/>
+          </svg>
+        </div>
+        <span style="color:#fff; font-size:22px; font-weight:700; letter-spacing:0.10em; line-height:1;">AMORA</span>
+      </div>
+      <a href="#" class="nav-link">News</a>
+      <a href="#" class="nav-link">Reports</a>
+      <a href="#" class="nav-link">Companies</a>
+      <a href="#" class="nav-link">Industries</a>
+      <a href="#" class="nav-link" style="margin-left:auto; color:#3b82f6;">Sign In</a>
+    </div>
+  </div>
+
+</body>
+</html>

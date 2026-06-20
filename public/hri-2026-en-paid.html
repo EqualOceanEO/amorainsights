@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humanoid Robotics Intelligence 2026 — AMORA Insights</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c14;--surface:#0d1421;--surface2:#111927;
+  --border:rgba(255,255,255,0.06);--text:#e2e8f0;--muted:#64748b;
+  --gold:#f59e0b;--amber:#fbbf24;--pro:#34d399;--tag:#38bdf8;--blue:#818cf8;
+}
+html,body{height:100%;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+body::-webkit-scrollbar{display:none}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,12,20,0.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:0 40px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  display:flex;align-items:baseline;gap:10px;
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:600;
+  background:linear-gradient(135deg,#818cf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.logo span{font-size:11px;color:var(--muted);font-weight:400;-webkit-text-fill-color:var(--muted);font-family:'DM Sans',sans-serif}
+.lang-badge{font-size:10px;padding:3px 10px;border-radius:99px;background:rgba(129,140,248,0.12);color:var(--blue);border:1px solid rgba(129,140,248,0.25);font-weight:600;letter-spacing:0.12em;text-transform:uppercase}
+.status-badge{font-size:10px;padding:3px 10px;border-radius:99px;background:rgba(52,211,153,0.12);color:var(--pro);border:1px solid rgba(52,211,153,0.25);font-weight:600}
+
+.chapter-nav{
+  position:sticky;top:60px;z-index:90;
+  background:rgba(8,12,20,0.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);padding:0 40px;height:52px;
+  display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;
+}
+.chapter-nav::-webkit-scrollbar{display:none}
+.nav-item{flex-shrink:0;padding:6px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);background:transparent;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.nav-item.active{color:var(--blue);background:rgba(129,140,248,0.1)}
+
+.chapter{padding:72px 0 48px}
+.chapter-inner{max-width:1120px;margin:0 auto;padding:0 40px}
+.chapter-header{margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.chapter-meta{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.part-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--bg);background:var(--blue);padding:2px 10px;border-radius:4px;letter-spacing:0.1em}
+.tag-en{font-size:10px;padding:2px 10px;border-radius:99px;background:rgba(129,140,248,0.1);color:var(--blue);border:1px solid rgba(129,140,248,0.2);font-weight:500;text-transform:uppercase;letter-spacing:0.08em}
+.chapter-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,38px);font-weight:700;color:#f8fafc;line-height:1.2;letter-spacing:-0.02em;margin-bottom:10px}
+.chapter-subtitle{font-size:14px;color:var(--muted);line-height:1.6}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color 0.2s}
+.card:hover{border-color:rgba(129,140,248,0.3)}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:12px;font-weight:600;letter-spacing:0.05em}
+.card h3{font-size:16px;font-weight:600;color:#f8fafc;margin-bottom:8px}
+.card p{font-size:13px;color:var(--muted);line-height:1.65}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--blue);display:block;margin-bottom:4px}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:0.05em}
+
+.quote{
+  background:linear-gradient(135deg,rgba(129,140,248,0.08),rgba(99,102,241,0.04));
+  border:1px solid rgba(129,140,248,0.2);border-radius:16px;
+  padding:28px 32px;margin-top:20px;
+  font-family:'Playfair Display',serif;font-size:17px;color:#e2e8f0;
+  line-height:1.8;position:relative;font-style:italic;
+}
+.quote::before{content:'\201C';position:absolute;top:-8px;left:24px;font-size:64px;color:rgba(129,140,248,0.3);font-family:Georgia,serif;line-height:1}
+
+footer{border-top:1px solid var(--border);padding:32px 40px;text-align:center;margin-top:60px}
+footer p{font-size:12px;color:var(--muted)}
+footer a{color:var(--blue);text-decoration:none;font-weight:600}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AMORA<span>Humanoid Robotics Intelligence · 2026</span></div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="lang-badge">English</span>
+    <span class="status-badge">Full Access</span>
+  </div>
+</header>
+
+<div class="chapter-nav">
+  <button class="nav-item active" onclick="scrollToChapter('m')">Part M · Mapping</button>
+  <button class="nav-item" onclick="scrollToChapter('a')">Part A · Advancement</button>
+  <button class="nav-item" onclick="scrollToChapter('o')">Part O · Operations</button>
+  <button class="nav-item" onclick="scrollToChapter('r')">Part R · Reach</button>
+  <button class="nav-item" onclick="scrollToChapter('a2')">Part A₂ · Assets</button>
+</div>
+
+<!-- Part M -->
+<div class="chapter" id="ch-m">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART M</span><span class="tag-en">Mapping</span></div>
+    <h1 class="chapter-title">Industry Chain Ecosystem</h1>
+    <p class="chapter-subtitle">359 enterprises form a complete humanoid robotics industrial ecosystem, from core components to end applications</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · Upstream · Core Components</div>
+      <h3>Reducers · Motors · Sensors</h3>
+      <p>LeaderHarmonic and Laifute dominate harmonic reducers; stepper motors supplied by Stepper Online and Weijing; six-axis force sensors from Kunwei and Minbao. Domestic substitution rate exceeds 60%, with some products entering the supply chains of Unitree and Fourier.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · Midstream · Manufacturing</div>
+      <h3>OEMs · Capacity Race</h3>
+      <p>Unitree annual humanoid capacity of 75,000 units/year; cumulative quadruped output of 30,000 units; Fourier and Zhiyuan each at 50,000 units/year; Figure 02 and Tesla Optimus form the international bipolar structure. Domestic share exceeds 70%.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · Downstream · Applications</div>
+      <h3>R&D · Industrial · Commercial Services</h3>
+      <p>Current shipment structure reveals the truth: 73.6% flows to R&D and education markets, 9% to corporate guide services, and less than 5% to genuine industrial replacement. The market cultivation window spans another 3-5 years.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · Bottlenecks</div>
+      <h3>Dexterous Hands · Domestic Gaps</h3>
+      <p>Dexterous hands priced at CNY 30,000-80,000 per unit; domestic precision insufficient; hollow-cup motors dominated by Maxon and Faulhaber; tactile sensor arrays remain at laboratory stage. High-value nodes along the supply chain remain controlled by foreign players.</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">359</span><span class="stat-label">Enterprises</span></div>
+    <div class="stat"><span class="stat-val">71%</span><span class="stat-label">Domestic</span></div>
+    <div class="stat"><span class="stat-val">73.6%</span><span class="stat-label">R&D Education</span></div>
+    <div class="stat"><span class="stat-val">&lt;5%</span><span class="stat-label">Industrial</span></div>
+  </div>
+  <div class="quote">
+    The current humanoid robotics market is an "R&D market," not an "industrial market" — understanding this distinction is critical to interpreting why leading companies' revenue figures cannot be directly compared with traditional industrial robotics firms.
+  </div>
+</div>
+</div>
+
+<!-- Part A -->
+<div class="chapter" id="ch-a">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART A</span><span class="tag-en">Advancement</span></div>
+    <h1 class="chapter-title">Technology Advancement Assessment</h1>
+    <p class="chapter-subtitle">From motion control to embodied AI — AMORA Advancement Score comprehensive analysis</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · Motion Control</div>
+      <h3>Unitree · Global Quadruped Leader</h3>
+      <p>Unitree H1 full-body motion control algorithms lead domestic peers by 1-2 generations; running speed 5.6 m/s; proprietary M107 joint motor peak torque 360N·m at just 1.9kg — energy density ranks among top 3 globally.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · Embodied AI</div>
+      <h3>Figure 01 · End-to-End Neural Networks</h3>
+      <p>Figure 02 uses end-to-end multimodal large models with Vision-Language-Action directly outputting joint control sequences; Zhiyuan GO-1 follows the same approach. The domestic gap primarily lies in training data volume and simulation platform maturity.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · Core Gaps</div>
+      <h3>Tactile Perception · Dexterous Manipulation</h3>
+      <p>Domestic dexterous hands: 6-11 DOF vs. international leaders at 18-27 DOF; tactile sensor array density gap of 5-8x; fine motor control algorithm patent volume in China is only 1/4 that of the United States.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · R&D Investment</div>
+      <h3>Unitree · CNY 4.2B IPO Earmarked for R&D</h3>
+      <p>Unitree's CNY 4.2 billion IPO: 85% allocated to R&D; R&D staff accounts for 61.8%; three-year R&D intensity 18.6%/15.4%/20.3%. Leading companies have established a virtuous cycle of hardware-defined, software-iterated development.</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">8.9</span><span class="stat-label">Unitree Score</span></div>
+    <div class="stat"><span class="stat-val">360N·m</span><span class="stat-label">Peak Torque</span></div>
+    <div class="stat"><span class="stat-val">5.6m/s</span><span class="stat-label">Running Speed</span></div>
+    <div class="stat"><span class="stat-val">85%</span><span class="stat-label">R&D Allocation</span></div>
+  </div>
+  <div class="quote">
+    Hardware sets the performance ceiling for humanoid robots; AI determines whether that ceiling can be reached. The domestic weakness lies not in mechanical systems, but in the systematic gap in embodied AI training data and simulation platform infrastructure.
+  </div>
+</div>
+</div>
+
+<!-- Part O -->
+<div class="chapter" id="ch-o">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART O</span><span class="tag-en">Operations</span></div>
+    <h1 class="chapter-title">Commercial Operations Capability</h1>
+    <p class="chapter-subtitle">Financial health, capacity elasticity, and comprehensive operations comparison across 359 enterprises</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · Commercialization Leader</div>
+      <h3>Unitree · The Only Profitable Humanoid Company</h3>
+      <p>2025 revenue CNY 1.708 billion (+119% YoY), net profit CNY 600 million (35% net margin), gross margin 60.27%. Global quadruped sales leader with 30,000 cumulative units; annual humanoid production of 5,500 units.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · International Market</div>
+      <h3>Global Reach · Unitree 35%+ Overseas Revenue</h3>
+      <p>Unitree operates in 50+ countries with overseas revenue exceeding 35%; Figure AI serves NASA and Boeing; Agility Robotics is deeply integrated with Amazon logistics. Overseas revenue is the core metric validating global technology competitiveness.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · Supply Chain</div>
+      <h3>In-house Core Components · Clear Cost Reduction Path</h3>
+      <p>Unitree's proprietary M107 motor: 40% lower cost than outsourcing; proprietary control algorithms reduce commissioning man-hours by 60%; at scale, per-unit cost declining 15-20% annually, with 100,000 units/year capacity target achievable by 2027.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · Customer Structure Reality</div>
+      <h3>73.6% R&D · 9% Corporate Guide</h3>
+      <p>Unitree's customer structure reveals the industry's stage: R&D/education 73.6%, corporate guide 9%, medical/rehabilitation 3.6%, genuine industrial replacement approximately 5%. Industry penetration remains in the early cultivation phase.</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">CNY 1.7B</span><span class="stat-label">Revenue</span></div>
+    <div class="stat"><span class="stat-val">60.3%</span><span class="stat-label">Gross Margin</span></div>
+    <div class="stat"><span class="stat-val">35%</span><span class="stat-label">Net Margin</span></div>
+    <div class="stat"><span class="stat-val">35%+</span><span class="stat-label">Overseas</span></div>
+  </div>
+  <div class="quote">
+    There are no more than 3 profitable humanoid robotics companies globally. Unitree is one of them — and the only one in China. This is no accident: it results from the trinity of in-house hardware, software co-design, and global market penetration.
+  </div>
+</div>
+</div>
+
+<!-- Part R -->
+<div class="chapter" id="ch-r">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART R</span><span class="tag-en">Reach</span></div>
+    <h1 class="chapter-title">Global Market Size Analysis</h1>
+    <p class="chapter-subtitle">Global humanoid robotics market projected to exceed $3.38 trillion by 2035, CAGR 61.3%</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">01 · Market Size</div>
+      <h3>2035 · $3.38 Trillion</h3>
+      <p>Goldman Sachs projects $3.38 trillion global humanoid robotics market by 2035; McKinsey estimates 60,500 units/year demand in China by 2030; Tesla Optimus targets 10,000 units in 2026 and 100,000 units in 2027.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02 · China Market</div>
+      <h3>Double-digit Growth · Policy Dividend Period</h3>
+      <p>2025 China robotics market projected at CNY 445 billion (+17.8% YoY); humanoid robotics penetration rate below 0.5%. Humanoid robotics listed as a national key development sector with密集 policy subsidies across regions.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03 · Application Segmentation</div>
+      <h3>Short-term R&D · Mid-term Services · Long-term Industrial</h3>
+      <p>Short-term (2025-2027): R&D/education dominant; Mid-term (2027-2030): commercial guide and medical rehabilitation penetration; Long-term (2030+): large-scale industrial manufacturing substitution. China's manufacturing worker shortage: 30 million+.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04 · Competitive Landscape</div>
+      <h3>Domestic Leaders · Intensifying International Competition</h3>
+      <p>359 global enterprises tracked; domestic share 71%. Unitree commands 40%+ global quadruped market share; in humanoid segment, Tesla Figure leads internationally while Unitree, Zhiyuan, and Fourier form China's first tier.</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">$3.38T</span><span class="stat-label">USD · 2035</span></div>
+    <div class="stat"><span class="stat-val">61.3%</span><span class="stat-label">CAGR</span></div>
+    <div class="stat"><span class="stat-val">60,500</span><span class="stat-label">Units/yr · China</span></div>
+    <div class="stat"><span class="stat-val">30M+</span><span class="stat-label">Worker Gap</span></div>
+  </div>
+  <div class="quote">
+    Humanoid robotics is not merely a product category — it is the infrastructure of an era. The $3.38 trillion market by 2035 is merely the starting point; the true transformation lies in redefining the value distribution of "labor."
+  </div>
+</div>
+</div>
+
+<!-- Part A2 -->
+<div class="chapter" id="ch-a2">
+<div class="chapter-inner">
+  <div class="chapter-header">
+    <div class="chapter-meta"><span class="part-tag">PART A₂</span><span class="tag-en">Assets</span></div>
+    <h1 class="chapter-title">Enterprise Capital Value Assessment</h1>
+    <p class="chapter-subtitle">AMORA Score Framework · 5-Dimension Enterprise Composite Scoring · Capital Allocation Reference</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-num">AMORA · Score Framework</div>
+      <h3>Advancement · Mastery · Operations · Reach · Affinity</h3>
+      <p>AMORA Score is a proprietary multi-dimensional enterprise scoring system: A=Technological barriers (Advancement), M=Human capital advantage (Mastery), O=Commercial execution (Operations), R=Global market reach (Reach), A=Sustainability (Affinity).</p>
+    </div>
+    <div class="card">
+      <div class="card-num">Leading Companies</div>
+      <h3>Unitree Technology · AMORA Score 8.9</h3>
+      <p>Tech barriers 9.5 (proprietary joints + algorithms), Human capital 8.0, Operations 9.2 (truly profitable), Global reach 8.5 (35%+ overseas), Sustainability 9.0. Composite 8.9, ranked #1 in AMORA HRI 2026.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">Second Tier</div>
+      <h3>Fourier · Zhiyuan · Figure AI</h3>
+      <p>Fourier GR-1 composite score 7.6; Zhiyuan GO-1 accelerating commercialization, score 7.3; Figure 02 international influence prominent, score 7.8. Domestic substitution rate rising rapidly; 2026 landscape expected to shift significantly.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">Investment Thesis</div>
+      <h3>Full-Stack In-house + Overseas Revenue Dual Validation</h3>
+      <p>Unitree meets both criteria; Zhiyuan and Fourier expanding overseas; UBTECH Operations score adjusted to 6.8 due to below-expectation commercialization progress. Focus on companies with embodied AI breakthroughs + industrial use-case dual validation.</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">8.9</span><span class="stat-label">Unitree</span></div>
+    <div class="stat"><span class="stat-val">7.8</span><span class="stat-label">Figure AI</span></div>
+    <div class="stat"><span class="stat-val">7.6</span><span class="stat-label">Fourier</span></div>
+    <div class="stat"><span class="stat-val">7.3</span><span class="stat-label">Zhiyuan</span></div>
+  </div>
+  <div class="quote">
+    AMORA Score is not a stock-picking tool — it is a lens for understanding industry structure. Understanding the multi-dimensional distribution of 359 enterprises reveals the true opportunities and risks in this sector.
+  </div>
+</div>
+</div>
+
+<footer>
+  <p><a href="#">AMORA Insights</a> · Humanoid Robotics Intelligence 2026 · AMORA Research Framework v3.0</p>
+  <p style="margin-top:6px;font-size:11px;color:#334155">© 2026 AMORA Insights. All Rights Reserved.</p>
+</footer>
+
+<script>
+function scrollToChapter(id){document.getElementById('ch-'+id).scrollIntoView({behavior:'smooth',block:'start'});}
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const id=e.target.id.replace('ch-','');document.querySelectorAll('.nav-item').forEach(n=>{if(n.textContent.toUpperCase().includes(id.toUpperCase()))n.classList.add('active')});}})},{threshold:0.3});document.querySelectorAll('[id^="ch-"]').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

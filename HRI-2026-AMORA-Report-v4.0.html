@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Humanoid Robot Index 2026 | AMORA Report v4.0</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-table: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-dim: #6e7681;
+      --accent: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-red: #f85149;
+      --accent-yellow: #d29922;
+      --accent-purple: #bc8cff;
+      --accent-orange: #f0883e;
+      --tag-bg: #1f2937;
+      --cn: #f85149;
+      --us: #58a6ff;
+      --eu: #bc8cff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 20px;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(88,166,255,0.1);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    header h1 {
+      font-size: 40px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header .subtitle {
+      color: var(--text-muted);
+      font-size: 17px;
+      margin-bottom: 28px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    header .meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      font-size: 13px;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+    }
+    header .meta span {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+    header .meta span strong { color: var(--text-muted); }
+
+    /* Nav */
+    nav {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    nav li a {
+      display: block;
+      padding: 14px 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+      white-space: nowrap;
+      transition: color 0.2s;
+      border-bottom: 2px solid transparent;
+    }
+    nav li a:hover, nav li a.active {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom-color: var(--accent);
+    }
+
+    /* Container */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Sections */
+    section { margin-bottom: 64px; }
+
+    /* Chapter Banner */
+    .chapter-banner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: linear-gradient(135deg, rgba(88,166,255,0.08) 0%, rgba(188,140,255,0.05) 100%);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      margin-bottom: 32px;
+    }
+    .chapter-banner .chapter-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .chapter-banner .chapter-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .chapter-banner .chapter-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Part A banner - blue */
+    .part-a .chapter-banner { border-left-color: var(--accent); }
+    .part-a .chapter-label { color: var(--accent); }
+    /* Part M banner - green */
+    .part-m .chapter-banner { border-left-color: var(--accent-green); }
+    .part-m .chapter-label { color: var(--accent-green); }
+    /* Part O banner - yellow */
+    .part-o .chapter-banner { border-left-color: var(--accent-yellow); }
+    .part-o .chapter-label { color: var(--accent-yellow); }
+    /* Part R banner - purple */
+    .part-r .chapter-banner { border-left-color: var(--accent-purple); }
+    .part-r .chapter-label { color: var(--accent-purple); }
+    /* Part A2 banner - orange */
+    .part-a2 .chapter-banner { border-left-color: var(--accent-orange); }
+    .part-a2 .chapter-label { color: var(--accent-orange); }
+
+    /* Section headers */
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 28px 0 12px;
+    }
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 20px 0 10px;
+    }
+
+    /* Paragraphs */
+    p { margin-bottom: 14px; color: var(--text); }
+
+    /* The Number block */
+    .the-number {
+      background: linear-gradient(135deg, #1a2a1a 0%, #0d1117 100%);
+      border: 1px solid var(--accent-green);
+      border-left: 4px solid var(--accent-green);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin: 24px 0;
+    }
+    .the-number .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent-green);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .the-number .quote {
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* Finding blocks */
+    .finding {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 16px 0;
+    }
+    .finding h4 {
+      color: var(--accent);
+      margin-top: 0;
+      font-size: 14px;
+    }
+
+    /* Paywall */
+    .paywall {
+      background: linear-gradient(135deg, #1e1030 0%, #0d1117 100%);
+      border: 1px solid rgba(188,140,255,0.3);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin: 40px 0;
+    }
+    .paywall .pw-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .paywall h3 { color: var(--text); margin-bottom: 10px; font-size: 18px; }
+    .paywall p { color: var(--text-muted); margin-bottom: 20px; font-size: 14px; }
+    .paywall-btn {
+      display: inline-block;
+      background: var(--accent-purple);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(48,54,61,0.5);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    td.center { text-align: center; }
+    .score-high { color: var(--accent-green); font-weight: 700; }
+    .score-mid { color: var(--accent-yellow); font-weight: 600; }
+    .score-low { color: var(--accent-red); }
+    .cn { color: var(--cn); }
+    .us { color: var(--us); }
+    .eu { color: var(--eu); }
+
+    /* Code blocks */
+    pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      overflow-x: auto;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: rgba(88,166,255,0.06);
+      border: 1px solid rgba(88,166,255,0.2);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+
+    /* Risk tags */
+    .risk-high { color: var(--accent-red); font-weight: 600; }
+    .risk-mid { color: var(--accent-yellow); font-weight: 600; }
+    .risk-low { color: var(--accent-green); font-weight: 600; }
+
+    /* Editorial */
+    .editorial {
+      background: linear-gradient(135deg, #1a1a0d 0%, #0d1117 100%);
+      border: 1px solid rgba(240,136,62,0.3);
+      border-left: 4px solid var(--accent-orange);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin: 24px 0;
+    }
+    .editorial .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .editorial .quote {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 24px 0;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header h1 { font-size: 28px; }
+      .container { padding: 24px 16px; }
+      nav ul { gap: 0; }
+      nav li a { padding: 12px 10px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">AMORA Insights · Flagship Report</div>
+  <h1>The Humanoid Robot Index 2026</h1>
+  <p class="subtitle">全球人形机器人行业深度对标研究报告 · AMORA Report</p>
+  <div class="meta">
+    <span><strong>覆盖：</strong>25家公司</span>
+    <span><strong>框架：</strong>AMORA五章</span>
+    <span><strong>数据截止：</strong>Q1 2026</span>
+    <span><strong>版本：</strong>v4.0</span>
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#exec">执行摘要</a></li>
+    <li><a href="#part-a">Advancement</a></li>
+    <li><a href="#part-m">Mapping</a></li>
+    <li><a href="#part-o">Operations</a></li>
+    <li><a href="#part-r">Reach</a></li>
+    <li><a href="#part-a2">Assets</a></li>
+    <li><a href="#editorial">Editorial</a></li>
+    <li><a href="#appendix">附录</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+<!-- ==================== EXECUTIVE SUMMARY ==================== -->
+<section id="exec">
+  <div class="chapter-banner" style="border-left-color: var(--accent);">
+    <div>
+      <div class="chapter-label">Report Header</div>
+      <div class="chapter-title">Executive Summary · 执行摘要</div>
+      <div class="chapter-sub">AMORA Report — Advancement / Mapping / Operations / Reach / Assets</div>
+    </div>
+  </div>
+
+  <p>2026年3月20日，<strong>宇树科技正式提交科创板IPO申请</strong>——这是本报告最重要的更新事件。以下所有核心数据均来自宇树科技招股说明书（上交所受理），为L1级别官方来源。</p>
+
+  <div class="the-number">
+    <div class="label">The Number · 一个数字</div>
+    <div class="quote">"全球25家追踪公司中，仅3家实现50台以上真实场景部署。其余仍在卖 demo。"</div>
+  </div>
+
+  <h2>三大核心发现</h2>
+
+  <div class="finding">
+    <h4>发现一：Operations 是当前最分化的维度</h4>
+    <p>宇树 9.5 vs Tesla/Figure 4.5，差距5分。差距不是技术，是执行力。全球唯一规模盈利整机厂，让"机器人是生意"这件事第一次有了真实财务证明。</p>
+  </div>
+
+  <div class="finding">
+    <h4>发现二：中国在制造密度建护城河，美国在算法生态守壁垒</h4>
+    <p>宇树毛利率60.27%，外购部件仅占成本14-18%。关键零部件国产化率80-90%，年产能规划7.5万台。但VLA模型领先者全在美国——OpenAI、Google DeepMind、Physical Intelligence——差距是结构性的。</p>
+  </div>
+
+  <div class="finding">
+    <h4>发现三：数据闭环比技术迭代更重要</h4>
+    <p>73.6%的宇树用户是高校——约4000台机器人每天24小时生产训练数据。18个月关键拐点：谁先从10台跑到1000台，谁就掌握了训练下一代模型的主动权。</p>
+  </div>
+
+  <h2>行业均值评分</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>评级维度</th><th>评分</th></tr></thead>
+      <tbody>
+        <tr><td>行业均值</td><td class="num">7.3/10</td></tr>
+        <tr><td>中国第一梯队平均</td><td class="num">7.6/10</td></tr>
+        <tr><td>美国第一梯队平均</td><td class="num">7.4/10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box">
+    <strong style="color: var(--accent);">趋势判断：</strong>中国在 Operations 维度领先，美国在 Advancement 和 Mastery 保持优势。12-18个月内，中国能否在具身大模型端缩小差距，是最关键的变量。
+  </div>
+
+  <div class="paywall">
+    <div class="pw-label">⬇ 付费墙</div>
+    <h3>完整的 AMORA 五章分析</h3>
+    <p>Advancement / Mapping / Operations / Reach / Assets<br>请解锁完整报告查看付费章节</p>
+    <div class="paywall-btn">解锁完整报告 →</div>
+  </div>
+</section>
+
+<!-- ==================== PART A: ADVANCEMENT ==================== -->
+<section id="part-a" class="part-a">
+  <div class="chapter-banner">
+    <div>
+      <div class="chapter-label">Part A · 第一章</div>
+      <div class="chapter-title">Advancement — 技术先进性</div>
+      <div class="chapter-sub">谁的技术壁垒在未来3年内难以被追平？</div>
+    </div>
+  </div>
+
+  <h2>A.0 三大技术突破</h2>
+
+  <h3>突破一：世界模型成为人形机器人"大脑"核心</h3>
+  <p>世界模型是一种神经网络架构，能够学习环境的动态规律，并基于当前状态预测未来状态，从而让机器人具备"想象力"和"预判能力"。当前进展：Figure AI与OpenAI合作落地VLA模型；Tesla Optimus V12实现纯神经网络端到端；智元开源AgiBot World百万级数据集；Google DeepMind发布RT-2和RT-X项目。</p>
+
+  <h3>突破二：端到端运动控制取代传统分层架构</h3>
+  <p>传统架构：感知→决策→规划→控制的割裂pipeline，误差在层间累积，开发周期数年。端到端架构：视觉输入直接输出关节力矩，无需人工设计中间层，可学习复杂非线性映射，开发周期数周。代表案例：Tesla Optimus V12（完全端到端）、宇树H1（强化学习+Sim-to-Real）、Figure 02（VLA模型）。</p>
+
+  <h3>突破三：灵巧手从实验室走向量产</h3>
+  <p>自由度突破：从3指到5指，从11自由度到22自由度。触觉感知：从位置控制到力位混合控制，帕西尼感知已实现触觉灵巧手小批量。因时机器人将灵巧手成本从$100K降至$10K级别。</p>
+
+  <h2>A.1 世界模型深度解析</h2>
+
+  <h3>A.1.1 什么是世界模型</h3>
+  <p><strong>定义：</strong>世界模型是一种神经网络架构，能够学习环境的动态规律，并基于当前状态预测未来状态，从而让机器人具备"想象力"和"预判能力"。</p>
+  <p><strong>核心能力：</strong></p>
+  <ol style="margin-left: 20px; margin-bottom: 14px; color: var(--text);">
+    <li><strong>状态表征（State Representation）：</strong>将高维感官输入压缩为低维状态向量</li>
+    <li><strong>动态预测（Dynamics Prediction）：</strong>预测"如果我执行动作A，世界会如何变化"</li>
+    <li><strong>想象推演（Imagination）：</strong>在"脑海"中模拟多种可能的未来，选择最优路径</li>
+  </ol>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>维度</th><th>传统方法</th><th>世界模型</th></tr></thead>
+      <tbody>
+        <tr><td>感知</td><td>手工设计特征（边缘、角点）</td><td>端到端学习表征</td></tr>
+        <tr><td>预测</td><td>基于物理公式的仿真</td><td>数据驱动的神经网络</td></tr>
+        <tr><td>泛化</td><td>只能在训练场景工作</td><td>可以泛化到新场景</td></tr>
+        <tr><td>计算</td><td>实时性依赖简化模型</td><td>可以离线想象、在线执行</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A.1.2 世界模型三大技术架构</h3>
+
+  <h4>架构一：RSSM（Recurrent State-Space Model）</h4>
+  <p>提出者：DeepMind（2019）。核心思想：将世界状态分解为随机变量和确定变量，兼顾表达能力和确定性预测。应用：Dreamer系列算法（DreamerV2/V3），用于游戏和简单机器人任务。</p>
+
+  <h4>架构二：JEPA（Joint Embedding Predictive Architecture）</h4>
+  <p>提出者：Yann LeCun（Meta，2022）。核心思想：在表征空间进行预测，而非像素空间，大幅提升计算效率。优势：计算效率高，更适合实时机器人控制；模块化设计，部分模块可跨任务复用。</p>
+
+  <h4>架构三：GPT-style自回归模型</h4>
+  <p>提出者：OpenAI、Google。核心思想：将世界状态序列化为token，用Transformer预测下一状态。应用：Sora视频生成底层同源；Figure AI机器人控制；1X Technologies语言-动作映射。优势：可以利用海量互联网知识，语言理解能力强；劣势：物理一致性差。</p>
+
+  <h3>A.1.3 世界模型在机器人上的三种应用形式</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>形式</th><th>代表</th><th>优势</th><th>劣势</th></tr></thead>
+      <tbody>
+        <tr><td>纯神经网络端到端</td><td>Tesla Optimus V12、Figure 02</td><td>简单直接，可学习复杂行为</td><td>可解释性差</td></tr>
+        <tr><td>世界模型+传统控制混合</td><td>Boston Dynamics Atlas、宇树H1</td><td>兼顾学习能力和稳定性</td><td>系统复杂</td></tr>
+        <tr><td>大模型+世界模型结合</td><td>Figure AI、Google RT-2</td><td>可处理复杂语言指令</td><td>计算开销大</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A.1.4 全球世界模型技术格局</h3>
+
+  <h4>美国：大模型驱动的世界模型</h4>
+  <p><strong>OpenAI：</strong>基于GPT架构，与Figure AI合作，Figure 02搭载定制VLA模型，可执行"递苹果""收拾桌面"等语言指令。TRL 6-7。</p>
+  <p><strong>Tesla：</strong>将FSD世界模型迁移到机器人，Optimus V12完全端到端神经网络控制，无人工编写代码。训练数据为Tesla车队数十亿英里视频。TRL 7-8。</p>
+  <p><strong>Google DeepMind：</strong>RT-2将VLM直接用于机器人控制；RT-X联合全球34个实验室构建通用机器人数据集。TRL 5-6，商业化慢。</p>
+  <p><strong>Physical Intelligence（π₀）：</strong>2024年成立，融资$400M+，定位是"机器人界的Android系统"。</p>
+
+  <h4>中国：场景驱动的世界模型</h4>
+  <p><strong>智元机器人：</strong>开源AgiBot World百万级数据集；具身智能分级框架（L1-L4），当前处于L2-L3。与华为昇腾合作探索国产AI芯片适配。TRL 6-7。</p>
+  <p><strong>宇树科技：</strong>基于强化学习的端到端运动控制；Sim-to-Real迁移；强调"运动智能"而非"认知智能"。双足行走、奔跑、跳跃表现优异（电驱后空翻，2024年）。控制频率1000Hz，实时性领先。TRL 7-8。</p>
+  <p><strong>优必选：</strong>自研人形机器人多模态大模型，融合视觉/语言/动作三种模态。Walker X可理解自然语言指令，支持多轮对话。TRL 6-7。</p>
+
+  <h3>A.1.5 世界模型关键技术挑战</h3>
+
+  <h4>数据瓶颈：机器人数据的"稀缺性困境"</h4>
+  <p>互联网数据规模：文本（万亿token）、图像（百亿张）、视频（十亿小时）。机器人数据：高质量遥操作数据仅百万级，差距1000倍以上。每小时采集成本$50-100（需要专业操作员穿戴遥操作设备）。</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>方案</th><th>代表机构</th><th>优缺点</th></tr></thead>
+      <tbody>
+        <tr><td>仿真生成</td><td>NVIDIA Isaac、Mujoco</td><td>成本低，但sim-to-real gap大</td></tr>
+        <tr><td>视频学习</td><td>Google、UC Berkeley</td><td>数据丰富，但缺乏动作标签</td></tr>
+        <tr><td>自监督学习</td><td>Meta、DeepMind</td><td>无需人类标注，但效率低</td></tr>
+        <tr><td>远程遥操作</td><td>Figure AI、Tesla</td><td>质量高，但成本极高</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box"><strong style="color: var(--accent);">关键洞察：</strong>当前行业共识是需要1000万-1亿条高质量机器人操作数据，才能训练出通用的世界模型。目前公开数据集仅达到10%左右。</div>
+
+  <h4>泛化难题：从"特定任务"到"通用能力"</h4>
+  <p>机器人在训练场景表现良好，换一个新场景就"失灵"。四大泛化挑战：视觉泛化（光照/背景/遮挡）、物理泛化（材质/重量/摩擦）、任务泛化、环境泛化。</p>
+
+  <h4>实时性挑战：从"离线想象"到"在线控制"</h4>
+  <p>世界模型通常需要GPU集群计算（100-1000 TFLOPS），而机器人控制需要毫秒级响应（1-10ms）。实时性评估：</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>架构</th><th>推理延迟</th><th>控制频率</th></tr></thead>
+      <tbody>
+        <tr><td>Tesla</td><td>端到端</td><td class="num">50-100ms</td><td class="num">10-20Hz</td></tr>
+        <tr><td>Figure</td><td>分层</td><td class="num">10-50ms</td><td class="num">20-50Hz</td></tr>
+        <tr><td>宇树</td><td>分层</td><td class="num">1-10ms</td><td class="num">100-1000Hz</td></tr>
+        <tr><td>Boston Dynamics</td><td>传统+学习</td><td class="num">1-10ms</td><td class="num">100-1000Hz</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>安全性与可解释性</h4>
+  <p>世界模型是"黑盒"，难以预测失败模式。解决方案：安全层设计（工业界通用，TRL 8-9）、人在回路（TRL 6-7）、形式化验证（TRL 3-4，尚早）。</p>
+
+  <h3>A.1.6 世界模型产业化时间线</h3>
+  <pre>
+2024-2025: 技术验证期
+├── 世界模型在特定场景验证可行性
+├── 数据瓶颈开始缓解
+└── 头部企业小批量部署（Tesla工厂、Figure仓库）
+
+2026-2027: 场景扩展期  ⭐关键拐点
+├── 世界模型从单一场景扩展到多场景
+├── 数据规模达到1000万条级别
+├── 实时性问题解决
+└── 中型企业开始采用
+
+2028-2029: 规模化应用期
+├── 世界模型成为人形机器人标配
+├── 数据飞轮效应显现
+├── 成本下降至&lt;$20K/台
+└── 进入家庭、医疗、教育等C端场景
+
+2030+: 通用人工智能期
+├── 世界模型具备接近人类的通用物理推理能力
+└── 人形机器人成为通用劳动力
+  </pre>
+
+  <h2>A.2 端到端运动控制技术</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>路线</th><th>原理</th><th>代表</th><th>优势</th><th>劣势</th></tr></thead>
+      <tbody>
+        <tr><td>模仿学习</td><td>行为克隆</td><td>Tesla Optimus早期</td><td>简单直接，训练快</td><td>无法超越人类水平</td></tr>
+        <tr><td>强化学习</td><td>试错学习（PPO/SAC/TD3）</td><td>宇树H1、DeepMind</td><td>可发现超越人类的策略</td><td>样本效率低</td></tr>
+        <tr><td>MPC+Learning混合</td><td>学习动力学模型用于MPC规划</td><td>UC Berkeley、ETH Zurich</td><td>结合model-based/free优势</td><td>—</td></tr>
+        <tr><td>扩散模型</td><td>动作生成视为去噪过程</td><td>Columbia、Google</td><td>多模态动作，鲁棒性好</td><td>推理速度慢</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A.2.2 Sim-to-Real Gap</h3>
+  <p>仿真环境训练的策略，在真实机器人上表现差。解决方案：域随机化（OpenAI/Google）、系统辨识（ETH Zurich）、在线适应（UC Berkeley）、残差学习（宇树，实用性强）。</p>
+
+  <h2>A.3 灵巧手技术</h2>
+
+  <h3>A.3.1 四代演进</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>代际</th><th>自由度</th><th>代表</th><th>价格</th><th>应用</th></tr></thead>
+      <tbody>
+        <tr><td>第一代：平行夹爪</td><td class="num">1</td><td>Robotiq</td><td class="num">$500-2K</td><td>工业搬运</td></tr>
+        <tr><td>第二代：三指灵巧手</td><td class="num">3-6</td><td>Robotiq 3F</td><td class="num">$5K-15K</td><td>工业装配</td></tr>
+        <tr><td>第三代：五指灵巧手</td><td class="num">11-22</td><td>Shadow Hand</td><td class="num">$50K-100K</td><td>研究/AI训练</td></tr>
+        <tr><td>第四代：量产级</td><td class="num">6-15</td><td>因时机器人、帕西尼</td><td class="num">$5K-15K</td><td>开始走向实用</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A.3.2 驱动技术对比</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>技术</th><th>原理</th><th>优势</th><th>劣势</th><th>代表</th></tr></thead>
+      <tbody>
+        <tr><td>电机+减速器</td><td>传统方案</td><td>技术成熟</td><td>体积大</td><td>大多数</td></tr>
+        <tr><td>微型伺服电缸</td><td>一体化设计</td><td>紧凑</td><td>功率密度有限</td><td>因时机器人</td></tr>
+        <tr><td>液压驱动</td><td>液体传动</td><td>功率密度高</td><td>复杂、漏液</td><td>Shadow Hand</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A.3.3 灵巧手国产替代</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>产品</th><th>自由度</th><th>价格</th><th>核心优势</th></tr></thead>
+      <tbody>
+        <tr><td>因时机器人</td><td>RH56BFX</td><td class="num">11 DOF</td><td class="num">$12K</td><td>微型伺服电缸自研，量产成熟</td></tr>
+        <tr><td>帕西尼感知</td><td>DexH13</td><td class="num">13 DOF</td><td class="num">$15K+</td><td>触觉传感器阵列1000+感知点</td></tr>
+        <tr><td>灵心巧手</td><td>LinkHand</td><td class="num">6-11 DOF</td><td class="num">$3K-5K</td><td>高性价比，教育市场</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>成本预测：</strong>量产级灵巧手价格将从2024年的$10-20K，下降至2028年的$3-5K。</p>
+
+  <h2>A.4 技术成熟度总览</h2>
+
+  <h3>A.4.1 TRL评估矩阵</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>技术领域</th><th>当前TRL</th><th>目标TRL</th><th>领先者</th><th>中美差距</th></tr></thead>
+      <tbody>
+        <tr><td>双足平衡</td><td class="center">8-9</td><td class="center">9</td><td>Boston Dynamics</td><td class="us">美国领先，差距极小</td></tr>
+        <tr><td>端到端控制</td><td class="center">7-8</td><td class="center">9</td><td>Tesla、宇树</td><td class="cn">中国快速追赶</td></tr>
+        <tr><td>世界模型/VLA</td><td class="center">6-7</td><td class="center">8-9</td><td>OpenAI、Google</td><td class="us">美国领先1-2年</td></tr>
+        <tr><td>灵巧手/触觉</td><td class="center">5-6</td><td class="center">7-8</td><td>Shadow Hand、因时</td><td>英国领先，中国追赶</td></tr>
+        <tr><td>人机交互</td><td class="center">6-7</td><td class="center">9</td><td>Figure、优必选</td><td>各有侧重</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A.4.2 中美技术优势对比</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>技术领域</th><th>中国</th><th>美国</th><th>差距</th></tr></thead>
+      <tbody>
+        <tr><td>世界模型</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td class="us">美国领先1-2年</td></tr>
+        <tr><td>端到端控制</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td class="cn">中国领先（工程化）</td></tr>
+        <tr><td>灵巧手</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td class="cn">中国领先（量产）</td></tr>
+        <tr><td>双足行走</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td class="cn">中国领先（成本）</td></tr>
+        <tr><td>视觉感知</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>美国略领先</td></tr>
+        <tr><td>触觉感知</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>美国领先</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>A.5 产品参数与技术规格对比</h2>
+  <p><em>数据来源：各公司官方规格 + 招股书（L1）+ 行业估算</em></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>机型</th><th>高度</th><th>重量</th><th>DOF</th><th>最大速度</th><th>续航</th><th>价格(USD)</th><th>场景</th></tr></thead>
+      <tbody>
+        <tr><td class="us">Tesla</td><td>Optimus Gen 2</td><td class="num">1.73m</td><td class="num">56kg</td><td class="num">28</td><td class="num">5 km/h</td><td class="num">4h</td><td class="num">$20K-30K*</td><td>工厂/物流</td></tr>
+        <tr><td class="cn">宇树</td><td>G1</td><td class="num">1.32m</td><td class="num">35kg</td><td class="num">23</td><td class="num">2.5 m/s</td><td class="num">2h</td><td class="num">$11,800</td><td>工厂/研究</td></tr>
+        <tr><td class="cn">宇树</td><td>H1</td><td class="num">1.80m</td><td class="num">47kg</td><td class="num">19</td><td class="num">3.3 m/s</td><td class="num">2h</td><td class="num">$21K+</td><td>研究/工业</td></tr>
+        <tr><td class="us">Boston Dynamics</td><td>Atlas（电动）</td><td class="num">1.75m</td><td class="num">89kg</td><td class="num">28</td><td class="num">3 m/s</td><td class="num">1h</td><td class="num">租赁制</td><td>物流/研发</td></tr>
+        <tr><td class="us">Figure AI</td><td>Figure 02</td><td class="num">1.70m</td><td class="num">63kg</td><td class="num">41</td><td class="num">1.2 m/s</td><td class="num">5h</td><td class="num">$25K-40K*</td><td>工厂</td></tr>
+        <tr><td class="us">Agility</td><td>Digit</td><td class="num">1.57m</td><td class="num">42kg</td><td class="num">20</td><td class="num">1.5 m/s</td><td class="num">4h</td><td class="num">$18,000</td><td>仓储</td></tr>
+        <tr><td class="cn">优必选</td><td>Walker S</td><td class="num">1.75m</td><td class="num">77kg</td><td class="num">41</td><td class="num">3 km/h</td><td class="num">3h</td><td class="num">$150K+</td><td>汽车工厂</td></tr>
+        <tr><td class="cn">傅里叶</td><td>GR-1</td><td class="num">1.75m</td><td class="num">55kg</td><td class="num score-high">58</td><td class="num">5 km/h</td><td class="num">2h</td><td class="num">$200K+</td><td>医疗/工业</td></tr>
+        <tr><td class="cn">智元</td><td>A1 Pro</td><td class="num">1.65m</td><td class="num">48kg</td><td class="num">34</td><td class="num">2.5 m/s</td><td class="num">3h</td><td class="num">$18K-25K</td><td>工厂</td></tr>
+        <tr><td class="eu">1X</td><td>NEO Beta</td><td class="num">1.65m</td><td class="num">30kg</td><td class="num">21</td><td class="num">1.6 m/s</td><td class="num">4h</td><td class="num">$15K-20K*</td><td>家庭/服务</td></tr>
+        <tr><td class="us">Apptronik</td><td>Apollo</td><td class="num">1.73m</td><td class="num">72kg</td><td class="num">55</td><td class="num">1.5 m/s</td><td class="num">4h</td><td class="num">$25,000*</td><td>物流</td></tr>
+        <tr><td class="cn">乐聚</td><td>AELOS Pro</td><td class="num">1.55m</td><td class="num">40kg</td><td class="num">28</td><td class="num">2 m/s</td><td class="num">2.5h</td><td class="num">$11K+</td><td>教育/娱乐</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><em>*注：宇树数据来源为招股书（L1官方）；Tesla/Figure/1X定价为目标价，尚未量产。</em></p>
+
+  <h2>A.6 Advancement维度排名</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>排名</th><th>公司</th><th>分数</th><th>核心优势</th><th>关键短板</th></tr></thead>
+      <tbody>
+        <tr><td class="center">1</td><td class="us">Tesla Optimus</td><td class="num score-high">9.2</td><td>FSD端到端模型+Dojo算力，全栈自研</td><td>50%来自Tesla整体AI基础设施</td></tr>
+        <tr><td class="center">2</td><td class="us">Boston Dynamics</td><td class="num score-high">8.8</td><td>30年运动控制，双足平衡TRL 9级</td><td>具身大模型布局落后</td></tr>
+        <tr><td class="center">2</td><td class="cn">宇树科技</td><td class="num score-high">8.8</td><td>全栈自研，外购部件仅14-18%</td><td>具身大模型布局晚美国12-18个月</td></tr>
+        <tr><td class="center">4</td><td class="us">Figure AI</td><td class="num score-high">8.5</td><td>OpenAI VLA模型领先，41 DOF中高端</td><td>高度依赖OpenAI输入</td></tr>
+        <tr><td class="center">5</td><td class="us">Sanctuary AI</td><td class="num score-mid">8.0</td><td>认知AI框架独特（Carbon™）</td><td>硬件运动控制弱</td></tr>
+        <tr><td class="center">5</td><td class="cn">智元机器人</td><td class="num score-mid">8.0</td><td>稚晖君领衔，端到端自研</td><td>成立仅2年，技术验证时间短</td></tr>
+        <tr><td class="center">5</td><td class="eu">1X Technologies</td><td class="num score-mid">8.0</td><td>OpenAI深度合作，软件远超硬件</td><td>硬件制造能力极弱</td></tr>
+        <tr><td class="center">8</td><td class="us">Agility Robotics</td><td class="num score-mid">7.8</td><td>膝盖反向腿部设计专利</td><td>上肢操控能力弱</td></tr>
+        <tr><td class="center">8</td><td class="cn">傅里叶智能</td><td class="num score-mid">7.8</td><td>GR-1 58 DOF行业最高</td><td>运动速度慢</td></tr>
+        <tr><td class="center">10</td><td class="cn">优必选</td><td class="num">7.5</td><td>Walker S 41 DOF，关节模组成熟</td><td>核心AI算法依赖第三方</td></tr>
+        <tr><td class="center">10</td><td class="us">Apptronik</td><td class="num">7.5</td><td>NASA JSC合作，极端环境经验</td><td>整体路线较保守</td></tr>
+        <tr><td class="center">12</td><td class="cn">乐聚机器人</td><td class="num score-low">6.5</td><td>华为鸿蒙生态差异化</td><td>硬件自研深度不足</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box"><strong style="color: var(--accent);">AMORA判断：</strong>Tesla Optimus的9.2分，有一半来自Tesla整体AI基础设施。一旦独立估值，需下调至8.0-8.5。宇树是中国玩家里技术壁垒最厚的——全栈自研是真实护城河，不是营销话术。</div>
+</section>
+
+<!-- ==================== PART M: MAPPING ==================== -->
+<section id="part-m" class="part-m">
+  <div class="chapter-banner">
+    <div>
+      <div class="chapter-label">Part M · 第二章</div>
+      <div class="chapter-title">Mapping — 产业链生态位</div>
+      <div class="chapter-sub">在这场竞赛里，谁站在什么位置，为什么？</div>
+    </div>
+  </div>
+
+  <h2>M.1 25家公司分层定位</h2>
+
+  <h3>M.1.1 第一梯队（12家）—— 深度评分对象</h3>
+  <p><em>入选标准：实际部署量&gt;50台，或已实现可验证商业化收入，或拥有可公开评估核心技术资产</em></p>
+
+  <h4>中国（5家）</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>总部</th><th>2025出货量</th><th>营收</th><th>核心优势</th></tr></thead>
+      <tbody>
+        <tr><td class="cn">宇树科技</td><td>杭州</td><td class="num">5,500台</td><td>17.08亿元（净利6亿）</td><td>全栈自研，外购仅14-18%</td></tr>
+        <tr><td class="cn">智元机器人</td><td>上海</td><td class="num">4,000台</td><td>未披露</td><td>稚晖君背书，增速最快</td></tr>
+        <tr><td class="cn">乐聚机器人</td><td>哈尔滨</td><td class="num">1,000台</td><td>未披露</td><td>华为鸿蒙合作，教育成熟</td></tr>
+        <tr><td class="cn">优必选</td><td>深圳</td><td class="num">~150台</td><td>港股9880.HK</td><td>唯一上市，汽车工厂落地</td></tr>
+        <tr><td class="cn">傅里叶智能</td><td>上海</td><td class="num">~80台</td><td>未披露</td><td>医疗背景，58 DOF最高</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>美国（5家）</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>总部</th><th>2025出货量</th><th>融资</th><th>核心优势</th></tr></thead>
+      <tbody>
+        <tr><td class="us">Tesla Optimus</td><td>奥斯汀</td><td class="num">&lt;50台</td><td>未单独披露</td><td>FSD AI能力最强</td></tr>
+        <tr><td class="us">Boston Dynamics</td><td>沃尔瑟姆</td><td class="num">~1,000台（含Spot）</td><td>现代汽车收购</td><td>30年技术积淀</td></tr>
+        <tr><td class="us">Figure AI</td><td>森尼韦尔</td><td class="num">~150台</td><td class="num">$6.75亿</td><td>OpenAI加持，融资最强</td></tr>
+        <tr><td class="us">Agility Robotics</td><td>塞勒姆</td><td class="num">~150台</td><td class="num">$1.5亿+</td><td>Amazon战略投资</td></tr>
+        <tr><td class="eu">1X Technologies</td><td>莫斯（挪威）</td><td class="num">&lt;30台</td><td class="num">$1亿+</td><td>OpenAI投资，家庭场景</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>欧洲/其他（2家）</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>国家</th><th>2025出货量</th><th>核心优势</th></tr></thead>
+      <tbody>
+        <tr><td class="us">Apptronik</td><td>美国（德州背景）</td><td class="num">&lt;30台</td><td>NASA合作，物流场景</td></tr>
+        <tr><td class="eu">Sanctuary AI</td><td>加拿大</td><td class="num">&lt;20台</td><td>认知AI能力突出</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>M.1.2 第二梯队（8家）—— 基础覆盖</h3>
+  <p>小米CyberOne / 小鹏PX5 / Engineered Arts（Ameca） / Hanson Robotics（Sophia） / 逐际动力 / 银河通用 / MagicLab / 其他</p>
+  <p><em>不做深度评分原因：数据透明度不足 + 样本量太小 + 状态不稳定</em></p>
+
+  <h3>M.1.3 平台层（5家）—— 不评分但纳入分析</h3>
+  <p>NVIDIA（Isaac Sim + Jetson Thor）/ Google DeepMind（具身智能）/ 绿的谐波（谐波减速器）/ 双环传动（减速器）/ Microsoft（Azure机器人服务）</p>
+  <p><em>平台层的技术路线决定整机厂商的竞争上限</em></p>
+
+  <h2>M.2 融资与出货量不对称性</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>融资总额</th><th>2025年出货量</th><th>资本效率</th></tr></thead>
+      <tbody>
+        <tr><td class="cn">宇树科技</td><td>~$17.5亿（投后）</td><td class="num score-high">5,500台</td><td>🥇 极高</td></tr>
+        <tr><td class="cn">智元机器人</td><td>~$1亿+</td><td class="num">4,000台</td><td>🥈 高</td></tr>
+        <tr><td class="cn">乐聚机器人</td><td>~$3000万</td><td class="num">1,000台</td><td>🥉 中</td></tr>
+        <tr><td class="us">Figure AI</td><td class="num score-low">$6.75亿</td><td class="num score-low">~150台</td><td>❌ 低（融资13倍于宇树，出货量1/37）</td></tr>
+        <tr><td class="us">Tesla Optimus</td><td>未单独披露</td><td class="num">&lt;50台</td><td>⚠️ 待定</td></tr>
+        <tr><td class="us">Boston Dynamics</td><td class="num">$1.5亿+</td><td class="num">~1,000台</td><td>中</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box"><strong style="color: var(--accent-green);">AMORA核心判断：</strong>Figure AI融资规模是宇树的13倍，但出货量仅为宇树的1/37。资本效率的差异比资本总量的差异更重要。</div>
+
+  <h2>M.3 生态位分布</h2>
+  <p><strong>X轴：</strong>商业化程度（从"PPT"到"量产"）<br><strong>Y轴：</strong>技术深度（从"集成"到"自研"）<br><strong>气泡大小：</strong>营收规模</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>象限</th><th>位置</th><th>公司</th></tr></thead>
+      <tbody>
+        <tr><td>右上（高商业化+高技术）</td><td>领先象限</td><td class="cn">宇树（第一）、<span class="us">Boston Dynamics</span></td></tr>
+        <tr><td>左上（低商业化+高技术）</td><td>潜力象限</td><td class="us">Tesla Optimus、Figure AI、1X</span></td></tr>
+        <tr><td>右下（高商业化+中技术）</td><td>执行象限</td><td class="cn">乐聚、<span class="us">Agility</span>、<span class="cn">智元</span></td></tr>
+        <tr><td>左下（低商业化+低技术）</td><td>观望象限</td><td>大部分第二梯队</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>M.4 中国供应链全景</h2>
+
+  <h3>M.4.1 六大核心零部件国产化率</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>零部件</th><th>功能</th><th>国产化率</th><th>龙头供应商</th><th>对人形机器人价值</th></tr></thead>
+      <tbody>
+        <tr><td><strong>谐波减速器</strong></td><td>关节动力转换</td><td class="num">60%+</td><td>绿的谐波（市占25%+）</td><td>打破日本Harmonic Drive垄断</td></tr>
+        <tr><td><strong>伺服电机</strong></td><td>动力输出</td><td class="num">70%+</td><td>汇川技术（国内龙头）</td><td>全产业链布局</td></tr>
+        <tr><td><strong>无框力矩电机</strong></td><td>人形关节专用</td><td class="num">—</td><td>步科股份</td><td>已进入宇树G1供应链</td></tr>
+        <tr><td><strong>3D视觉传感器</strong></td><td>环境感知</td><td class="num">50%+</td><td>奥比中光</td><td>国内3D视觉第一</td></tr>
+        <tr><td><strong>六维力传感器</strong></td><td>接触力测量</td><td class="num">—</td><td>宇立仪器</td><td>国内力传感器龙头</td></tr>
+        <tr><td><strong>微型丝杠</strong></td><td>线性执行器</td><td class="num">—</td><td>鼎智科技</td><td>已进入Tesla供应链传闻</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>M.4.2 供应链卡脖子清单</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>风险等级</th><th>零部件</th><th>依赖度</th><th>代表供应商</th></tr></thead>
+      <tbody>
+        <tr><td class="risk-high">🔴 高风险</td><td>AI芯片/算力平台</td><td class="num">90%+</td><td>NVIDIA（全球垄断）</td></tr>
+        <tr><td class="risk-high">🔴 高风险</td><td>高精度力传感器</td><td class="num">70%+</td><td>ATI Industrial（美国）</td></tr>
+        <tr><td class="risk-mid">🟡 中风险</td><td>谐波减速器</td><td class="num">40%</td><td>Harmonic Drive（日本）</td></tr>
+        <tr><td class="risk-low">🟢 低风险</td><td>伺服电机</td><td class="num">20%</td><td>汇川技术</td></tr>
+        <tr><td class="risk-low">🟢 低风险</td><td>结构件/轴承</td><td class="num">10%</td><td>本土供应充足</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>M.4.3 中美主机厂供应链策略对比</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>主机厂</th><th>本土化率</th><th>核心策略</th><th>代表供应商</th></tr></thead>
+      <tbody>
+        <tr><td class="cn">宇树</td><td class="num score-high">90%+</td><td>自研关节+国产替代</td><td>绿的谐波、步科、速腾聚创</td></tr>
+        <tr><td class="cn">智元</td><td class="num">85%+</td><td>开源生态+快速迭代</td><td>智同科技、因时机器人、华为昇腾</td></tr>
+        <tr><td class="cn">优必选</td><td class="num">80%+</td><td>全栈自研（舵机12年）</td><td>绿的谐波、奥比中光、Intel</td></tr>
+        <tr><td class="us">Tesla</td><td class="num">70%</td><td>极致垂直整合</td><td>自研执行器/FSD芯片/电池</td></tr>
+        <tr><td class="us">Figure AI</td><td class="num">50%</td><td>OpenAI合作+外采</td><td>NVIDIA、ATI Industrial</td></tr>
+        <tr><td class="us">Boston Dynamics</td><td class="num">60%</td><td>液压自研+高端外采</td><td>ATI、高精度传感器</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box"><strong style="color: var(--accent-green);">关键洞察：</strong>中国主机厂本土化率80-90%，美国主机厂仅50-70%。但所有主机厂（包括Tesla）在AI芯片上都依赖NVIDIA，NVIDIA垄断格局明显。</div>
+
+  <h2>M.5 供应链成本结构对比</h2>
+  <p><em>以同等规格人形机器人为基准（双足、40+DOF、工业级）</em></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>成本项</th><th>中国方案</th><th>美国方案</th><th>差异原因</th></tr></thead>
+      <tbody>
+        <tr><td>BOM总成本</td><td class="num">$10K-15K</td><td class="num">$20K-40K</td><td>国产替代+规模效应</td></tr>
+        <tr><td>减速器</td><td class="num">$1,500-2,000</td><td class="num">$2,000-3,000</td><td>绿的谐波比Harmonic Drive低30%</td></tr>
+        <tr><td>伺服电机</td><td class="num">$1,500-2,000</td><td class="num">$2,500-3,500</td><td>汇川vs安川/松下</td></tr>
+        <tr><td>AI芯片</td><td class="num">$1,000-2,000</td><td class="num">$1,000-2,000</td><td>均依赖NVIDIA</td></tr>
+        <tr><td>传感器</td><td class="num">$1,000-1,500</td><td class="num">$2,000-3,000</td><td>国产替代进行中</td></tr>
+        <tr><td>灵巧手</td><td class="num">$3,000-8,000</td><td class="num">$10K-50K</td><td>因时vs Shadow Hand</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== PART O: OPERATIONS ==================== -->
+<section id="part-o" class="part-o">
+  <div class="chapter-banner">
+    <div>
+      <div class="chapter-label">Part O · 第三章</div>
+      <div class="chapter-title">Operations — 商业化运营</div>
+      <div class="chapter-sub">谁真正量产了？谁被客户用钱投票验证了？</div>
+    </div>
+  </div>
+
+  <h2>O.1 商业模式类型学</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>商业模式</th><th>代表</th><th>核心逻辑</th><th>适用场景</th><th>成熟度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>产品销售</strong></td><td class="cn">宇树、优必选</td><td>一次性出售，毛利率高</td><td>科研教育</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>租赁服务</strong></td><td class="us">Agility、Figure</td><td>按月/年租赁</td><td>工业制造</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>RaaS</strong></td><td>达闼</td><td>按任务/工时收费</td><td>商业服务</td><td>⭐⭐⭐</td></tr>
+        <tr><td><strong>解决方案</strong></td><td class="us">Boston Dynamics</td><td>软硬件+服务打包</td><td>特种场景</td><td>⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>O.2 Operations维度排名</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>排名</th><th>公司</th><th>分数</th><th>核心数据</th><th>关键判断</th></tr></thead>
+      <tbody>
+        <tr><td class="center">1</td><td class="cn">宇树科技</td><td class="num score-high">9.5</td><td>2025年出货5500台，净利6亿，毛利60.27%</td><td><strong>全球唯一规模盈利整机厂</strong></td></tr>
+        <tr><td class="center">2</td><td class="cn">乐聚机器人</td><td class="num score-mid">8.0</td><td>约1000台，教育场景；华为鸿蒙已落地</td><td>教育场景量产成熟</td></tr>
+        <tr><td class="center">3</td><td class="cn">优必选</td><td class="num score-mid">8.0</td><td>Walker S在比亚迪/东风/蔚来工厂部署</td><td>汽车工厂验证真实，但整体仍亏损</td></tr>
+        <tr><td class="center">4</td><td class="us">Agility Robotics</td><td class="num score-mid">7.5</td><td>Amazon仓储试点，Amazon战略投资</td><td>仓储场景商业化程度最高</td></tr>
+        <tr><td class="center">5</td><td class="cn">智元机器人</td><td class="num score-mid">7.5</td><td>约4000台，上汽战略投资</td><td>出货增速最快，财务不透明</td></tr>
+        <tr><td class="center">6</td><td class="us">Boston Dynamics</td><td class="num score-mid">7.0</td><td>Spot约1000台，Atlas电动版试点</td><td>品牌最成熟但商业模式重</td></tr>
+        <tr><td class="center">7</td><td class="cn">傅里叶智能</td><td class="num">6.5</td><td>GR-1约80台，医疗康复机构</td><td>医疗路径清晰但天花板低</td></tr>
+        <tr><td class="center">8</td><td class="us">Apptronik</td><td class="num">5.0</td><td>GXO仓储+Mercedes工厂试点，&lt;30台</td><td>有标杆客户但无规模</td></tr>
+        <tr><td class="center">9</td><td class="us">Tesla Optimus</td><td class="num score-low">4.5</td><td>工厂内&lt;50台，无商业销售记录</td><td>技术最强但商业最慢</td></tr>
+        <tr><td class="center">10</td><td class="us">Figure AI</td><td class="num score-low">4.5</td><td>BMW工厂约150台，无商业销售</td><td>融资叙事与落地进度严重脱节</td></tr>
+        <tr><td class="center">11</td><td class="eu">1X Technologies</td><td class="num score-low">4.0</td><td>NEO Beta &lt;30台，家庭场景未验证</td><td>赛道难度最高，短期无规模</td></tr>
+        <tr><td class="center">11</td><td class="eu">Sanctuary AI</td><td class="num score-low">4.0</td><td>Phoenix &lt;20台，通用目的未验证</td><td>定位最难商业化</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box"><strong style="color: var(--accent-yellow);">AMORA判断：</strong>Operations维度分化最极端。宇树9.5 vs Tesla/Figure 4.5，差距5分。Tesla有能力做到9.5但选择不着急；Figure是真的做不到，而不是不想做。</div>
+
+  <h2>O.3 客户结构与场景分析</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>场景类型</th><th>当前占比</th><th>代表公司</th><th>成熟度</th><th>未来空间</th></tr></thead>
+      <tbody>
+        <tr><td>科研教育</td><td class="num"><strong>70%+</strong></td><td class="cn">宇树、乐聚</td><td>⭐⭐⭐⭐⭐ 成熟</td><td>中期稳定</td></tr>
+        <tr><td>工业制造</td><td class="num">15%</td><td class="cn">优必选、<span class="us">Figure/Tesla</span></td><td>⭐⭐⭐⭐ 成长期</td><td>长期最大</td></tr>
+        <tr><td>商业服务</td><td class="num">10%</td><td class="us">Agility、Apptronik</td><td>⭐⭐⭐ 早期</td><td>中期增长</td></tr>
+        <tr><td>家庭消费</td><td class="num">&lt;1%</td><td class="eu">1X</td><td>⭐⭐ 概念期</td><td>长期最大但最难</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>O.4 Mastery维度排名</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>排名</th><th>公司</th><th>分数</th><th>核心优势</th><th>关键风险</th></tr></thead>
+      <tbody>
+        <tr><td class="center">1</td><td class="us">Figure AI</td><td class="num score-high">9.5</td><td>CMU机器人学终身教授CTO，研究团队密度全球第一</td><td>2025年多名高管离职</td></tr>
+        <tr><td class="center">2</td><td class="eu">1X Technologies</td><td class="num score-high">9.2</td><td>OpenAI直接参与技术路线设计</td><td>团队&lt;100人，执行瓶颈</td></tr>
+        <tr><td class="center">3</td><td class="us">Boston Dynamics</td><td class="num score-high">9.0</td><td>Marc Raibert影响持续，MIT/CMU人才密度最高</td><td>现代汽车收购后文化融合</td></tr>
+        <tr><td class="center">4</td><td class="us">Tesla Optimus</td><td class="num score-mid">8.8</td><td>Tesla AI团队复用，Karpathy前团队加持</td><td>独立团队规模有限</td></tr>
+        <tr><td class="center">5</td><td class="cn">智元机器人</td><td class="num score-mid">8.5</td><td>稚晖君公认中国最强机器人工程师</td><td>公司新，扩张期文化稀释</td></tr>
+        <tr><td class="center">5</td><td class="eu">Sanctuary AI</td><td class="num score-mid">8.5</td><td>D-Wave创始人背景，具身AI学术扎实</td><td>关键人物依赖性强</td></tr>
+        <tr><td class="center">7</td><td class="us">Agility Robotics</td><td class="num score-mid">8.0</td><td>俄勒冈州立孵化，Amazon实战场景</td><td>团队200人，相对中小</td></tr>
+        <tr><td class="center">8</td><td class="cn">宇树科技</td><td class="num">7.8</td><td>王兴兴北科大背景，执行力极强</td><td>具身AI研究员密度低</td></tr>
+        <tr><td class="center">9</td><td class="us">Apptronik</td><td class="num">7.8</td><td>UT Austin孵化，NASA提升标准</td><td>商业化人才明显不足</td></tr>
+        <tr><td class="center">10</td><td class="cn">傅里叶智能</td><td class="num">7.5</td><td>医疗康复背景独特工程文化</td><td>核心AI人才缺口</td></tr>
+        <tr><td class="center">11</td><td class="cn">优必选</td><td class="num">7.0</td><td>周剑10年积累，资本市场运营经验</td><td>核心高管流动率高</td></tr>
+        <tr><td class="center">12</td><td class="cn">乐聚机器人</td><td class="num score-low">6.5</td><td>哈工大背景，机器人工程扎实</td><td>AI人才严重不足</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== PART R: REACH ==================== -->
+<section id="part-r" class="part-r">
+  <div class="chapter-banner">
+    <div>
+      <div class="chapter-label">Part R · 第四章</div>
+      <div class="chapter-title">Reach — 市场容量与全球化</div>
+      <div class="chapter-sub">谁的市场覆盖能支撑下一阶段规模增长？谁有长期复利能力？</div>
+    </div>
+  </div>
+
+  <h2>R.1 Reach维度排名</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>排名</th><th>公司</th><th>分数</th><th>全球化现状</th><th>关键判断</th></tr></thead>
+      <tbody>
+        <tr><td class="center">1</td><td class="us">Boston Dynamics</td><td class="num score-high">9.0</td><td>50+国家，Spot全球最知名</td><td>品牌认知最高</td></tr>
+        <tr><td class="center">2</td><td class="us">Agility Robotics</td><td class="num score-high">8.5</td><td>Amazon全球仓储网络天然渠道</td><td>借船出海最有效</td></tr>
+        <tr><td class="center">2</td><td class="us">Tesla Optimus</td><td class="num score-high">8.5</td><td>Tesla全球工厂是天然部署场景</td><td>资产最雄厚</td></tr>
+        <tr><td class="center">2</td><td class="cn">宇树科技</td><td class="num score-high">8.5</td><td>境外&gt;35%，20+国家，时代最佳发明</td><td>中国公司最成熟</td></tr>
+        <tr><td class="center">5</td><td class="eu">1X Technologies</td><td class="num score-mid">7.5</td><td>欧洲+北美双线，OpenAI背书</td><td>处于早期</td></tr>
+        <tr><td class="center">6</td><td class="us">Figure AI</td><td class="num">7.0</td><td>BMW合作具有德国制造背书</td><td>背书质量高但部署量少</td></tr>
+        <tr><td class="center">6</td><td class="us">Apptronik</td><td class="num">7.0</td><td>NASA+欧美标杆客户</td><td>质量高但覆盖窄</td></tr>
+        <tr><td class="center">8</td><td class="cn">傅里叶智能</td><td class="num">6.0</td><td>欧洲医疗机构试点，CE认证中</td><td>路径清晰但缓慢</td></tr>
+        <tr><td class="center">8</td><td class="cn">优必选</td><td class="num">6.0</td><td>港股上市背书，CES展示</td><td>身份有优势但实际业务小</td></tr>
+        <tr><td class="center">10</td><td class="eu">Sanctuary AI</td><td class="num">5.5</td><td>加拿大，北美天然亲和</td><td>严重不足</td></tr>
+        <tr><td class="center">10</td><td class="cn">智元机器人</td><td class="num">5.5</td><td>几乎纯国内，海外&lt;5%</td><td>短期无法改变</td></tr>
+        <tr><td class="center">12</td><td class="cn">乐聚机器人</td><td class="num score-low">5.0</td><td>几乎纯国内，华为渠道局限</td><td>基础最薄弱</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>R.2 Affinity维度排名</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>排名</th><th>公司</th><th>分数</th><th>核心支撑</th><th>关键风险</th></tr></thead>
+      <tbody>
+        <tr><td class="center">1</td><td class="us">Boston Dynamics</td><td class="num score-high">8.8</td><td>YouTube 10亿次观看，现代汽车长期支持</td><td>品牌绑定母公司过深</td></tr>
+        <tr><td class="center">2</td><td class="cn">宇树科技</td><td class="num score-high">8.2</td><td>时代最佳发明，盈利稳定</td><td>IPO后营销体系待建设</td></tr>
+        <tr><td class="center">3</td><td class="us">Tesla Optimus</td><td class="num score-mid">8.0</td><td>马斯克个人品牌，Tesla市值撑底</td><td>注意力分散影响专注度</td></tr>
+        <tr><td class="center">4</td><td class="us">Agility Robotics</td><td class="num score-mid">7.5</td><td>Amazon背书最强，仓储客户留存率高</td><td>过度依赖单一客户</td></tr>
+        <tr><td class="center">5</td><td class="cn">智元机器人</td><td class="num score-mid">7.0</td><td>稚晖君个人IP极强，华为生态支撑</td><td>个人IP依赖双刃剑</td></tr>
+        <tr><td class="center">5</td><td class="eu">1X Technologies</td><td class="num score-mid">7.0</td><td>OpenAI背书最强光环</td><td>2年内无法验证则资本耗尽</td></tr>
+        <tr><td class="center">5</td><td class="cn">傅里叶智能</td><td class="num score-mid">7.0</td><td>医疗用户黏性高，FX外骨骼稳定销售</td><td>合规风险高</td></tr>
+        <tr><td class="center">5</td><td class="us">Apptronik</td><td class="num score-mid">7.0</td><td>NASA政府可信度高</td><td>商业收入薄弱</td></tr>
+        <tr><td class="center">9</td><td class="cn">优必选</td><td class="num">6.8</td><td>港股透明监督，比亚迪工厂里程碑</td><td>持续亏损压制估值</td></tr>
+        <tr><td class="center">10</td><td class="cn">乐聚机器人</td><td class="num">6.5</td><td>华为鸿蒙长期生态绑定</td><td>品牌独立性弱</td></tr>
+        <tr><td class="center">11</td><td class="us">Figure AI</td><td class="num score-low">6.0</td><td>多重背书，BMW合作公信力</td><td>高管离职潮损害信心</td></tr>
+        <tr><td class="center">11</td><td class="eu">Sanctuary AI</td><td class="num score-low">6.0</td><td>学术界认可度高</td><td>商业可持续性存疑</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>R.3 中美竞争格局：三大战场</h2>
+
+  <h3>R.3.1 中国已赢下的战场</h3>
+
+  <h4>战场一：制造密度与成本控制</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>指标</th><th>中国（宇树）</th><th>美国（Tesla）</th><th>差距</th></tr></thead>
+      <tbody>
+        <tr><td>毛利率</td><td class="num">60.27%</td><td>未量产</td><td>—</td></tr>
+        <tr><td>外购部件占比</td><td class="num">14-18%</td><td>未知</td><td>—</td></tr>
+        <tr><td>关键零部件国产化率</td><td class="num">80-90%</td><td class="num">30-50%</td><td class="cn">30-40个百分点</td></tr>
+        <tr><td>年产能规划（2026）</td><td class="num">7.5万台/年</td><td class="num">数千台（估算）</td><td class="cn">10倍+</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>战场二：科研教育市场的先发垄断</h4>
+  <p>73.6%的宇树用户是高校——约4000台机器人每天24小时生产训练数据。中国顶级人形机器人实验室数量已超美国Top 20高校总和。接触过宇树/智元产品的高校学生，毕业后进入行业时携带产品认知，形成工程师-产品-生态正向闭环。</p>
+
+  <h4>战场三：迭代速度</h4>
+  <p>宇树：每6-9个月推出一代（H1→G1→R1→H2）。Figure AI：每18个月一代。Tesla Optimus：每24个月一代。</p>
+
+  <h3>R.3.2 西方守住的护城河</h3>
+
+  <h4>护城河一：具身智能算法生态</h4>
+  <p>VLA模型领先者全在美国：OpenAI、Google DeepMind、Physical Intelligence、NVIDIA。中国在顶级会议（NeurIPS/ICML/ICRA）具身AI论文占比&lt;15%，差距是结构性的。</p>
+
+  <h4>护城河二：顶尖研究人才地理集中</h4>
+  <p>MIT CSAIL / CMU Robotics / Stanford HAI / Berkeley BAIR——全球人形机器人领域的基础研究仍高度集中在美国。中国公司招募北美顶尖研究员年薪已达$40-60万。</p>
+
+  <h4>护城河三：监管与数据套利（双向）</h4>
+  <p>美国工厂合规路径清晰；中国对境外数据传输有限制。限制是双面的：利空中国玩家全球化，也限制了美国玩家进入中国。</p>
+
+  <h3>R.3.3 18个月关键拐点信号</h3>
+  <p><em>不是"谁会赢"，而是"什么信号出现时，胜负将清晰"。</em></p>
+  <div class="highlight-box">
+    <p><strong style="color: var(--accent-purple);">信号一：</strong>中国玩家是否出现可部署的具身大模型（不是论文，是生产模型）</p>
+    <p><strong style="color: var(--accent-purple);">信号二：</strong>Tesla/Figure是否在2027年前实现100台工厂部署（已验证运行）</p>
+    <p><strong style="color: var(--accent-purple);">信号三：</strong>宇树科创板IPO定价（PS倍数将决定全球估值参照系）</p>
+  </div>
+
+  <h2>R.4 完整评分矩阵</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>国家</th><th class="num">总分</th><th>Advancement</th><th>Mastery</th><th>Operations</th><th>Reach</th><th>Affinity</th></tr></thead>
+      <tbody>
+        <tr><td class="cn">宇树科技</td><td>🇨🇳</td><td class="num score-high"><strong>8.9</strong></td><td class="num">8.8</td><td class="num">7.8</td><td class="num score-high">9.5</td><td class="num">8.5</td><td class="num">8.2</td></tr>
+        <tr><td class="us">Boston Dynamics</td><td>🇺🇸</td><td class="num score-high"><strong>8.5</strong></td><td class="num score-high">8.8</td><td class="num score-high">9.0</td><td class="num">7.0</td><td class="num score-high">9.0</td><td class="num score-high">8.8</td></tr>
+        <tr><td class="us">Agility Robotics</td><td>🇺🇸</td><td class="num score-mid"><strong>7.9</strong></td><td class="num">7.8</td><td class="num">8.0</td><td class="num">7.5</td><td class="num">8.5</td><td class="num">7.5</td></tr>
+        <tr><td class="us">Tesla Optimus</td><td>🇺🇸</td><td class="num score-mid"><strong>7.8</strong></td><td class="num score-high">9.2</td><td class="num">8.8</td><td class="num score-low">4.5↓</td><td class="num">8.5</td><td class="num">8.0</td></tr>
+        <tr><td class="cn">智元机器人</td><td>🇨🇳</td><td class="num score-mid"><strong>7.3</strong></td><td class="num">8.0</td><td class="num">8.5</td><td class="num">7.5</td><td class="num">5.5</td><td class="num">7.0</td></tr>
+        <tr><td class="cn">优必选</td><td>🇨🇳</td><td class="num"><strong>7.1</strong></td><td class="num">7.5</td><td class="num">7.0</td><td class="num">8.0</td><td class="num">6.0</td><td class="num">6.8</td></tr>
+        <tr><td class="us">Figure AI</td><td>🇺🇸</td><td class="num"><strong>7.1</strong></td><td class="num">8.5</td><td class="num score-high">9.5</td><td class="num score-low">4.5↓</td><td class="num">7.0</td><td class="num">6.0</td></tr>
+        <tr><td class="eu">1X Technologies</td><td>🇳🇴</td><td class="num"><strong>7.1</strong></td><td class="num">8.0</td><td class="num score-high">9.2</td><td class="num score-low">4.0↓</td><td class="num">7.5</td><td class="num">7.0</td></tr>
+        <tr><td class="cn">傅里叶智能</td><td>🇨🇳</td><td class="num"><strong>7.0</strong></td><td class="num">7.8</td><td class="num">7.5</td><td class="num">6.5</td><td class="num">6.0</td><td class="num">7.0</td></tr>
+        <tr><td class="us">Apptronik</td><td>🇺🇸</td><td class="num"><strong>6.9</strong></td><td class="num">7.5</td><td class="num">7.8</td><td class="num">5.0</td><td class="num">7.0</td><td class="num">7.0</td></tr>
+        <tr><td class="cn">乐聚机器人</td><td>🇨🇳</td><td class="num"><strong>6.8</strong></td><td class="num">6.5</td><td class="num">6.5</td><td class="num">8.0</td><td class="num">5.0</td><td class="num">6.5</td></tr>
+        <tr><td class="eu">Sanctuary AI</td><td>🇨🇦</td><td class="num"><strong>6.8</strong></td><td class="num">8.0</td><td class="num">8.5</td><td class="num score-low">4.0↓</td><td class="num">5.5</td><td class="num">6.0</td></tr>
+        <tr><td><strong>行业均值</strong></td><td>—</td><td class="num"><strong>7.3</strong></td><td class="num">8.0</td><td class="num">8.2</td><td class="num">6.2</td><td class="num">6.9</td><td class="num">7.2</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><em>↓ = 与融资规模或市场预期相比偏低</em></p>
+</section>
+
+<!-- ==================== PART A2: ASSETS ==================== -->
+<section id="part-a2" class="part-a2">
+  <div class="chapter-banner">
+    <div>
+      <div class="chapter-label">Part A2 · 第五章</div>
+      <div class="chapter-title">Assets — 资本价值与投资分析</div>
+      <div class="chapter-sub">谁被错误定价？谁是最值得关注的押注？</div>
+    </div>
+  </div>
+
+  <h2>A2.1 宇树科技：被系统性误读的定价锚</h2>
+  <div class="highlight-box" style="border-color: var(--accent-orange); background: rgba(240,136,62,0.06);">
+    <strong style="color: var(--accent-orange);">核心判断：</strong>市场用"工业机器人公司"框架评估宇树，但宇树是"具身智能时代的数据基础设施公司"。
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>维度</th><th>数据</th><th>含义</th></tr></thead>
+      <tbody>
+        <tr><td>总分</td><td class="num score-high">8.9（第一）</td><td>领先第三名0.7分</td></tr>
+        <tr><td>Operations</td><td class="num score-high">9.5（第一）</td><td>无可争议</td></tr>
+        <tr><td>Advancement</td><td class="num score-high">8.8（并列第二）</td><td>全栈自研真实护城河</td></tr>
+        <tr><td>境外收入</td><td class="num">&gt;35%</td><td>中国主机厂最成熟出海</td></tr>
+        <tr><td>IPO募资用途</td><td>85%研发（48%模型研发）</td><td>押注具身大模型</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>正确的定价框架：</strong>科研教育客户=每天24小时生产训练数据；IPO募资48%押注模型=制造+数据+模型综合体</p>
+  <p><strong>风险：</strong>高校预算收紧；具身大模型新押注未经验证；王兴兴控制权过度集中（68.78%表决权）</p>
+
+  <h2>A2.2 Tesla Optimus：被错误工具评估的期权</h2>
+  <div class="highlight-box" style="border-color: var(--accent-orange); background: rgba(240,136,62,0.06);">
+    <strong style="color: var(--accent-orange);">核心判断：</strong>市场没有正确工具评估Tesla Optimus——它没有独立财务数据，作为Tesla整体"期权"存在。
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>维度</th><th>分数</th><th>被低估的事实</th></tr></thead>
+      <tbody>
+        <tr><td>Advancement</td><td class="num score-high">9.2（第一）</td><td>FSD数据迁移结构性优势，难以复制</td></tr>
+        <tr><td>Mastery</td><td class="num score-mid">8.8（第三）</td><td>Tesla AI团队复用</td></tr>
+        <tr><td>Operations</td><td class="num score-low">4.5</td><td><strong>战略选择</strong>，而非能力缺失（SpaceX先例）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>被低估的两个事实：</strong>（1）Tesla FSD车队每天采集PB级数据，机器人的视觉系统不需要从零训练。（2）Operations短板是Musk的"慢验证快迭代"路线，一旦开始商业化，Gigafactory体系将使规模化速度超过任何竞争对手。</p>
+  <p><strong>触发信号：</strong>2026年工厂部署&gt;200台 + Optimus独立财务披露</p>
+
+  <h2>A2.3 1X Technologies：高风险高回报的终极押注</h2>
+  <div class="highlight-box" style="border-color: var(--accent-orange); background: rgba(240,136,62,0.06);">
+    <strong style="color: var(--accent-orange);">核心判断：</strong>家庭场景是行业终极市场，提前5-7年布局，成则颠覆，败则归零。
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>维度</th><th>分数</th><th>含义</th></tr></thead>
+      <tbody>
+        <tr><td>Mastery</td><td class="num score-high">9.2（第二）</td><td>人才密度是最可靠的领先指标</td></tr>
+        <tr><td>Advancement</td><td class="num score-mid">8.0</td><td>OpenAI深度合作，软件强</td></tr>
+        <tr><td>Operations</td><td class="num score-low">4.0（最低）</td><td>赛道难度极高</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>为什么高风险/高回报：</strong>12家第一梯队中，无一真正验证家庭场景；家庭机器人市场=工业机器人市场10-20倍潜在规模；1X是唯一将家庭场景作为主赛道的公司。</p>
+  <p><strong>触发信号：</strong>2026年NEO 100小时无干预运行 + OpenAI发布面向机器人专项模型</p>
+
+  <h2>A2.4 估值参考系</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>公司</th><th>最新估值</th><th>融资总额</th><th>资本效率</th><th>AMORA总分</th></tr></thead>
+      <tbody>
+        <tr><td class="cn">宇树科技</td><td>~127亿元（投后）</td><td>—</td><td class="score-high">极高（5500台）</td><td class="num score-high">8.9</td></tr>
+        <tr><td class="cn">智元机器人</td><td>~70亿元（估算）</td><td class="num">~$1亿+</td><td>高（4000台）</td><td class="num">7.3</td></tr>
+        <tr><td class="us">Figure AI</td><td class="num">~$26亿</td><td class="num">$6.75亿</td><td class="score-low">低（150台）</td><td class="num">7.1</td></tr>
+        <tr><td class="us">Tesla Optimus</td><td>未单独估值</td><td>未单独披露</td><td>待定</td><td class="num">7.8</td></tr>
+        <tr><td class="us">Agility Robotics</td><td class="num">~$10亿+</td><td class="num">$1.5亿+</td><td>中（150台）</td><td class="num">7.9</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>A2.5 整机厂商投融资总览（全球）</h2>
+  <p class="caption">数据截止：2026年Q1 | 估值参考公开披露及行业估算</p>
+
+  <h3>A2.5.1 国外整机厂商</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>国家</th><th>最近融资轮次</th><th>融资时间</th><th>本轮金额</th><th>累计融资</th><th>最新估值</th><th>关键投资方</th><th>商业化阶段</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="us">Figure AI</td><td>美国</td><td>C轮</td><td>2025年9月</td><td class="num">$1B+</td><td class="num">~$8.2亿</td><td class="num score-high"><strong>~$39.5亿</strong></td><td>微软/OpenAI/英伟达/贝佐斯</td><td>小批量（BMW产线）</td></tr>
+        <tr><td class="us">Physical Intelligence</td><td>美国</td><td>B轮</td><td>2025年11月</td><td class="num">$4亿</td><td class="num">~$6亿</td><td class="num score-high"><strong>~$40亿</strong></td><td>贝佐斯/Thrive/Lightspeed</td><td>软件授权（非整机）</td></tr>
+        <tr><td class="eu">1X Technologies</td><td>挪威</td><td>B轮（进行中）</td><td>2025年9月</td><td class="num">~$10亿（目标）</td><td class="num">~$1.25亿</td><td class="num"><strong>~$100亿（目标）</strong></td><td>OpenAI/三星</td><td>预售（2025Q4发售）</td></tr>
+        <tr><td class="us">Apptronik</td><td>美国</td><td>Series A延轮</td><td>2026年2月</td><td class="num">$5.2亿</td><td class="num"><strong>~$9.35亿</strong></td><td class="num score-high"><strong>~$50亿</strong></td><td>Google DeepMind/梅赛德斯/B Capital</td><td>工业测试</td></tr>
+        <tr><td class="us">Agility Robotics</td><td>美国</td><td>融资轮</td><td>2025年3月</td><td class="num">$4亿</td><td class="num">~$1.8亿</td><td class="num score-high"><strong>~$17.5亿</strong></td><td>DCVC/Sony/亚马逊/Fidelity</td><td>已商业部署（全球最大规模）</td></tr>
+        <tr><td class="eu">Sanctuary AI</td><td>加拿大</td><td>A轮</td><td>2022年3月</td><td class="num">~$5500万</td><td class="num">~$1.4亿</td><td class="num"><strong>~$5亿</strong></td><td>Bell/Qualcomm/DMG</td><td>工业概念验证</td></tr>
+        <tr><td class="us">Tesla/Optimus</td><td>美国</td><td>内部（未单独融资）</td><td>—</td><td>—</td><td>—</td><td class="score-low">未单独披露</td><td>母公司自持</td><td>内测（比亚迪已交付2台）</td></tr>
+        <tr><td class="us">Boston Dynamics</td><td>美国</td><td>战略融资</td><td>2024年</td><td class="num">~$3.84亿</td><td class="num">~$7亿</td><td class="num score-mid"><strong>~$21亿</strong></td><td>现代汽车/软银</td><td>研发中（Atlas电驱版）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">注：Figure AI 估值$39.5亿（2025年4月C轮前）+ $1B+ C轮（2025年9月），部分信源称C轮后估值达$390亿（存疑，待官方确认）。</p>
+
+  <h3>A2.5.2 中国整机厂商</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>最近融资轮次</th><th>融资时间</th><th>本轮金额</th><th>累计融资</th><th>最新估值</th><th>关键投资方</th><th>核心机器人</th><th>商业化阶段</th><th>资本背景</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="cn">智元机器人</td><td>A++轮</td><td>2025年</td><td class="num">规模极大</td><td class="num">~20亿元+</td><td class="num score-high"><strong>~130亿元</strong></td><td>比亚迪/上汽/小米/红杉/高瓴</td><td>远征A2/G2</td><td>规模化进厂（3C产线）</td><td>最豪华产业资本</td></tr>
+        <tr><td class="cn">宇树科技</td><td>科创板IPO（已受理）</td><td>2026年3月</td><td class="num">拟募42亿</td><td>—</td><td class="num score-high"><strong>投前~420亿</strong></td><td>上交所受理（公众公司）</td><td>H1/G1</td><td>全球出货量最大（5500台）</td><td>A股上市在即</td></tr>
+        <tr><td class="cn">自变量机器人</td><td>B轮</td><td>2026年Q1</td><td class="num">~20亿元</td><td class="num">超30亿元</td><td>—</td><td>小米战投/红杉中国（领投）</td><td>—</td><td>具身智能量产</td><td>小米+红杉双背书</td></tr>
+        <tr><td class="cn">银河通用</td><td>B+轮</td><td>2025年12月</td><td class="num">超3亿美元（~21亿）</td><td class="num">~8亿美元（~57亿）</td><td>—</td><td>中国移动/宁德时代/中金资本</td><td>—</td><td>2025年融资冠军</td><td>产业资本密集</td></tr>
+        <tr><td class="cn">星动纪元</td><td>战略轮</td><td>2026年3月</td><td class="num">10亿元</td><td class="num">超过20亿元</td><td class="num score-high"><strong>破百亿</strong></td><td>多家头部机构</td><td>STAR1</td><td>科研+工业</td><td>2026年新晋百亿</td></tr>
+        <tr><td class="cn">傅利叶智能</td><td>Pre-C轮</td><td>2025年</td><td>未披露</td><td class="num">数亿元</td><td>独角兽级</td><td>蔚来/多家头部</td><td>GR-1</td><td>已商业部署（康复+工业）</td><td>新能源资本</td></tr>
+        <tr><td class="cn">优必选</td><td>港股上市</td><td>2023年12月</td><td>—</td><td>—</td><td>港股（9880.HK）</td><td>公众公司</td><td>Walker X</td><td>商业化最久</td><td>港股人形机器人第一股</td></tr>
+        <tr><td class="cn">小米/CyberOne</td><td>内部</td><td>—</td><td>—</td><td>—</td><td class="score-low">未单独披露</td><td>母公司</td><td>CyberOne</td><td>内部研发</td><td>小米生态</td></tr>
+        <tr><td class="cn">加速进化/众擎/逐际等</td><td>A轮/天使轮</td><td>2025年</td><td>未披露</td><td class="num">亿元级</td><td>—</td><td>多家机构</td><td>—</td><td>研发中</td><td>早期</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">注：智元机器人2026年4月披露2025年营收突破10.5亿元，商业化速度中国最快。银河通用成立仅两年融资约8亿美元，B+轮单笔3亿美元创中国机器人企业最高纪录。星动纪元2026年3月最新10亿战略轮，估值破百亿。</p>
+
+  <h2>A2.6 供应链投融资总览（全球）</h2>
+  <p class="caption">数据截止：2026年Q1 | 含A股上市公司及一级市场高成长标的</p>
+
+  <h3>A2.6.1 核心零部件 — A股上市公司</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>股票代码</th><th>主营</th><th>机器人业务占比</th><th>最新市值</th><th>2025年营收</th><th>净利润</th><th>毛利率</th><th>核心产品</th><th>人形机器人定点</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="cn">汇川技术</td><td>300124.SZ</td><td>伺服电机/驱动器</td><td>~20%</td><td class="num score-high"><strong>~1800亿</strong></td><td class="num">310亿+</td><td class="num">35亿+</td><td class="num">32%+</td><td>伺服系统/电机</td><td>Tesla候选/已送样</td></tr>
+        <tr><td class="cn">三花智控</td><td>002050.SZ</td><td>热管理/阀件</td><td>~10%</td><td class="num score-high"><strong>~700亿</strong></td><td class="num">230亿+</td><td class="num">22亿+</td><td class="num">27%+</td><td>热管理/电机</td><td>已进入Tesla Optimus供应链</td></tr>
+        <tr><td class="cn">兆威机电</td><td>003021.SZ</td><td>微型传动</td><td>~30%</td><td class="num score-mid"><strong>~350亿</strong></td><td class="num">18亿+</td><td class="num">2.5亿+</td><td class="num">38%+</td><td>微型传动/谐波</td><td>灵巧手核心供应商</td></tr>
+        <tr><td class="cn">秦川机床</td><td>000837.SZ</td><td>数控机床/丝杠</td><td>~15%</td><td class="num score-mid"><strong>~150亿</strong></td><td class="num">30亿+</td><td class="num">1.5亿+</td><td class="num">20%+</td><td>行星滚柱丝杠</td><td>人形机器人丝杠供应商</td></tr>
+        <tr><td class="cn">绿的谐波</td><td>688017.SH</td><td>谐波减速器</td><td>~55%</td><td class="num score-mid"><strong>~240亿</strong></td><td class="num">5.71亿</td><td class="num">1.24亿</td><td class="num">36%+</td><td>谐波减速器</td><td>头部人形厂商全覆盖</td></tr>
+        <tr><td class="cn">柯力传感</td><td>603662.SH</td><td>力传感器/工业IoT</td><td>~15%</td><td class="num score-mid"><strong>~120亿</strong></td><td class="num">15亿+</td><td class="num">3亿+</td><td class="num">42%+</td><td>力传感器平台</td><td>传感器平台布局</td></tr>
+        <tr><td class="cn">步科股份</td><td>688160.SH</td><td>步进/伺服电机</td><td>~40%</td><td class="num"><strong>~50亿</strong></td><td class="num">8亿+</td><td class="num">0.8亿+</td><td class="num">35%+</td><td>步进/伺服电机</td><td>傅利叶/宇树供应商</td></tr>
+        <tr><td class="cn">坤维传感</td><td>未上市</td><td>六维力传感器</td><td>~60%</td><td class="score-low">—</td><td>未披露</td><td>未披露</td><td>—</td><td>六维力传感器</td><td>头部人形厂商核心供应商</td></tr>
+        <tr><td class="cn">清能德创</td><td>未上市</td><td>伺服驱动器</td><td>~50%</td><td class="score-low">—</td><td>未披露</td><td>未披露</td><td>—</td><td>伺服驱动器</td><td>宇树/智元供应商</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A2.6.2 关键零部件 — 国际 & 一级市场</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>公司</th><th>国家</th><th>类别</th><th>最近融资</th><th>估值</th><th>关键投资方</th><th>核心产品</th><th>机器人客户</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="us">Physical Intelligence</td><td>美国</td><td>具身基础模型</td><td class="num">B轮$4亿</td><td class="num score-high"><strong>~$40亿</strong></td><td>贝佐斯/Lightspeed/Founders Fund</td><td>π0模型</td><td>所有主流人形厂商</td></tr>
+        <tr><td class="jp">Harmonic Drive Systems</td><td>日本</td><td>谐波减速器</td><td>已上市</td><td class="num score-high"><strong>~$1500亿日元</strong></td><td>公众公司</td><td>高精密谐波减速器</td><td>全球头部人形厂商</td></tr>
+        <tr><td class="us">Dexterity AI</td><td>美国</td><td>具身AI+物流</td><td class="num">B轮</td><td class="num score-mid"><strong>~$10亿</strong></td><td>红杉/OpenAI</td><td>AI物流机器人</td><td>物流场景</td></tr>
+        <tr><td class="us">Covariant AI</td><td>美国</td><td>机器人AI</td><td class="num">C轮</td><td class="num score-mid"><strong>~$10亿</strong></td><td>谷歌/英伟达</td><td>通用机器人AI</td><td>仓储物流</td></tr>
+        <tr><td class="us">Waabi</td><td>美国</td><td>自动驾驶/物流AI</td><td class="num">B轮</td><td class="num score-mid"><strong>~$10亿</strong></td><td>—</td><td>无人驾驶卡车/物流</td><td>物流</td></tr>
+        <tr><td class="eu">SCHUNK</td><td>德国</td><td>灵巧手/夹爪</td><td>已上市</td><td>—</td><td>博世集团</td><td>工业灵巧手</td><td>汽车总装</td></tr>
+        <tr><td class="eu">Weiss Robotics</td><td>德国</td><td>触觉/灵巧手</td><td>战略融资</td><td>—</td><td>—</td><td>协作机器人末端</td><td>人形仿人</td></tr>
+        <tr><td class="us">ATI Industrial Automation</td><td>美国</td><td>力传感器</td><td>已上市</td><td>—</td><td>公众公司</td><td>六维力传感器</td><td>波士顿动力/Tesla</td></tr>
+        <tr><td class="gb">Gibson Robotics</td><td>英国</td><td>灵巧手</td><td>天使轮</td><td>—</td><td>—</td><td>低成本灵巧手</td><td>英国人形项目</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A2.6.3 供应链关键结论</h3>
+  <div class="callout blue">
+    <p><strong>1. 谐波减速器：</strong>绿的谐波已打破哈默纳科垄断，2025年营收5.71亿（+47%），人形机器人订单占比超55%，毛利率36%+，是当前最确定性受益的人形机器人供应链标的。</p>
+    <p><strong>2. 丝杠 & 线性执行器：</strong>秦川机床（A股）在行星滚柱丝杠上处于产能建设期，尚未规模量产，是人形机器人最大国产替代缺口，国产替代空间超100亿元/年。</p>
+    <p><strong>3. 伺服驱动：</strong>汇川技术（市值1800亿）作为A股电机驱动龙头，已进入Tesla Optimus供应链候选，机器人业务营收占比约20%，是最大市值受益标的。</p>
+    <p><strong>4. 力/触觉传感器：</strong>坤维传感（一级市场）是人形机器人六维力传感器核心供应商，ATI（美股）主导全球工业，力传感器国产化率约45%，触觉传感器仍&lt;10%。</p>
+    <p><strong>5. 灵巧手 & 微型减速器：</strong>SCHUNK/Weiss（德国）主导全球，灵巧手国产化率&lt;20%，是整个人形机器人产业链中国产化率最低的环节。</p>
+  </div>
+
+</section>
+
+<!-- ==================== EDITORIAL ==================== -->
+<section id="editorial">
+  <div class="editorial">
+    <div class="label">Editorial View · 编辑观点</div>
+    <div class="quote">
+      "2026年的人形机器人赛道，不是科技竞赛，是叙事战争。宇树招股书是整场叙事战争里最诚实的一份文件——17亿营收、6亿净利告诉市场：机器人可以赚钱。但73.6%卖给高校，真正的工业替代浪潮还在路上。美国公司在用融资买时间，中国公司在用出货量买未来。真正的拐点：谁的 数据闭环 先跑起来。AMORA判断：出货量收敛成数据，比算法收敛成产品，在时间上领先12-18个月。"
+    </div>
+  </div>
+</section>
+
+<!-- ==================== APPENDIX ==================== -->
+<section id="appendix">
+  <h2>Appendix A — AMORA Score评分方法论</h2>
+  <p><strong>框架版本：</strong>AMORA Score v2.0（2026年Q1修订版）</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>来源级别</th><th>类型</th><th>权重</th></tr></thead>
+      <tbody>
+        <tr><td>L1</td><td>公司官方披露（招股书/年报/白皮书）</td><td class="num">50%</td></tr>
+        <tr><td>L2</td><td>权威第三方（IDC/麦肯锡/学术论文）</td><td class="num">30%</td></tr>
+        <tr><td>L3</td><td>媒体报道/公开信息</td><td class="num">20%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>特殊处理规则：</strong>未量产公司Operations评分不得高于5.0（硬性规则）</p>
+
+  <h2>Appendix B — 数据来源清单</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>编号</th><th>来源</th><th>级别</th><th>覆盖</th></tr></thead>
+      <tbody>
+        <tr><td>B-01</td><td>宇树科技招股书（2026年3月，上交所）</td><td class="score-high">L1</td><td>宇树</td></tr>
+        <tr><td>B-02</td><td>优必选年报2025（港交所9880.HK）</td><td class="score-high">L1</td><td>优必选</td></tr>
+        <tr><td>B-03</td><td>Tesla AI Day 2024/2025官方录像</td><td>L2</td><td>Tesla</td></tr>
+        <tr><td>B-04</td><td>Figure AI官方博客及媒体发布</td><td>L3</td><td>Figure AI</td></tr>
+        <tr><td>B-05</td><td>Boston Dynamics官方技术报告2024</td><td>L2</td><td>Boston Dynamics</td></tr>
+        <tr><td>B-06</td><td>Agility Robotics官方报告及Amazon公告</td><td>L2</td><td>Agility</td></tr>
+        <tr><td>B-07</td><td>NVIDIA Isaac Lab技术文档</td><td>L2</td><td>平台层</td></tr>
+        <tr><td>B-08</td><td>IDTechEx Humanoid Robots 2025-2035</td><td>L2</td><td>行业数据</td></tr>
+        <tr><td>B-09</td><td>工信部2025年机器人产业发展规划</td><td class="score-high">L1</td><td>宏观</td></tr>
+        <tr><td>B-10</td><td>1X Technologies官方博客及OpenAI公告</td><td>L2/L3</td><td>1X</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Appendix C — 关键术语表</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>术语</th><th>英文</th><th>定义</th></tr></thead>
+      <tbody>
+        <tr><td>具身智能</td><td>Embodied AI</td><td>能够感知并与物理世界交互的人工智能</td></tr>
+        <tr><td>自由度</td><td>DOF</td><td>机器人关节可独立运动的数量</td></tr>
+        <tr><td>VLA</td><td>Vision-Language-Action</td><td>视觉-语言-动作模型</td></tr>
+        <tr><td>端到端控制</td><td>End-to-End</td><td>从感知直接输出控制指令</td></tr>
+        <tr><td>世界模型</td><td>World Model</td><td>预测"执行动作后环境变化"的神经网络</td></tr>
+        <tr><td>仿真-现实迁移</td><td>Sim-to-Real</td><td>仿真训练技能迁移到真实环境</td></tr>
+        <tr><td>TRL</td><td>Technology Readiness Level</td><td>技术成熟度等级（1-9）</td></tr>
+        <tr><td>BOM</td><td>Bill of Materials</td><td>物料清单</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Appendix D — 免责声明</h2>
+  <div class="disclaimer">
+    <ol style="margin-left: 20px; color: var(--text-dim);">
+      <li>本报告仅供信息参考，不构成投资建议</li>
+      <li>技术评估基于公开信息，实际情况可能因公司进展而异</li>
+      <li>技术预测存在不确定性</li>
+      <li>投资有风险，决策需谨慎</li>
+    </ol>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>© 2026 AMORA Insights. All rights reserved.</p>
+  <p>The Humanoid Robot Index 2026 · v4.0 AMORA五章结构版 · 数据截止：Q1 2026</p>
+</footer>
+
+</body>
+</html>

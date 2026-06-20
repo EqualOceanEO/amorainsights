@@ -1,0 +1,5 @@
+# 团队状态是机器级的，不共享
+teams/
+expert-history.json
+
+# memory/ 目录不在此排除，需要 Git 共享

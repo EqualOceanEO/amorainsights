@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part M: Supply Chain Mapping · HRI 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070f;
+            --bg2: #080b14;
+            --bg3: #0d1120;
+            --card: #111827;
+            --card2: #1a2235;
+            --border: rgba(255,255,255,0.08);
+            --accent: #00d4ff;
+            --accent2: #7b2cbf;
+            --accent3: #f59e0b;
+            --accent4: #ef4444;
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --text3: #64748b;
+            --green: #10b981;
+            --red: #ef4444;
+            --gold: #f59e0b;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--card) 0%, var(--bg3) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 40px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent4));
+        }
+        
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .part-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+        }
+        
+        .part-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        .report-title {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .report-subtitle {
+            font-size: 16px;
+            color: var(--text2);
+            margin-bottom: 24px;
+        }
+        
+        .header-meta {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text2);
+        }
+        
+        .meta-item .val {
+            font-weight: 700;
+            color: var(--text);
+        }
+        
+        /* KPI Cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .kpi-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0,212,255,0.3);
+        }
+        
+        .kpi-value {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+        
+        .kpi-label {
+            font-size: 12px;
+            color: var(--text2);
+            line-height: 1.4;
+        }
+        
+        /* Main Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 400px;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        /* Left Panel - Categories */
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        
+        .category-item:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        
+        .category-item.active {
+            background: rgba(0,212,255,0.08);
+            border-color: rgba(0,212,255,0.3);
+        }
+        
+        .cat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .cat-icon.vision { background: rgba(0,212,255,0.15); }
+        .cat-icon.compute { background: rgba(123,44,191,0.15); }
+        .cat-icon.actuator { background: rgba(239,68,68,0.15); }
+        .cat-icon.hand { background: rgba(245,158,11,0.15); }
+        .cat-icon.power { background: rgba(16,185,129,0.15); }
+        .cat-icon.sensor { background: rgba(236,72,153,0.15); }
+        .cat-icon.platform { background: rgba(139,92,246,0.15); }
+        
+        .cat-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .cat-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .cat-count {
+            font-size: 11px;
+            color: var(--text3);
+        }
+        
+        .cat-arrow {
+            color: var(--text3);
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+        
+        .category-item:hover .cat-arrow,
+        .category-item.active .cat-arrow {
+            opacity: 1;
+            color: var(--accent);
+        }
+        
+        /* Center - Robot */
+        .robot-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 600px;
+        }
+        
+        .robot-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .robot-svg {
+            width: 300px;
+            height: 520px;
+        }
+        
+        .robot-part {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        
+        .robot-part:hover {
+            filter: drop-shadow(0 0 20px currentColor);
+            transform: scale(1.02);
+        }
+        
+        .robot-part.active {
+            filter: drop-shadow(0 0 30px currentColor);
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 15px currentColor); }
+            to { filter: drop-shadow(0 0 30px currentColor); }
+        }
+        
+        .part-label {
+            font-size: 10px;
+            fill: var(--text3);
+            font-weight: 500;
+            text-anchor: middle;
+        }
+        
+        /* Right Panel - Details */
+        .detail-panel {
+            max-height: 620px;
+            overflow-y: auto;
+        }
+        
+        .detail-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .detail-panel::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .detail-header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .detail-cat-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-cat-name .cat-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .detail-desc {
+            font-size: 13px;
+            color: var(--text2);
+        }
+        
+        .risk-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .risk-indicator.high {
+            background: rgba(239,68,68,0.15);
+            color: var(--red);
+        }
+        
+        .risk-indicator.medium {
+            background: rgba(245,158,11,0.15);
+            color: var(--gold);
+        }
+        
+        .risk-indicator.low {
+            background: rgba(16,185,129,0.15);
+            color: var(--green);
+        }
+        
+        .supplier-section {
+            margin-bottom: 20px;
+        }
+        
+        .supplier-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text3);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .supplier-title.china { color: #ef4444; }
+        .supplier-title.usa { color: #3b82f6; }
+        .supplier-title.eu { color: #8b5cf6; }
+        .supplier-title.japan { color: #ec4899; }
+        
+        .supplier-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .supplier-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            transition: all 0.2s;
+        }
+        
+        .supplier-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.15);
+        }
+        
+        .supplier-card.highlight {
+            border-color: rgba(0,212,255,0.3);
+            background: rgba(0,212,255,0.05);
+        }
+        
+        .supplier-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        
+        .supplier-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .supplier-logo.usa { background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .supplier-logo.china { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .supplier-logo.eu { background: rgba(139,92,246,0.2); color: #8b5cf6; }
+        .supplier-logo.japan { background: rgba(236,72,153,0.2); color: #ec4899; }
+        
+        .supplier-name {
+            font-size: 14px;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        .supplier-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+        
+        .tag.ipo { background: rgba(16,185,129,0.15); color: var(--green); }
+        .tag.public { background: rgba(0,212,255,0.15); color: var(--accent); }
+        .tag.giant { background: rgba(239,68,68,0.15); color: var(--red); }
+        .tag.tech { background: rgba(245,158,11,0.15); color: var(--gold); }
+        
+        .supplier-product {
+            font-size: 12px;
+            color: var(--text2);
+            margin-bottom: 4px;
+        }
+        
+        .supplier-clients {
+            font-size: 11px;
+            color: var(--text3);
+        }
+        
+        /* US vs China */
+        .comparison-section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text2);
+            margin-bottom: 20px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .comp-column {
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .comp-column.china { border-top: 3px solid #ef4444; }
+        .comp-column.usa { border-top: 3px solid #3b82f6; }
+        
+        .comp-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comp-column.china .comp-title { color: #ef4444; }
+        .comp-column.usa .comp-title { color: #3b82f6; }
+        
+        .comp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .comp-item:last-child {
+            border-bottom: none;
+        }
+        
+        .comp-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+        
+        .comp-column.china .comp-icon { background: rgba(239,68,68,0.15); }
+        .comp-column.usa .comp-icon { background: rgba(59,130,246,0.15); }
+        
+        .comp-text {
+            flex: 1;
+        }
+        
+        .comp-label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .comp-value {
+            font-size: 11px;
+            color: var(--text2);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .footer-text {
+            font-size: 12px;
+            color: var(--text3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .panel, .robot-panel {
+                display: none;
+            }
+            
+            .kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .kpi-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-title {
+                font-size: 28px;
+            }
+            
+            .header-meta {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-top">
+            <div class="part-badge">
+                <span class="dot"></span>
+                PART M: SUPPLY CHAIN MAPPING
+            </div>
+        </div>
+        <h1 class="report-title">Humanoid Robot Supply Chain Atlas</h1>
+        <p class="report-subtitle">人形机器人产业链全景图谱：中美双轨竞争与供应链韧性分析</p>
+        <div class="header-meta">
+            <div class="meta-item">
+                <span class="val">30+</span> Chinese Suppliers
+            </div>
+            <div class="meta-item">
+                <span class="val">25+</span> US Suppliers
+            </div>
+            <div class="meta-item">
+                <span class="val">7</span> Component Categories
+            </div>
+            <div class="meta-item">
+                <span class="val">12</span> Leading OEMs Mapped
+            </div>
+        </div>
+    </div>
+    
+    <!-- KPI Row -->
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-value">55%</div>
+            <div class="kpi-label">China's Manufacturing Cost Advantage at 100K Scale</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value">3-5yr</div>
+            <div class="kpi-label">US Platform Layer Moat (NVIDIA CUDA Lock-in)</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value">70%</div>
+            <div class="kpi-label">US OEMs' Import Dependency on Critical Components</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value">2027</div>
+            <div class="kpi-label">Projected Supply Chain Convergence Point</div>
+        </div>
+    </div>
+    
+    <!-- Main Grid -->
+    <div class="main-grid">
+        <!-- Left: Categories -->
+        <div class="panel">
+            <div class="panel-title">Component Categories</div>
+            <div class="category-list">
+                <div class="category-item active" data-part="vision">
+                    <div class="cat-icon vision">👁️</div>
+                    <div class="cat-info">
+                        <div class="cat-name">Vision System</div>
+                        <div class="cat-count">8 suppliers</div>
+                    </div>
+                    <div class="cat-arrow">→</div>
+                </div>
+                <div class="category-item" data-part="compute">
+                    <div class="cat-icon compute">🧠</div>
+                    <div class="cat-info">
+                        <div class="cat-name">Compute & AI</div>
+                        <div class="cat-count">12 suppliers</div>
+                    </div>
+                    <div class="cat-arrow">→</div>
+                </div>
+                <div class="category-item" data-part="actuator">
+                    <div class="cat-icon actuator">💪</div>
+                    <div class="cat-info">
+                        <div class="cat-name">Actuators</div>
+                        <div class="cat-count">15 suppliers</div>
+                    </div>
+                    <div class="cat-arrow">→</div>
+                </div>
+                <div class="category-item" data-part="hand">
+                    <div class="cat-icon hand">✋</div>
+                    <div class="cat-info">
+                        <div class="cat-name">Dexterous Hand</div>
+                        <div class="cat-count">10 suppliers</div>
+                    </div>
+                    <div class="cat-arrow">→</div>
+                </div>
+                <div class="category-item" data-part="power">
+                    <div class="cat-icon power">🔋</div>
+                    <div class="cat-info">
+                        <div class="cat-name">Powertrain</div>
+                        <div class="cat-count">12 suppliers</div>
+                    </div>
+                    <div class="cat-arrow">→</div>
+                </div>
+                <div class="category-item" data-part="sensor">
+                    <div class="cat-icon sensor">📊</div>
+                    <div class="cat-info">
+                        <div class="cat-name">Force Sensing</div>
+                        <div class="cat-count">8 suppliers</div>
+                    </div>
+                    <div class="cat-arrow">→</div>
+                </div>
+                <div class="category-item" data-part="platform">
+                    <div class="cat-icon platform">☁️</div>
+                    <div class="cat-info">
+                        <div class="cat-name">Platform Layer</div>
+                        <div class="cat-count">10 suppliers</div>
+                    </div>
+                    <div class="cat-arrow">→</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Center: Robot -->
+        <div class="robot-panel">
+            <div class="robot-label">Interactive Robot</div>
+            <svg class="robot-svg" viewBox="0 0 300 520">
+                <!-- Vision -->
+                <g class="robot-part" id="part-vision" data-part="vision" style="color: #00d4ff;">
+                    <circle cx="150" cy="55" r="40" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.4"/>
+                    <circle cx="150" cy="55" r="28" fill="rgba(0,212,255,0.1)" stroke="#00d4ff" stroke-width="2"/>
+                    <circle cx="132" cy="50" r="8" fill="#00d4ff" opacity="0.8"/>
+                    <circle cx="168" cy="50" r="8" fill="#00d4ff" opacity="0.8"/>
+                    <line x1="132" y1="50" x2="120" y2="45" stroke="#00d4ff" stroke-width="1" opacity="0.5"/>
+                    <line x1="168" y1="50" x2="180" y2="45" stroke="#00d4ff" stroke-width="1" opacity="0.5"/>
+                    <text x="150" y="115" class="part-label">Vision System</text>
+                </g>
+                
+                <!-- Compute -->
+                <g class="robot-part" id="part-compute" data-part="compute" style="color: #7b2cbf;">
+                    <rect x="100" y="125" width="100" height="100" rx="15" fill="none" stroke="#7b2cbf" stroke-width="2" opacity="0.4"/>
+                    <rect x="110" y="135" width="80" height="35" rx="8" fill="rgba(123,44,191,0.1)" stroke="#7b2cbf" stroke-width="1.5"/>
+                    <rect x="110" y="180" width="80" height="35" rx="8" fill="rgba(123,44,191,0.1)" stroke="#7b2cbf" stroke-width="1.5"/>
+                    <circle cx="125" cy="152" r="4" fill="#7b2cbf" opacity="0.8"/>
+                    <circle cx="150" cy="152" r="4" fill="#7b2cbf" opacity="0.8"/>
+                    <circle cx="175" cy="152" r="4" fill="#7b2cbf" opacity="0.8"/>
+                    <text x="150" y="250" class="part-label">Compute & AI</text>
+                </g>
+                
+                <!-- Arms (Actuators) -->
+                <g class="robot-part" id="part-actuator" data-part="actuator" style="color: #ef4444;">
+                    <!-- Left Arm -->
+                    <rect x="40" y="135" width="50" height="22" rx="8" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5" opacity="0.6"/>
+                    <rect x="25" y="170" width="40" height="18" rx="6" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5"/>
+                    <rect x="20" y="200" width="35" height="16" rx="5" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5"/>
+                    <!-- Right Arm -->
+                    <rect x="210" y="135" width="50" height="22" rx="8" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5" opacity="0.6"/>
+                    <rect x="235" y="170" width="40" height="18" rx="6" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5"/>
+                    <rect x="245" y="200" width="35" height="16" rx="5" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5"/>
+                    <text x="150" y="118" class="part-label" style="font-size: 9px;">Actuators</text>
+                </g>
+                
+                <!-- Hands -->
+                <g class="robot-part" id="part-hand" data-part="hand" style="color: #f59e0b;">
+                    <circle cx="38" cy="235" r="15" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <circle cx="262" cy="235" r="15" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="38" y="265" class="part-label" style="font-size: 9px;">Hand</text>
+                    <text x="262" y="265" class="part-label" style="font-size: 9px;">Hand</text>
+                </g>
+                
+                <!-- Torso/Legs (Powertrain) -->
+                <g class="robot-part" id="part-power" data-part="power" style="color: #10b981;">
+                    <rect x="105" y="240" width="35" height="60" rx="8" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+                    <rect x="160" y="240" width="35" height="60" rx="8" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+                    <rect x="100" y="315" width="40" height="70" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+                    <rect x="160" y="315" width="40" height="70" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+                    <text x="150" y="300" class="part-label" style="font-size: 9px;">Powertrain</text>
+                </g>
+                
+                <!-- Feet (Sensors) -->
+                <g class="robot-part" id="part-sensor" data-part="sensor" style="color: #ec4899;">
+                    <ellipse cx="120" cy="410" rx="30" ry="15" fill="rgba(236,72,153,0.1)" stroke="#ec4899" stroke-width="1.5"/>
+                    <ellipse cx="180" cy="410" rx="30" ry="15" fill="rgba(236,72,153,0.1)" stroke="#ec4899" stroke-width="1.5"/>
+                    <text x="150" y="445" class="part-label">Force Sensing</text>
+                </g>
+            </svg>
+        </div>
+        
+        <!-- Right: Details -->
+        <div class="panel detail-panel" id="detail-panel">
+            <!-- Dynamic content will be injected here -->
+        </div>
+    </div>
+    
+    <!-- Comparison Section -->
+    <div class="comparison-section">
+        <h2 class="section-title">🇺🇸 vs 🇨🇳 Supply Chain Comparison</h2>
+        <p class="section-subtitle">中美产业链核心差异：平台层美国占优，制造层中国领跑</p>
+        
+        <div class="comparison-grid">
+            <div class="comp-column china">
+                <div class="comp-title">
+                    🇨🇳 China Advantage
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">📦</div>
+                    <div class="comp-text">
+                        <div class="comp-label">Manufacturing Cost</div>
+                        <div class="comp-value">55% lower at 100K units scale</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">🏭</div>
+                    <div class="comp-text">
+                        <div class="comp-label">Supplier Density</div>
+                        <div class="comp-value">30+ tier-1 suppliers in China</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">🔗</div>
+                    <div class="comp-text">
+                        <div class="comp-label">Supply Chain Resilience</div>
+                        <div class="comp-value">Full domestic supply chain for 6/7 categories</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">⚡</div>
+                    <div class="comp-text">
+                        <div class="comp-label">Speed to Scale</div>
+                        <div class="comp-value">Fastest ramp-up capability</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comp-column usa">
+                <div class="comp-title">
+                    🇺🇸 US Advantage
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">🧠</div>
+                    <div class="comp-text">
+                        <div class="comp-label">AI/Platform Layer</div>
+                        <div class="comp-value">NVIDIA CUDA, Google DeepMind, OpenAI</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">🔬</div>
+                    <div class="comp-text">
+                        <div class="comp-label">R&D Investment</div>
+                        <div class="comp-value">$10B+ combined R&D spending</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">🌐</div>
+                    <div class="comp-text">
+                        <div class="comp-label">Global Reach</div>
+                        <div class="comp-value">Established international sales channels</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-icon">💰</div>
+                    <div class="comp-text">
+                        <div class="comp-label">Funding</div>
+                        <div class="comp-value">$2B+ VC investment in 2024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-logo">AMORA</div>
+        <div class="footer-text">HRI 2026 · Humanoid Robot Index · Part M: Supply Chain Mapping</div>
+    </div>
+</div>
+
+<script>
+// Supplier data
+const supplierData = {
+    vision: {
+        name: 'Vision System',
+        color: '#00d4ff',
+        desc: 'Depth cameras, LiDAR, RGB sensors for environment perception',
+        risk: 'medium',
+        riskText: 'Medium Supply Risk',
+        china: [
+            { name: 'Hikvision', product: 'Industrial cameras, 3D sensors', clients: '宇树, 智元, 傅利叶', tags: ['public'], flag: 'china' },
+            { name: 'Sensing360', product: 'Robotics vision AI chips', clients: '人形机器人厂商', tags: ['tech'], flag: 'china' },
+            { name: 'Orbbec', product: '3D cameras, ToF sensors', clients: '多家机器人厂商', tags: ['public'], flag: 'china' },
+        ],
+        usa: [
+            { name: 'Intel RealSense', product: 'Depth cameras D400/D500', clients: 'Figure AI, Agility', tags: ['giant'], flag: 'usa' },
+            { name: 'Luminar', product: 'LiDAR for robotics', clients: 'Autonomous robots', tags: ['public'], flag: 'usa' },
+        ],
+        eu: [
+            { name: 'Basler', product: 'Industrial vision systems', clients: 'PAL Robotics, European', tags: ['tech'], flag: 'eu' },
+        ]
+    },
+    compute: {
+        name: 'Compute & AI',
+        color: '#7b2cbf',
+        desc: 'SoC, AI accelerators, computing platforms',
+        risk: 'high',
+        riskText: 'High Supply Risk · NVIDIA Dependence',
+        china: [
+            { name: '华为/昇腾', product: 'Ascend AI chips, Atlas platform', clients: '国产人形机器人', tags: ['giant', 'tech'], flag: 'china' },
+            { name: '地平线', product: 'Journey AI chips, robotics edge', clients: '多家OEM', tags: ['tech'], flag: 'china' },
+            { name: '寒武纪', product: 'MLU AI accelerators', clients: '机器人AI推理', tags: ['public'], flag: 'china' },
+        ],
+        usa: [
+            { name: 'NVIDIA', product: 'Jetson Thor, DRIVE Thor', clients: 'Figure, Tesla, ALL US OEMs', tags: ['giant'], flag: 'usa' },
+            { name: 'AMD', product: 'Versal AI Edge', clients: 'Some OEMs', tags: ['giant'], flag: 'usa' },
+            { name: 'Qualcomm', product: 'Robotics RB3 platform', clients: 'Service robots', tags: ['giant'], flag: 'usa' },
+        ],
+        eu: []
+    },
+    actuator: {
+        name: 'Actuators',
+        color: '#ef4444',
+        desc: 'Servo motors, harmonic reducers, joint actuators',
+        risk: 'high',
+        riskText: 'High Supply Risk · Reducer Bottleneck',
+        china: [
+            { name: '绿的谐波', product: 'Harmonic reducers, 50%+ CN share', clients: '宇树, 智元, 傅利叶, 银河通用', tags: ['public', 'giant'], flag: 'china' },
+            { name: '汇川技术', product: 'Servo motors, motion control', clients: 'Most CN OEMs', tags: ['public', 'giant'], flag: 'china' },
+            { name: '步科', product: 'Stepper motors, integrated motors', clients: '人形机器人', tags: ['public'], flag: 'china' },
+        ],
+        usa: [
+            { name: 'Harmonic Drive LLC', product: 'Precision harmonic reducers', clients: 'Boston Dynamics, Figure', tags: ['giant'], flag: 'usa' },
+            { name: 'Moog', product: 'Servo actuators, motion control', clients: 'Defense, aerospace robots', tags: ['giant'], flag: 'usa' },
+            { name: 'Synapticon', product: 'Servo drives, CAN bus', clients: 'US humanoid startups', tags: ['tech'], flag: 'usa' },
+        ],
+        eu: [
+            { name: 'maxon', product: 'Precision DC motors', clients: 'European robots', tags: ['tech'], flag: 'eu' },
+        ]
+    },
+    hand: {
+        name: 'Dexterous Hand',
+        color: '#f59e0b',
+        desc: 'Multi-finger hands, tactile sensors, tendon actuators',
+        risk: 'high',
+        riskText: 'High Supply Risk · Tactile Sensor Gap',
+        china: [
+            { name: '帕西尼', product: 'Dexterous hands, tactile arrays', clients: '人形机器人OEM', tags: ['tech'], flag: 'china' },
+            { name: '因时机器人', product: 'Micro grippers, hands', clients: 'Service robots', tags: ['tech'], flag: 'china' },
+        ],
+        usa: [
+            { name: 'Shadow Robot', product: 'DEXTERITY hand series', clients: 'Research, Figure AI', tags: ['tech'], flag: 'usa' },
+            { name: 'Syntouch', product: 'BioTac tactile sensors', clients: 'Research labs', tags: ['tech'], flag: 'usa' },
+        ],
+        eu: [
+            { name: 'Shadow Robot UK', product: 'Advanced dextrous hands', clients: 'Global research, industry', tags: ['tech'], flag: 'eu' },
+        ]
+    },
+    power: {
+        name: 'Powertrain',
+        color: '#10b981',
+        desc: 'Battery packs, BMS, power distribution',
+        risk: 'low',
+        riskText: 'Low Supply Risk · Mature Technology',
+        china: [
+            { name: '宁德时代', product: 'Battery packs, Cell-to-pack', clients: 'EV → Robot adaptation', tags: ['giant', 'public'], flag: 'china' },
+            { name: '亿纬锂能', product: '18650/21700 cells', clients: 'Multiple OEMs', tags: ['public'], flag: 'china' },
+            { name: '欣旺达', product: 'BMS, battery packs', clients: 'Consumer, robot', tags: ['public'], flag: 'china' },
+        ],
+        usa: [
+            { name: 'Panasonic US', product: 'Tesla-format cells', clients: 'Tesla Optimus', tags: ['giant'], flag: 'usa' },
+            { name: 'Microvast', product: 'Fast-charge batteries', clients: 'US robots', tags: ['public'], flag: 'usa' },
+        ],
+        eu: []
+    },
+    sensor: {
+        name: 'Force Sensing',
+        color: '#ec4899',
+        desc: '6-axis F/T sensors, IMU, joint torque sensors',
+        risk: 'high',
+        riskText: 'High Supply Risk · Precision Gap',
+        china: [
+            { name: '敏芯股份', product: 'MEMS microphones, IMU', clients: 'Consumer robots', tags: ['public'], flag: 'china' },
+            { name: '坤维科技', product: '6-axis F/T sensors', clients: 'Industrial, humanoid', tags: ['tech'], flag: 'china' },
+        ],
+        usa: [
+            { name: 'ATI Industrial', product: '6-axis F/T sensors (60%+ share)', clients: 'Figure, Boston Dynamics', tags: ['giant'], flag: 'usa' },
+            { name: 'Lord MicroStrain', product: 'IMU,姿态传感器', clients: 'US robots', tags: ['tech'], flag: 'usa' },
+        ],
+        eu: [
+            { name: 'Schunk', product: 'Force sensors, grippers', clients: 'European robots', tags: ['giant'], flag: 'eu' },
+        ]
+    },
+    platform: {
+        name: 'Platform Layer',
+        color: '#8b5cf6',
+        desc: 'ROS, simulation, foundation models, cloud infrastructure',
+        risk: 'medium',
+        riskText: 'Medium Risk · NVIDIA CUDA Lock-in',
+        china: [
+            { name: '阿里云/达摩院', product: '通义大模型, 机器人云平台', clients: '中国OEM', tags: ['giant'], flag: 'china' },
+            { name: '华为云', product: 'RobotTech platform, 盘古', clients: '华为生态', tags: ['giant'], flag: 'china' },
+        ],
+        usa: [
+            { name: 'NVIDIA', product: 'Isaac Sim, Omniverse, CUDA', clients: 'ALL US OEMs', tags: ['giant'], flag: 'usa' },
+            { name: 'Google DeepMind', product: 'RT-2, RT-X, Gemini Robotics', clients: 'Figure AI, 1X', tags: ['giant'], flag: 'usa' },
+            { name: 'OpenAI', product: 'Foundation models, π0', clients: 'Figure, 1X, Physical Intelligence', tags: ['giant'], flag: 'usa' },
+            { name: 'Physical Intelligence', product: 'π0 robot foundation model', clients: '1X, Figure, agility', tags: ['tech'], flag: 'usa' },
+        ],
+        eu: [
+            { name: 'Open Source (ROS)', product: 'ROS 2, Gazebo simulation', clients: 'Global research', tags: ['tech'], flag: 'eu' },
+        ]
+    }
+};
+
+// Render detail panel
+function renderDetail(partId) {
+    const data = supplierData[partId];
+    if (!data) return;
+    
+    const panel = document.getElementById('detail-panel');
+    
+    let html = `
+        <div class="detail-header">
+            <div class="detail-cat-name">
+                <span class="cat-dot" style="background: ${data.color}"></span>
+                ${data.name}
+            </div>
+            <div class="detail-desc">${data.desc}</div>
+            <span class="risk-indicator ${data.risk}">
+                ⚠️ ${data.riskText}
+            </span>
+        </div>
+    `;
+    
+    // USA Suppliers
+    if (data.usa && data.usa.length > 0) {
+        html += `
+            <div class="supplier-section">
+                <div class="supplier-title usa">🇺🇸 USA / North America</div>
+                <div class="supplier-grid">
+                    ${data.usa.map(s => `
+                        <div class="supplier-card ${s.tags.includes('giant') ? 'highlight' : ''}">
+                            <div class="supplier-top">
+                                <div class="supplier-logo ${s.flag}">${s.name.charAt(0)}</div>
+                                <div class="supplier-name">${s.name}</div>
+                                <div class="supplier-tags">
+                                    ${s.tags.map(t => `<span class="tag ${t}">${t.toUpperCase()}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="supplier-product">${s.product}</div>
+                            <div class="supplier-clients">Clients: ${s.clients}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    // China Suppliers
+    if (data.china && data.china.length > 0) {
+        html += `
+            <div class="supplier-section">
+                <div class="supplier-title china">🇨🇳 China</div>
+                <div class="supplier-grid">
+                    ${data.china.map(s => `
+                        <div class="supplier-card ${s.tags.includes('giant') ? 'highlight' : ''}">
+                            <div class="supplier-top">
+                                <div class="supplier-logo ${s.flag}">${s.name.charAt(0)}</div>
+                                <div class="supplier-name">${s.name}</div>
+                                <div class="supplier-tags">
+                                    ${s.tags.map(t => `<span class="tag ${t}">${t.toUpperCase()}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="supplier-product">${s.product}</div>
+                            <div class="supplier-clients">Clients: ${s.clients}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    // EU Suppliers
+    if (data.eu && data.eu.length > 0) {
+        html += `
+            <div class="supplier-section">
+                <div class="supplier-title eu">🇪🇺 Europe</div>
+                <div class="supplier-grid">
+                    ${data.eu.map(s => `
+                        <div class="supplier-card">
+                            <div class="supplier-top">
+                                <div class="supplier-logo ${s.flag}">${s.name.charAt(0)}</div>
+                                <div class="supplier-name">${s.name}</div>
+                                <div class="supplier-tags">
+                                    ${s.tags.map(t => `<span class="tag ${t}">${t.toUpperCase()}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="supplier-product">${s.product}</div>
+                            <div class="supplier-clients">Clients: ${s.clients}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    panel.innerHTML = html;
+}
+
+// Category click handlers
+document.querySelectorAll('.category-item').forEach(item => {
+    item.addEventListener('click', () => {
+        // Update active state
+        document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        // Update robot part
+        const partId = item.dataset.part;
+        document.querySelectorAll('.robot-part').forEach(p => p.classList.remove('active'));
+        const robotPart = document.getElementById(`part-${partId}`);
+        if (robotPart) robotPart.classList.add('active');
+        
+        // Render detail
+        renderDetail(partId);
+    });
+});
+
+// Robot part click handlers
+document.querySelectorAll('.robot-part').forEach(part => {
+    part.addEventListener('click', () => {
+        const partId = part.dataset.part;
+        
+        // Update category active
+        document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+        const catItem = document.querySelector(`.category-item[data-part="${partId}"]`);
+        if (catItem) {
+            catItem.classList.add('active');
+            catItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Update robot part
+        document.querySelectorAll('.robot-part').forEach(p => p.classList.remove('active'));
+        part.classList.add('active');
+        
+        // Render detail
+        renderDetail(partId);
+    });
+});
+
+// Initial render
+renderDetail('vision');
+</script>
+
+</body>
+</html>

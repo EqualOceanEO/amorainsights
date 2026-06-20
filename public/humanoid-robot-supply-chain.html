@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人形机器人供应链图谱 - 国产 vs 美国依赖分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .legend-color.china { background: #10b981; }
+        .legend-color.usa { background: #ef4444; }
+        .legend-color.eu { background: #3b82f6; }
+        .legend-color.japan { background: #f59e0b; }
+        .legend-color.other { background: #6b7280; }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr 380px;
+            gap: 20px;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 左侧分类列表 */
+        .category-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            height: fit-content;
+        }
+        
+        .category-panel h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+        
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .category-item {
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .category-item:hover, .category-item.active {
+            background: rgba(0,212,255,0.15);
+            border-left-color: #00d4ff;
+        }
+        
+        .category-item .name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .category-item .part {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+        
+        /* 中间机器人图示 */
+        .robot-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            min-height: 600px;
+        }
+        
+        .robot-svg {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+        }
+        
+        .robot-part {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .robot-part:hover {
+            filter: brightness(1.3);
+        }
+        
+        .robot-part.active {
+            filter: brightness(1.5) drop-shadow(0 0 10px currentColor);
+        }
+        
+        .pulse-ring {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        .part-label {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            pointer-events: none;
+            border: 1px solid;
+        }
+        
+        /* 右侧供应商详情 */
+        .detail-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .detail-panel h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #00d4ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .supplier-section {
+            margin-bottom: 20px;
+        }
+        
+        .supplier-section h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .supplier-section.china h4 { color: #10b981; }
+        .supplier-section.usa h4 { color: #ef4444; }
+        .supplier-section.eu h4 { color: #3b82f6; }
+        .supplier-section.japan h4 { color: #f59e0b; }
+        .supplier-section.other h4 { color: #6b7280; }
+        
+        .supplier-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .supplier-item {
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border-left: 3px solid;
+        }
+        
+        .supplier-item.china { border-left-color: #10b981; }
+        .supplier-item.usa { border-left-color: #ef4444; }
+        .supplier-item.eu { border-left-color: #3b82f6; }
+        .supplier-item.japan { border-left-color: #f59e0b; }
+        .supplier-item.other { border-left-color: #6b7280; }
+        
+        .supplier-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .supplier-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .supplier-tag.ipo { background: rgba(16,185,129,0.2); color: #10b981; }
+        .supplier-tag.giant { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .supplier-tag.leader { background: rgba(245,158,11,0.2); color: #f59e0b; }
+        
+        .supplier-product {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+        
+        .supplier-clients {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .risk-alert {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px;
+        }
+        
+        .risk-alert h4 {
+            color: #ef4444;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        
+        .risk-alert p {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.6;
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .risk-level.high { background: #ef4444; color: white; }
+        .risk-level.medium { background: #f59e0b; color: white; }
+        .risk-level.low { background: #10b981; color: white; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 人形机器人供应链图谱</h1>
+            <p style="color:#888; font-size:14px;">国产替代 vs 美国依赖分析 | 核心零部件与上游设备</p>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color china"></div>
+                    <span>中国供应商</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color usa"></div>
+                    <span>美国供应商</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color eu"></div>
+                    <span>欧洲供应商</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color japan"></div>
+                    <span>日本供应商</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color other"></div>
+                    <span>其他</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <!-- 左侧分类 -->
+            <div class="category-panel">
+                <h3>📦 零部件分类</h3>
+                <div class="category-list">
+                    <div class="category-item active" data-part="head">
+                        <div class="name">🎯 感知系统</div>
+                        <div class="part">头部 · 3D视觉/激光雷达</div>
+                    </div>
+                    <div class="category-item" data-part="torso">
+                        <div class="name">🧠 计算控制</div>
+                        <div class="part">躯干 · 主控芯片/IMU</div>
+                    </div>
+                    <div class="category-item" data-part="arm">
+                        <div class="name">💪 驱动系统</div>
+                        <div class="part">手臂 · 减速器/电机</div>
+                    </div>
+                    <div class="category-item" data-part="hand">
+                        <div class="name">✋ 灵巧操作</div>
+                        <div class="part">灵巧手 · 微型伺服/触觉</div>
+                    </div>
+                    <div class="category-item" data-part="leg">
+                        <div class="name">🦿 动力传动</div>
+                        <div class="part">腿部 · 减速器/力传感器</div>
+                    </div>
+                    <div class="category-item" data-part="foot">
+                        <div class="name">👣 力觉感知</div>
+                        <div class="part">足部 · 六维力传感器</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中间机器人 -->
+            <div class="robot-panel">
+                <svg class="robot-svg" viewBox="0 0 300 500">
+                    <!-- 定义渐变 -->
+                    <defs>
+                        <linearGradient id="grad-head" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7b2cbf;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="grad-torso" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff006e;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#8338ec;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="grad-arm" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fb5607;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ffbe0b;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="grad-hand" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3a86ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#06ffa5;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="grad-leg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff006e;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ffbe0b;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="grad-foot" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06d6a0;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#118ab2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- 头部 -->
+                    <g class="robot-part" data-part="head" id="part-head">
+                        <ellipse cx="150" cy="50" rx="35" ry="40" fill="url(#grad-head)" opacity="0.9"/>
+                        <circle cx="135" cy="45" r="8" fill="#fff" opacity="0.8"/>
+                        <circle cx="165" cy="45" r="8" fill="#fff" opacity="0.8"/>
+                        <rect x="140" y="65" width="20" height="3" rx="1" fill="#fff" opacity="0.6"/>
+                        <!-- 脉冲效果 -->
+                        <ellipse cx="150" cy="50" rx="45" ry="50" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.3" class="pulse-ring"/>
+                    </g>
+                    
+                    <!-- 颈部 -->
+                    <rect x="140" y="90" width="20" height="20" fill="#444" rx="5"/>
+                    
+                    <!-- 躯干 -->
+                    <g class="robot-part" data-part="torso" id="part-torso">
+                        <rect x="100" y="110" width="100" height="120" rx="15" fill="url(#grad-torso)" opacity="0.9"/>
+                        <!-- 胸部细节 -->
+                        <rect x="120" y="130" width="60" height="40" rx="5" fill="#000" opacity="0.3"/>
+                        <circle cx="135" cy="150" r="5" fill="#00d4ff" opacity="0.8" class="pulse-ring"/>
+                        <circle cx="165" cy="150" r="5" fill="#00d4ff" opacity="0.8" class="pulse-ring"/>
+                        <!-- 腹部 -->
+                        <rect x="130" y="180" width="40" height="30" rx="5" fill="#000" opacity="0.2"/>
+                    </g>
+                    
+                    <!-- 左臂 -->
+                    <g class="robot-part" data-part="arm" id="part-arm-left">
+                        <rect x="55" y="120" width="35" height="80" rx="10" fill="url(#grad-arm)" opacity="0.9"/>
+                        <circle cx="72" cy="140" r="12" fill="#333"/>
+                        <rect x="60" y="200" width="25" height="60" rx="8" fill="url(#grad-arm)" opacity="0.8"/>
+                        <circle cx="72" cy="220" r="10" fill="#333"/>
+                    </g>
+                    
+                    <!-- 右臂 -->
+                    <g class="robot-part" data-part="arm" id="part-arm-right">
+                        <rect x="210" y="120" width="35" height="80" rx="10" fill="url(#grad-arm)" opacity="0.9"/>
+                        <circle cx="227" cy="140" r="12" fill="#333"/>
+                        <rect x="215" y="200" width="25" height="60" rx="8" fill="url(#grad-arm)" opacity="0.8"/>
+                        <circle cx="227" cy="220" r="10" fill="#333"/>
+                    </g>
+                    
+                    <!-- 左手 -->
+                    <g class="robot-part" data-part="hand" id="part-hand-left">
+                        <rect x="58" y="265" width="28" height="35" rx="5" fill="url(#grad-hand)" opacity="0.9"/>
+                        <rect x="60" y="302" width="6" height="20" rx="3" fill="url(#grad-hand)" opacity="0.8"/>
+                        <rect x="68" y="302" width="6" height="20" rx="3" fill="url(#grad-hand)" opacity="0.8"/>
+                        <rect x="76" y="302" width="6" height="20" rx="3" fill="url(#grad-hand)" opacity="0.8"/>
+                    </g>
+                    
+                    <!-- 右手 -->
+                    <g class="robot-part" data-part="hand" id="part-hand-right">
+                        <rect x="214" y="265" width="28" height="35" rx="5" fill="url(#grad-hand)" opacity="0.9"/>
+                        <rect x="216" y="302" width="6" height="20" rx="3" fill="url(#grad-hand)" opacity="0.8"/>
+                        <rect x="224" y="302" width="6" height="20" rx="3" fill="url(#grad-hand)" opacity="0.8"/>
+                        <rect x="232" y="302" width="6" height="20" rx="3" fill="url(#grad-hand)" opacity="0.8"/>
+                    </g>
+                    
+                    <!-- 左腿 -->
+                    <g class="robot-part" data-part="leg" id="part-leg-left">
+                        <rect x="115" y="235" width="30" height="90" rx="10" fill="url(#grad-leg)" opacity="0.9"/>
+                        <circle cx="130" cy="260" r="12" fill="#333"/>
+                        <rect x="118" y="325" width="24" height="80" rx="8" fill="url(#grad-leg)" opacity="0.8"/>
+                        <circle cx="130" cy="350" r="10" fill="#333"/>
+                    </g>
+                    
+                    <!-- 右腿 -->
+                    <g class="robot-part" data-part="leg" id="part-leg-right">
+                        <rect x="155" y="235" width="30" height="90" rx="10" fill="url(#grad-leg)" opacity="0.9"/>
+                        <circle cx="170" cy="260" r="12" fill="#333"/>
+                        <rect x="158" y="325" width="24" height="80" rx="8" fill="url(#grad-leg)" opacity="0.8"/>
+                        <circle cx="170" cy="350" r="10" fill="#333"/>
+                    </g>
+                    
+                    <!-- 左脚 -->
+                    <g class="robot-part" data-part="foot" id="part-foot-left">
+                        <ellipse cx="130" cy="420" rx="25" ry="12" fill="url(#grad-foot)" opacity="0.9"/>
+                        <rect x="110" y="415" width="40" height="15" rx="5" fill="url(#grad-foot)" opacity="0.8"/>
+                    </g>
+                    
+                    <!-- 右脚 -->
+                    <g class="robot-part" data-part="foot" id="part-foot-right">
+                        <ellipse cx="170" cy="420" rx="25" ry="12" fill="url(#grad-foot)" opacity="0.9"/>
+                        <rect x="150" y="415" width="40" height="15" rx="5" fill="url(#grad-foot)" opacity="0.8"/>
+                    </g>
+                </svg>
+                
+                <div style="margin-top:20px; text-align:center; color:#666; font-size:12px;">
+                    💡 点击机器人各部位查看供应链详情
+                </div>
+            </div>
+            
+            <!-- 右侧详情 -->
+            <div class="detail-panel" id="detail-panel">
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <p>点击左侧分类或机器人部位<br>查看供应链详情</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 供应链数据
+        const supplyChainData = {
+            head: {
+                name: "感知系统",
+                part: "头部 · 3D视觉/激光雷达",
+                china: [
+                    { name: "奥比中光", tag: "ipo", product: "3D结构光/ToF深度相机", clients: "宇树、优必选、智元" },
+                    { name: "速腾聚创", tag: "ipo", product: "MEMS激光雷达", clients: "宇树、小鹏、路特斯" },
+                    { name: "禾赛科技", tag: "ipo", product: "机械/固态激光雷达", clients: "宇树、理想、长安" },
+                    { name: "海康机器人", tag: "leader", product: "工业相机/视觉算法", clients: "物流、制造业" }
+                ],
+                usa: [
+                    { name: "Intel RealSense", tag: "giant", product: "深度相机D400系列", clients: "全球开发者、研究机机构" },
+                    { name: "NVIDIA", tag: "giant", product: "Jetson边缘计算平台", clients: "几乎所有机器人公司" },
+                    { name: "Qualcomm", tag: "giant", product: "RB系列机器人芯片", clients: "消费级机器人" }
+                ],
+                eu: [
+                    { name: "SICK (德国)", tag: "leader", product: "工业激光雷达", clients: "AGV/AMR厂商" }
+                ],
+                japan: [
+                    { name: "Keyence (基恩士)", tag: "leader", product: "工业视觉传感器", clients: "高端制造业" }
+                ],
+                risk: "高风险：高端深度相机、AI计算芯片高度依赖美国。国产3D视觉在精度和算法上仍有差距，激光雷达已部分替代。",
+                riskLevel: "high"
+            },
+            torso: {
+                name: "计算控制",
+                part: "躯干 · 主控芯片/IMU",
+                china: [
+                    { name: "芯动联科", tag: "ipo", product: "MEMS惯性传感器", clients: "自动驾驶、无人机" },
+                    { name: "地平线", tag: "leader", product: "征程系列AI芯片", clients: "理想、比亚迪、宇树" },
+                    { name: "黑芝麻智能", tag: "ipo", product: "华山系列AI芯片", clients: "车企、机器人" },
+                    { name: "全志科技", tag: "ipo", product: "R系列机器人芯片", clients: "扫地机器人" }
+                ],
+                usa: [
+                    { name: "NVIDIA", tag: "giant", product: "GPU/Orin/Thor芯片", clients: "几乎所有高端机器人" },
+                    { name: "Intel", tag: "giant", product: "x86 CPU/RealSense", clients: "人形机器人主控" },
+                    { name: "AMD/Xilinx", tag: "giant", product: "FPGA/Zynq", clients: "运动控制、视觉处理" },
+                    { name: "Bosch Sensortec", tag: "giant", product: "IMU传感器", clients: "消费电子、机器人" },
+                    { name: "Analog Devices", tag: "giant", product: "高精度IMU", clients: "工业机器人、航天" }
+                ],
+                eu: [
+                    { name: "STMicroelectronics", tag: "giant", product: "MEMS传感器/MCU", clients: "全球电子厂商" }
+                ],
+                japan: [
+                    { name: "TDK/InvenSense", tag: "leader", product: "6轴IMU", clients: "手机、机器人" }
+                ],
+                risk: "极高风险：AI训练/推理芯片几乎完全依赖NVIDIA，高端IMU被博世、ADI垄断。地平线等国产芯片在算力和生态上差距明显。",
+                riskLevel: "high"
+            },
+            arm: {
+                name: "驱动系统",
+                part: "手臂 · 减速器/电机",
+                china: [
+                    { name: "绿的谐波", tag: "ipo", product: "谐波减速器", clients: "宇树、优必选、汇川" },
+                    { name: "双环传动", tag: "ipo", product: "RV减速器", clients: "埃斯顿、新松" },
+                    { name: "中大力德", tag: "ipo", product: "行星减速器", clients: "物流机器人" },
+                    { name: "步科股份", tag: "ipo", product: "无框力矩电机", clients: "优必选、宇树" },
+                    { name: "汇川技术", tag: "ipo", product: "伺服电机/驱动器", clients: "宇树、优必选、埃斯顿" },
+                    { name: "禾川科技", tag: "ipo", product: "伺服系统", clients: "锂电、光伏设备" }
+                ],
+                usa: [
+                    { name: "Harmonic Drive (HD)", tag: "giant", product: "精密谐波减速器", clients: "高端工业机器人" },
+                    { name: "Nabtesco", tag: "giant", product: "RV减速器", clients: "全球工业机器人" },
+                    { name: "Moog", tag: "leader", product: "伺服电机/作动器", clients: "航空航天、高端装备" },
+                    { name: "Kollmorgen", tag: "leader", product: "无框电机", clients: "协作机器人" }
+                ],
+                japan: [
+                    { name: "Harmonic Drive Systems", tag: "giant", product: "谐波减速器", clients: "全球机器人龙头" },
+                    { name: "Nabtesco", tag: "giant", product: "RV减速器", clients: "发那科、安川、库卡" },
+                    { name: "Nidec", tag: "giant", product: "伺服电机", clients: "全球电机市场" }
+                ],
+                risk: "中高风险：高端谐波/RV减速器仍被日本HD、Nabtesco垄断（70%+份额）。国产绿的谐波、双环在中低端已突破，但精度寿命仍有差距。电机领域国产替代较好。",
+                riskLevel: "medium"
+            },
+            hand: {
+                name: "灵巧操作",
+                part: "灵巧手 · 微型伺服/触觉",
+                china: [
+                    { name: "因时机器人", tag: "leader", product: "微型伺服电缸", clients: "优必选、智元" },
+                    { name: "帕西尼感知", tag: "leader", product: "触觉传感器/灵巧手", clients: "研究机构" },
+                    { name: "灵心巧手", tag: "leader", product: "仿生灵巧手", clients: "科研、医疗" },
+                    { name: "兆威机电", tag: "ipo", product: "微型传动系统", clients: "汽车、医疗" }
+                ],
+                usa: [
+                    { name: "Shadow Robot", tag: "leader", product: "Dexterous Hand", clients: "研究机构、NASA" },
+                    { name: "SynTouch", tag: "leader", product: "BioTac触觉传感器", clients: "研究、工业" },
+                    { name: "Robotiq", tag: "leader", product: "自适应夹爪", clients: "协作机器人" }
+                ],
+                eu: [
+                    { name: "Schunk (德国)", tag: "leader", product: "SVH灵巧手", clients: "工业、研究" }
+                ],
+                japan: [
+                    { name: "SMC", tag: "leader", product: "气动夹爪/执行器", clients: "工业自动化" }
+                ],
+                risk: "中风险：灵巧手整体处于早期，国内外差距相对较小。微型伺服电缸、高精度触觉传感器仍依赖进口，国产因时、帕西尼快速追赶中。",
+                riskLevel: "medium"
+            },
+            leg: {
+                name: "动力传动",
+                part: "腿部 · 减速器/力传感器",
+                china: [
+                    { name: "双环传动", tag: "ipo", product: "RV减速器", clients: "重载机器人" },
+                    { name: "中大力德", tag: "ipo", product: "行星减速器", clients: "服务机器人" },
+                    { name: "宇立仪器", tag: "leader", product: "六维力传感器", clients: "宇树、优必选、KUKA" },
+                    { name: "柯力传感", tag: "ipo", product: "力/称重传感器", clients: "工业、物流" },
+                    { name: "昊志机电", tag: "ipo", product: "谐波减速器/电机", clients: "数控机床" }
+                ],
+                usa: [
+                    { name: "ATI Industrial", tag: "giant", product: "六维力传感器", clients: "全球机器人龙头" },
+                    { name: "JR3", tag: "leader", product: "力/力矩传感器", clients: "工业、医疗" },
+                    { name: "Nabtesco", tag: "giant", product: "精密减速器", clients: "高端应用" }
+                ],
+                eu: [
+                    { name: "Kistler (瑞士)", tag: "leader", product: "压电式力传感器", clients: "汽车测试、工业" }
+                ],
+                japan: [
+                    { name: "Nabtesco", tag: "giant", product: "RV减速器", clients: "全球工业机器人" },
+                    { name: "Ono Sokki", tag: "leader", product: "扭矩传感器", clients: "汽车、工业" }
+                ],
+                risk: "中高风险：六维力传感器被美国ATI垄断（60%+份额），国产宇立仪器在部分场景可替代。RV减速器仍依赖日本Nabtesco。",
+                riskLevel: "medium"
+            },
+            foot: {
+                name: "力觉感知",
+                part: "足部 · 六维力传感器",
+                china: [
+                    { name: "宇立仪器", tag: "leader", product: "六维力传感器", clients: "宇树、优必选、ABB" },
+                    { name: "柯力传感", tag: "ipo", product: "力传感器", clients: "工业自动化" },
+                    { name: "坤维科技", tag: "leader", product: "六维力传感器", clients: "协作机器人" },
+                    { name: "海伯森", tag: "leader", product: "3D视觉/力传感器", clients: "工业检测" }
+                ],
+                usa: [
+                    { name: "ATI Industrial", tag: "giant", product: "Nano/Mini系列", clients: "几乎所有高端机器人" },
+                    { name: "JR3", tag: "leader", product: "力传感器", clients: "NASA、工业" },
+                    { name: "AMTI", tag: "leader", product: "测力台/传感器", clients: "生物力学、机器人" }
+                ],
+                eu: [
+                    { name: "Kistler", tag: "leader", product: "力传感器", clients: "汽车、航天" },
+                    { name: "Bota Systems (瑞士)", tag: "leader", product: "六维力传感器", clients: "协作机器人" }
+                ],
+                japan: [
+                    { name: "MinebeaMitsumi", tag: "leader", product: "力传感器", clients: "精密设备" }
+                ],
+                risk: "高风险：六维力传感器是双足平衡的核心，美国ATI占据绝对主导地位。国产宇立仪器、坤维在中低端市场有突破，但精度、稳定性仍有差距。",
+                riskLevel: "high"
+            }
+        };
+
+        // 渲染详情面板
+        function renderDetail(partKey) {
+            const data = supplyChainData[partKey];
+            const panel = document.getElementById('detail-panel');
+            
+            let html = `
+                <h3>
+                    <span>${partKey === 'head' ? '🎯' : partKey === 'torso' ? '🧠' : partKey === 'arm' ? '💪' : partKey === 'hand' ? '✋' : partKey === 'leg' ? '🦿' : '👣'}</span>
+                    ${data.name}
+                    <span class="risk-level ${data.riskLevel}">${data.riskLevel === 'high' ? '高风险' : data.riskLevel === 'medium' ? '中风险' : '低风险'}</span>
+                </h3>
+                <p style="color:#888; font-size:13px; margin-bottom:15px;">${data.part}</p>
+            `;
+            
+            // 中国供应商
+            if (data.china && data.china.length > 0) {
+                html += `
+                    <div class="supplier-section china">
+                        <h4>🇨🇳 中国供应商</h4>
+                        <div class="supplier-list">
+                            ${data.china.map(s => `
+                                <div class="supplier-item china">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? '上市' : s.tag === 'giant' ? '巨头' : '龙头'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">客户: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 美国供应商
+            if (data.usa && data.usa.length > 0) {
+                html += `
+                    <div class="supplier-section usa">
+                        <h4>🇺🇸 美国供应商</h4>
+                        <div class="supplier-list">
+                            ${data.usa.map(s => `
+                                <div class="supplier-item usa">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? '上市' : s.tag === 'giant' ? '巨头' : '龙头'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">客户: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 欧洲供应商
+            if (data.eu && data.eu.length > 0) {
+                html += `
+                    <div class="supplier-section eu">
+                        <h4>🇪🇺 欧洲供应商</h4>
+                        <div class="supplier-list">
+                            ${data.eu.map(s => `
+                                <div class="supplier-item eu">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? '上市' : s.tag === 'giant' ? '巨头' : '龙头'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">客户: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 日本供应商
+            if (data.japan && data.japan.length > 0) {
+                html += `
+                    <div class="supplier-section japan">
+                        <h4>🇯🇵 日本供应商</h4>
+                        <div class="supplier-list">
+                            ${data.japan.map(s => `
+                                <div class="supplier-item japan">
+                                    <div class="supplier-name">
+                                        ${s.name}
+                                        <span class="supplier-tag ${s.tag}">${s.tag === 'ipo' ? '上市' : s.tag === 'giant' ? '巨头' : '龙头'}</span>
+                                    </div>
+                                    <div class="supplier-product">${s.product}</div>
+                                    <div class="supplier-clients">客户: ${s.clients}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 风险提示
+            html += `
+                <div class="risk-alert">
+                    <h4>⚠️ 供应链风险分析</h4>
+                    <p>${data.risk}</p>
+                </div>
+            `;
+            
+            panel.innerHTML = html;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认选中头部
+            renderDetail('head');
+            document.querySelector('[data-part="head"]').classList.add('active');
+            document.getElementById('part-head').classList.add('active');
+            
+            // 分类列表点击
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const part = this.dataset.part;
+                    
+                    // 更新列表状态
+                    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 更新机器人高亮
+                    document.querySelectorAll('.robot-part').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll(`[data-part="${part}"]`).forEach(p => p.classList.add('active'));
+                    
+                    // 渲染详情
+                    renderDetail(part);
+                });
+            });
+            
+            // 机器人部位点击
+            document.querySelectorAll('.robot-part').forEach(part => {
+                part.addEventListener('click', function() {
+                    const partKey = this.dataset.part;
+                    
+                    // 更新列表状态
+                    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                    document.querySelector(`.category-item[data-part="${partKey}"]`)?.classList.add('active');
+                    
+                    // 更新机器人高亮
+                    document.querySelectorAll('.robot-part').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll(`[data-part="${partKey}"]`).forEach(p => p.classList.add('active'));
+                    
+                    // 渲染详情
+                    renderDetail(partKey);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

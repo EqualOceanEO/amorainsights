@@ -1,0 +1,9 @@
+Test file: C:\Users\51229\WorkBuddy\Claw\HRI-2026-Report-Presentation-v2.pptx
+File size: 1,019,132
+ZIP entries: 123
+Key files: ['[Content_Types].xml', 'ppt/presentation.xml', 'ppt/slides/slide1.xml']
+Creating PowerPoint COM object...
+PowerPoint started OK
+Opening: C:\Users\51229\WorkBuddy\Claw\HRI-2026-Report-Presentation-v2.pptx
+ERROR: (-2147467259, '未指定的错误', ('PowerPoint could not open the file.', 'Microsoft PowerPoint', '', 0, None))
+FAILED: PDF not created

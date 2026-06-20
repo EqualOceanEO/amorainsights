@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>人形机器人供应链图谱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        .poster {
+            max-width: 420px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 顶部标题区 */
+        .header {
+            padding: 40px 24px 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #fff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-num {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00d4ff, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        /* 装饰元素 */
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .glow-1 {
+            top: -100px;
+            right: -100px;
+            background: #00d4ff;
+        }
+        
+        .glow-2 {
+            bottom: 20%;
+            left: -100px;
+            background: #ff006e;
+        }
+        
+        /* 核心内容区 */
+        .content {
+            padding: 0 20px 40px;
+        }
+        
+        /* 机器人简图 */
+        .robot-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .robot-simple {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .robot-head {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 0 20px rgba(0,212,255,0.3);
+        }
+        
+        .robot-body {
+            width: 100px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff006e, #8338ec);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 0 30px rgba(255,0,110,0.3);
+        }
+        
+        .robot-limbs {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .robot-arm {
+            width: 24px;
+            height: 80px;
+            background: linear-gradient(180deg, #fb5607, #ffbe0b);
+            border-radius: 12px;
+        }
+        
+        .robot-leg {
+            width: 28px;
+            height: 100px;
+            background: linear-gradient(180deg, #06d6a0, #118ab2);
+            border-radius: 14px;
+        }
+        
+        /* 供应链卡片 */
+        .supply-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .card-icon.blue { background: linear-gradient(135deg, #00d4ff, #0066ff); }
+        .card-icon.pink { background: linear-gradient(135deg, #ff006e, #ff4d6d); }
+        .card-icon.orange { background: linear-gradient(135deg, #fb5607, #ffbe0b); }
+        .card-icon.green { background: linear-gradient(135deg, #06d6a0, #118ab2); }
+        .card-icon.purple { background: linear-gradient(135deg, #8338ec, #3a86ff); }
+        
+        .card-title {
+            flex: 1;
+        }
+        
+        .card-title h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        
+        .card-title p {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .risk-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .risk-badge.high { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .risk-badge.medium { background: rgba(245,158,11,0.2); color: #f59e0b; }
+        .risk-badge.low { background: rgba(16,185,129,0.2); color: #10b981; }
+        
+        /* 供应商列表 */
+        .supplier-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .supplier-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .region-tag {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .region-tag.cn { background: rgba(16,185,129,0.15); }
+        .region-tag.us { background: rgba(239,68,68,0.15); }
+        .region-tag.jp { background: rgba(245,158,11,0.15); }
+        .region-tag.eu { background: rgba(59,130,246,0.15); }
+        
+        .supplier-names {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        
+        .supplier-tag {
+            background: rgba(255,255,255,0.06);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .supplier-tag.highlight {
+            background: rgba(0,212,255,0.15);
+            border-color: rgba(0,212,255,0.3);
+            color: #00d4ff;
+        }
+        
+        /* 风险总结 */
+        .risk-summary {
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(245,158,11,0.1));
+            border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 20px;
+        }
+        
+        .risk-summary h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-summary p {
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.8;
+        }
+        
+        .risk-bar {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .risk-segment {
+            height: 6px;
+            border-radius: 3px;
+        }
+        
+        .risk-segment.high { background: #ef4444; flex: 3; }
+        .risk-segment.medium { background: #f59e0b; flex: 2; }
+        .risk-segment.low { background: #10b981; flex: 1; }
+        
+        /* 底部 */
+        .footer {
+            padding: 30px 24px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .qr-placeholder {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        
+        .footer p {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .brand {
+            font-size: 14px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00d4ff, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 保存提示 */
+        .save-tip {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            z-index: 100;
+        }
+        
+        .save-tip::before {
+            content: "📱";
+            font-size: 16px;
+        }
+        
+        /* 长图模式优化 */
+        @media screen and (min-width: 421px) {
+            body {
+                background: #1a1a1a;
+                padding: 20px;
+            }
+            .poster {
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        
+        <!-- 头部 -->
+        <div class="header">
+            <div class="tag">INDUSTRY INSIGHT</div>
+            <h1 class="title">人形机器人<br>供应链图谱</h1>
+            <p class="subtitle">国产替代进程 vs 美国依赖分析</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-num">6</div>
+                    <div class="stat-label">核心部位</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">50+</div>
+                    <div class="stat-label">供应商</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">3</div>
+                    <div class="stat-label">高风险领域</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 内容 -->
+        <div class="content">
+            <!-- 机器人示意 -->
+            <div class="robot-section">
+                <div class="section-title">🤖 核心零部件分布</div>
+                <div class="robot-simple">
+                    <div class="robot-head">👁️</div>
+                    <div class="robot-body">🦾</div>
+                    <div class="robot-limbs">
+                        <div class="robot-arm"></div>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <div class="robot-leg"></div>
+                            <div class="robot-leg"></div>
+                        </div>
+                        <div class="robot-arm"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 感知系统 -->
+            <div class="supply-card">
+                <div class="card-header">
+                    <div class="card-icon blue">👁️</div>
+                    <div class="card-title">
+                        <h3>感知系统</h3>
+                        <p>3D视觉 / 激光雷达</p>
+                    </div>
+                    <span class="risk-badge high">高风险</span>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag cn">🇨🇳</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag highlight">奥比中光</span>
+                        <span class="supplier-tag">速腾聚创</span>
+                        <span class="supplier-tag">禾赛科技</span>
+                    </div>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag us">🇺🇸</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag">Intel RealSense</span>
+                        <span class="supplier-tag">NVIDIA Jetson</span>
+                        <span class="supplier-tag">Qualcomm</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 计算控制 -->
+            <div class="supply-card">
+                <div class="card-header">
+                    <div class="card-icon pink">🧠</div>
+                    <div class="card-title">
+                        <h3>计算控制</h3>
+                        <p>主控芯片 / IMU</p>
+                    </div>
+                    <span class="risk-badge high">极高风险</span>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag cn">🇨🇳</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag">地平线</span>
+                        <span class="supplier-tag">黑芝麻</span>
+                        <span class="supplier-tag">芯动联科</span>
+                    </div>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag us">🇺🇸</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag highlight">NVIDIA GPU</span>
+                        <span class="supplier-tag highlight">Intel CPU</span>
+                        <span class="supplier-tag">AMD Xilinx</span>
+                        <span class="supplier-tag">ADI IMU</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 驱动系统 -->
+            <div class="supply-card">
+                <div class="card-header">
+                    <div class="card-icon orange">💪</div>
+                    <div class="card-title">
+                        <h3>驱动系统</h3>
+                        <p>减速器 / 电机</p>
+                    </div>
+                    <span class="risk-badge medium">中风险</span>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag cn">🇨🇳</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag highlight">绿的谐波</span>
+                        <span class="supplier-tag highlight">双环传动</span>
+                        <span class="supplier-tag">汇川技术</span>
+                        <span class="supplier-tag">步科股份</span>
+                    </div>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag jp">🇯🇵</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag">Harmonic Drive</span>
+                        <span class="supplier-tag">Nabtesco</span>
+                        <span class="supplier-tag">Nidec</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 灵巧操作 -->
+            <div class="supply-card">
+                <div class="card-header">
+                    <div class="card-icon purple">✋</div>
+                    <div class="card-title">
+                        <h3>灵巧操作</h3>
+                        <p>灵巧手 / 触觉传感</p>
+                    </div>
+                    <span class="risk-badge medium">中风险</span>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag cn">🇨🇳</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag highlight">因时机器人</span>
+                        <span class="supplier-tag">帕西尼感知</span>
+                        <span class="supplier-tag">灵心巧手</span>
+                    </div>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag us">🇺🇸</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag">Shadow Robot</span>
+                        <span class="supplier-tag">SynTouch</span>
+                    </div>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag eu">🇩🇪</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag">Schunk</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 力觉感知 -->
+            <div class="supply-card">
+                <div class="card-header">
+                    <div class="card-icon green">👣</div>
+                    <div class="card-title">
+                        <h3>力觉感知</h3>
+                        <p>六维力传感器</p>
+                    </div>
+                    <span class="risk-badge high">高风险</span>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag cn">🇨🇳</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag">宇立仪器</span>
+                        <span class="supplier-tag">柯力传感</span>
+                        <span class="supplier-tag">坤维科技</span>
+                    </div>
+                </div>
+                <div class="supplier-row">
+                    <div class="region-tag us">🇺🇸</div>
+                    <div class="supplier-names">
+                        <span class="supplier-tag highlight">ATI Industrial</span>
+                        <span class="supplier-tag">JR3</span>
+                        <span class="supplier-tag">AMTI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 风险总结 -->
+        <div class="risk-summary">
+            <h3>⚠️ 供应链风险分析</h3>
+            <p>
+                <strong>极高风险：</strong>AI芯片几乎完全依赖NVIDIA，国产地平线等差距明显<br>
+                <strong>高风险：</strong>六维力传感器被ATI垄断，深度相机依赖Intel<br>
+                <strong>中风险：</strong>精密减速器日本主导，国产绿的谐波快速追赶
+            </p>
+            <div class="risk-bar">
+                <div class="risk-segment high" title="高风险"></div>
+                <div class="risk-segment medium" title="中风险"></div>
+                <div class="risk-segment low" title="低风险"></div>
+            </div>
+        </div>
+        
+        <!-- 底部 -->
+        <div class="footer">
+            <div class="qr-placeholder">📊</div>
+            <p>扫码查看完整交互版图谱</p>
+            <p class="brand">AMORA Insights</p>
+            <p style="margin-top:8px; font-size:11px;">数据截至 2026年3月</p>
+        </div>
+    </div>
+    
+    <div class="save-tip">长按保存图片，分享到朋友圈</div>
+</body>
+</html>

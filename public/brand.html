@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMORA Brand Identity</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #030812; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; color: #fff; }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 72px 48px; }
+
+  /* Header */
+  .brand-header { display: flex; align-items: center; gap: 20px; margin-bottom: 80px; }
+  .brand-header svg { width: 56px; height: 56px; }
+  .brand-title { font-size: 11px; letter-spacing: 3px; color: #334155; text-transform: uppercase; }
+
+  /* Section */
+  .section { margin-bottom: 72px; }
+  .section-label { font-size: 10px; letter-spacing: 3px; color: #1e3a5f; text-transform: uppercase; border-bottom: 1px solid #0f1e35; padding-bottom: 12px; margin-bottom: 36px; }
+
+  /* Logo showcase */
+  .logo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .logo-cell { padding: 48px; display: flex; align-items: center; justify-content: center; }
+  .logo-cell.dark  { background: #060d1c; border-radius: 12px 0 0 0; }
+  .logo-cell.darker{ background: #030812; border-radius: 0 12px 0 0; }
+  .logo-cell.light { background: #f8fafc; border-radius: 0 0 0 12px; }
+  .logo-cell.blue  { background: #1d4ed8; border-radius: 0 0 12px 0; }
+  .logo-cell-label { font-size: 10px; color: #334155; margin-top: 16px; letter-spacing: 1px; }
+  .logo-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+  /* On light background, text needs to be dark */
+  .logo-light-version text { fill: #0f172a !important; }
+  .logo-light-version .sub { fill: #1d4ed8 !important; }
+
+  /* Icon sizes */
+  .icon-row { display: flex; align-items: flex-end; gap: 24px; }
+  .icon-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .icon-item span { font-size: 10px; color: #334155; }
+
+  /* Colors */
+  .color-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .swatch { border-radius: 10px; overflow: hidden; width: 140px; }
+  .swatch-color { height: 72px; }
+  .swatch-info { padding: 12px; background: #0a1628; }
+  .swatch-name { font-size: 12px; color: #cbd5e1; font-weight: 500; margin-bottom: 4px; }
+  .swatch-hex  { font-size: 11px; color: #475569; font-family: monospace; }
+
+  /* Typography */
+  .type-row { display: flex; flex-direction: column; gap: 20px; }
+  .type-item { display: flex; align-items: baseline; gap: 24px; padding: 20px; background: #060d1c; border-radius: 8px; }
+  .type-meta { font-size: 10px; color: #334155; width: 100px; flex-shrink: 0; line-height: 1.8; }
+
+  /* Usage rules */
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .rule { padding: 20px; border-radius: 8px; font-size: 12px; line-height: 1.7; color: #94a3b8; }
+  .rule.do   { background: #052010; border-left: 2px solid #16a34a; }
+  .rule.dont { background: #1c0505; border-left: 2px solid #dc2626; }
+  .rule strong { display: block; font-size: 10px; letter-spacing: 2px; margin-bottom: 8px; }
+  .rule.do   strong { color: #16a34a; }
+  .rule.dont strong { color: #dc2626; }
+
+  /* Download */
+  .files { display: flex; gap: 12px; flex-wrap: wrap; }
+  .file-card { background: #060d1c; border: 1px solid #0f2040; border-radius: 8px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+  .file-icon { width: 32px; height: 32px; background: #0f2040; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #3b82f6; font-weight: 700; letter-spacing: 0; }
+  .file-name { font-size: 12px; color: #cbd5e1; }
+  .file-desc { font-size: 10px; color: #334155; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="brand-header">
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1d4ed8"/>
+          <stop offset="100%" stop-color="#60a5fa"/>
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="14" fill="#060d1c"/>
+      <rect x="10" y="18" width="44" height="6" rx="3" fill="url(#hg)"/>
+      <rect x="10" y="30" width="32" height="6" rx="3" fill="url(#hg)" opacity="0.7"/>
+      <rect x="10" y="42" width="20" height="6" rx="3" fill="url(#hg)" opacity="0.4"/>
+    </svg>
+    <div class="brand-title">Amora Insights · Brand Identity Guidelines</div>
+  </div>
+
+  <!-- Logo -->
+  <div class="section">
+    <div class="section-label">Logo</div>
+    <div class="logo-grid">
+      <!-- Dark bg -->
+      <div class="logo-cell dark">
+        <div class="logo-wrap">
+          <svg width="220" viewBox="0 0 280 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
+              <linearGradient id="tg1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient>
+            </defs>
+            <rect x="0" y="0" width="64" height="64" rx="14" fill="#0d1829"/>
+            <rect x="10" y="18" width="44" height="6" rx="3" fill="url(#bg1)"/>
+            <rect x="10" y="30" width="32" height="6" rx="3" fill="url(#bg1)" opacity="0.7"/>
+            <rect x="10" y="42" width="20" height="6" rx="3" fill="url(#bg1)" opacity="0.4"/>
+            <text x="84" y="38" font-family="Georgia,serif" font-size="28" font-weight="700" letter-spacing="4" fill="url(#tg1)">AMORA</text>
+            <text x="85" y="54" font-family="-apple-system,Arial,sans-serif" font-size="9" font-weight="400" letter-spacing="2.5" fill="#3b82f6" opacity="0.9">INSIGHTS</text>
+          </svg>
+          <div class="logo-cell-label" style="color:#1e3a5f">On Dark</div>
+        </div>
+      </div>
+      <!-- Black bg -->
+      <div class="logo-cell darker">
+        <div class="logo-wrap">
+          <svg width="220" viewBox="0 0 280 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
+              <linearGradient id="tg2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient>
+            </defs>
+            <rect x="0" y="0" width="64" height="64" rx="14" fill="#060d1c"/>
+            <rect x="10" y="18" width="44" height="6" rx="3" fill="url(#bg2)"/>
+            <rect x="10" y="30" width="32" height="6" rx="3" fill="url(#bg2)" opacity="0.7"/>
+            <rect x="10" y="42" width="20" height="6" rx="3" fill="url(#bg2)" opacity="0.4"/>
+            <text x="84" y="38" font-family="Georgia,serif" font-size="28" font-weight="700" letter-spacing="4" fill="url(#tg2)">AMORA</text>
+            <text x="85" y="54" font-family="-apple-system,Arial,sans-serif" font-size="9" font-weight="400" letter-spacing="2.5" fill="#3b82f6" opacity="0.9">INSIGHTS</text>
+          </svg>
+          <div class="logo-cell-label" style="color:#1e3a5f">On Black</div>
+        </div>
+      </div>
+      <!-- Light bg -->
+      <div class="logo-cell light">
+        <div class="logo-wrap">
+          <svg width="220" viewBox="0 0 280 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+            </defs>
+            <rect x="0" y="0" width="64" height="64" rx="14" fill="#0f172a"/>
+            <rect x="10" y="18" width="44" height="6" rx="3" fill="url(#bg3)"/>
+            <rect x="10" y="30" width="32" height="6" rx="3" fill="url(#bg3)" opacity="0.7"/>
+            <rect x="10" y="42" width="20" height="6" rx="3" fill="url(#bg3)" opacity="0.4"/>
+            <text x="84" y="38" font-family="Georgia,serif" font-size="28" font-weight="700" letter-spacing="4" fill="#0f172a">AMORA</text>
+            <text x="85" y="54" font-family="-apple-system,Arial,sans-serif" font-size="9" font-weight="400" letter-spacing="2.5" fill="#1d4ed8" opacity="0.9">INSIGHTS</text>
+          </svg>
+          <div class="logo-cell-label" style="color:#94a3b8">On Light</div>
+        </div>
+      </div>
+      <!-- Blue bg -->
+      <div class="logo-cell blue">
+        <div class="logo-wrap">
+          <svg width="220" viewBox="0 0 280 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0.9"/></linearGradient>
+            </defs>
+            <rect x="0" y="0" width="64" height="64" rx="14" fill="rgba(255,255,255,0.15)"/>
+            <rect x="10" y="18" width="44" height="6" rx="3" fill="url(#bg4)"/>
+            <rect x="10" y="30" width="32" height="6" rx="3" fill="url(#bg4)" opacity="0.7"/>
+            <rect x="10" y="42" width="20" height="6" rx="3" fill="url(#bg4)" opacity="0.4"/>
+            <text x="84" y="38" font-family="Georgia,serif" font-size="28" font-weight="700" letter-spacing="4" fill="white">AMORA</text>
+            <text x="85" y="54" font-family="-apple-system,Arial,sans-serif" font-size="9" font-weight="400" letter-spacing="2.5" fill="rgba(255,255,255,0.7)">INSIGHTS</text>
+          </svg>
+          <div class="logo-cell-label" style="color:rgba(255,255,255,0.3)">On Blue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Icon sizes -->
+  <div class="section">
+    <div class="section-label">Icon Mark — All Sizes</div>
+    <div class="icon-row">
+      <div class="icon-item">
+        <svg width="16" height="16" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig16" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs><rect width="32" height="32" rx="7" fill="#060d1c"/><rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#ig16)"/><rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#ig16)" opacity="0.7"/><rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#ig16)" opacity="0.4"/></svg>
+        <span>16px</span>
+      </div>
+      <div class="icon-item">
+        <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig24" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs><rect width="32" height="32" rx="7" fill="#060d1c"/><rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#ig24)"/><rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#ig24)" opacity="0.7"/><rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#ig24)" opacity="0.4"/></svg>
+        <span>24px</span>
+      </div>
+      <div class="icon-item">
+        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig32" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs><rect width="32" height="32" rx="7" fill="#060d1c"/><rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#ig32)"/><rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#ig32)" opacity="0.7"/><rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#ig32)" opacity="0.4"/></svg>
+        <span>32px</span>
+      </div>
+      <div class="icon-item">
+        <svg width="48" height="48" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig48" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs><rect width="32" height="32" rx="7" fill="#060d1c"/><rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#ig48)"/><rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#ig48)" opacity="0.7"/><rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#ig48)" opacity="0.4"/></svg>
+        <span>48px</span>
+      </div>
+      <div class="icon-item">
+        <svg width="64" height="64" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig64" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs><rect width="32" height="32" rx="7" fill="#060d1c"/><rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#ig64)"/><rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#ig64)" opacity="0.7"/><rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#ig64)" opacity="0.4"/></svg>
+        <span>64px</span>
+      </div>
+      <div class="icon-item">
+        <svg width="128" height="128" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig128" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs><rect width="32" height="32" rx="7" fill="#060d1c"/><rect x="5" y="9" width="22" height="3" rx="1.5" fill="url(#ig128)"/><rect x="5" y="15" width="16" height="3" rx="1.5" fill="url(#ig128)" opacity="0.7"/><rect x="5" y="21" width="10" height="3" rx="1.5" fill="url(#ig128)" opacity="0.4"/></svg>
+        <span>128px</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Colors -->
+  <div class="section">
+    <div class="section-label">Brand Colors</div>
+    <div class="color-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1d4ed8"></div>
+        <div class="swatch-info"><div class="swatch-name">Brand Blue</div><div class="swatch-hex">#1D4ED8</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#3b82f6"></div>
+        <div class="swatch-info"><div class="swatch-name">Mid Blue</div><div class="swatch-hex">#3B82F6</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#60a5fa"></div>
+        <div class="swatch-info"><div class="swatch-name">Light Blue</div><div class="swatch-hex">#60A5FA</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#060d1c"></div>
+        <div class="swatch-info"><div class="swatch-name">Brand Black</div><div class="swatch-hex">#060D1C</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#ffffff; border-top: 1px solid #1e293b"></div>
+        <div class="swatch-info"><div class="swatch-name">White</div><div class="swatch-hex">#FFFFFF</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typography -->
+  <div class="section">
+    <div class="section-label">Typography</div>
+    <div class="type-row">
+      <div class="type-item">
+        <div class="type-meta">Wordmark<br>Georgia / Serif<br>Bold · Tracked</div>
+        <div style="font-family:Georgia,serif;font-size:32px;font-weight:700;letter-spacing:5px;background:linear-gradient(90deg,#fff,#cbd5e1);-webkit-background-clip:text;-webkit-text-fill-color:transparent">AMORA</div>
+      </div>
+      <div class="type-item">
+        <div class="type-meta">Submark<br>System Sans<br>Regular · Wide track</div>
+        <div style="font-size:11px;letter-spacing:4px;color:#3b82f6;text-transform:uppercase">INSIGHTS</div>
+      </div>
+      <div class="type-item">
+        <div class="type-meta">Body / UI<br>System Sans<br>Regular</div>
+        <div style="font-size:14px;color:#94a3b8;line-height:1.7">Mapping Industries. Measuring Applications.<br>Benchmarking the World.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Do / Don't -->
+  <div class="section">
+    <div class="section-label">Usage Rules</div>
+    <div class="rules">
+      <div class="rule do">
+        <strong>✓ DO</strong>
+        Use on dark backgrounds (#060D1C or darker)<br>
+        Keep minimum clear space = icon height on all sides<br>
+        Use SVG source files only<br>
+        Maintain original proportions
+      </div>
+      <div class="rule dont">
+        <strong>✗ DON'T</strong>
+        Don't place on busy or patterned backgrounds<br>
+        Don't stretch or distort the logo<br>
+        Don't change the gradient colors<br>
+        Don't add drop shadows or effects
+      </div>
+      <div class="rule do">
+        <strong>✓ DO</strong>
+        Use icon-only mark for favicon, app icon, avatar<br>
+        Use horizontal lockup for nav bars and headers<br>
+        Minimum size: 16px for icon, 120px wide for lockup
+      </div>
+      <div class="rule dont">
+        <strong>✗ DON'T</strong>
+        Don't use rasterized PNG when SVG is available<br>
+        Don't recreate the logo in other tools<br>
+        Don't use on mid-gray backgrounds
+      </div>
+    </div>
+  </div>
+
+  <!-- Files -->
+  <div class="section">
+    <div class="section-label">Asset Files</div>
+    <div class="files">
+      <div class="file-card">
+        <div class="file-icon">SVG</div>
+        <div><div class="file-name">amora-logo.svg</div><div class="file-desc">Horizontal lockup · All backgrounds</div></div>
+      </div>
+      <div class="file-card">
+        <div class="file-icon">SVG</div>
+        <div><div class="file-name">amora-icon.svg</div><div class="file-desc">Icon mark only · Square format</div></div>
+      </div>
+      <div class="file-card">
+        <div class="file-icon">SVG</div>
+        <div><div class="file-name">favicon.svg</div><div class="file-desc">Browser favicon · 32×32</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

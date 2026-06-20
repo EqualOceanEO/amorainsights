@@ -1,0 +1,24 @@
+auth/session 200 in 24ms (compile: 10ms, render: 13ms)
+ GET /api/hri-chapters/a 200 in 1047ms (compile: 24ms, render: 1023ms)
+ GET /api/hri-chapters/o 200 in 1071ms (compile: 36ms, render: 1036ms)
+ GET /api/hri-chapters/a2 200 in 1031ms (compile: 24ms, render: 1007ms)
+ GET /api/hri-chapters/r 200 in 1514ms (compile: 11ms, render: 1502ms)
+ POST /api/analytics/pageview 200 in 814ms (compile: 13ms, render: 801ms)
+ GET /reports/humanoid-robotics-intelligence-2026 200 in 2.4s (compile: 46ms, proxy.ts: 20ms, render: 2.3s)
+ GET /api/auth/session 200 in 6ms (compile: 1526µs, render: 5ms)
+ GET /api/auth/session 200 in 7ms (compile: 1331µs, render: 6ms)
+ POST /api/analytics/pageview 200 in 393ms (compile: 1679µs, render: 391ms)
+ POST /api/analytics/event 200 in 407ms (compile: 3ms, render: 404ms)
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ GET /reports/humanoid-robotics-intelligence-2026 200 in 463ms (compile: 107ms, proxy.ts: 9ms, render: 346ms)
+ GET /reports/humanoid-robotics-intelligence-2026 200 in 462ms (compile: 255ms, proxy.ts: 11ms, render: 197ms)
+ GET /reports/humanoid-robotics-intelligence-2026 200 in 149ms (compile: 68ms, proxy.ts: 26ms, render: 54ms)
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ GET /reports/humanoid-robotics-intelligence-2026 200 in 474ms (compile: 157ms, proxy.ts: 5ms, render: 312ms)
+ GET /reports/humanoid-robotics-intelligence-2026 200 in 476ms (compile: 251ms, proxy.ts: 5ms, render: 220ms)
+ GET /reports/humanoid-robotics-intelligence-2026 200 in 83ms (compile: 7ms, proxy.ts: 22ms, render: 54ms)
+✓ Compiled in 111ms
+✓ Compiled in 131ms
+✓ Compiled in 117ms
+✓ Compiled in 167ms
+✓ Compiled in 93ms

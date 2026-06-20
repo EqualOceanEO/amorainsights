@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMORA Report · Humanoid Robotics Industry Deep Dive 2026 · Free Preview</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #05080f;
+    --bg2: #0a1020;
+    --bg3: #0f1830;
+    --card: #0d1a2d;
+    --card2: #111e38;
+    --accent: #00c8ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e2eaf4;
+    --text2: #8899bb;
+    --text3: #4a5d7a;
+    --green: #10b981;
+    --red: #ef4444;
+    --border: rgba(0,200,255,0.12);
+    --glow: rgba(0,200,255,0.15);
+    --glow2: rgba(124,58,237,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Helvetica Neue', Arial, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ===== SVG BLUR FILTER ===== */
+  /* Real Gaussian blur applied to content — cannot be "un-blurred" by simple CSS tricks */
+
+  /* ===== TOP BANNER ===== */
+  #preview-banner {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 9999;
+    background: linear-gradient(90deg, rgba(5,8,15,0.98), rgba(15,24,48,0.95));
+    border-bottom: 1px solid rgba(124,58,237,0.4);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(20px);
+  }
+  .banner-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .banner-logo {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--accent);
+  }
+  .banner-badge {
+    background: rgba(124,58,237,0.25);
+    color: #a78bfa;
+    border: 1px solid rgba(124,58,237,0.4);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .banner-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .banner-link {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+  .banner-link:hover { color: var(--accent); }
+  .banner-cta {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 2px 12px rgba(124,58,237,0.4);
+  }
+  .banner-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(124,58,237,0.5);
+  }
+
+  /* ===== NAVIGATION ===== */
+  #nav {
+    position: fixed;
+    left: 0; top: 48px; bottom: 0;
+    width: 220px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px 0;
+    transition: transform 0.3s;
+  }
+  #nav::-webkit-scrollbar { width: 4px; }
+  #nav::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+  .nav-logo {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-align: center;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .nav-logo span { color: var(--text2); font-weight: 400; font-size: 11px; letter-spacing: 1px; display: block; margin-top: 4px; }
+  .nav-section { padding: 0 12px; margin-bottom: 6px; }
+  .nav-section-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    padding: 8px 8px 4px;
+    text-transform: uppercase;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .nav-item:hover, .nav-item.active {
+    background: var(--glow);
+    color: var(--accent);
+  }
+  .nav-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text3);
+    flex-shrink: 0;
+  }
+  .nav-item.active .dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+
+  /* ===== MAIN CONTENT ===== */
+  #main {
+    margin-left: 220px;
+    margin-top: 48px;
+    min-height: 100vh;
+  }
+
+  /* ===== HERO ===== */
+  #hero {
+    padding: 80px 60px 60px;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,200,255,0.08) 0%, transparent 60%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.5;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,200,255,0.08);
+    border: 1px solid rgba(0,200,255,0.25);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+  }
+  #hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+    line-height: 1.2;
+  }
+  .highlight { color: var(--accent); }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text2);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+  .hero-meta-item {
+    text-align: center;
+  }
+  .hero-meta-item .val {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .hero-meta-item .lbl {
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(0,200,255,0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,200,255,0.4);
+  }
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ===== FREE CHAPTER: PART M ===== */
+  #mapping {
+    padding: 60px;
+  }
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .tag-free {
+    background: rgba(16,185,129,0.15);
+    color: var(--green);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    margin-left: 8px;
+  }
+  #mapping h1 {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+  .section-intro {
+    font-size: 17px;
+    color: var(--text2);
+    margin-bottom: 40px;
+    max-width: 800px;
+    line-height: 1.8;
+  }
+  .map-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .map-preview-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.3s;
+  }
+  .map-preview-card:hover {
+    border-color: rgba(0,200,255,0.3);
+    transform: translateY(-2px);
+  }
+  .map-layer-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .map-layer-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .map-layer-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .map-layer-count {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--accent3);
+    font-weight: 600;
+  }
+
+  /* ===== PROMO SECTION ===== */
+  #promo {
+    padding: 40px 60px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(0,200,255,0.05));
+    border-top: 1px solid rgba(124,58,237,0.2);
+    border-bottom: 1px solid rgba(124,58,237,0.2);
+    text-align: center;
+  }
+  #promo h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  #promo p {
+    color: var(--text2);
+    margin-bottom: 24px;
+    font-size: 16px;
+  }
+  .promo-grid {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .promo-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 24px;
+    min-width: 200px;
+  }
+  .promo-item .icon { font-size: 24px; margin-bottom: 8px; }
+  .promo-item .label { font-size: 13px; color: var(--text2); }
+
+  /* ===== PART SECTIONS ===== */
+  .part-section {
+    padding: 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .part-section:last-child { border-bottom: none; }
+  .part-section h1 {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+  .section-pro-badge {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== SVG BLUR CONTENT BLOCKS ===== */
+  /*
+    * Strategy: Use SVG filter feGaussianBlur applied to a foreignObject containing real HTML
+    * This is a REAL blur — the content is drawn as vectors/shapes and blurred
+    * NOT CSS filter:blur() on a div — that's trivially removable
+    */
+  .blur-section {
+    position: relative;
+    margin: 32px 0;
+  }
+
+  /* SVG blur container — takes up space and shows blurred content */
+  .blur-svg-container {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(124,58,237,0.2);
+    background: var(--card);
+  }
+
+  /* The blurred preview SVG — rendered with feGaussianBlur */
+  .blur-preview-svg {
+    width: 100%;
+    display: block;
+    filter: url(#realBlur);
+  }
+
+  /* Gradient fade on top of blurred content */
+  .blur-fade-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--card) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* Upgrade CTA card overlaid on the blurred area */
+  .blur-upgrade-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(10,16,32,0.92);
+    border: 1px solid rgba(124,58,237,0.5);
+    border-radius: 20px;
+    padding: 28px 40px;
+    text-align: center;
+    max-width: 440px;
+    width: calc(100% - 40px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 60px rgba(124,58,237,0.3), 0 20px 40px rgba(0,0,0,0.6);
+  }
+  .blur-upgrade-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+  .blur-upgrade-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .blur-upgrade-desc {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .blur-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .blur-feature-tag {
+    background: rgba(124,58,237,0.15);
+    color: #a78bfa;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .blur-cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+    margin-bottom: 10px;
+  }
+  .blur-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124,58,237,0.5);
+  }
+  .blur-cta-note {
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .blur-cta-note strong {
+    color: var(--accent);
+  }
+
+  /* "Preview ends here" indicator */
+  .preview-end-marker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 8px;
+    color: var(--text3);
+    font-size: 12px;
+  }
+  .preview-end-marker::before,
+  .preview-end-marker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ===== FREE SUBTITLE BLOCKS (框架预览) ===== */
+  .content-outline {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+  }
+  .content-outline-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text2);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+  .outline-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .outline-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text2);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .outline-list li .num {
+    background: rgba(0,200,255,0.1);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .outline-list li.pro-item .num {
+    background: rgba(124,58,237,0.15);
+    color: #a78bfa;
+  }
+  .outline-list li.pro-item {
+    color: var(--text3);
+  }
+
+  /* ===== SECTION SUBHEADING PREVIEW ===== */
+  .subheading-preview {
+    margin: 32px 0;
+  }
+  .subheading-preview h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subheading-preview p {
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ===== CHARTS PREVIEW (blurred) ===== */
+  .chart-preview-wrap {
+    position: relative;
+    margin: 24px 0;
+  }
+  .chart-preview-blur {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(124,58,237,0.2);
+    background: var(--card);
+    padding: 20px;
+  }
+  .chart-preview-svg {
+    width: 100%;
+    display: block;
+    filter: url(#realBlur);
+  }
+
+  /* ===== UPGRADE CTA BOTTOM ===== */
+  .upgrade-cta-section {
+    padding: 48px 60px;
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(124,58,237,0.05) 100%);
+    border-top: 1px solid rgba(124,58,237,0.2);
+    text-align: center;
+  }
+  .upgrade-cta-section h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .upgrade-cta-section p {
+    color: var(--text2);
+    margin-bottom: 28px;
+    font-size: 15px;
+  }
+  .cta-feature-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .cta-feature .check {
+    color: var(--green);
+    font-size: 18px;
+  }
+  .upgrade-price-tag {
+    font-size: 13px;
+    color: var(--text3);
+    margin-top: 16px;
+  }
+  .upgrade-price-tag strong {
+    color: var(--accent);
+    font-size: 24px;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.6s ease both; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    #nav { transform: translateX(-100%); }
+    #main { margin-left: 0; margin-top: 48px; }
+    #hero, #mapping, .part-section, #promo { padding: 40px 24px; }
+    .map-preview-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-meta { flex-wrap: wrap; gap: 16px; }
+    #hero h1 { font-size: 32px; }
+    .outline-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BANNER ===== -->
+<div id="preview-banner">
+  <div class="banner-left">
+    <div class="banner-logo">AMORA</div>
+    <div class="banner-badge">FREE PREVIEW</div>
+  </div>
+  <div class="banner-right">
+    <a href="#mapping" class="banner-link">Free Chapter</a>
+    <a href="#upgrade" class="banner-link">Subscribe PRO</a>
+    <a href="HRI-2026-AMORA-Report-v5.0-en.html" class="banner-cta">View Full Version →</a>
+  </div>
+</div>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="nav">
+  <div class="nav-logo">AMORA<span>Industry Research Report</span></div>
+  <div class="nav-section">
+    <div class="nav-section-label">Report Navigation</div>
+    <a href="#hero" class="nav-item active"><span class="dot"></span>Report Overview</a>
+    <a href="#mapping" class="nav-item"><span class="dot"></span>Part M · Supply Chain</a>
+    <a href="#advancement" class="nav-item"><span class="dot"></span>Part A · Technology</a>
+    <a href="#operations" class="nav-item"><span class="dot"></span>Part O · Commercialization</a>
+    <a href="#reach" class="nav-item"><span class="dot"></span>Part R · Market</a>
+    <a href="#assets" class="nav-item"><span class="dot"></span>Part A₂ · Investment</a>
+  </div>
+  <div class="nav-section" style="margin-top:16px;">
+    <div class="nav-section-label">Subscription</div>
+    <a href="#upgrade" class="nav-item" style="color:var(--accent);">
+      <span class="dot" style="background:var(--accent);"></span>
+      Upgrade to PRO
+    </a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero-badge">📖 FREE PREVIEW</div>
+  <h1>Humanoid Robotics <span class="highlight">Industry Deep Dive</span></h1>
+  <p class="hero-sub">China-US Supply Chain Analysis | Technology Roadmap | Commercialization Tracking | Investment Opportunities</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="val">36</span>
+      <span class="lbl">Industry Reports</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="val">6</span>
+      <span class="lbl">Industries Covered</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="val">359+</span>
+      <span class="lbl">Companies Tracked</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="val">2026</span>
+      <span class="lbl">Latest Data</span>
+    </div>
+  </div>
+  <div class="hero-actions">
+    <a href="#mapping" class="btn-primary">Read Part M · Supply Chain (Free)</a>
+    <a href="#upgrade" class="btn-secondary">Upgrade PRO · Unlock All Chapters</a>
+  </div>
+</section>
+
+<!-- ===== PART M: MAPPING (FREE) ===== -->
+<section id="mapping">
+  <div class="section-tag">Part M · Mapping <span class="tag-free">FREE</span></div>
+  <h1>Supply Chain Landscape <span class="highlight">— 30+ Global Key Players</span></h1>
+  <p class="section-intro">The humanoid robotics supply chain is divided into five layers: core components (actuation/sensing/power) → robot manufacturers → software/AI layer → system integration → end applications. By 2026, China has formed the world's most complete supply chain system, but gaps remain in high-end chips and precision reducers.</p>
+
+  <!-- Quick preview grid -->
+  <div class="map-preview-grid">
+    <div class="map-preview-card">
+      <div class="map-layer-label">Layer 1</div>
+      <div class="map-layer-title">Core Components</div>
+      <div class="map-layer-desc">Reducers, motors, sensors, chips, batteries</div>
+      <div class="map-layer-count">38+ Suppliers</div>
+    </div>
+    <div class="map-preview-card">
+      <div class="map-layer-label">Layer 2</div>
+      <div class="map-layer-title">Robot Manufacturers</div>
+      <div class="map-layer-desc">Robot design, assembly, mass production</div>
+      <div class="map-layer-count">30+ Companies</div>
+    </div>
+    <div class="map-preview-card">
+      <div class="map-layer-label">Layer 3</div>
+      <div class="map-layer-title">AI Software Layer</div>
+      <div class="map-layer-desc">Embodied AI algorithms, VLM, control models</div>
+      <div class="map-layer-count">12+ AI Companies</div>
+    </div>
+    <div class="map-preview-card">
+      <div class="map-layer-label">Layer 4</div>
+      <div class="map-layer-title">System Integration</div>
+      <div class="map-layer-desc">Industrial software, MES, digital twins</div>
+      <div class="map-layer-count">20+ Integrators</div>
+    </div>
+    <div class="map-preview-card">
+      <div class="map-layer-label">Layer 5</div>
+      <div class="map-layer-title">End Applications</div>
+      <div class="map-layer-desc">Automotive manufacturing, logistics, healthcare, home services</div>
+      <div class="map-layer-count">4 Major Scenarios</div>
+    </div>
+    <div class="map-preview-card" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(0,200,255,0.05));border-color:rgba(124,58,237,0.3);">
+      <div class="map-layer-label" style="color:#a78bfa;">Full Content</div>
+      <div class="map-layer-title" style="font-size:14px;">Part M Full Chapter Includes</div>
+      <div class="map-layer-desc">Three-tier interactive supply chain map · Component localization tracking · China-US gap analysis</div>
+      <div class="map-layer-count" style="color:var(--green);">Free to Read</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROMO BANNER ===== -->
+<section id="promo">
+  <h2>🚀 Preview Ends Here · Subscribe PRO for Full Report</h2>
+  <p>The humanoid robotics report has 5 chapters. Part M · Supply Chain is free; the other four chapters require PRO subscription</p>
+  <div class="promo-grid">
+    <div class="promo-item">
+      <div class="icon">🔓</div>
+      <div class="label">Part M · Supply Chain (Free)</div>
+    </div>
+    <div class="promo-item" style="border-color:rgba(124,58,237,0.4);">
+      <div class="icon">🔒</div>
+      <div class="label">Part A · Technology (PRO)</div>
+    </div>
+    <div class="promo-item" style="border-color:rgba(124,58,237,0.4);">
+      <div class="icon">🔒</div>
+      <div class="label">Part O · Commercialization (PRO)</div>
+    </div>
+    <div class="promo-item" style="border-color:rgba(124,58,237,0.4);">
+      <div class="icon">🔒</div>
+      <div class="label">Part R · Market (PRO)</div>
+    </div>
+    <div class="promo-item" style="border-color:rgba(124,58,237,0.4);">
+      <div class="icon">🔒</div>
+      <div class="label">Part A₂ · Investment (PRO)</div>
+    </div>
+  </div>
+  <a href="#upgrade" class="btn-primary">Subscribe PRO · $299/year</a>
+</section>
+
+<!-- ===== PART A: ADVANCEMENT (PRO - BLURRED) ===== -->
+<section id="advancement" class="part-section">
+  <div class="section-tag">Part A · Advancement <span class="section-pro-badge">PRO</span></div>
+  <h1>Technology Advancement <span class="highlight">— Enabling Technologies & Breakthroughs</span></h1>
+  <p class="section-intro">Humanoid robotics is a deep fusion of mechanical engineering, materials science, sensor technology, and AI foundation models. After 2023, "Embodied AI" has moved from academic concept to commercial validation stage, with four major technology pathways evolving in parallel.</p>
+
+  <!-- Content outline preview -->
+  <div class="content-outline">
+    <div class="content-outline-title">Chapter Content Framework</div>
+    <ul class="outline-list">
+      <li><span class="num">1</span> Embodied AI Models: Perception-Decision-Action Loop</li>
+      <li class="pro-item"><span class="num">2</span> VLA End-to-End Architecture Explained 🔒</li>
+      <li class="pro-item"><span class="num">3</span> Technology Roadmap Comparison 🔒</li>
+      <li class="pro-item"><span class="num">4</span> Component Localization Rate 🔒</li>
+      <li class="pro-item"><span class="num">5</span> China-US Technology Gap Analysis 🔒</li>
+      <li class="pro-item"><span class="num">6</span> AI Chip Computing Power Comparison 🔒</li>
+    </ul>
+  </div>
+
+  <!-- Subheading preview -->
+  <div class="subheading-preview">
+    <h3>🔮 1. Embodied AI Models: Perception-Decision-Action Loop</h3>
+    <p>World models represent the ultimate form of the robot's "brain", with the core challenge being unified modeling of vision, language, and motion...</p>
+  </div>
+
+  <div class="preview-end-marker">Preview Ends · Content Hidden Below</div>
+
+  <!-- SVG BLUR BLOCK: Tech Diagram + Table -->
+  <div class="blur-section">
+    <div class="blur-svg-container">
+      <!-- SVG with real Gaussian blur filter -->
+      <svg class="blur-preview-svg" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" style="background:#0d1a2d;">
+        <defs>
+          <filter id="realBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
+            <feColorMatrix in="blur" type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 18 -7" result="blurAlpha"/>
+          </filter>
+          <linearGradient id="cardGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#111e38"/>
+            <stop offset="100%" stop-color="#0d1a2d"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Background grid lines -->
+        <rect width="900" height="320" fill="#0d1a2d"/>
+        <line x1="0" y1="80" x2="900" y2="80" stroke="rgba(0,200,255,0.05)" stroke-width="1"/>
+        <line x1="0" y1="160" x2="900" y2="160" stroke="rgba(0,200,255,0.05)" stroke-width="1"/>
+        <line x1="0" y1="240" x2="900" y2="240" stroke="rgba(0,200,255,0.05)" stroke-width="1"/>
+
+        <!-- VLA Architecture Diagram - rendered as shapes, then blurred -->
+        <g filter="url(#realBlur)">
+          <!-- Node 1: Vision Encoder -->
+          <rect x="40" y="90" width="160" height="100" rx="12" fill="#111e38" stroke="#00c8ff" stroke-width="1.5"/>
+          <text x="120" y="125" fill="#00c8ff" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">Vision Encoder</text>
+          <text x="120" y="148" fill="#8899bb" font-size="11" text-anchor="middle" font-family="sans-serif">RGB-D Camera Input</text>
+          <text x="120" y="165" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif">Perception Layer</text>
+
+          <!-- Arrow 1 -->
+          <line x1="200" y1="140" x2="280" y2="140" stroke="#00c8ff" stroke-width="2" stroke-dasharray="6,4"/>
+          <polygon points="278,135 288,140 278,145" fill="#00c8ff"/>
+
+          <!-- Node 2: LLM Brain -->
+          <rect x="290" y="70" width="200" height="140" rx="12" fill="#1a0a30" stroke="#7c3aed" stroke-width="2"/>
+          <text x="390" y="108" fill="#a78bfa" font-size="14" font-weight="bold" text-anchor="middle" font-family="sans-serif">LLM Brain</text>
+          <text x="390" y="128" fill="#8899bb" font-size="11" text-anchor="middle" font-family="sans-serif">Language + Motion Tokens</text>
+          <text x="390" y="146" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif">World Model Reasoning</text>
+          <text x="390" y="164" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif">Compute: Tesla H100 x8</text>
+          <text x="390" y="182" fill="#a78bfa" font-size="11" text-anchor="middle" font-family="sans-serif">Latency > 100ms ⚠️</text>
+
+          <!-- Arrow 2 -->
+          <line x1="490" y1="140" x2="570" y2="140" stroke="#00c8ff" stroke-width="2" stroke-dasharray="6,4"/>
+          <polygon points="568,135 578,140 568,145" fill="#00c8ff"/>
+
+          <!-- Node 3: Action Decoder -->
+          <rect x="580" y="90" width="160" height="100" rx="12" fill="#111e38" stroke="#00c8ff" stroke-width="1.5"/>
+          <text x="660" y="125" fill="#00c8ff" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">Action Decoder</text>
+          <text x="660" y="148" fill="#8899bb" font-size="11" text-anchor="middle" font-family="sans-serif">Joint Angle/Torque Output</text>
+          <text x="660" y="165" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif">Control Layer</text>
+
+          <!-- Legend items -->
+          <rect x="760" y="60" width="130" height="200" rx="10" fill="#0a1020" stroke="#1e3050" stroke-width="1"/>
+          <text x="825" y="85" fill="#8899bb" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Technology Paths</text>
+          <circle cx="780" cy="105" r="4" fill="#00c8ff"/>
+          <text x="795" y="109" fill="#4a5d7a" font-size="10" font-family="sans-serif">VLA</text>
+          <circle cx="780" cy="125" r="4" fill="#7c3aed"/>
+          <text x="795" y="129" fill="#4a5d7a" font-size="10" font-family="sans-serif">World Model</text>
+          <circle cx="780" cy="145" r="4" fill="#f59e0b"/>
+          <text x="795" y="149" fill="#4a5d7a" font-size="10" font-family="sans-serif">Imitation+RL</text>
+          <circle cx="780" cy="165" r="4" fill="#10b981"/>
+          <text x="795" y="169" fill="#4a5d7a" font-size="10" font-family="sans-serif">Multimodal Base</text>
+
+          <!-- Data labels (these are the "valuable data" being hidden) -->
+          <text x="825" y="195" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">TRL Level Distribution</text>
+          <text x="825" y="215" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">VLA: TRL 5-6</text>
+          <text x="825" y="232" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">Imitation+RL: TRL 6-7</text>
+          <text x="825" y="249" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">World Model: TRL 4-5</text>
+        </g>
+
+        <!-- Section label overlay -->
+        <text x="450" y="300" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif" font-style="italic">▲ VLA End-to-End Architecture · Embodied AI Roadmap · Component Performance Comparison (PRO Content)</text>
+      </svg>
+
+      <div class="blur-fade-overlay"></div>
+    </div>
+
+    <!-- Upgrade card overlaid on blurred content -->
+    <div class="blur-upgrade-card">
+      <div class="blur-upgrade-icon">🔬</div>
+      <div class="blur-upgrade-title">Unlock Full Technology Analysis</div>
+      <div class="blur-upgrade-desc">This diagram shows VLA architecture, embodied AI roadmap, and component performance comparison — all visible, but blurred here for protection</div>
+      <div class="blur-features">
+        <span class="blur-feature-tag">VLA End-to-End Architecture</span>
+        <span class="blur-feature-tag">Embodied AI Roadmap</span>
+        <span class="blur-feature-tag">China-US Tech Gap</span>
+        <span class="blur-feature-tag">Component Comparison</span>
+      </div>
+      <a href="HRI-2026-AMORA-Report-v5.0-en.html#advancement" class="blur-cta-btn">🔓 Unlock Full Part A · Technology</a>
+      <p class="blur-cta-note">PRO Subscription <strong>$299/year</strong> · Unlock all 36 reports at once</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PART O: OPERATIONS (PRO - BLURRED) ===== -->
+<section id="operations" class="part-section">
+  <div class="section-tag">Part O · Operations <span class="section-pro-badge">PRO</span></div>
+  <h1>Commercialization <span class="highlight">— From Pilot to Scale</span></h1>
+  <p class="section-intro">2026 marks the true starting point for humanoid robot mass production. The manufacturing ROI model has been validated, but scaling requires overcoming three barriers: cost, reliability, and data闭环.</p>
+
+  <!-- Content outline preview -->
+  <div class="content-outline">
+    <div class="content-outline-title">Chapter Content Framework</div>
+    <ul class="outline-list">
+      <li><span class="num">1</span> Manufacturing ROI Calculation Model</li>
+      <li class="pro-item"><span class="num">2</span> Five Scenario Penetration Paths 🔒</li>
+      <li class="pro-item"><span class="num">3</span> Mass Production Timeline & Challenges 🔒</li>
+      <li class="pro-item"><span class="num">4</span> Leading Companies Commercialization Comparison 🔒</li>
+      <li class="pro-item"><span class="num">5</span> Customer Structure & Channel Analysis 🔒</li>
+      <li class="pro-item"><span class="num">6</span> Cost Structure & Cost Reduction Path 🔒</li>
+    </ul>
+  </div>
+
+  <div class="preview-end-marker">Preview Ends · Content Hidden Below</div>
+
+  <!-- SVG BLUR BLOCK: ROI Chart -->
+  <div class="blur-section">
+    <div class="blur-svg-container">
+      <svg class="blur-preview-svg" viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" style="background:#0d1a2d;">
+        <defs>
+          <filter id="realBlur2" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+            <feColorMatrix in="blur" type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 18 -7" result="blurAlpha"/>
+          </filter>
+        </defs>
+        <rect width="900" height="280" fill="#0d1a2d"/>
+
+        <g filter="url(#realBlur2)">
+          <!-- ROI Flow diagram -->
+          <!-- Node 1: Robot Price -->
+          <rect x="20" y="90" width="150" height="90" rx="12" fill="#111e38" stroke="#00c8ff" stroke-width="1.5"/>
+          <text x="95" y="125" fill="#00c8ff" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">$80K-$200K</text>
+          <text x="95" y="145" fill="#8899bb" font-size="11" text-anchor="middle" font-family="sans-serif">Robot Price</text>
+          <text x="95" y="162" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">2025 Average Price</text>
+
+          <!-- Plus -->
+          <text x="180" y="140" fill="#4a5d7a" font-size="20" text-anchor="middle" font-family="sans-serif">+</text>
+
+          <!-- Node 2: Deployment Fee -->
+          <rect x="195" y="90" width="150" height="90" rx="12" fill="#111e38" stroke="#00c8ff" stroke-width="1.5"/>
+          <text x="270" y="125" fill="#00c8ff" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">$20K-$40K</text>
+          <text x="270" y="145" fill="#8899bb" font-size="11" text-anchor="middle" font-family="sans-serif">Deployment Cost</text>
+          <text x="270" y="162" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">System Integration</text>
+
+          <!-- Plus -->
+          <text x="355" y="140" fill="#4a5d7a" font-size="20" text-anchor="middle" font-family="sans-serif">+</text>
+
+          <!-- Node 3: O&M Cost -->
+          <rect x="370" y="90" width="150" height="90" rx="12" fill="#111e38" stroke="#00c8ff" stroke-width="1.5"/>
+          <text x="445" y="125" fill="#00c8ff" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">$10K-$15K/yr</text>
+          <text x="445" y="145" fill="#8899bb" font-size="11" text-anchor="middle" font-family="sans-serif">Annual O&M Cost</text>
+          <text x="445" y="162" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">Tech Support</text>
+
+          <!-- Arrow -->
+          <text x="530" y="140" fill="#4a5d7a" font-size="20" text-anchor="middle" font-family="sans-serif">=</text>
+
+          <!-- Node 4: Payback Period -->
+          <rect x="550" y="70" width="180" height="130" rx="12" fill="#1a0a30" stroke="#7c3aed" stroke-width="2"/>
+          <text x="640" y="105" fill="#a78bfa" font-size="14" font-weight="bold" text-anchor="middle" font-family="sans-serif">3.5-5 Years</text>
+          <text x="640" y="125" fill="#8899bb" font-size="11" text-anchor="middle" font-family="sans-serif">Static Payback</text>
+          <text x="640" y="145" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">Replaces 1.5-2 Workers</text>
+          <text x="640" y="165" fill="#10b981" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">ROI > 20% ✓</text>
+
+          <!-- Arrow to result -->
+          <line x1="730" y1="135" x2="780" y2="135" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4"/>
+          <polygon points="778,130 788,135 778,140" fill="#7c3aed"/>
+
+          <!-- Commercial viability score -->
+          <rect x="790" y="80" width="100" height="110" rx="10" fill="#0a1020" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="840" y="110" fill="#a78bfa" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Commercial</text>
+          <text x="840" y="130" fill="#10b981" font-size="22" font-weight="bold" text-anchor="middle" font-family="sans-serif">72</text>
+          <text x="840" y="150" fill="#4a5d7a" font-size="10" text-anchor="middle" font-family="sans-serif">Overall Score</text>
+          <text x="840" y="172" fill="#f59e0b" font-size="10" text-anchor="middle" font-family="sans-serif">Automotive</text>
+
+          <!-- Scenario table -->
+          <rect x="20" y="200" width="860" height="70" rx="8" fill="#0a1020" stroke="#1e3050" stroke-width="1"/>
+          <text x="100" y="225" fill="#4a5d7a" font-size="10" font-family="sans-serif">Scenario</text>
+          <text x="250" y="225" fill="#4a5d7a" font-size="10" font-family="sans-serif">2026 Penetration</text>
+          <text x="400" y="225" fill="#4a5d7a" font-size="10" font-family="sans-serif">Annual Value/Unit</text>
+          <text x="550" y="225" fill="#4a5d7a" font-size="10" font-family="sans-serif">ROI</text>
+          <text x="700" y="225" fill="#4a5d7a" font-size="10" font-family="sans-serif">Volume Scale</text>
+          <text x="820" y="225" fill="#4a5d7a" font-size="10" font-family="sans-serif">Maturity</text>
+
+          <text x="100" y="250" fill="#8899bb" font-size="11" font-family="sans-serif">Automotive Welding</text>
+          <text x="250" y="250" fill="#10b981" font-size="11" font-family="sans-serif">12-18%</text>
+          <text x="400" y="250" fill="#00c8ff" font-size="11" font-family="sans-serif">$25K-$40K</text>
+          <text x="550" y="250" fill="#10b981" font-size="11" font-family="sans-serif">22-35%</text>
+          <text x="700" y="250" fill="#00c8ff" font-size="11" font-family="sans-serif">~5,000 units</text>
+          <text x="820" y="250" fill="#10b981" font-size="11" font-family="sans-serif">TRL 8</text>
+
+          <text x="100" y="268" fill="#8899bb" font-size="11" font-family="sans-serif">Warehouse Logistics</text>
+          <text x="250" y="268" fill="#f59e0b" font-size="11" font-family="sans-serif">5-8%</text>
+          <text x="400" y="268" fill="#8899bb" font-size="11" font-family="sans-serif">$15K-$25K</text>
+          <text x="550" y="268" fill="#f59e0b" font-size="11" font-family="sans-serif">15-20%</text>
+          <text x="700" y="268" fill="#8899bb" font-size="11" font-family="sans-serif">~2,000 units</text>
+          <text x="820" y="268" fill="#f59e0b" font-size="11" font-family="sans-serif">TRL 6</text>
+        </g>
+
+        <text x="450" y="270" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif" font-style="italic">▲ ROI Calculation Model · Five Scenario Penetration Paths · Mass Production Timeline (PRO Content)</text>
+      </svg>
+
+      <div class="blur-fade-overlay"></div>
+    </div>
+
+    <div class="blur-upgrade-card">
+      <div class="blur-upgrade-icon">💰</div>
+      <div class="blur-upgrade-title">Unlock Full Commercialization Analysis</div>
+      <div class="blur-upgrade-desc">ROI calculation model, five scenario penetration paths, mass production timeline — these numbers are among the most valuable parts of the report, blurred for protection</div>
+      <div class="blur-features">
+        <span class="blur-feature-tag">ROI Calculation Model</span>
+        <span class="blur-feature-tag">Scenario Penetration</span>
+        <span class="blur-feature-tag">Production Timeline</span>
+        <span class="blur-feature-tag">Cost Structure Analysis</span>
+      </div>
+      <a href="HRI-2026-AMORA-Report-v5.0-en.html#operations" class="blur-cta-btn">🔓 Unlock Full Part O · Commercialization</a>
+      <p class="blur-cta-note">PRO Subscription <strong>$299/year</strong> · Unlock all 36 reports at once</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PART R: REACH (PRO - BLURRED) ===== -->
+<section id="reach" class="part-section">
+  <div class="section-tag">Part R · Reach <span class="section-pro-badge">PRO</span></div>
+  <h1>Market Size <span class="highlight">— Scale Estimation for Three Battlefields</span></h1>
+  <p class="section-intro">Humanoid robotics is not a single battlefield, but the superposition of three penetration paths: manufacturing, warehouse logistics, and home services. Market size depends on the pace of AI capability breakthroughs and supply chain cost reduction.</p>
+
+  <!-- Content outline preview -->
+  <div class="content-outline">
+    <div class="content-outline-title">Chapter Content Framework</div>
+    <ul class="outline-list">
+      <li><span class="num">1</span> Global Market Size Estimation</li>
+      <li class="pro-item"><span class="num">2</span> China-US Competitive Landscape 🔒</li>
+      <li class="pro-item"><span class="num">3</span> Global Robot Manufacturers Map 🔒</li>
+      <li class="pro-item"><span class="num">4</span> Regional Market Opportunity Analysis 🔒</li>
+      <li class="pro-item"><span class="num">5</span> Market Penetration Timeline 🔒</li>
+      <li class="pro-item"><span class="num">6</span> Key Growth Drivers 🔒</li>
+    </ul>
+  </div>
+
+  <div class="preview-end-marker">Preview Ends · Content Hidden Below</div>
+
+  <!-- SVG BLUR BLOCK: World Map -->
+  <div class="blur-section">
+    <div class="blur-svg-container">
+      <svg class="blur-preview-svg" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" style="background:#080e1c;">
+        <defs>
+          <filter id="realBlur3" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+            <feColorMatrix in="blur" type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 18 -7" result="blurAlpha"/>
+          </filter>
+        </defs>
+        <rect width="900" height="400" fill="#080e1c"/>
+
+        <g filter="url(#realBlur3)">
+          <!-- Simplified world map outline -->
+          <!-- North America -->
+          <path d="M50,60 L200,50 L280,70 L270,150 L220,180 L160,190 L100,170 L40,130 Z" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+          <!-- South America -->
+          <path d="M150,200 L200,195 L220,240 L210,310 L170,340 L140,320 L130,260 Z" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+          <!-- Europe -->
+          <path d="M370,50 L450,40 L470,70 L460,120 L420,130 L380,110 Z" fill="rgba(124,58,237,0.15)" stroke="rgba(124,58,237,0.3)" stroke-width="1"/>
+          <!-- Africa -->
+          <path d="M380,140 L450,130 L480,200 L460,280 L400,290 L370,230 Z" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
+          <!-- Asia -->
+          <path d="M460,40 L650,30 L720,80 L730,160 L680,200 L600,210 L520,180 L480,130 Z" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.25)" stroke-width="1"/>
+          <!-- Australia -->
+          <path d="M680,260 L760,250 L780,290 L760,330 L700,330 L670,300 Z" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+
+          <!-- Company markers - these are the valuable data -->
+          <!-- US Companies (blue dots) -->
+          <circle cx="130" cy="120" r="6" fill="#3b82f6" opacity="0.8"/>
+          <circle cx="180" cy="110" r="5" fill="#3b82f6" opacity="0.7"/>
+          <circle cx="160" cy="140" r="4" fill="#3b82f6" opacity="0.6"/>
+          <circle cx="200" cy="130" r="5" fill="#3b82f6" opacity="0.7"/>
+          <circle cx="140" cy="100" r="4" fill="#3b82f6" opacity="0.6"/>
+          <circle cx="110" cy="115" r="4" fill="#3b82f6" opacity="0.6"/>
+          <circle cx="190" cy="150" r="3" fill="#3b82f6" opacity="0.5"/>
+          <text x="130" y="135" fill="#3b82f6" font-size="9" font-family="sans-serif">US: Figure, Tesla, Agility...</text>
+
+          <!-- China Companies (red dots - more of them) -->
+          <circle cx="620" cy="120" r="6" fill="#ef4444" opacity="0.8"/>
+          <circle cx="640" cy="100" r="5" fill="#ef4444" opacity="0.7"/>
+          <circle cx="660" cy="130" r="6" fill="#ef4444" opacity="0.8"/>
+          <circle cx="680" cy="110" r="5" fill="#ef4444" opacity="0.7"/>
+          <circle cx="650" cy="145" r="5" fill="#ef4444" opacity="0.7"/>
+          <circle cx="630" cy="110" r="4" fill="#ef4444" opacity="0.6"/>
+          <circle cx="670" cy="120" r="4" fill="#ef4444" opacity="0.6"/>
+          <circle cx="700" cy="105" r="5" fill="#ef4444" opacity="0.7"/>
+          <circle cx="610" cy="130" r="4" fill="#ef4444" opacity="0.6"/>
+          <circle cx="690" cy="140" r="4" fill="#ef4444" opacity="0.6"/>
+          <circle cx="620" cy="95" r="3" fill="#ef4444" opacity="0.5"/>
+          <circle cx="655" cy="160" r="3" fill="#ef4444" opacity="0.5"/>
+          <circle cx="635" cy="85" r="3" fill="#ef4444" opacity="0.5"/>
+          <circle cx="710" cy="130" r="4" fill="#ef4444" opacity="0.6"/>
+          <circle cx="600" cy="110" r="3" fill="#ef4444" opacity="0.5"/>
+          <circle cx="720" cy="115" r="4" fill="#ef4444" opacity="0.6"/>
+          <text x="640" y="170" fill="#ef4444" font-size="9" font-family="sans-serif">CN: Unitree, Zhiyuan, Fourier, Figure, Xingdong...</text>
+
+          <!-- EU Companies -->
+          <circle cx="400" cy="80" r="4" fill="#7c3aed" opacity="0.7"/>
+          <circle cx="430" cy="90" r="4" fill="#7c3aed" opacity="0.7"/>
+          <circle cx="415" cy="70" r="3" fill="#7c3aed" opacity="0.6"/>
+          <circle cx="450" cy="85" r="3" fill="#7c3aed" opacity="0.6"/>
+          <text x="400" y="100" fill="#7c3aed" font-size="9" font-family="sans-serif">EU: 1X, PAL...</text>
+
+          <!-- Legend -->
+          <rect x="20" y="320" width="860" height="70" rx="8" fill="#0a1020" stroke="#1e3050" stroke-width="1"/>
+          <text x="100" y="345" fill="#4a5d7a" font-size="10" font-family="sans-serif">Region</text>
+          <text x="250" y="345" fill="#4a5d7a" font-size="10" font-family="sans-serif">Company Count</text>
+          <text x="420" y="345" fill="#4a5d7a" font-size="10" font-family="sans-serif">2026 Market Size</text>
+          <text x="600" y="345" fill="#4a5d7a" font-size="10" font-family="sans-serif">CAGR</text>
+          <text x="780" y="345" fill="#4a5d7a" font-size="10" font-family="sans-serif">Competition</text>
+
+          <text x="100" y="370" fill="#3b82f6" font-size="12" font-family="sans-serif">🇺🇸 North America</text>
+          <text x="250" y="370" fill="#8899bb" font-size="11" font-family="sans-serif">7 companies</text>
+          <text x="420" y="370" fill="#00c8ff" font-size="12" font-weight="bold" font-family="sans-serif">$42B</text>
+          <text x="600" y="370" fill="#10b981" font-size="11" font-family="sans-serif">67% CAGR</text>
+          <text x="780" y="370" fill="#ef4444" font-size="11" font-family="sans-serif">Very High</text>
+
+          <text x="100" y="385" fill="#ef4444" font-size="12" font-family="sans-serif">🇨🇳 China</text>
+          <text x="250" y="385" fill="#8899bb" font-size="11" font-family="sans-serif">16 companies</text>
+          <text x="420" y="385" fill="#00c8ff" font-size="12" font-weight="bold" font-family="sans-serif">$68B</text>
+          <text x="600" y="385" fill="#10b981" font-size="11" font-family="sans-serif">89% CAGR</text>
+          <text x="780" y="385" fill="#f59e0b" font-size="11" font-family="sans-serif">High</text>
+        </g>
+
+        <text x="450" y="392" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif" font-style="italic">▲ Global Robot Manufacturers Map · Market Size Estimation · China-US Competition (PRO Content)</text>
+      </svg>
+
+      <div class="blur-fade-overlay"></div>
+    </div>
+
+    <div class="blur-upgrade-card">
+      <div class="blur-upgrade-icon">🌍</div>
+      <div class="blur-upgrade-title">Unlock Full Market Analysis</div>
+      <div class="blur-upgrade-desc">Global robot manufacturers map, $980B market size estimation, China-US competition landscape — these key data are blurred, demonstrating the true value of the report</div>
+      <div class="blur-features">
+        <span class="blur-feature-tag">Market Size Estimation</span>
+        <span class="blur-feature-tag">China-US Competition</span>
+        <span class="blur-feature-tag">Global Manufacturers Map</span>
+        <span class="blur-feature-tag">Regional Opportunity</span>
+      </div>
+      <a href="HRI-2026-AMORA-Report-v5.0-en.html#reach" class="blur-cta-btn">🔓 Unlock Full Part R · Market</a>
+      <p class="blur-cta-note">PRO Subscription <strong>$299/year</strong> · Unlock all 36 reports at once</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PART A2: ASSETS (PRO - BLURRED) ===== -->
+<section id="assets" class="part-section">
+  <div class="section-tag">Part A₂ · Assets <span class="section-pro-badge">PRO</span></div>
+  <h1>Capital Value & Investment Analysis <span class="highlight">— AMORA Score Five-Dimension Rating</span></h1>
+  <p class="section-intro">AMORA Score evaluates companies across five dimensions: Advancement (Technology) · Mastery (Talent) · Operations (Commercialization) · Reach (Market) · Affinity (Capital & Strategy). Maximum score: 100 points.</p>
+
+  <!-- Content outline preview -->
+  <div class="content-outline">
+    <div class="content-outline-title">Chapter Content Framework</div>
+    <ul class="outline-list">
+      <li><span class="num">1</span> AMORA Five-Dimension Scoring System</li>
+      <li class="pro-item"><span class="num">2</span> Key Companies Radar Chart Comparison 🔒</li>
+      <li class="pro-item"><span class="num">3</span> Investment Opportunity Matrix 🔒</li>
+      <li class="pro-item"><span class="num">4</span> Valuation Analysis & Risk Warnings 🔒</li>
+      <li class="pro-item"><span class="num">5</span> Investment & Financing Overview Table 🔒</li>
+      <li class="pro-item"><span class="num">6</span> Investment Recommendations & Timeline 🔒</li>
+    </ul>
+  </div>
+
+  <div class="preview-end-marker">Preview Ends · Content Hidden Below</div>
+
+  <!-- SVG BLUR BLOCK: Radar Charts + Investment Matrix -->
+  <div class="blur-section">
+    <div class="blur-svg-container">
+      <svg class="blur-preview-svg" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" style="background:#0d1a2d;">
+        <defs>
+          <filter id="realBlur4" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+            <feColorMatrix in="blur" type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 18 -7" result="blurAlpha"/>
+          </filter>
+        </defs>
+        <rect width="900" height="320" fill="#0d1a2d"/>
+
+        <g filter="url(#realBlur4)">
+          <!-- Radar Chart 1: Figure AI -->
+          <rect x="30" y="20" width="260" height="290" rx="12" fill="#0a1020" stroke="#1e3050" stroke-width="1"/>
+          <!-- Radar spider web -->
+          <polygon points="160,150 205,130 205,170 160,190 115,170 115,130" fill="none" stroke="#1e3050" stroke-width="1"/>
+          <polygon points="160,165 188,152 188,168 160,182 132,168 132,152" fill="none" stroke="#1e3050" stroke-width="0.5"/>
+          <!-- Axes -->
+          <line x1="160" y1="150" x2="205" y2="130" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="160" y1="150" x2="205" y2="170" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="160" y1="150" x2="160" y2="190" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="160" y1="150" x2="115" y2="170" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="160" y1="150" x2="115" y2="130" stroke="#1e3050" stroke-width="0.5"/>
+          <!-- Figure AI scores (high on A, medium on others) -->
+          <polygon points="160,110 205,130 205,165 160,190 120,175 125,115" fill="rgba(59,130,246,0.3)" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="160" y="295" fill="#3b82f6" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Figure AI · 67 pts</text>
+          <text x="160" y="10" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">A Adv</text>
+          <text x="215" y="135" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">M Mast</text>
+          <text x="215" y="180" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">O Oper</text>
+          <text x="160" y="210" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">R Reach</text>
+          <text x="105" y="180" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">A Affin</text>
+          <text x="105" y="115" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">A Adv</text>
+
+          <!-- Radar Chart 2: Unitree -->
+          <rect x="310" y="20" width="260" height="290" rx="12" fill="#0a1020" stroke="#1e3050" stroke-width="1"/>
+          <polygon points="440,150 485,130 485,170 440,190 395,170 395,130" fill="none" stroke="#1e3050" stroke-width="1"/>
+          <polygon points="440,165 468,152 468,168 440,182 412,168 412,152" fill="none" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="440" y1="150" x2="485" y2="130" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="440" y1="150" x2="485" y2="170" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="440" y1="150" x2="440" y2="190" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="440" y1="150" x2="395" y2="170" stroke="#1e3050" stroke-width="0.5"/>
+          <line x1="440" y1="150" x2="395" y2="130" stroke="#1e3050" stroke-width="0.5"/>
+          <!-- Unitree scores (high on O, A; medium on others) -->
+          <polygon points="440,118 475,132 480,165 440,188 400,170 405,125" fill="rgba(239,68,68,0.25)" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="440" y="295" fill="#ef4444" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Unitree/H1 · 59 pts</text>
+          <text x="440" y="10" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">A Adv</text>
+          <text x="495" y="135" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">M Mast</text>
+          <text x="495" y="180" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">O Oper</text>
+          <text x="440" y="210" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">R Reach</text>
+          <text x="385" y="180" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">A Affin</text>
+          <text x="385" y="115" fill="#8899bb" font-size="10" text-anchor="middle" font-family="sans-serif">A Adv</text>
+
+          <!-- Investment Matrix -->
+          <rect x="590" y="20" width="290" height="290" rx="12" fill="#0a1020" stroke="#1e3050" stroke-width="1"/>
+          <text x="735" y="45" fill="#8899bb" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Investment Matrix</text>
+
+          <!-- Y-axis: Tech Maturity -->
+          <text x="603" y="180" fill="#4a5d7a" font-size="9" font-family="sans-serif" transform="rotate(-90,603,180)">Tech Maturity →</text>
+          <!-- X-axis: Commercialization Progress -->
+          <text x="720" y="302" fill="#4a5d7a" font-size="9" text-anchor="middle" font-family="sans-serif">Commercialization →</text>
+
+          <!-- Quadrant labels -->
+          <text x="640" y="65" fill="#10b981" font-size="9" font-family="sans-serif">Priority Investment</text>
+          <text x="760" y="65" fill="#f59e0b" font-size="9" font-family="sans-serif">Monitor</text>
+          <text x="640" y="280" fill="#6b7280" font-size="9" font-family="sans-serif">Early Stage</text>
+          <text x="760" y="280" fill="#4a5d7a" font-size="9" font-family="sans-serif">Wait & See</text>
+
+          <!-- Company dots in the matrix -->
+          <circle cx="680" cy="85" r="8" fill="#3b82f6" opacity="0.8"/>
+          <text x="680" y="98" fill="#3b82f6" font-size="8" font-weight="bold" text-anchor="middle" font-family="sans-serif">Figure</text>
+
+          <circle cx="720" cy="100" r="7" fill="#ef4444" opacity="0.8"/>
+          <text x="720" y="112" fill="#ef4444" font-size="8" font-weight="bold" text-anchor="middle" font-family="sans-serif">Unitree</text>
+
+          <circle cx="750" cy="80" r="6" fill="#7c3aed" opacity="0.8"/>
+          <text x="750" y="91" fill="#7c3aed" font-size="8" text-anchor="middle" font-family="sans-serif">PI</text>
+
+          <circle cx="700" cy="130" r="6" fill="#3b82f6" opacity="0.7"/>
+          <text x="700" y="141" fill="#3b82f6" font-size="8" text-anchor="middle" font-family="sans-serif">Tesla</text>
+
+          <circle cx="660" cy="115" r="5" fill="#ef4444" opacity="0.7"/>
+          <text x="660" y="125" fill="#ef4444" font-size="8" text-anchor="middle" font-family="sans-serif">Zhiyuan</text>
+
+          <circle cx="740" cy="140" r="5" fill="#ef4444" opacity="0.7"/>
+          <text x="740" y="151" fill="#ef4444" font-size="8" text-anchor="middle" font-family="sans-serif">Fourier</text>
+
+          <circle cx="800" cy="110" r="5" fill="#10b981" opacity="0.7"/>
+          <text x="800" y="121" fill="#10b981" font-size="8" text-anchor="middle" font-family="sans-serif">UBT</text>
+
+          <circle cx="630" cy="180" r="4" fill="#ef4444" opacity="0.6"/>
+          <text x="630" y="190" fill="#ef4444" font-size="8" text-anchor="middle" font-family="sans-serif">Xingdong</text>
+
+          <circle cx="780" cy="200" r="4" fill="#6b7280" opacity="0.6"/>
+          <text x="780" y="210" fill="#6b7280" font-size="8" text-anchor="middle" font-family="sans-serif">San</text>
+        </g>
+
+        <text x="450" y="312" fill="#4a5d7a" font-size="11" text-anchor="middle" font-family="sans-serif" font-style="italic">▲ AMORA Five-Dimension Radar Chart · Investment Matrix · Valuation Analysis (PRO Content)</text>
+      </svg>
+
+      <div class="blur-fade-overlay"></div>
+    </div>
+
+    <div class="blur-upgrade-card">
+      <div class="blur-upgrade-icon">💎</div>
+      <div class="blur-upgrade-title">Unlock Full Investment Analysis</div>
+      <div class="blur-upgrade-desc">Radar chart comparison, AMORA five-dimension scoring, investment opportunity matrix — these scores and valuation data are the core value of the report, precisely blurred for protection</div>
+      <div class="blur-features">
+        <span class="blur-feature-tag">AMORA Five-Dimension Score</span>
+        <span class="blur-feature-tag">Radar Chart Comparison</span>
+        <span class="blur-feature-tag">Investment Matrix</span>
+        <span class="blur-feature-tag">Valuation & Risk Analysis</span>
+      </div>
+      <a href="HRI-2026-AMORA-Report-v5.0-en.html#assets" class="blur-cta-btn">🔓 Unlock Full Part A₂ · Investment</a>
+      <p class="blur-cta-note">PRO Subscription <strong>$299/year</strong> · Unlock all 36 reports at once</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE CTA ===== -->
+<section id="upgrade" class="upgrade-cta-section">
+  <h2>🚀 Upgrade to AMORA PRO · Unlock All 36 Reports</h2>
+  <p>Subscribe now to get the complete humanoid robotics report plus access to all 35 other industry deep dive reports</p>
+  <div class="cta-feature-row">
+    <div class="cta-feature"><span class="check">✓</span> Part M · Supply Chain (Free Chapter)</div>
+    <div class="cta-feature"><span class="check">✓</span> Part A · Technology Advancement (Unlocked)</div>
+    <div class="cta-feature"><span class="check">✓</span> Part O · Commercialization (Unlocked)</div>
+    <div class="cta-feature"><span class="check">✓</span> Part R · Market Size (Unlocked)</div>
+    <div class="cta-feature"><span class="check">✓</span> Part A₂ · Investment Analysis (Unlocked)</div>
+  </div>
+  <div class="cta-feature-row">
+    <div class="cta-feature"><span class="check">✓</span> All 36 reports readable</div>
+    <div class="cta-feature"><span class="check">✓</span> Real-time data updates</div>
+    <div class="cta-feature"><span class="check">✓</span> In-depth analysis in English</div>
+    <div class="cta-feature"><span class="check">✓</span> China-US dual tracking</div>
+  </div>
+  <a href="#" class="btn-primary" style="font-size:16px;padding:16px 48px;">Subscribe AMORA PRO Now</a>
+  <p class="upgrade-price-tag"><strong>$299</strong> / year · $8.3 per report average · Cancel anytime</p>
+</section>
+
+</main>
+
+<script>
+// Smooth scroll + active nav
+document.querySelectorAll('.nav-item').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Update active nav on scroll
+window.addEventListener('scroll', () => {
+  const sections = ['hero','mapping','advancement','operations','reach','assets'];
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 80 && rect.bottom >= 80) {
+        document.querySelectorAll('.nav-item').forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
+        break;
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

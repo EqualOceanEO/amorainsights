@@ -1,0 +1,7 @@
+fix: pending tasks — rename site title to AMORA, fix SubscribeBox auto-login flow
+
+- Layout: change site title from "AmoraInsights" to "AMORA" (OG + twitter)
+- Reports/Companies pages: update metadata from "AMORA Insights" to "AMORA"
+- Test premium page: update title to AMORA
+- SubscribeBox: call refresh() after auto-login to sync AuthContext
+- SubscribeBox: move auto-logged-in check outside session block (timing fix)

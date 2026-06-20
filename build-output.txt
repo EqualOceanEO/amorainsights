@@ -1,0 +1,112 @@
+
+> amorainsights@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of c:\Users\51229\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * c:\Users\51229\WorkBuddy\Claw\package-lock.json
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 9.1s
+  Running TypeScript ...
+  Collecting page data using 21 workers ...
+  Generating static pages using 21 workers (0/86) ...
+  Generating static pages using 21 workers (21/86) 
+  Generating static pages using 21 workers (42/86) 
+  Generating static pages using 21 workers (64/86) 
+✓ Generating static pages using 21 workers (86/86) in 350.7ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /403
+├ ○ /about
+├ ƒ /admin
+├ ƒ /admin/analytics
+├ ƒ /admin/companies
+├ ƒ /admin/industries
+├ ƒ /admin/news
+├ ƒ /admin/news/[id]/edit
+├ ƒ /admin/orders
+├ ƒ /admin/reports
+├ ƒ /admin/scores
+├ ƒ /admin/subscribers
+├ ƒ /admin/users
+├ ƒ /admin/users/[id]
+├ ƒ /api/admin/analytics/overview
+├ ƒ /api/admin/analytics/user/[id]
+├ ƒ /api/admin/analytics/users
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/companies/[id]
+├ ƒ /api/admin/migrate
+├ ƒ /api/admin/news
+├ ƒ /api/admin/news-generator
+├ ƒ /api/admin/news/[id]
+├ ƒ /api/admin/orders
+├ ƒ /api/admin/reports
+├ ƒ /api/admin/reports/[id]
+├ ƒ /api/admin/scores
+├ ƒ /api/admin/subscribers
+├ ƒ /api/admin/subscribers/[id]
+├ ƒ /api/admin/subscribers/export
+├ ƒ /api/admin/subscribers/list
+├ ƒ /api/analytics/event
+├ ƒ /api/analytics/pageview
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/auth/auto-login
+├ ƒ /api/auth/forgot-password
+├ ƒ /api/auth/register
+├ ƒ /api/auth/reset-password
+├ ƒ /api/auth/session
+├ ƒ /api/companies
+├ ƒ /api/internal/compliance-scan
+├ ƒ /api/news
+├ ƒ /api/news/[slug]
+├ ƒ /api/news/[slug]/edit
+├ ƒ /api/newsletter/send
+├ ƒ /api/stripe/checkout
+├ ƒ /api/stripe/debug
+├ ƒ /api/stripe/verify
+├ ƒ /api/stripe/webhook
+├ ƒ /api/subscribe
+├ ƒ /api/unsubscribe
+├ ƒ /api/upload/image
+├ ƒ /api/user/newsletter/unsubscribe
+├ ƒ /api/user/profile
+├ ƒ /api/user/tier
+├ ○ /companies
+├ ƒ /companies/[id]
+├ ƒ /dashboard
+├ ƒ /dashboard/account
+├ ƒ /dashboard/newsletter
+├ ○ /forgot-password
+├ ○ /industries
+├ ƒ /industries/[slug]
+├ ƒ /industries/[slug]/[sub]
+├ ○ /login
+├ ○ /news
+├ ƒ /news/[slug]
+├ ○ /pricing
+├ ○ /reports
+├ ƒ /reports/[slug]
+├ ○ /reports/test-premium
+├ ○ /reset-password
+├ ○ /signup
+├ ○ /subscribe
+├ ○ /subscribe/pro
+├ ○ /subscribe/success
+└ ○ /test-simple
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

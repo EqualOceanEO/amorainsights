@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人形机器人核心零部件供应商图谱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* 背景网格 */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, #0a0a0f 70%);
+        }
+        
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 标题样式 */
+        .main-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .main-title h1 {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00f5ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .main-title p {
+            color: #888;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        
+        /* 三栏布局 */
+        .robot-display {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 20px;
+            align-items: start;
+        }
+        
+        @media (max-width: 1200px) {
+            .robot-display {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        
+        /* 面板样式 */
+        .panel {
+            background: rgba(20, 20, 30, 0.9);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #00f5ff;
+            margin-bottom: 15px;
+            padding-left: 12px;
+            border-left: 3px solid #00f5ff;
+        }
+        
+        /* 供应商卡片 */
+        .supplier-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .supplier-card:hover {
+            background: rgba(0, 245, 255, 0.05);
+            border-color: rgba(0, 245, 255, 0.3);
+        }
+        
+        .supplier-card.active {
+            background: rgba(255, 0, 255, 0.1);
+            border-color: #ff00ff;
+            border-left: 3px solid #ff00ff;
+        }
+        
+        .supplier-name {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .supplier-name-cn {
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .supplier-meta {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .tag-public {
+            background: rgba(0, 255, 100, 0.15);
+            color: #00ff64;
+        }
+        
+        .tag-private {
+            background: rgba(255, 170, 0, 0.15);
+            color: #ffaa00;
+        }
+        
+        .tag-product {
+            background: rgba(0, 245, 255, 0.15);
+            color: #00f5ff;
+        }
+        
+        /* 机器人SVG容器 */
+        .robot-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 600px;
+        }
+        
+        .robot-svg {
+            width: 100%;
+            max-width: 280px;
+            filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.3));
+        }
+        
+        /* 热点标记 */
+        .hotspot {
+            cursor: pointer;
+        }
+        
+        .hotspot:hover .hotspot-circle {
+            fill: rgba(0, 245, 255, 0.4);
+            stroke-width: 3;
+        }
+        
+        .hotspot.active .hotspot-circle {
+            fill: rgba(255, 0, 255, 0.4);
+            stroke: #ff00ff;
+            stroke-width: 3;
+        }
+        
+        .hotspot-circle {
+            fill: rgba(0, 245, 255, 0.2);
+            stroke: #00f5ff;
+            stroke-width: 2;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { r: 8; opacity: 1; }
+            50% { r: 12; opacity: 0.6; }
+        }
+        
+        /* 详情面板 */
+        .detail-panel {
+            min-height: 500px;
+        }
+        
+        .detail-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ff00ff;
+        }
+        
+        .detail-subtitle {
+            color: #888;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        
+        .detail-section {
+            margin-bottom: 20px;
+        }
+        
+        .detail-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .detail-value {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .detail-products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .product-tag {
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #00f5ff;
+        }
+        
+        .detail-customers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .customer-tag {
+            background: rgba(255, 0, 255, 0.1);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #ff00ff;
+        }
+        
+        /* 供应商详情卡片 */
+        .supplier-detail-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+        
+        .supplier-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+        
+        .supplier-detail-name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+        
+        .supplier-detail-desc {
+            color: #888;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        
+        /* 图例 */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #888;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .legend-dot.reducer { background: #00f5ff; box-shadow: 0 0 10px #00f5ff; }
+        .legend-dot.motor { background: #ff00ff; box-shadow: 0 0 10px #ff00ff; }
+        .legend-dot.sensor { background: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .main-title h1 {
+                font-size: 22px;
+            }
+            
+            .robot-container {
+                min-height: 400px;
+            }
+            
+            .panel {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    
+    <div class="main-container">
+        <div class="main-title">
+            <h1>HUMANOID ROBOT</h1>
+            <p>人形机器人核心零部件供应商图谱 · 点击部位查看详情</p>
+        </div>
+        
+        <div class="robot-display">
+            <!-- 左侧：零部件列表 -->
+            <div class="panel">
+                <div class="panel-title">核心零部件分类</div>
+                
+                <div class="supplier-card" data-part="head" onclick="selectPart('head')">
+                    <div class="supplier-name">3D视觉/激光雷达</div>
+                    <div class="supplier-name-cn">头部感知系统</div>
+                    <div class="supplier-meta">
+                        <span class="tag tag-public">奥比中光</span>
+                        <span class="tag tag-public">速腾聚创</span>
+                        <span class="tag tag-public">禾赛科技</span>
+                    </div>
+                </div>
+                
+                <div class="supplier-card" data-part="torso" onclick="selectPart('torso')">
+                    <div class="supplier-name">IMU/主控芯片</div>
+                    <div class="supplier-name-cn">躯干控制</div>
+                    <div class="supplier-meta">
+                        <span class="tag tag-public">芯动联科</span>
+                        <span class="tag tag-product">地平线</span>
+                    </div>
+                </div>
+                
+                <div class="supplier-card" data-part="arm" onclick="selectPart('arm')">
+                    <div class="supplier-name">谐波减速器 + 无框电机</div>
+                    <div class="supplier-name-cn">手臂关节</div>
+                    <div class="supplier-meta">
+                        <span class="tag tag-public">绿的谐波</span>
+                        <span class="tag tag-public">步科股份</span>
+                        <span class="tag tag-private">来福谐波</span>
+                    </div>
+                </div>
+                
+                <div class="supplier-card" data-part="hand" onclick="selectPart('hand')">
+                    <div class="supplier-name">灵巧手/微型伺服</div>
+                    <div class="supplier-name-cn">末端执行器</div>
+                    <div class="supplier-meta">
+                        <span class="tag tag-private">因时机器人</span>
+                        <span class="tag tag-private">帕西尼感知</span>
+                    </div>
+                </div>
+                
+                <div class="supplier-card" data-part="leg" onclick="selectPart('leg')">
+                    <div class="supplier-name">行星/谐波减速器 + 力传感器</div>
+                    <div class="supplier-name-cn">腿部关节</div>
+                    <div class="supplier-meta">
+                        <span class="tag tag-public">双环传动</span>
+                        <span class="tag tag-public">中大力德</span>
+                        <span class="tag tag-private">宇立仪器</span>
+                    </div>
+                </div>
+                
+                <div class="supplier-card" data-part="foot" onclick="selectPart('foot')">
+                    <div class="supplier-name">六维力传感器</div>
+                    <div class="supplier-name-cn">足部感知</div>
+                    <div class="supplier-meta">
+                        <span class="tag tag-private">宇立仪器</span>
+                        <span class="tag tag-public">柯力传感</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中间：机器人图示 -->
+            <div class="robot-container">
+                <svg class="robot-svg" viewBox="0 0 300 650" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 定义渐变 -->
+                    <defs>
+                        <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#1a1a2e"/>
+                            <stop offset="50%" style="stop-color:#2d2d44"/>
+                            <stop offset="100%" style="stop-color:#1a1a2e"/>
+                        </linearGradient>
+                        <linearGradient id="jointGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00f5ff"/>
+                            <stop offset="100%" style="stop-color:#0088aa"/>
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- 头部 -->
+                    <g id="part-head" class="hotspot" onclick="selectPart('head')">
+                        <circle cx="150" cy="45" r="32" fill="url(#bodyGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <circle cx="136" cy="40" r="7" fill="#00f5ff"/>
+                        <circle cx="164" cy="40" r="7" fill="#00f5ff"/>
+                        <rect x="142" y="55" width="16" height="2" rx="1" fill="#00f5ff"/>
+                        <circle class="hotspot-circle" cx="150" cy="45" r="42"/>
+                    </g>
+                    
+                    <!-- 颈部 -->
+                    <rect x="142" y="77" width="16" height="12" fill="#2d2d44" stroke="#00f5ff" stroke-width="1"/>
+                    
+                    <!-- 躯干 -->
+                    <g id="part-torso" class="hotspot" onclick="selectPart('torso')">
+                        <path d="M115 89 L185 89 L176 200 L124 200 Z" fill="url(#bodyGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <rect x="132" y="115" width="36" height="55" rx="4" fill="rgba(0,245,255,0.1)" stroke="#00f5ff" stroke-width="1"/>
+                        <circle cx="150" cy="142" r="12" fill="none" stroke="#00f5ff" stroke-width="2"/>
+                        <circle cx="150" cy="142" r="4" fill="#00f5ff"/>
+                        <circle class="hotspot-circle" cx="150" cy="145" r="60"/>
+                    </g>
+                    
+                    <!-- 左臂 -->
+                    <g id="part-arm-left" class="hotspot" onclick="selectPart('arm')">
+                        <circle cx="88" cy="108" r="18" fill="url(#jointGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <rect x="74" y="126" width="28" height="72" rx="4" fill="url(#bodyGradient)" stroke="#00f5ff" stroke-width="1.5"/>
+                        <circle cx="88" cy="208" r="14" fill="url(#jointGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <rect x="76" y="222" width="24" height="62" rx="3" fill="url(#bodyGradient)" stroke="#00f5ff" stroke-width="1.5"/>
+                        <circle cx="88" cy="294" r="11" fill="url(#jointGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <circle class="hotspot-circle" cx="88" cy="200" r="45"/>
+                    </g>
+                    
+                    <!-- 右臂 -->
+                    <g id="part-arm-right" class="hotspot" onclick="selectPart('arm')">
+                        <circle cx="212" cy="108" r="18" fill="url(#jointGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <rect x="198" y="126" width="28" height="72" rx="4" fill="url(#bodyGradient)" stroke="#00f5ff" stroke-width="1.5"/>
+                        <circle cx="212" cy="208" r="14" fill="url(#jointGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <rect x="200" y="222" width="24" height="62" rx="3" fill="url(#bodyGradient)" stroke="#00f5ff" stroke-width="1.5"/>
+                        <circle cx="212" cy="294" r="11" fill="url(#jointGradient)" stroke="#00f5ff" stroke-width="2"/>
+                        <circle class="hotspot-circle" cx="212" cy="200" r="45"/>
+                    </g>
+                    
+                    <!-- 左手 -->
+                    <g id="part-hand-left" class="hotspot" onclick="selectPart('hand')">
+                        <rect x="79" y="303" width="18" height="22" rx="3" fill="url(#bodyGradient)" stroke="#ff00ff" stroke-width="2"/>
+                        <rect x="76" y="327" width="5" height="16" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <rect x="83" y="327" width="5" height="18" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <rect x="90" y="327" width="5" height="16" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <rect x="97" y="327" width="4" height="12" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <circle class="hotspot-circle" cx="88" cy="325" r="28"/>
+                    </g>
+                    
+                    <!-- 右手 -->
+                    <g id="part-hand-right" class="hotspot" onclick="selectPart('hand')">
+                        <rect x="203" y="303" width="18" height="22" rx="3" fill="url(#bodyGradient)" stroke="#ff00ff" stroke-width="2"/>
+                        <rect x="200" y="327" width="4" height="12" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <rect x="206" y="327" width="5" height="16" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <rect x="213" y="327" width="5" height="18" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <rect x="220" y="327" width="5" height="16" rx="2" fill="#2d2d44" stroke="#ff00ff" stroke-width="1"/>
+                        <circle class="hotspot-circle" cx="212" cy="325" r="28"/>
+                    </g>
+                    
+                    <!-- 左腿 -->
+                    <g id="part-leg-left" class="hotspot" onclick="selectPart('leg')">
+                        <circle cx="128" cy="215" r="16" fill="url(#jointGradient)" stroke="#ffaa00" stroke-width="2"/>
+                        <rect x="116" y="231" width="24" height="88" rx="4" fill="url(#bodyGradient)" stroke="#ffaa00" stroke-width="1.5"/>
+                        <circle cx="128" cy="327" r="14" fill="url(#jointGradient)" stroke="#ffaa00" stroke-width="2"/>
+                        <rect x="118" y="343" width="20" height="78" rx="3" fill="url(#bodyGradient)" stroke="#ffaa00" stroke-width="1.5"/>
+                        <circle cx="128" cy="428" r="12" fill="url(#jointGradient)" stroke="#ffaa00" stroke-width="2"/>
+                        <circle class="hotspot-circle" cx="128" cy="325" r="50"/>
+                    </g>
+                    
+                    <!-- 右腿 -->
+                    <g id="part-leg-right" class="hotspot" onclick="selectPart('leg')">
+                        <circle cx="172" cy="215" r="16" fill="url(#jointGradient)" stroke="#ffaa00" stroke-width="2"/>
+                        <rect x="160" y="231" width="24" height="88" rx="4" fill="url(#bodyGradient)" stroke="#ffaa00" stroke-width="1.5"/>
+                        <circle cx="172" cy="327" r="14" fill="url(#jointGradient)" stroke="#ffaa00" stroke-width="2"/>
+                        <rect x="162" y="343" width="20" height="78" rx="3" fill="url(#bodyGradient)" stroke="#ffaa00" stroke-width="1.5"/>
+                        <circle cx="172" cy="428" r="12" fill="url(#jointGradient)" stroke="#ffaa00" stroke-width="2"/>
+                        <circle class="hotspot-circle" cx="172" cy="325" r="50"/>
+                    </g>
+                    
+                    <!-- 左脚 -->
+                    <g id="part-foot-left" class="hotspot" onclick="selectPart('foot')">
+                        <path d="M108 440 L148 440 L152 468 L104 468 Z" fill="url(#bodyGradient)" stroke="#ff00ff" stroke-width="2"/>
+                        <rect x="113" y="445" width="26" height="2" fill="#ff00ff" opacity="0.5"/>
+                        <circle class="hotspot-circle" cx="128" cy="455" r="28"/>
+                    </g>
+                    
+                    <!-- 右脚 -->
+                    <g id="part-foot-right" class="hotspot" onclick="selectPart('foot')">
+                        <path d="M152 440 L192 440 L196 468 L148 468 Z" fill="url(#bodyGradient)" stroke="#ff00ff" stroke-width="2"/>
+                        <rect x="157" y="445" width="26" height="2" fill="#ff00ff" opacity="0.5"/>
+                        <circle class="hotspot-circle" cx="172" cy="455" r="28"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <!-- 右侧：详情面板 -->
+            <div class="panel detail-panel" id="detailPanel">
+                <div class="empty-state">
+                    <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <p>点击左侧零部件<br>或机器人部位<br>查看供应商详情</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图例 -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot reducer"></div>
+                <span>减速器/传动</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot motor"></div>
+                <span>电机/执行器</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot sensor"></div>
+                <span>传感器/感知</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 供应商数据
+        const supplierData = {
+            head: {
+                title: '头部感知系统',
+                subtitle: '3D视觉传感器 + 激光雷达',
+                description: '人形机器人的"眼睛"，负责环境感知、障碍物识别、导航定位。3D视觉用于近距离精细操作，激光雷达用于远距离环境建模。',
+                products: ['结构光3D相机', 'ToF深度相机', 'MEMS激光雷达', '机械激光雷达'],
+                suppliers: [
+                    { name: '奥比中光', nameCn: 'Orbbec', status: 'public', products: ['Femto Bolt', 'Femto Mega', 'Astra系列'], customers: ['优必选', '宇树', '智元'], desc: '科创板上市，中国3D视觉传感器龙头，结构光技术领先' },
+                    { name: '速腾聚创', nameCn: 'RoboSense', status: 'public', products: ['M系列', 'E系列', 'Helios'], customers: ['蔚来', '小鹏', '机器人客户'], desc: '港交所上市，激光雷达出货量国内第一' },
+                    { name: '禾赛科技', nameCn: 'Hesai', status: 'public', products: ['AT系列', 'ET系列', 'FT系列'], customers: ['理想', '集度', '百度Apollo'], desc: '纳斯达克上市，高性能激光雷达，自研ASIC芯片' }
+                ]
+            },
+            torso: {
+                title: '躯干控制系统',
+                subtitle: 'IMU惯性测量 + 主控计算',
+                description: '人形机器人的"小脑"和"大脑"，IMU用于姿态平衡控制，主控芯片运行运动控制算法和AI模型。',
+                products: ['MEMS IMU', '陀螺仪', '加速度计', 'AI计算芯片'],
+                suppliers: [
+                    { name: '芯动联科', nameCn: 'Xindong Tech', status: 'public', products: ['MEMS IMU', '陀螺仪', '加速度计'], customers: ['机器人厂商', '汽车客户'], desc: '科创板上市，MEMS IMU传感器，机器人平衡控制核心' },
+                    { name: '地平线', nameCn: 'Horizon Robotics', status: 'private', products: ['征程5', '征程6', 'J3/J5'], customers: ['无界动力', '维他动力', '车企'], desc: 'AI芯片独角兽，孵化多家人形机器人公司' }
+                ]
+            },
+            arm: {
+                title: '手臂关节系统',
+                subtitle: '谐波减速器 + 无框力矩电机',
+                description: '人形机器人手臂的核心传动部件，谐波减速器提供高精度减速，无框电机提供高扭矩密度动力。单条手臂通常有5-7个关节。',
+                products: ['谐波减速器', '无框力矩电机', '伺服驱动器', '编码器'],
+                suppliers: [
+                    { name: '绿的谐波', nameCn: 'Leader Harmonious', status: 'public', products: ['HD-14/17/20/25/32'], customers: ['优必选', '宇树', '汇川'], desc: '科创板上市，谐波减速器国产龙头，市占率25%+' },
+                    { name: '步科股份', nameCn: 'Step Electric', status: 'public', products: ['无框力矩电机', '伺服驱动'], customers: ['优必选', '宇树', '协作机器人'], desc: '科创板上市，无框力矩电机龙头，机器人关节专用' },
+                    { name: '来福谐波', nameCn: 'Laifute', status: 'private', products: ['LCS系列', 'LCD系列'], customers: ['多家人形OEM'], desc: 'Series B，专注小型化谐波减速器' },
+                    { name: '汇川技术', nameCn: 'Inovance', status: 'public', products: ['伺服电机', '伺服驱动', '线性执行器'], customers: ['宇树', '优必选', '埃斯顿'], desc: '深交所上市，工业自动化龙头，伺服系统完整' }
+                ]
+            },
+            hand: {
+                title: '灵巧手系统',
+                subtitle: '微型伺服电缸 + 触觉传感器',
+                description: '人形机器人的"手"，实现精细抓取和操作。高自由度设计（通常11-22个自由度），集成力触觉反馈。',
+                products: ['微型伺服电缸', '多指灵巧手', '触觉传感器', '力控模组'],
+                suppliers: [
+                    { name: '因时机器人', nameCn: 'Instime Robotics', status: 'private', products: ['微型伺服电缸', 'RH56DFX系列', '灵巧手'], customers: ['优必选', '宇树', '智元'], desc: 'Series B，微型伺服电缸龙头，灵巧手核心供应商' },
+                    { name: '帕西尼感知', nameCn: 'Paxini', status: 'private', products: ['触觉传感器', '灵巧手', '力控系统'], customers: ['人形OEM'], desc: 'Series A，触觉传感+灵巧手集成' },
+                    { name: '灵心巧手', nameCn: 'Lingxin', status: 'private', products: ['灵巧手', '机器人夹爪'], customers: ['初创公司'], desc: '天使轮，高性价比灵巧手方案' }
+                ]
+            },
+            leg: {
+                title: '腿部关节系统',
+                subtitle: 'RV/行星减速器 + 力传感器',
+                description: '人形机器人腿部承受全身重量，需要高刚性减速器（RV或行星）和大扭矩电机。腿部关节通常有5-6个自由度。',
+                products: ['RV减速器', '行星减速器', '力矩电机', '六维力传感器'],
+                suppliers: [
+                    { name: '双环传动', nameCn: 'Shuanghuan', status: 'public', products: ['RV减速器SHPR系列'], customers: ['埃斯顿', 'STEP', 'GSK'], desc: '深交所上市，RV减速器国产龙头' },
+                    { name: '中大力德', nameCn: 'Zhongda Leader', status: 'public', products: ['行星减速器', '谐波减速器', '齿轮电机'], customers: ['工业机器人', 'AGV'], desc: '深交所上市，减速器+电机集成方案' },
+                    { name: '宇立仪器', nameCn: 'SRI', status: 'private', products: ['六维力传感器', '力矩传感器'], customers: ['优必选', '宇树', '智元'], desc: '六维力传感器龙头，机器人力控核心' }
+                ]
+            },
+            foot: {
+                title: '足部感知系统',
+                subtitle: '六维力/力矩传感器',
+                description: '人形机器人足底的"触觉"，实时感知地面反作用力，用于平衡控制和步态调整。',
+                products: ['六维力传感器', '力矩传感器', '压力传感器'],
+                suppliers: [
+                    { name: '宇立仪器', nameCn: 'SRI', status: 'private', products: ['六维力传感器', '力控系统'], customers: ['优必选', '宇树', '傅利叶'], desc: '国内六维力传感器龙头，人形机器人标配' },
+                    { name: '柯力传感', nameCn: 'Keli Sensing', status: 'public', products: ['力传感器', '扭矩传感器', '称重系统'], customers: ['工业机器人'], desc: '上交所上市，力传感器老牌厂商' }
+                ]
+            }
+        };
+        
+        let currentPart = null;
+        
+        function selectPart(partId) {
+            // 移除之前的active状态
+            document.querySelectorAll('.hotspot').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.supplier-card').forEach(el => el.classList.remove('active'));
+            
+            // 添加新的active状态
+            const hotspots = document.querySelectorAll('[id*="' + partId + '"]');
+            hotspots.forEach(el => el.classList.add('active'));
+            
+            const card = document.querySelector('[data-part="' + partId + '"]');
+            if (card) card.classList.add('active');
+            
+            currentPart = partId;
+            
+            // 更新详情面板
+            updateDetailPanel(partId);
+        }
+        
+        function updateDetailPanel(partId) {
+            const data = supplierData[partId];
+            if (!data) return;
+            
+            const panel = document.getElementById('detailPanel');
+            
+            var suppliersHtml = data.suppliers.map(function(s) {
+                return '<div class="supplier-detail-card">' +
+                    '<div class="supplier-detail-header">' +
+                        '<div>' +
+                            '<div class="supplier-detail-name" style="color: ' + (s.status === 'public' ? '#00ff64' : '#ffaa00') + ';">' +
+                                s.nameCn + ' ' + s.name +
+                            '</div>' +
+                            '<div class="supplier-detail-desc">' + s.desc + '</div>' +
+                        '</div>' +
+                        '<span class="tag ' + (s.status === 'public' ? 'tag-public' : 'tag-private') + '">' +
+                            (s.status === 'public' ? '已上市' : '未上市') +
+                        '</span>' +
+                    '</div>' +
+                    '<div class="detail-section" style="margin-top: 12px;">' +
+                        '<div class="detail-label">核心产品</div>' +
+                        '<div class="detail-products">' +
+                            s.products.map(function(p) { return '<span class="product-tag">' + p + '</span>'; }).join('') +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="detail-section" style="margin-top: 12px;">' +
+                        '<div class="detail-label">主要客户</div>' +
+                        '<div class="detail-customers">' +
+                            s.customers.map(function(c) { return '<span class="customer-tag">' + c + '</span>'; }).join('') +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+            
+            panel.innerHTML = 
+                '<div class="detail-header">' +
+                    '<div class="detail-title">' + data.title + '</div>' +
+                    '<div class="detail-subtitle">' + data.subtitle + '</div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">功能描述</div>' +
+                    '<div class="detail-value">' + data.description + '</div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">零部件类型</div>' +
+                    '<div class="detail-products">' +
+                        data.products.map(function(p) { return '<span class="product-tag">' + p + '</span>'; }).join('') +
+                    '</div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">核心供应商 (' + data.suppliers.length + '家)</div>' +
+                    suppliersHtml +
+                '</div>';
+        }
+    </script>
+</body>
+</html>
