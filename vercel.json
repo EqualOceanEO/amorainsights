@@ -6,8 +6,16 @@
   "regions": ["sin1"],
   "crons": [
     {
-      "path": "/api/admin/auto-migrate?secret=run-migration-now",
+      "path": "/api/admin/auto-migrate?secret=amora-migration-secret-2024",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/admin/news-generator?secret=amora-insights-internal-secret-2024",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/internal/compliance-scan?secret=amora-insights-internal-secret-2024",
+      "schedule": "0 2 * * *"
     }
   ]
 }
