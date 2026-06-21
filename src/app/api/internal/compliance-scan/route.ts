@@ -190,7 +190,7 @@ function normalizeEntityName(name: string): string {
 // ─── Auth check ───────────────────────────────────────────────────────────────
 
 function isAuthorized(req: NextRequest): boolean {
-  const secret = req.headers.get('x-internal-api-secret');
+  const secret = req.headers.get('x-internal-api-secret') || req.nextUrl.searchParams.get('secret');
   const expected = process.env.INTERNAL_API_SECRET;
   if (!expected) {
     if (process.env.NODE_ENV === 'production') return false;
