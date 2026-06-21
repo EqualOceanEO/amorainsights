@@ -4,6 +4,11 @@
   "framework": "nextjs",
   "installCommand": "npm install --legacy-peer-deps",
   "regions": ["sin1"],
+  "git": {
+    "deploymentEnabled": {
+      "master": true
+    }
+  },
   "crons": [
     {
       "path": "/api/admin/auto-migrate?secret=run-migration-now",
